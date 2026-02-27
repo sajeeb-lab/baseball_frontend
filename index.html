@@ -270,12 +270,11 @@ function renderTeams(teams, titleText, metaText) {
   grid.innerHTML = '';
   teams.forEach(team => {
     const fullState = ABBR_TO_NAME[team.state] || team.state;
-    const ageLine   = team.ageGroup ? `<div class="tc-age">${esc(team.ageGroup)}</div>` : '';
     const params    = new URLSearchParams({ id: team.id, name: team.teamName, state: team.state });
     const card      = document.createElement('a');
     card.className  = 'team-card';
     card.href       = `team.html?${params}`;
-    card.innerHTML  = `${ageLine}<div class="tc-name">${esc(team.teamName)}</div><div class="tc-state">${esc(fullState)}</div>`;
+    card.innerHTML  = `<div class="tc-name">${esc(team.teamName)}</div><div class="tc-state">${esc(fullState)}</div>`;
     grid.appendChild(card);
   });
 }
