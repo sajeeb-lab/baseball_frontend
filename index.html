@@ -18,6 +18,7 @@
   --mid:   #dce3ec;
   --text:  #1a1a2e;
   --sub:   #5a6a7a;
+  --blue:  #1e56c8;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Open Sans', sans-serif; background: var(--light); color: var(--text); min-height: 100vh; }
@@ -61,8 +62,10 @@ nav { background: var(--red); display: flex; align-items: center; justify-conten
 #map-svg-container { width: 100%; }
 #map-svg-container svg { width: 100%; height: auto; display: block; }
 .state-path { fill: #111111; stroke: #ffffff; stroke-width: .8px; stroke-linejoin: round; cursor: pointer; transition: fill .15s ease; }
-.state-path:hover { fill: var(--red); }
-.state-path.active { fill: var(--navy); }
+/* CHANGED: hover now shows blue */
+.state-path:hover { fill: var(--blue); }
+/* CHANGED: active (selected) also stays blue */
+.state-path.active { fill: var(--blue); }
 #map-loading { text-align: center; padding: 4rem 2rem; color: var(--sub); font-size: .9rem; letter-spacing: .05em; }
 
 #map-tooltip { position: fixed; background: var(--navy); color: var(--white); font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 500; letter-spacing: .08em; padding: 6px 14px; pointer-events: none; opacity: 0; transition: opacity .1s; z-index: 9999; white-space: nowrap; border-radius: 3px; transform: translate(-50%, -145%); text-transform: uppercase; }
@@ -292,7 +295,9 @@ async function openState(abbr, name) {
 // ── CLOSE RESULTS ────────────────────────────────────────────────────────────
 function closeResults() {
   document.getElementById('results-section').classList.remove('visible');
+  // CHANGED: also clear active state on map and reset search bar
   if (svgRef) svgRef.selectAll('.state-path').classed('active', false);
+  document.getElementById('search-input').value = '';
 }
 
 // ── SEARCH ───────────────────────────────────────────────────────────────────
@@ -370,6 +375,9 @@ async function initMap() {
 
         svg.selectAll('.state-path').classed('active', false);
         d3.select(this).classed('active', true);
+
+        // CHANGED: update the search bar to reflect the selected state
+        document.getElementById('search-input').value = name;
 
         openState(abbr, name);
       });
