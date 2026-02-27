@@ -9,6 +9,7 @@
 <style>
 :root {
   --navy:  #0a1628;
+  --navy2: #0d1f3c;
   --red:   #c8102e;
   --red2:  #a50d25;
   --gold:  #f5c518;
@@ -40,7 +41,7 @@ nav { background: var(--red); display: flex; align-items: center; justify-conten
 .hero h1 span { color: var(--gold); }
 .hero p { color: rgba(255,255,255,.65); font-size: .92rem; margin-bottom: 1.8rem; position: relative; }
 
-.search-wrap { position: relative; max-width: 580px; margin: 0 auto; display: flex; }
+.search-wrap { position: relative; max-width: 520px; margin: 0 auto; display: flex; }
 .search-wrap input { flex: 1; padding: 14px 18px; border: 2px solid rgba(255,255,255,.15); border-right: none; border-radius: 4px 0 0 4px; background: rgba(255,255,255,.08); color: var(--white); font-family: 'Open Sans', sans-serif; font-size: .9rem; outline: none; transition: border-color .2s, background .2s; }
 .search-wrap input::placeholder { color: rgba(255,255,255,.4); }
 .search-wrap input:focus { border-color: var(--gold); background: rgba(255,255,255,.12); }
@@ -49,32 +50,42 @@ nav { background: var(--red); display: flex; align-items: center; justify-conten
 
 .main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
 
-.filter-bar { display: flex; align-items: center; gap: .8rem; margin-bottom: 1.8rem; flex-wrap: wrap; }
-.filter-bar label { font-size: .75rem; color: var(--sub); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
-.state-filter { padding: 8px 14px; border: 1px solid var(--mid); border-radius: 4px; background: var(--white); font-family: 'Open Sans', sans-serif; font-size: .84rem; color: var(--text); outline: none; cursor: pointer; min-width: 180px; }
-.state-filter:focus { border-color: var(--red); }
-.clear-btn { background: none; border: 1px solid var(--mid); border-radius: 4px; padding: 8px 14px; font-size: .76rem; color: var(--sub); cursor: pointer; font-family: 'Open Sans', sans-serif; transition: all .2s; display: none; }
-.clear-btn.visible { display: block; }
-.clear-btn:hover { border-color: var(--red); color: var(--red); }
-.result-count { margin-left: auto; font-size: .78rem; color: var(--sub); }
+.section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.6rem; }
+.section-header h2 { font-family: 'Oswald', sans-serif; font-size: 1.4rem; font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: .05em; white-space: nowrap; }
+.section-header .bar { flex: 1; height: 2px; background: linear-gradient(to right, var(--red), transparent); }
+.section-header .hint { font-size: .78rem; color: var(--sub); letter-spacing: .04em; white-space: nowrap; }
 
-/* TEAMS GRID — 2 col matching screenshot */
-.teams-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+/* MAP */
+.map-card { background: var(--white); border-radius: 6px; box-shadow: 0 2px 16px rgba(0,0,0,.08); padding: 1.8rem 1.5rem 1.2rem; margin-bottom: 2rem; border-top: 4px solid var(--red); }
+.map-hint { text-align: center; color: var(--sub); font-size: .78rem; letter-spacing: .05em; margin-bottom: 1rem; text-transform: uppercase; }
+#map-svg-container { width: 100%; }
+#map-svg-container svg { width: 100%; height: auto; display: block; }
+.state-path { fill: #111111; stroke: #ffffff; stroke-width: .8px; stroke-linejoin: round; cursor: pointer; transition: fill .15s ease; }
+.state-path:hover { fill: var(--red); }
+.state-path.active { fill: var(--navy); }
+#map-loading { text-align: center; padding: 4rem 2rem; color: var(--sub); font-size: .9rem; letter-spacing: .05em; }
 
-/* TEAM CARD — clean white card matching screenshot exactly */
-.team-card {
-  background: var(--white);
-  border-radius: 10px;
-  padding: 20px 22px 18px;
-  border: 1px solid #e8ecf2;
-  box-shadow: 0 1px 5px rgba(0,0,0,.04);
-  text-decoration: none;
-  display: block;
-  color: inherit;
-  transition: box-shadow .2s, transform .18s, border-color .18s;
-}
+#map-tooltip { position: fixed; background: var(--navy); color: var(--white); font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 500; letter-spacing: .08em; padding: 6px 14px; pointer-events: none; opacity: 0; transition: opacity .1s; z-index: 9999; white-space: nowrap; border-radius: 3px; transform: translate(-50%, -145%); text-transform: uppercase; }
+#map-tooltip::after { content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-bottom: none; border-top-color: var(--navy); }
+#map-tooltip.show { opacity: 1; }
+
+/* RESULTS SECTION — hidden by default */
+#results-section { display: none; animation: fadeUp .25s ease; }
+#results-section.visible { display: block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+
+.results-header { background: var(--navy); color: var(--white); padding: 16px 22px; border-radius: 6px 6px 0 0; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.results-header h3 { font-family: 'Oswald', sans-serif; font-size: 1.2rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.results-meta { font-size: .75rem; color: rgba(255,255,255,.5); margin-top: 2px; }
+.close-results-btn { background: rgba(255,255,255,.15); border: none; color: var(--white); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: background .2s; flex-shrink: 0; }
+.close-results-btn:hover { background: var(--red2); }
+
+/* TEAMS GRID */
+.teams-grid { background: var(--white); border: 1px solid var(--mid); border-top: none; border-radius: 0 0 6px 6px; padding: 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; min-height: 80px; }
+
+/* TEAM CARD */
+.team-card { background: var(--light); border-radius: 10px; padding: 20px 22px 18px; border: 1px solid #e8ecf2; box-shadow: 0 1px 5px rgba(0,0,0,.04); text-decoration: none; display: block; color: inherit; transition: box-shadow .2s, transform .18s, border-color .18s; }
 .team-card:hover { box-shadow: 0 6px 22px rgba(0,0,0,.1); transform: translateY(-2px); border-color: #c8d0dc; }
-
 .tc-age { font-size: .74rem; font-weight: 700; color: var(--red); letter-spacing: .02em; margin-bottom: 6px; }
 .tc-name { font-size: 1rem; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 4px; }
 .tc-state { font-size: .84rem; color: var(--sub); }
@@ -83,8 +94,8 @@ nav { background: var(--red); display: flex; align-items: center; justify-conten
 .skeleton { background: linear-gradient(90deg,#eee 25%,#f5f5f5 50%,#eee 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; border-radius: 10px; height: 100px; }
 @keyframes shimmer { from{background-position:200% 0} to{background-position:-200% 0} }
 
-.empty-state { grid-column:1/-1; text-align:center; padding:4rem 2rem; color:var(--sub); }
-.empty-state strong { display:block; font-size:1.1rem; color:var(--navy); margin-bottom:.5rem; }
+.empty-state { grid-column:1/-1; text-align:center; padding:3rem 1rem; color:var(--sub); font-size:.92rem; }
+.empty-state strong { display:block; font-size:1rem; color:var(--navy); margin-bottom:.4rem; }
 .error-state { grid-column:1/-1; background:#fff5f5; border:1px solid #ffc0c0; border-radius:8px; padding:2rem; text-align:center; color:var(--red); font-size:.9rem; }
 .error-state strong { display:block; margin-bottom:.4rem; }
 
@@ -100,8 +111,6 @@ footer p { line-height:1.8; }
   .top-bar { display:none; }
   .nav-links li a { padding:18px 10px; font-size:.72rem; }
   .main { padding:1.5rem 1rem 3rem; }
-  .filter-bar { flex-direction:column; align-items:flex-start; }
-  .result-count { margin-left:0; }
 }
 </style>
 </head>
@@ -132,28 +141,41 @@ footer p { line-height:1.8; }
 
 <div class="hero">
   <h1>Find <span>US Elite</span> Teams</h1>
-  <p>Search by state, age group, or team name</p>
+  <p>Click any state on the map — or search by state name below</p>
   <div class="search-wrap">
-    <input type="text" id="search-input" placeholder="Search teams, states, age groups…" autocomplete="off">
-    <button class="search-btn" onclick="applyFilters()">Search</button>
+    <input type="text" id="search-input" placeholder="Search by state name or abbreviation…" autocomplete="off">
+    <button class="search-btn" onclick="doSearch()">Search</button>
   </div>
 </div>
 
 <div class="main">
-  <div class="filter-bar">
-    <label>State:</label>
-    <select class="state-filter" id="state-filter" onchange="applyFilters()">
-      <option value="">All States</option>
-    </select>
-    <button class="clear-btn" id="clear-btn" onclick="clearFilters()">✕ Clear</button>
-    <span class="result-count" id="result-count"></span>
+
+  <!-- MAP -->
+  <div class="section-header">
+    <h2>Select a State</h2>
+    <div class="bar"></div>
+    <span class="hint">Click any state to view teams</span>
   </div>
 
-  <div class="teams-grid" id="teams-grid">
-    <div class="skeleton"></div><div class="skeleton"></div>
-    <div class="skeleton"></div><div class="skeleton"></div>
-    <div class="skeleton"></div><div class="skeleton"></div>
+  <div class="map-card">
+    <p class="map-hint">⚾ Click a state on the map to load teams</p>
+    <div id="map-svg-container">
+      <div id="map-loading">Loading map…</div>
+    </div>
   </div>
+
+  <!-- RESULTS — hidden until triggered -->
+  <div id="results-section">
+    <div class="results-header">
+      <div>
+        <h3 id="results-title">Teams</h3>
+        <div class="results-meta" id="results-meta"></div>
+      </div>
+      <button class="close-results-btn" onclick="closeResults()" title="Close">✕</button>
+    </div>
+    <div class="teams-grid" id="teams-grid"></div>
+  </div>
+
 </div>
 
 <footer>
@@ -170,121 +192,196 @@ footer p { line-height:1.8; }
   </p>
 </footer>
 
+<div id="map-tooltip" role="tooltip"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <script>
 'use strict';
+
 const API_BASE = 'https://baseball-backend-five.vercel.app';
 
-const ABBR_TO_NAME = {
-  "AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":"California",
-  "CO":"Colorado","CT":"Connecticut","DE":"Delaware","FL":"Florida","GA":"Georgia",
-  "HI":"Hawaii","ID":"Idaho","IL":"Illinois","IN":"Indiana","IA":"Iowa",
-  "KS":"Kansas","KY":"Kentucky","LA":"Louisiana","ME":"Maine","MD":"Maryland",
-  "MA":"Massachusetts","MI":"Michigan","MN":"Minnesota","MS":"Mississippi",
-  "MO":"Missouri","MT":"Montana","NE":"Nebraska","NV":"Nevada","NH":"New Hampshire",
-  "NJ":"New Jersey","NM":"New Mexico","NY":"New York","NC":"North Carolina",
-  "ND":"North Dakota","OH":"Ohio","OK":"Oklahoma","OR":"Oregon","PA":"Pennsylvania",
-  "RI":"Rhode Island","SC":"South Carolina","SD":"South Dakota","TN":"Tennessee",
-  "TX":"Texas","UT":"Utah","VT":"Vermont","VA":"Virginia","WA":"Washington",
-  "WV":"West Virginia","WI":"Wisconsin","WY":"Wyoming"
+const STATE_NAMES = {
+  "01":"Alabama","02":"Alaska","04":"Arizona","05":"Arkansas","06":"California",
+  "08":"Colorado","09":"Connecticut","10":"Delaware","12":"Florida","13":"Georgia",
+  "15":"Hawaii","16":"Idaho","17":"Illinois","18":"Indiana","19":"Iowa",
+  "20":"Kansas","21":"Kentucky","22":"Louisiana","23":"Maine","24":"Maryland",
+  "25":"Massachusetts","26":"Michigan","27":"Minnesota","28":"Mississippi",
+  "29":"Missouri","30":"Montana","31":"Nebraska","32":"Nevada","33":"New Hampshire",
+  "34":"New Jersey","35":"New Mexico","36":"New York","37":"North Carolina",
+  "38":"North Dakota","39":"Ohio","40":"Oklahoma","41":"Oregon","42":"Pennsylvania",
+  "44":"Rhode Island","45":"South Carolina","46":"South Dakota","47":"Tennessee",
+  "48":"Texas","49":"Utah","50":"Vermont","51":"Virginia","53":"Washington",
+  "54":"West Virginia","55":"Wisconsin","56":"Wyoming"
 };
 
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+const STATE_ABBR = {
+  "01":"AL","02":"AK","04":"AZ","05":"AR","06":"CA","08":"CO","09":"CT",
+  "10":"DE","12":"FL","13":"GA","15":"HI","16":"ID","17":"IL","18":"IN",
+  "19":"IA","20":"KS","21":"KY","22":"LA","23":"ME","24":"MD","25":"MA",
+  "26":"MI","27":"MN","28":"MS","29":"MO","30":"MT","31":"NE","32":"NV",
+  "33":"NH","34":"NJ","35":"NM","36":"NY","37":"NC","38":"ND","39":"OH",
+  "40":"OK","41":"OR","42":"PA","44":"RI","45":"SC","46":"SD","47":"TN",
+  "48":"TX","49":"UT","50":"VT","51":"VA","53":"WA","54":"WV","55":"WI",
+  "56":"WY"
+};
 
-let ALL_TEAMS = [];
+const ABBR_TO_NAME = {};
+Object.entries(STATE_ABBR).forEach(([id, abbr]) => { ABBR_TO_NAME[abbr] = STATE_NAMES[id]; });
 
-async function loadAllTeams() {
-  const STATES = Object.keys(ABBR_TO_NAME);
-  const grid = document.getElementById('teams-grid');
+const ALL_STATES = Object.entries(STATE_NAMES).map(([id, name]) => ({
+  id, name, abbr: STATE_ABBR[id]
+}));
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+let svgRef = null;
+const mapTooltip = document.getElementById('map-tooltip');
+
+// ── FETCH & SHOW TEAMS FOR A STATE ───────────────────────────────────────────
+async function openState(abbr, name) {
+  const section  = document.getElementById('results-section');
+  const grid     = document.getElementById('teams-grid');
+  const title    = document.getElementById('results-title');
+  const meta     = document.getElementById('results-meta');
+
+  // Show panel with loading skeletons immediately
+  title.textContent = `Teams in ${name} (${abbr})`;
+  meta.textContent  = 'Loading teams…';
+  grid.innerHTML    = Array(4).fill('<div class="skeleton"></div>').join('');
+  section.classList.add('visible');
+
+  // Scroll to results
+  setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+
   try {
-    // Fetch in batches of 10 states at a time to avoid overwhelming the backend
-    ALL_TEAMS = [];
-    const BATCH_SIZE = 10;
-    for (let i = 0; i < STATES.length; i += BATCH_SIZE) {
-      const batch = STATES.slice(i, i + BATCH_SIZE);
-      const results = await Promise.allSettled(
-        batch.map(abbr =>
-          fetch(`${API_BASE}/api/teams?state=${abbr}`)
-            .then(r=>r.json()).then(d=>d.teams||[]).catch(()=>[])
-        )
-      );
-      results.forEach(r => { if(r.status==='fulfilled') ALL_TEAMS.push(...r.value); });
+    const res  = await fetch(`${API_BASE}/api/teams?state=${encodeURIComponent(abbr)}`);
+    const data = await res.json();
+    const teams = data.teams || [];
+
+    meta.textContent = teams.length > 0
+      ? `${teams.length} team${teams.length !== 1 ? 's' : ''} found`
+      : 'No teams found';
+
+    if (!teams.length) {
+      grid.innerHTML = `<div class="empty-state"><strong>No teams found in ${esc(name)}</strong>There are currently no teams listed for this state.</div>`;
+      return;
     }
 
-    // Sort by full state name, then team name
-    ALL_TEAMS.sort((a,b)=>{
-      const sa = ABBR_TO_NAME[a.state]||a.state;
-      const sb = ABBR_TO_NAME[b.state]||b.state;
-      if(sa!==sb) return sa.localeCompare(sb);
-      return (a.teamName||'').localeCompare(b.teamName||'');
+    // Sort by team name
+    teams.sort((a,b) => (a.teamName||'').localeCompare(b.teamName||''));
+
+    grid.innerHTML = '';
+    teams.forEach(team => {
+      const fullState = ABBR_TO_NAME[team.state] || team.state;
+      const ageLine   = team.ageGroup ? `<div class="tc-age">${esc(team.ageGroup)}</div>` : '';
+      const params    = new URLSearchParams({ id: team.id, name: team.teamName, state: team.state });
+      const card      = document.createElement('a');
+      card.className  = 'team-card';
+      card.href       = `team.html?${params}`;
+      card.innerHTML  = `${ageLine}<div class="tc-name">${esc(team.teamName)}</div><div class="tc-state">${esc(fullState)}</div>`;
+      grid.appendChild(card);
     });
 
-    // Populate state dropdown with only states that have teams
-    const sf = document.getElementById('state-filter');
-    const usedStates = [...new Set(ALL_TEAMS.map(t=>t.state))].sort((a,b)=>
-      (ABBR_TO_NAME[a]||a).localeCompare(ABBR_TO_NAME[b]||b)
-    );
-    usedStates.forEach(abbr=>{
-      const o=document.createElement('option');
-      o.value=abbr; o.textContent=ABBR_TO_NAME[abbr]||abbr;
-      sf.appendChild(o);
-    });
-
-    renderTeams(ALL_TEAMS);
   } catch(err) {
-    grid.innerHTML=`<div class="error-state"><strong>⚠️ Failed to load teams</strong>${esc(err.message)}</div>`;
+    meta.textContent = '';
+    grid.innerHTML = `<div class="error-state"><strong>⚠️ Failed to load teams</strong>${esc(err.message)}</div>`;
   }
 }
 
-function renderTeams(teams) {
-  const grid = document.getElementById('teams-grid');
-  const countEl = document.getElementById('result-count');
-  countEl.textContent = `${teams.length} team${teams.length!==1?'s':''}`;
+// ── CLOSE RESULTS ────────────────────────────────────────────────────────────
+function closeResults() {
+  document.getElementById('results-section').classList.remove('visible');
+  if (svgRef) svgRef.selectAll('.state-path').classed('active', false);
+}
 
-  if(!teams.length){
-    grid.innerHTML=`<div class="empty-state"><strong>No teams found</strong>Try adjusting your search or filter.</div>`;
-    return;
+// ── SEARCH ───────────────────────────────────────────────────────────────────
+function doSearch() {
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  if (!q) return;
+
+  // Try exact match first (abbr or full name)
+  let match = ALL_STATES.find(s =>
+    s.name.toLowerCase() === q || s.abbr.toLowerCase() === q
+  );
+
+  // Then partial match
+  if (!match) {
+    match = ALL_STATES.find(s =>
+      s.name.toLowerCase().startsWith(q) || s.abbr.toLowerCase().startsWith(q)
+    );
   }
-  grid.innerHTML='';
-  teams.forEach(team=>{
-    const fullState = ABBR_TO_NAME[team.state]||team.state;
-    const ageLine = team.ageGroup ? `<div class="tc-age">${esc(team.ageGroup)}</div>` : '';
-    const params = new URLSearchParams({id:team.id, name:team.teamName, state:team.state});
-    const card = document.createElement('a');
-    card.className='team-card';
-    card.href=`team.html?${params}`;
-    card.innerHTML=`${ageLine}<div class="tc-name">${esc(team.teamName)}</div><div class="tc-state">${esc(fullState)}</div>`;
-    grid.appendChild(card);
-  });
+
+  if (match) {
+    // Highlight on map
+    if (svgRef) {
+      svgRef.selectAll('.state-path').classed('active', d =>
+        STATE_ABBR[d.id.toString().padStart(2,'0')] === match.abbr
+      );
+    }
+    openState(match.abbr, match.name);
+  }
 }
 
-function applyFilters() {
-  const sv = document.getElementById('state-filter').value;
-  const qv = document.getElementById('search-input').value.trim().toLowerCase();
-  const filtered = ALL_TEAMS.filter(t=>{
-    const fullState=(ABBR_TO_NAME[t.state]||t.state).toLowerCase();
-    const matchState=!sv||t.state===sv;
-    const matchSearch=!qv||
-      (t.teamName||'').toLowerCase().includes(qv)||
-      fullState.includes(qv)||
-      t.state.toLowerCase().includes(qv)||
-      (t.ageGroup||'').toLowerCase().includes(qv);
-    return matchState&&matchSearch;
-  });
-  document.getElementById('clear-btn').classList.toggle('visible',!!(sv||qv));
-  renderTeams(filtered);
+document.getElementById('search-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doSearch();
+});
+
+// ── MAP ───────────────────────────────────────────────────────────────────────
+async function initMap() {
+  try {
+    const us = await d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json');
+    const loadingEl = document.getElementById('map-loading');
+    if (loadingEl) loadingEl.remove();
+
+    const W = 960, H = 580;
+    const svg = d3.select('#map-svg-container')
+      .append('svg')
+      .attr('viewBox', `0 0 ${W} ${H}`)
+      .attr('aria-label', 'Interactive USA map');
+    svgRef = svg;
+
+    const projection = d3.geoAlbersUsa().scale(1280).translate([W/2, H/2]);
+    const pathGen    = d3.geoPath().projection(projection);
+    const states     = topojson.feature(us, us.objects.states);
+
+    svg.selectAll('.state-path')
+      .data(states.features)
+      .join('path')
+      .attr('class', 'state-path')
+      .attr('d', pathGen)
+      .attr('aria-label', d => STATE_NAMES[d.id.toString().padStart(2,'0')] || '')
+      .on('mouseenter', function(event, d) {
+        const id = d.id.toString().padStart(2,'0');
+        if (!STATE_ABBR[id]) return;
+        mapTooltip.textContent = `${STATE_ABBR[id]} — ${STATE_NAMES[id]}`;
+        mapTooltip.classList.add('show');
+      })
+      .on('mousemove', function(event) {
+        mapTooltip.style.left = event.clientX + 'px';
+        mapTooltip.style.top  = event.clientY + 'px';
+      })
+      .on('mouseleave', function() { mapTooltip.classList.remove('show'); })
+      .on('click', function(event, d) {
+        const id   = d.id.toString().padStart(2,'0');
+        const abbr = STATE_ABBR[id];
+        const name = STATE_NAMES[id];
+        if (!abbr) return;
+
+        svg.selectAll('.state-path').classed('active', false);
+        d3.select(this).classed('active', true);
+
+        openState(abbr, name);
+      });
+
+  } catch(err) {
+    const loadingEl = document.getElementById('map-loading');
+    if (loadingEl) { loadingEl.textContent = '⚠️ Failed to load map.'; loadingEl.style.color = 'var(--red)'; }
+    console.error('[initMap error]', err);
+  }
 }
 
-function clearFilters(){
-  document.getElementById('state-filter').value='';
-  document.getElementById('search-input').value='';
-  document.getElementById('clear-btn').classList.remove('visible');
-  renderTeams(ALL_TEAMS);
-}
-
-document.getElementById('search-input').addEventListener('input', applyFilters);
-document.getElementById('search-input').addEventListener('keydown', e=>{if(e.key==='Enter')applyFilters();});
-
-loadAllTeams();
+initMap();
 </script>
 </body>
 </html>
