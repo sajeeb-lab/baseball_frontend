@@ -9,7 +9,6 @@
 <style>
 :root {
   --navy:  #0a1628;
-  --navy2: #0d1f3c;
   --red:   #c8102e;
   --red2:  #a50d25;
   --gold:  #f5c518;
@@ -36,187 +35,68 @@ nav { background: var(--red); display: flex; align-items: center; justify-conten
 .nav-links li a:hover, .nav-links li a.active { background: rgba(0,0,0,.15); border-bottom-color: var(--gold); color: var(--gold); }
 
 /* ── PAGE HEADER ── */
-.page-header {
-  background: linear-gradient(135deg, var(--navy) 0%, #162845 100%);
-  padding: 2rem 2rem 1.6rem;
-  position: relative;
-  overflow: hidden;
-}
-.page-header::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
-}
-.page-header-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  position: relative;
-}
-.page-header h1 {
-  font-family: 'Oswald', sans-serif;
-  font-size: clamp(1.4rem, 3vw, 2.2rem);
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: .04em;
-  text-transform: uppercase;
-}
-.back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  background: rgba(255,255,255,.15);
-  color: var(--white);
-  text-decoration: none;
-  font-family: 'Oswald', sans-serif;
-  font-size: .78rem;
-  font-weight: 500;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  padding: 9px 18px;
-  border-radius: 4px;
-  transition: background .2s;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.back-btn:hover { background: rgba(255,255,255,.25); }
+.page-header { background: linear-gradient(135deg, var(--navy) 0%, #162845 100%); padding: 2rem 2rem 1.6rem; position: relative; overflow: hidden; }
+.page-header::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E"); }
+.page-header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; position: relative; }
+.page-header h1 { font-family: 'Oswald', sans-serif; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; color: var(--white); letter-spacing: .04em; text-transform: uppercase; }
+.back-btn { display: inline-flex; align-items: center; gap: .5rem; background: rgba(255,255,255,.15); color: var(--white); text-decoration: none; font-family: 'Oswald', sans-serif; font-size: .75rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; padding: 9px 16px; border-radius: 4px; transition: background .2s; white-space: nowrap; flex-shrink: 0; }
+.back-btn:hover { background: rgba(255,255,255,.26); }
 
 /* ── MAIN ── */
-.main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+.main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
 
-/* ── TWO COLUMN LAYOUT ── */
-.detail-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
+/* ── TOP TWO-COL ── */
+.top-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; margin-bottom: 1.4rem; }
 
 /* ── SECTION CARD ── */
-.section-card {
-  background: var(--white);
-  border-radius: 6px;
-  box-shadow: 0 2px 12px rgba(0,0,0,.07);
-  overflow: hidden;
-}
-.section-card.full-width { grid-column: 1 / -1; }
+.card { background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; }
+.card-header { background: var(--red); padding: 11px 20px; font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 600; color: var(--white); letter-spacing: .12em; text-transform: uppercase; text-align: center; }
+.card-body { padding: 1.2rem 1.4rem; }
 
-.card-header {
-  background: var(--red);
-  padding: 12px 20px;
-  font-family: 'Oswald', sans-serif;
-  font-size: .95rem;
-  font-weight: 600;
-  color: var(--white);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  text-align: center;
-}
-
-.card-body { padding: 1.4rem 1.6rem; }
-
-/* ── COACHES LIST ── */
-.coach-item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--mid);
-}
+/* ── COACHES ── */
+.coach-item { display: flex; align-items: center; gap: 13px; padding: 11px 0; border-bottom: 1px solid var(--mid); }
 .coach-item:last-child { border-bottom: none; }
-
-.coach-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--mid);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  overflow: hidden;
-}
-.coach-avatar svg { width: 28px; height: 28px; opacity: .4; }
-
-.coach-info {}
-.coach-name {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--navy);
-  letter-spacing: .04em;
-  text-transform: uppercase;
-}
-.coach-role {
-  font-size: .75rem;
-  color: var(--sub);
-  margin-top: 2px;
-}
+.coach-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--light); border: 1px solid var(--mid); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.coach-avatar svg { width: 24px; height: 24px; color: #aab; }
+.coach-name { font-family: 'Oswald', sans-serif; font-size: .95rem; font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: .04em; }
+.coach-role { font-size: .73rem; color: var(--sub); margin-top: 2px; }
+.no-info { color: var(--sub); font-size: .86rem; padding: .8rem 0; }
 
 /* ── TEAM DETAILS TABLE ── */
 .detail-table { width: 100%; border-collapse: collapse; }
 .detail-table tr { border-bottom: 1px solid var(--mid); }
 .detail-table tr:last-child { border-bottom: none; }
-.detail-table td { padding: 11px 0; font-size: .86rem; vertical-align: top; }
-.detail-table td:first-child {
-  color: var(--sub);
-  font-size: .72rem;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  width: 110px;
-  padding-right: 12px;
-  padding-top: 13px;
-}
+.detail-table td { padding: 10px 0; font-size: .85rem; vertical-align: top; }
+.detail-table td:first-child { color: var(--sub); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; width: 100px; padding-right: 12px; padding-top: 12px; }
 .detail-table td:last-child { font-weight: 600; color: var(--navy); }
 
-/* ── DETAILS / NOTES BOX ── */
-.notes-box {
-  background: var(--light);
-  border-left: 4px solid var(--red);
-  padding: 14px 16px;
-  border-radius: 0 4px 4px 0;
-  font-size: .86rem;
-  color: var(--text);
-  line-height: 1.7;
-}
+/* ── ROSTER SECTION ── */
+.roster-card { background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; }
+.roster-header { background: var(--red); padding: 11px 20px; font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 600; color: var(--white); letter-spacing: .12em; text-transform: uppercase; text-align: center; }
 
-/* ── LOADING / ERROR STATES ── */
-.loading-state {
-  text-align: center;
-  padding: 4rem 2rem;
-  color: var(--sub);
-}
-.loading-spinner {
-  width: 36px;
-  height: 36px;
-  border: 3px solid var(--mid);
-  border-top-color: var(--red);
-  border-radius: 50%;
-  animation: spin .7s linear infinite;
-  margin: 0 auto 1rem;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
+/* ROSTER TABLE */
+.roster-table-wrap { overflow-x: auto; }
+.roster-table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+.roster-table thead tr { border-bottom: 2px solid var(--mid); background: #f9fafb; }
+.roster-table thead th { padding: 11px 14px; text-align: left; font-size: .7rem; font-weight: 600; color: var(--sub); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+.roster-table tbody tr { border-bottom: 1px solid var(--mid); transition: background .12s; }
+.roster-table tbody tr:last-child { border-bottom: none; }
+.roster-table tbody tr:hover { background: var(--light); }
+.roster-table td { padding: 11px 14px; vertical-align: middle; }
+.player-cell { display: flex; align-items: center; gap: 10px; }
+.player-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--light); border: 1px solid var(--mid); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.player-avatar svg { width: 18px; height: 18px; color: #bbc; }
+.player-name { font-weight: 600; color: var(--navy); }
+.commitment-badge { display: inline-block; background: #e8f5e9; color: #2e7d32; font-size: .7rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; letter-spacing: .03em; }
+.empty-roster { text-align: center; padding: 2.5rem; color: var(--sub); font-size: .88rem; }
 
-.error-state {
-  text-align: center;
-  padding: 3rem 2rem;
-  color: var(--red);
-}
-.error-state strong { display: block; font-size: 1.1rem; margin-bottom: .5rem; }
+/* ── LOADING / ERROR ── */
+.loading-state { text-align: center; padding: 3rem 2rem; color: var(--sub); }
+.spinner { width: 32px; height: 32px; border: 3px solid var(--mid); border-top-color: var(--red); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 1rem; }
+@keyframes spin { to{transform:rotate(360deg)} }
 
-/* ── SKELETON ── */
-.skel-line {
-  background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.2s infinite;
-  border-radius: 4px;
-  height: 14px;
-  margin-bottom: 10px;
-}
-@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.skel-line { background: linear-gradient(90deg,#eee 25%,#f5f5f5 50%,#eee 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; border-radius: 4px; height: 13px; margin-bottom: 9px; }
+@keyframes shimmer { from{background-position:200% 0} to{background-position:-200% 0} }
 
 /* ── FOOTER ── */
 footer { background: var(--navy); color: rgba(255,255,255,.5); text-align: center; padding: 2.5rem 2rem; font-size: .72rem; letter-spacing: .08em; margin-top: 3rem; }
@@ -226,12 +106,12 @@ footer { background: var(--navy); color: rgba(255,255,255,.5); text-align: cente
 footer a { color: var(--gold); text-decoration: none; }
 footer p { line-height: 1.8; }
 
-@media (max-width: 640px) {
-  .detail-grid { grid-template-columns: 1fr; }
+@media (max-width: 680px) {
+  .top-grid { grid-template-columns: 1fr; }
   .page-header-inner { flex-direction: column; align-items: flex-start; }
   .top-bar { display: none; }
   .nav-links li a { padding: 18px 10px; font-size: .72rem; }
-  .main { padding: 1.5rem 1rem; }
+  .main { padding: 1.5rem 1rem 3rem; }
 }
 </style>
 </head>
@@ -260,38 +140,29 @@ footer p { line-height: 1.8; }
   </ul>
 </nav>
 
-<!-- Page header — team name + back button -->
 <div class="page-header">
   <div class="page-header-inner">
     <h1 id="page-title">Loading…</h1>
-    <a href="#" id="back-btn" class="back-btn">← Back To Team Directory</a>
+    <a href="index.html" class="back-btn">← Back To Team Directory</a>
   </div>
 </div>
 
 <div class="main" id="main-content">
-  <!-- Loaded dynamically -->
   <div class="loading-state">
-    <div class="loading-spinner"></div>
+    <div class="spinner"></div>
     Loading team details…
   </div>
 </div>
 
 <footer>
   <div class="footer-links">
-    <a href="#">US Elite Teams</a>
-    <a href="#">Commitments</a>
-    <a href="#">Privacy Policy</a>
-    <a href="#">Prospect Form</a>
-    <a href="#">Tryouts</a>
-    <a href="#">Coach Application</a>
-    <a href="#">Mission Statement</a>
-    <a href="#">Contact US Elite</a>
+    <a href="#">US Elite Teams</a><a href="#">Commitments</a><a href="#">Privacy Policy</a>
+    <a href="#">Prospect Form</a><a href="#">Tryouts</a><a href="#">Coach Application</a>
+    <a href="#">Mission Statement</a><a href="#">Contact US Elite</a>
   </div>
-  <p>
-    We are always looking for new talent. Do you feel you have what it takes?<br>
-    <a href="#">Click here to register for an upcoming tryout!</a>
-  </p>
-  <p style="margin-top:.8rem; color:rgba(255,255,255,.35)">
+  <p>We are always looking for new talent. Do you feel you have what it takes?<br>
+    <a href="#">Click here to register for an upcoming tryout!</a></p>
+  <p style="margin-top:.8rem;color:rgba(255,255,255,.35)">
     Copyright &copy; 2026 US Elite Baseball &nbsp;&middot;&nbsp;
     <a href="mailto:support@uselitebaseball.com">support@uselitebaseball.com</a>
   </p>
@@ -299,10 +170,8 @@ footer p { line-height: 1.8; }
 
 <script>
 'use strict';
-
 const API_BASE = 'https://baseball-backend-five.vercel.app';
 
-// State abbreviation → full name map
 const ABBR_TO_NAME = {
   "AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":"California",
   "CO":"Colorado","CT":"Connecticut","DE":"Delaware","FL":"Florida","GA":"Georgia",
@@ -317,119 +186,120 @@ const ABBR_TO_NAME = {
   "WV":"West Virginia","WI":"Wisconsin","WY":"Wyoming"
 };
 
-function esc(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-// Get URL params
-const params   = new URLSearchParams(window.location.search);
-const teamId   = params.get('id');
-const teamName = params.get('name');
+const params    = new URLSearchParams(window.location.search);
+const teamId    = params.get('id');
+const teamName  = params.get('name');
 const teamState = params.get('state');
 
-// Set the back button URL — goes back to index with the state pre-loaded
-const backBtn = document.getElementById('back-btn');
-backBtn.href = `index.html`;
+if(teamName){ document.getElementById('page-title').textContent=teamName; document.title=`${teamName} – US Elite Baseball`; }
 
-// Set page title immediately from URL param while we load
-if (teamName) {
-  document.getElementById('page-title').textContent = teamName;
-  document.title = `${teamName} – US Elite Baseball`;
-}
+const avatarSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`;
 
-// Fetch all teams for this state then find the matching one by ID
 async function loadTeam() {
-  if (!teamId || !teamState) {
-    showError('Missing team information. Please go back and select a team.');
-    return;
-  }
+  if(!teamId||!teamState){ showError('Missing team information.'); return; }
 
   try {
-    const res = await fetch(`${API_BASE}/api/teams?state=${encodeURIComponent(teamState)}`);
-    let data;
-    try { data = await res.json(); } catch(e) { throw new Error('Invalid server response'); }
-    if (!res.ok) throw new Error(data?.error || `Request failed: ${res.status}`);
+    // Fetch team details + roster in parallel
+    const [teamRes, rosterRes] = await Promise.all([
+      fetch(`${API_BASE}/api/teams?state=${encodeURIComponent(teamState)}`).then(r=>r.json()),
+      fetch(`${API_BASE}/api/roster?teamName=${encodeURIComponent(teamName||'')}`).then(r=>r.json()).catch(()=>({players:[]}))
+    ]);
 
-    const team = data.teams.find(t => t.id === teamId);
-    if (!team) throw new Error('Team not found. It may have been removed or the link is invalid.');
+    const team = (teamRes.teams||[]).find(t=>t.id===teamId);
+    if(!team){ showError('Team not found.'); return; }
 
-    renderTeam(team);
-  } catch (err) {
+    renderPage(team, rosterRes.players||[]);
+  } catch(err) {
     showError(err.message);
   }
 }
 
-function renderTeam(team) {
-  const fullStateName = ABBR_TO_NAME[team.state] || team.state;
-  const locationDisplay = team.location ? `[State/${team.state}] ${fullStateName} — ${team.location}` : `[State/${team.state}] ${fullStateName}`;
+function renderPage(team, players) {
+  const fullState = ABBR_TO_NAME[team.state]||team.state;
 
-  // Build coaches section
-  const coaches = [];
-  if (team.headCoach)       coaches.push({ name: team.headCoach,       role: `${esc(team.teamName)} • Head Coach` });
-  if (team.assistantCoach1) coaches.push({ name: team.assistantCoach1, role: `${esc(team.teamName)} • Assistant Coach` });
-  if (team.assistantCoach2) coaches.push({ name: team.assistantCoach2, role: `${esc(team.teamName)} • Assistant Coach` });
+  // ── COACHES ──
+  const coaches=[];
+  if(team.headCoach)       coaches.push({name:team.headCoach,       role:`${team.teamName} • Head Coach`});
+  if(team.assistantCoach1) coaches.push({name:team.assistantCoach1, role:`${team.teamName} • Assistant Coach`});
+  if(team.assistantCoach2) coaches.push({name:team.assistantCoach2, role:`${team.teamName} • Assistant Coach`});
 
-  const coachesHtml = coaches.length > 0
-    ? coaches.map(c => `
-        <div class="coach-item">
-          <div class="coach-avatar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-            </svg>
-          </div>
-          <div class="coach-info">
-            <div class="coach-name">${esc(c.name)}</div>
-            <div class="coach-role">${c.role}</div>
-          </div>
-        </div>`).join('')
-    : '<p style="color:var(--sub);font-size:.86rem;padding:1rem 0">No coach information available.</p>';
+  const coachesHtml = coaches.length
+    ? coaches.map(c=>`
+      <div class="coach-item">
+        <div class="coach-avatar">${avatarSVG}</div>
+        <div>
+          <div class="coach-name">${esc(c.name)}</div>
+          <div class="coach-role">${esc(c.role)}</div>
+        </div>
+      </div>`).join('')
+    : `<p class="no-info">No coach information available.</p>`;
 
-  // Build team details
-  const detailRows = [];
-  detailRows.push(`<tr><td>Location</td><td>${esc(locationDisplay)}</td></tr>`);
-  if (team.ageGroup) detailRows.push(`<tr><td>Age Group</td><td>${esc(team.ageGroup)}</td></tr>`);
+  // ── TEAM DETAILS ──
+  const locDisplay = team.location ? `[State/${team.state}] ${fullState} — ${esc(team.location)}` : `[State/${team.state}] ${fullState}`;
+  const detailRows = [
+    `<tr><td>Location</td><td>${locDisplay}</td></tr>`,
+    team.ageGroup ? `<tr><td>Age Group</td><td>${esc(team.ageGroup)}</td></tr>` : ''
+  ].join('');
 
-  const detailsSection = team.details
-    ? `<div class="section-card full-width">
-         <div class="card-header">Additional Notes</div>
-         <div class="card-body"><div class="notes-box">${esc(team.details)}</div></div>
-       </div>`
-    : '';
+  // ── ROSTER TABLE ──
+  const rosterBody = players.length
+    ? players.map(p=>`
+      <tr>
+        <td><div class="player-cell"><div class="player-avatar">${avatarSVG}</div><span class="player-name">${esc(p.player)}</span></div></td>
+        <td>${esc(p.jersey)}</td>
+        <td>${esc(p.year)}</td>
+        <td>${esc(p.pos)}</td>
+        <td>${esc(p.bt)}</td>
+        <td>${esc(p.htwt)}</td>
+        <td>${p.commitment ? `<span class="commitment-badge">${esc(p.commitment)}</span>` : ''}</td>
+      </tr>`).join('')
+    : `<tr><td colspan="7"><div class="empty-roster">No roster data available for this team.</div></td></tr>`;
 
   document.getElementById('main-content').innerHTML = `
-    <div class="detail-grid">
-
-      <!-- Coaches -->
-      <div class="section-card">
+    <div class="top-grid">
+      <div class="card">
         <div class="card-header">Coaches</div>
         <div class="card-body">${coachesHtml}</div>
       </div>
-
-      <!-- Team Details -->
-      <div class="section-card">
+      <div class="card">
         <div class="card-header">Team Details</div>
         <div class="card-body">
-          <table class="detail-table">
-            ${detailRows.join('')}
-          </table>
+          <table class="detail-table">${detailRows}</table>
         </div>
       </div>
+    </div>
 
-      ${detailsSection}
-
+    <div class="roster-card">
+      <div class="roster-header">Team Roster</div>
+      <div class="roster-table-wrap">
+        <table class="roster-table">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Jersey</th>
+              <th>Year</th>
+              <th>Pos</th>
+              <th>B/T</th>
+              <th>HT/WT</th>
+              <th>Commitment</th>
+            </tr>
+          </thead>
+          <tbody>${rosterBody}</tbody>
+        </table>
+      </div>
     </div>
   `;
 }
 
 function showError(msg) {
-  document.getElementById('main-content').innerHTML = `
-    <div class="section-card">
-      <div class="card-body">
-        <div class="error-state">
-          <strong>⚠️ Unable to load team</strong>
-          ${esc(msg)}<br><br>
-          <a href="index.html" style="color:var(--red);font-family:'Oswald',sans-serif;letter-spacing:.05em;">← Back to Team Directory</a>
-        </div>
+  document.getElementById('main-content').innerHTML=`
+    <div class="card">
+      <div class="card-body" style="text-align:center;padding:3rem;color:var(--red)">
+        <strong style="display:block;font-size:1.1rem;margin-bottom:.5rem">⚠️ Unable to load team</strong>
+        ${esc(msg)}<br><br>
+        <a href="index.html" style="color:var(--red);font-family:'Oswald',sans-serif;letter-spacing:.05em">← Back to Team Directory</a>
       </div>
     </div>`;
 }
