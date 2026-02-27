@@ -62,9 +62,7 @@ nav { background: var(--red); display: flex; align-items: center; justify-conten
 #map-svg-container { width: 100%; }
 #map-svg-container svg { width: 100%; height: auto; display: block; }
 .state-path { fill: #111111; stroke: #ffffff; stroke-width: .8px; stroke-linejoin: round; cursor: pointer; transition: fill .15s ease; }
-/* CHANGED: hover now shows blue */
 .state-path:hover { fill: var(--blue); }
-/* CHANGED: active (selected) also stays blue */
 .state-path.active { fill: var(--blue); }
 #map-loading { text-align: center; padding: 4rem 2rem; color: var(--sub); font-size: .9rem; letter-spacing: .05em; }
 
@@ -72,16 +70,18 @@ nav { background: var(--red); display: flex; align-items: center; justify-conten
 #map-tooltip::after { content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-bottom: none; border-top-color: var(--navy); }
 #map-tooltip.show { opacity: 1; }
 
-/* RESULTS SECTION — hidden by default */
-#results-section { display: none; animation: fadeUp .25s ease; }
-#results-section.visible { display: block; }
+/* RESULTS SECTION — always visible */
+#results-section { display: block; animation: fadeUp .25s ease; }
 @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
 
 .results-header { background: var(--navy); color: var(--white); padding: 16px 22px; border-radius: 6px 6px 0 0; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .results-header h3 { font-family: 'Oswald', sans-serif; font-size: 1.2rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
 .results-meta { font-size: .75rem; color: rgba(255,255,255,.5); margin-top: 2px; }
-.close-results-btn { background: rgba(255,255,255,.15); border: none; color: var(--white); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: background .2s; flex-shrink: 0; }
-.close-results-btn:hover { background: var(--red2); }
+
+/* Clear filter button — hidden unless a state is active */
+.clear-filter-btn { background: rgba(255,255,255,.15); border: none; color: var(--white); padding: 6px 14px; border-radius: 4px; cursor: pointer; font-family: 'Oswald', sans-serif; font-size: .72rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; transition: background .2s; display: none; white-space: nowrap; flex-shrink: 0; }
+.clear-filter-btn.visible { display: block; }
+.clear-filter-btn:hover { background: var(--red2); }
 
 /* TEAMS GRID */
 .teams-grid { background: var(--white); border: 1px solid var(--mid); border-top: none; border-radius: 0 0 6px 6px; padding: 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; min-height: 80px; }
@@ -157,26 +157,35 @@ footer p { line-height:1.8; }
   <div class="section-header">
     <h2>Select a State</h2>
     <div class="bar"></div>
-    <span class="hint">Click any state to view teams</span>
+    <span class="hint">Click any state to filter teams</span>
   </div>
 
   <div class="map-card">
-    <p class="map-hint">⚾ Click a state on the map to load teams</p>
+    <p class="map-hint">⚾ Click a state on the map to filter teams</p>
     <div id="map-svg-container">
       <div id="map-loading">Loading map…</div>
     </div>
   </div>
 
-  <!-- RESULTS — hidden until triggered -->
+  <!-- RESULTS — always visible from page load -->
   <div id="results-section">
     <div class="results-header">
       <div>
-        <h3 id="results-title">Teams</h3>
-        <div class="results-meta" id="results-meta"></div>
+        <h3 id="results-title">All Teams</h3>
+        <div class="results-meta" id="results-meta">Loading teams…</div>
       </div>
-      <button class="close-results-btn" onclick="closeResults()" title="Close">✕</button>
+      <button class="clear-filter-btn" id="clear-filter-btn" onclick="clearFilter()">
+        ✕ Clear Filter
+      </button>
     </div>
-    <div class="teams-grid" id="teams-grid"></div>
+    <div class="teams-grid" id="teams-grid">
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+    </div>
   </div>
 
 </div>
@@ -238,79 +247,104 @@ const ALL_STATES = Object.entries(STATE_NAMES).map(([id, name]) => ({
 
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-let svgRef = null;
+// ── GLOBAL STATE ──────────────────────────────────────────────────────────────
+let svgRef       = null;
+let allAcademies = [];   // full list — fetched once on load
+let activeFilter = null; // currently selected abbr, null = show all
 const mapTooltip = document.getElementById('map-tooltip');
 
-// ── FETCH & SHOW TEAMS FOR A STATE ───────────────────────────────────────────
-async function openState(abbr, name) {
-  const section  = document.getElementById('results-section');
-  const grid     = document.getElementById('teams-grid');
-  const title    = document.getElementById('results-title');
-  const meta     = document.getElementById('results-meta');
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function renderTeams(teams, titleText, metaText) {
+  const grid  = document.getElementById('teams-grid');
+  const title = document.getElementById('results-title');
+  const meta  = document.getElementById('results-meta');
 
-  // Show panel with loading skeletons immediately
-  title.textContent = `Teams in ${name} (${abbr})`;
-  meta.textContent  = 'Loading teams…';
-  grid.innerHTML    = Array(4).fill('<div class="skeleton"></div>').join('');
-  section.classList.add('visible');
+  title.textContent = titleText;
+  meta.textContent  = metaText;
 
-  // Scroll to results
-  setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  if (!teams.length) {
+    grid.innerHTML = `<div class="empty-state"><strong>No academies found</strong>There are currently no teams listed for this selection.</div>`;
+    return;
+  }
 
+  grid.innerHTML = '';
+  teams.forEach(team => {
+    const fullState = ABBR_TO_NAME[team.state] || team.state;
+    const ageLine   = team.ageGroup ? `<div class="tc-age">${esc(team.ageGroup)}</div>` : '';
+    const params    = new URLSearchParams({ id: team.id, name: team.teamName, state: team.state });
+    const card      = document.createElement('a');
+    card.className  = 'team-card';
+    card.href       = `team.html?${params}`;
+    card.innerHTML  = `${ageLine}<div class="tc-name">${esc(team.teamName)}</div><div class="tc-state">${esc(fullState)}</div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ── LOAD ALL ON PAGE LOAD ─────────────────────────────────────────────────────
+async function loadAllAcademies() {
   try {
-    const res  = await fetch(`${API_BASE}/api/teams?state=${encodeURIComponent(abbr)}`);
+    const res  = await fetch(`${API_BASE}/api/academies`);
     const data = await res.json();
-    const teams = data.teams || [];
 
-    meta.textContent = teams.length > 0
-      ? `${teams.length} team${teams.length !== 1 ? 's' : ''} found`
-      : 'No teams found';
+    if (!data.success) throw new Error(data.error || 'Unknown error');
 
-    if (!teams.length) {
-      grid.innerHTML = `<div class="empty-state"><strong>No teams found in ${esc(name)}</strong>There are currently no teams listed for this state.</div>`;
-      return;
-    }
+    allAcademies = data.academies || [];
 
-    // Sort by team name
-    teams.sort((a,b) => (a.teamName||'').localeCompare(b.teamName||''));
-
-    grid.innerHTML = '';
-    teams.forEach(team => {
-      const fullState = ABBR_TO_NAME[team.state] || team.state;
-      const ageLine   = team.ageGroup ? `<div class="tc-age">${esc(team.ageGroup)}</div>` : '';
-      const params    = new URLSearchParams({ id: team.id, name: team.teamName, state: team.state });
-      const card      = document.createElement('a');
-      card.className  = 'team-card';
-      card.href       = `team.html?${params}`;
-      card.innerHTML  = `${ageLine}<div class="tc-name">${esc(team.teamName)}</div><div class="tc-state">${esc(fullState)}</div>`;
-      grid.appendChild(card);
-    });
+    renderTeams(
+      allAcademies,
+      'All Teams',
+      `${allAcademies.length} team${allAcademies.length !== 1 ? 's' : ''} across all states`
+    );
 
   } catch(err) {
-    meta.textContent = '';
-    grid.innerHTML = `<div class="error-state"><strong>⚠️ Failed to load teams</strong>${esc(err.message)}</div>`;
+    document.getElementById('teams-grid').innerHTML =
+      `<div class="error-state"><strong>⚠️ Failed to load teams</strong>${esc(err.message)}</div>`;
+    document.getElementById('results-meta').textContent = '';
   }
 }
 
-// ── CLOSE RESULTS ────────────────────────────────────────────────────────────
-function closeResults() {
-  document.getElementById('results-section').classList.remove('visible');
-  // CHANGED: also clear active state on map and reset search bar
-  if (svgRef) svgRef.selectAll('.state-path').classed('active', false);
-  document.getElementById('search-input').value = '';
+// ── FILTER BY STATE (no extra API call — uses cached allAcademies) ─────────────
+function filterByState(abbr, name) {
+  activeFilter = abbr;
+  document.getElementById('clear-filter-btn').classList.add('visible');
+
+  const filtered = allAcademies.filter(t => t.state === abbr);
+
+  renderTeams(
+    filtered,
+    `Teams in ${name} (${abbr})`,
+    filtered.length > 0
+      ? `${filtered.length} team${filtered.length !== 1 ? 's' : ''} found`
+      : 'No teams found'
+  );
+
+  setTimeout(() =>
+    document.getElementById('results-section').scrollIntoView({ behavior: 'smooth', block: 'start' }), 50
+  );
 }
 
-// ── SEARCH ───────────────────────────────────────────────────────────────────
+// ── CLEAR FILTER — back to all ────────────────────────────────────────────────
+function clearFilter() {
+  activeFilter = null;
+  document.getElementById('clear-filter-btn').classList.remove('visible');
+  document.getElementById('search-input').value = '';
+  if (svgRef) svgRef.selectAll('.state-path').classed('active', false);
+
+  renderTeams(
+    allAcademies,
+    'All Teams',
+    `${allAcademies.length} team${allAcademies.length !== 1 ? 's' : ''} across all states`
+  );
+}
+
+// ── SEARCH ────────────────────────────────────────────────────────────────────
 function doSearch() {
   const q = document.getElementById('search-input').value.trim().toLowerCase();
   if (!q) return;
 
-  // Try exact match first (abbr or full name)
   let match = ALL_STATES.find(s =>
     s.name.toLowerCase() === q || s.abbr.toLowerCase() === q
   );
-
-  // Then partial match
   if (!match) {
     match = ALL_STATES.find(s =>
       s.name.toLowerCase().startsWith(q) || s.abbr.toLowerCase().startsWith(q)
@@ -318,13 +352,12 @@ function doSearch() {
   }
 
   if (match) {
-    // Highlight on map
     if (svgRef) {
       svgRef.selectAll('.state-path').classed('active', d =>
         STATE_ABBR[d.id.toString().padStart(2,'0')] === match.abbr
       );
     }
-    openState(match.abbr, match.name);
+    filterByState(match.abbr, match.name);
   }
 }
 
@@ -373,13 +406,16 @@ async function initMap() {
         const name = STATE_NAMES[id];
         if (!abbr) return;
 
+        // Clicking the same active state again clears the filter
+        if (activeFilter === abbr) {
+          clearFilter();
+          return;
+        }
+
         svg.selectAll('.state-path').classed('active', false);
         d3.select(this).classed('active', true);
-
-        // CHANGED: update the search bar to reflect the selected state
         document.getElementById('search-input').value = name;
-
-        openState(abbr, name);
+        filterByState(abbr, name);
       });
 
   } catch(err) {
@@ -389,6 +425,8 @@ async function initMap() {
   }
 }
 
+// ── BOOT ──────────────────────────────────────────────────────────────────────
+loadAllAcademies();
 initMap();
 </script>
 </body>
