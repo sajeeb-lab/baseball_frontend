@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Details – US Elite Baseball</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:  #0a1628;
+  --navy2: #0d1f3c;
+  --red:   #c8102e;
+  --red2:  #a50d25;
+  --gold:  #f5c518;
+  --white: #ffffff;
+  --light: #f4f6f9;
+  --mid:   #dce3ec;
+  --text:  #1a1a2e;
+  --sub:   #5a6a7a;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Open Sans', sans-serif; background: var(--light); color: var(--text); min-height: 100vh; }
+
+/* ── NAV ── */
+.top-bar { background: var(--navy); padding: 6px 2rem; display: flex; justify-content: flex-end; align-items: center; gap: 1.4rem; }
+.top-bar a { color: #8899bb; font-size: 0.68rem; text-decoration: none; letter-spacing: 0.07em; text-transform: uppercase; transition: color .2s; }
+.top-bar a:hover { color: var(--gold); }
+nav { background: var(--red); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; box-shadow: 0 3px 14px rgba(0,0,0,.28); position: sticky; top: 0; z-index: 100; }
+.nav-logo { display: flex; align-items: center; gap: .75rem; padding: 10px 0; text-decoration: none; }
+.logo-icon { width: 46px; height: 46px; background: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: .72rem; color: var(--red); line-height: 1.1; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.2); flex-shrink: 0; }
+.logo-text .main { display: block; font-family: 'Oswald', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--white); letter-spacing: .05em; text-transform: uppercase; line-height: 1; }
+.logo-text .sub { display: block; font-size: .6rem; color: rgba(255,255,255,.7); letter-spacing: .18em; text-transform: uppercase; }
+.nav-links { display: flex; list-style: none; }
+.nav-links li a { display: block; padding: 18px 15px; color: var(--white); text-decoration: none; font-family: 'Oswald', sans-serif; font-size: .8rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; border-bottom: 3px solid transparent; transition: background .18s, border-color .18s, color .18s; }
+.nav-links li a:hover, .nav-links li a.active { background: rgba(0,0,0,.15); border-bottom-color: var(--gold); color: var(--gold); }
+
+/* ── PAGE HEADER ── */
+.page-header {
+  background: linear-gradient(135deg, var(--navy) 0%, #162845 100%);
+  padding: 2rem 2rem 1.6rem;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+}
+.page-header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  position: relative;
+}
+.page-header h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  background: rgba(255,255,255,.15);
+  color: var(--white);
+  text-decoration: none;
+  font-family: 'Oswald', sans-serif;
+  font-size: .78rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 9px 18px;
+  border-radius: 4px;
+  transition: background .2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.back-btn:hover { background: rgba(255,255,255,.25); }
+
+/* ── MAIN ── */
+.main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+/* ── TWO COLUMN LAYOUT ── */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ── SECTION CARD ── */
+.section-card {
+  background: var(--white);
+  border-radius: 6px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+  overflow: hidden;
+}
+.section-card.full-width { grid-column: 1 / -1; }
+
+.card-header {
+  background: var(--red);
+  padding: 12px 20px;
+  font-family: 'Oswald', sans-serif;
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.card-body { padding: 1.4rem 1.6rem; }
+
+/* ── COACHES LIST ── */
+.coach-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--mid);
+}
+.coach-item:last-child { border-bottom: none; }
+
+.coach-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.coach-avatar svg { width: 28px; height: 28px; opacity: .4; }
+
+.coach-info {}
+.coach-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.coach-role {
+  font-size: .75rem;
+  color: var(--sub);
+  margin-top: 2px;
+}
+
+/* ── TEAM DETAILS TABLE ── */
+.detail-table { width: 100%; border-collapse: collapse; }
+.detail-table tr { border-bottom: 1px solid var(--mid); }
+.detail-table tr:last-child { border-bottom: none; }
+.detail-table td { padding: 11px 0; font-size: .86rem; vertical-align: top; }
+.detail-table td:first-child {
+  color: var(--sub);
+  font-size: .72rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  width: 110px;
+  padding-right: 12px;
+  padding-top: 13px;
+}
+.detail-table td:last-child { font-weight: 600; color: var(--navy); }
+
+/* ── DETAILS / NOTES BOX ── */
+.notes-box {
+  background: var(--light);
+  border-left: 4px solid var(--red);
+  padding: 14px 16px;
+  border-radius: 0 4px 4px 0;
+  font-size: .86rem;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+/* ── LOADING / ERROR STATES ── */
+.loading-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--sub);
+}
+.loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--mid);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  margin: 0 auto 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--red);
+}
+.error-state strong { display: block; font-size: 1.1rem; margin-bottom: .5rem; }
+
+/* ── SKELETON ── */
+.skel-line {
+  background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+  border-radius: 4px;
+  height: 14px;
+  margin-bottom: 10px;
+}
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+/* ── FOOTER ── */
+footer { background: var(--navy); color: rgba(255,255,255,.5); text-align: center; padding: 2.5rem 2rem; font-size: .72rem; letter-spacing: .08em; margin-top: 3rem; }
+.footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: .4rem 1.4rem; margin-bottom: 1.2rem; }
+.footer-links a { color: rgba(255,255,255,.45); font-size: .68rem; text-transform: uppercase; letter-spacing: .1em; text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: var(--gold); }
+footer a { color: var(--gold); text-decoration: none; }
+footer p { line-height: 1.8; }
+
+@media (max-width: 640px) {
+  .detail-grid { grid-template-columns: 1fr; }
+  .page-header-inner { flex-direction: column; align-items: flex-start; }
+  .top-bar { display: none; }
+  .nav-links li a { padding: 18px 10px; font-size: .72rem; }
+  .main { padding: 1.5rem 1rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="#">Prospect Form</a>
+  <a href="#">Coach Application</a>
+  <a href="#">Mission Statement</a>
+  <a href="#">Contact US Elite</a>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">US<br>ELITE</div>
+    <div class="logo-text">
+      <span class="main">US Elite Baseball</span>
+      <span class="sub">Uncommon Standards</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">US Elite Teams</a></li>
+    <li><a href="#">Commitments</a></li>
+    <li><a href="#">Tryouts</a></li>
+    <li><a href="#">Privacy Policy</a></li>
+  </ul>
+</nav>
+
+<!-- Page header — team name + back button -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1 id="page-title">Loading…</h1>
+    <a href="#" id="back-btn" class="back-btn">← Back To Team Directory</a>
+  </div>
+</div>
+
+<div class="main" id="main-content">
+  <!-- Loaded dynamically -->
+  <div class="loading-state">
+    <div class="loading-spinner"></div>
+    Loading team details…
+  </div>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="#">US Elite Teams</a>
+    <a href="#">Commitments</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Prospect Form</a>
+    <a href="#">Tryouts</a>
+    <a href="#">Coach Application</a>
+    <a href="#">Mission Statement</a>
+    <a href="#">Contact US Elite</a>
+  </div>
+  <p>
+    We are always looking for new talent. Do you feel you have what it takes?<br>
+    <a href="#">Click here to register for an upcoming tryout!</a>
+  </p>
+  <p style="margin-top:.8rem; color:rgba(255,255,255,.35)">
+    Copyright &copy; 2026 US Elite Baseball &nbsp;&middot;&nbsp;
+    <a href="mailto:support@uselitebaseball.com">support@uselitebaseball.com</a>
+  </p>
+</footer>
+
+<script>
+'use strict';
+
+const API_BASE = 'https://baseball-backend-five.vercel.app';
+
+// State abbreviation → full name map
+const ABBR_TO_NAME = {
+  "AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":"California",
+  "CO":"Colorado","CT":"Connecticut","DE":"Delaware","FL":"Florida","GA":"Georgia",
+  "HI":"Hawaii","ID":"Idaho","IL":"Illinois","IN":"Indiana","IA":"Iowa",
+  "KS":"Kansas","KY":"Kentucky","LA":"Louisiana","ME":"Maine","MD":"Maryland",
+  "MA":"Massachusetts","MI":"Michigan","MN":"Minnesota","MS":"Mississippi",
+  "MO":"Missouri","MT":"Montana","NE":"Nebraska","NV":"Nevada","NH":"New Hampshire",
+  "NJ":"New Jersey","NM":"New Mexico","NY":"New York","NC":"North Carolina",
+  "ND":"North Dakota","OH":"Ohio","OK":"Oklahoma","OR":"Oregon","PA":"Pennsylvania",
+  "RI":"Rhode Island","SC":"South Carolina","SD":"South Dakota","TN":"Tennessee",
+  "TX":"Texas","UT":"Utah","VT":"Vermont","VA":"Virginia","WA":"Washington",
+  "WV":"West Virginia","WI":"Wisconsin","WY":"Wyoming"
+};
+
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Get URL params
+const params   = new URLSearchParams(window.location.search);
+const teamId   = params.get('id');
+const teamName = params.get('name');
+const teamState = params.get('state');
+
+// Set the back button URL — goes back to index with the state pre-loaded
+const backBtn = document.getElementById('back-btn');
+backBtn.href = `index.html`;
+
+// Set page title immediately from URL param while we load
+if (teamName) {
+  document.getElementById('page-title').textContent = teamName;
+  document.title = `${teamName} – US Elite Baseball`;
+}
+
+// Fetch all teams for this state then find the matching one by ID
+async function loadTeam() {
+  if (!teamId || !teamState) {
+    showError('Missing team information. Please go back and select a team.');
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/api/teams?state=${encodeURIComponent(teamState)}`);
+    let data;
+    try { data = await res.json(); } catch(e) { throw new Error('Invalid server response'); }
+    if (!res.ok) throw new Error(data?.error || `Request failed: ${res.status}`);
+
+    const team = data.teams.find(t => t.id === teamId);
+    if (!team) throw new Error('Team not found. It may have been removed or the link is invalid.');
+
+    renderTeam(team);
+  } catch (err) {
+    showError(err.message);
+  }
+}
+
+function renderTeam(team) {
+  const fullStateName = ABBR_TO_NAME[team.state] || team.state;
+  const locationDisplay = team.location ? `[State/${team.state}] ${fullStateName} — ${team.location}` : `[State/${team.state}] ${fullStateName}`;
+
+  // Build coaches section
+  const coaches = [];
+  if (team.headCoach)       coaches.push({ name: team.headCoach,       role: `${esc(team.teamName)} • Head Coach` });
+  if (team.assistantCoach1) coaches.push({ name: team.assistantCoach1, role: `${esc(team.teamName)} • Assistant Coach` });
+  if (team.assistantCoach2) coaches.push({ name: team.assistantCoach2, role: `${esc(team.teamName)} • Assistant Coach` });
+
+  const coachesHtml = coaches.length > 0
+    ? coaches.map(c => `
+        <div class="coach-item">
+          <div class="coach-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+          </div>
+          <div class="coach-info">
+            <div class="coach-name">${esc(c.name)}</div>
+            <div class="coach-role">${c.role}</div>
+          </div>
+        </div>`).join('')
+    : '<p style="color:var(--sub);font-size:.86rem;padding:1rem 0">No coach information available.</p>';
+
+  // Build team details
+  const detailRows = [];
+  detailRows.push(`<tr><td>Location</td><td>${esc(locationDisplay)}</td></tr>`);
+  if (team.ageGroup) detailRows.push(`<tr><td>Age Group</td><td>${esc(team.ageGroup)}</td></tr>`);
+
+  const detailsSection = team.details
+    ? `<div class="section-card full-width">
+         <div class="card-header">Additional Notes</div>
+         <div class="card-body"><div class="notes-box">${esc(team.details)}</div></div>
+       </div>`
+    : '';
+
+  document.getElementById('main-content').innerHTML = `
+    <div class="detail-grid">
+
+      <!-- Coaches -->
+      <div class="section-card">
+        <div class="card-header">Coaches</div>
+        <div class="card-body">${coachesHtml}</div>
+      </div>
+
+      <!-- Team Details -->
+      <div class="section-card">
+        <div class="card-header">Team Details</div>
+        <div class="card-body">
+          <table class="detail-table">
+            ${detailRows.join('')}
+          </table>
+        </div>
+      </div>
+
+      ${detailsSection}
+
+    </div>
+  `;
+}
+
+function showError(msg) {
+  document.getElementById('main-content').innerHTML = `
+    <div class="section-card">
+      <div class="card-body">
+        <div class="error-state">
+          <strong>⚠️ Unable to load team</strong>
+          ${esc(msg)}<br><br>
+          <a href="index.html" style="color:var(--red);font-family:'Oswald',sans-serif;letter-spacing:.05em;">← Back to Team Directory</a>
+        </div>
+      </div>
+    </div>`;
+}
+
+loadTeam();
+</script>
+</body>
+</html>
