@@ -23,19 +23,6 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Open Sans', sans-serif; background: var(--light); color: var(--text); min-height: 100vh; }
 
-.top-bar { background: var(--navy); padding: 6px 2rem; display: flex; justify-content: flex-end; align-items: center; gap: 1.4rem; }
-.top-bar a { color: #8899bb; font-size: 0.68rem; text-decoration: none; letter-spacing: 0.07em; text-transform: uppercase; transition: color .2s; }
-.top-bar a:hover { color: var(--gold); }
-
-nav { background: var(--red); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; box-shadow: 0 3px 14px rgba(0,0,0,.28); position: sticky; top: 0; z-index: 100; }
-.nav-logo { display: flex; align-items: center; gap: .75rem; padding: 10px 0; text-decoration: none; }
-.logo-icon { width: 46px; height: 46px; background: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: .72rem; color: var(--red); line-height: 1.1; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.2); flex-shrink: 0; }
-.logo-text .main { display: block; font-family: 'Oswald', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--white); letter-spacing: .05em; text-transform: uppercase; line-height: 1; }
-.logo-text .sub { display: block; font-size: .6rem; color: rgba(255,255,255,.7); letter-spacing: .18em; text-transform: uppercase; }
-.nav-links { display: flex; list-style: none; }
-.nav-links li a { display: block; padding: 18px 15px; color: var(--white); text-decoration: none; font-family: 'Oswald', sans-serif; font-size: .8rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; border-bottom: 3px solid transparent; transition: background .18s, border-color .18s, color .18s; }
-.nav-links li a:hover, .nav-links li a.active { background: rgba(0,0,0,.15); border-bottom-color: var(--gold); color: var(--gold); }
-
 .hero { background: linear-gradient(135deg, var(--navy) 0%, #162845 100%); padding: 3rem 2rem 2.8rem; text-align: center; position: relative; overflow: hidden; }
 .hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E"); }
 .hero h1 { font-family: 'Oswald', sans-serif; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; color: var(--white); letter-spacing: .05em; text-transform: uppercase; margin-bottom: .5rem; position: relative; }
@@ -102,45 +89,19 @@ nav { background: var(--red); display: flex; align-items: center; justify-conten
 .error-state { grid-column:1/-1; background:#fff5f5; border:1px solid #ffc0c0; border-radius:8px; padding:2rem; text-align:center; color:var(--red); font-size:.9rem; }
 .error-state strong { display:block; margin-bottom:.4rem; }
 
-footer { background:var(--navy); color:rgba(255,255,255,.5); text-align:center; padding:2.5rem 2rem; font-size:.72rem; letter-spacing:.08em; margin-top:3rem; }
-.footer-links { display:flex; justify-content:center; flex-wrap:wrap; gap:.4rem 1.4rem; margin-bottom:1.2rem; }
-.footer-links a { color:rgba(255,255,255,.45); font-size:.68rem; text-transform:uppercase; letter-spacing:.1em; text-decoration:none; transition:color .2s; }
-.footer-links a:hover { color:var(--gold); }
-footer a { color:var(--gold); text-decoration:none; }
-footer p { line-height:1.8; }
-
 @media (max-width:720px) {
   .teams-grid { grid-template-columns:1fr; }
-  .top-bar { display:none; }
-  .nav-links li a { padding:18px 10px; font-size:.72rem; }
   .main { padding:1.5rem 1rem 3rem; }
+  .hero { padding: 2rem 1rem 2rem; }
+  .search-wrap { max-width: 100%; }
+  .section-header .hint { display: none; }
+  .map-card { padding: 1rem .75rem .8rem; }
+  .results-header { padding: 12px 16px; flex-wrap: wrap; }
+  .teams-grid { padding: 1rem; }
 }
 </style>
 </head>
 <body>
-
-<div class="top-bar">
-  <a href="#">Prospect Form</a>
-  <a href="#">Coach Application</a>
-  <a href="#">Mission Statement</a>
-  <a href="#">Contact US Elite</a>
-</div>
-
-<nav>
-  <a href="index.html" class="nav-logo">
-    <div class="logo-icon">US<br>ELITE</div>
-    <div class="logo-text">
-      <span class="main">US Elite Baseball</span>
-      <span class="sub">Uncommon Standards</span>
-    </div>
-  </a>
-  <ul class="nav-links">
-    <li><a href="index.html" class="active">US Elite Teams</a></li>
-    <li><a href="#">Commitments</a></li>
-    <li><a href="#">Tryouts</a></li>
-    <li><a href="#">Privacy Policy</a></li>
-  </ul>
-</nav>
 
 <div class="hero">
   <h1>Find <span>US Elite</span> Teams</h1>
@@ -190,20 +151,6 @@ footer p { line-height:1.8; }
 
 </div>
 
-<footer>
-  <div class="footer-links">
-    <a href="#">US Elite Teams</a><a href="#">Commitments</a><a href="#">Privacy Policy</a>
-    <a href="#">Prospect Form</a><a href="#">Tryouts</a><a href="#">Coach Application</a>
-    <a href="#">Mission Statement</a><a href="#">Contact US Elite</a>
-  </div>
-  <p>We are always looking for new talent. Do you feel you have what it takes?<br>
-    <a href="#">Click here to register for an upcoming tryout!</a></p>
-  <p style="margin-top:.8rem;color:rgba(255,255,255,.35)">
-    Copyright &copy; 2026 US Elite Baseball &nbsp;&middot;&nbsp;
-    <a href="mailto:support@uselitebaseball.com">support@uselitebaseball.com</a>
-  </p>
-</footer>
-
 <div id="map-tooltip" role="tooltip"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
@@ -249,8 +196,8 @@ function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
 
 // ── GLOBAL STATE ──────────────────────────────────────────────────────────────
 let svgRef       = null;
-let allAcademies = [];   // full list — fetched once on load
-let activeFilter = null; // currently selected abbr, null = show all
+let allAcademies = [];
+let activeFilter = null;
 const mapTooltip = document.getElementById('map-tooltip');
 
 // ── RENDER ────────────────────────────────────────────────────────────────────
@@ -302,7 +249,7 @@ async function loadAllAcademies() {
   }
 }
 
-// ── FILTER BY STATE (no extra API call — uses cached allAcademies) ─────────────
+// ── FILTER BY STATE ────────────────────────────────────────────────────────────
 function filterByState(abbr, name) {
   activeFilter = abbr;
   document.getElementById('clear-filter-btn').classList.add('visible');
@@ -322,7 +269,7 @@ function filterByState(abbr, name) {
   );
 }
 
-// ── CLEAR FILTER — back to all ────────────────────────────────────────────────
+// ── CLEAR FILTER ──────────────────────────────────────────────────────────────
 function clearFilter() {
   activeFilter = null;
   document.getElementById('clear-filter-btn').classList.remove('visible');
@@ -405,7 +352,6 @@ async function initMap() {
         const name = STATE_NAMES[id];
         if (!abbr) return;
 
-        // Clicking the same active state again clears the filter
         if (activeFilter === abbr) {
           clearFilter();
           return;
