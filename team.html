@@ -21,7 +21,6 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Open Sans', sans-serif; background: var(--light); color: var(--text); min-height: 100vh; }
 
-/* ── NAV ── */
 .top-bar { background: var(--navy); padding: 6px 2rem; display: flex; justify-content: flex-end; align-items: center; gap: 1.4rem; }
 .top-bar a { color: #8899bb; font-size: 0.68rem; text-decoration: none; letter-spacing: 0.07em; text-transform: uppercase; transition: color .2s; }
 .top-bar a:hover { color: var(--gold); }
@@ -34,7 +33,6 @@ nav { background: var(--red); display: flex; align-items: center; justify-conten
 .nav-links li a { display: block; padding: 18px 15px; color: var(--white); text-decoration: none; font-family: 'Oswald', sans-serif; font-size: .8rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; border-bottom: 3px solid transparent; transition: background .18s, border-color .18s, color .18s; }
 .nav-links li a:hover, .nav-links li a.active { background: rgba(0,0,0,.15); border-bottom-color: var(--gold); color: var(--gold); }
 
-/* ── PAGE HEADER ── */
 .page-header { background: linear-gradient(135deg, var(--navy) 0%, #162845 100%); padding: 2rem 2rem 1.6rem; position: relative; overflow: hidden; }
 .page-header::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E"); }
 .page-header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; position: relative; }
@@ -42,18 +40,14 @@ nav { background: var(--red); display: flex; align-items: center; justify-conten
 .back-btn { display: inline-flex; align-items: center; gap: .5rem; background: rgba(255,255,255,.15); color: var(--white); text-decoration: none; font-family: 'Oswald', sans-serif; font-size: .75rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; padding: 9px 16px; border-radius: 4px; transition: background .2s; white-space: nowrap; flex-shrink: 0; }
 .back-btn:hover { background: rgba(255,255,255,.26); }
 
-/* ── MAIN ── */
 .main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
 
-/* ── TOP TWO-COL ── */
 .top-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; margin-bottom: 1.4rem; }
 
-/* ── SECTION CARD ── */
 .card { background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; }
 .card-header { background: var(--red); padding: 11px 20px; font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 600; color: var(--white); letter-spacing: .12em; text-transform: uppercase; text-align: center; }
 .card-body { padding: 1.2rem 1.4rem; }
 
-/* ── COACHES ── */
 .coach-item { display: flex; align-items: center; gap: 13px; padding: 11px 0; border-bottom: 1px solid var(--mid); }
 .coach-item:last-child { border-bottom: none; }
 .coach-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--light); border: 1px solid var(--mid); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -62,7 +56,6 @@ nav { background: var(--red); display: flex; align-items: center; justify-conten
 .coach-role { font-size: .73rem; color: var(--sub); margin-top: 2px; }
 .no-info { color: var(--sub); font-size: .86rem; padding: .8rem 0; }
 
-/* ── TEAM DETAILS TABLE ── */
 .detail-table { width: 100%; border-collapse: collapse; }
 .detail-table tr { border-bottom: 1px solid var(--mid); }
 .detail-table tr:last-child { border-bottom: none; }
@@ -70,11 +63,9 @@ nav { background: var(--red); display: flex; align-items: center; justify-conten
 .detail-table td:first-child { color: var(--sub); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; width: 100px; padding-right: 12px; padding-top: 12px; }
 .detail-table td:last-child { font-weight: 600; color: var(--navy); }
 
-/* ── ROSTER SECTION ── */
 .roster-card { background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; }
 .roster-header { background: var(--red); padding: 11px 20px; font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 600; color: var(--white); letter-spacing: .12em; text-transform: uppercase; text-align: center; }
 
-/* ROSTER TABLE */
 .roster-table-wrap { overflow-x: auto; }
 .roster-table { width: 100%; border-collapse: collapse; font-size: .84rem; }
 .roster-table thead tr { border-bottom: 2px solid var(--mid); background: #f9fafb; }
@@ -87,18 +78,12 @@ nav { background: var(--red); display: flex; align-items: center; justify-conten
 .player-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--light); border: 1px solid var(--mid); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .player-avatar svg { width: 18px; height: 18px; color: #bbc; }
 .player-name { font-weight: 600; color: var(--navy); }
-.commitment-badge { display: inline-block; background: #e8f5e9; color: #2e7d32; font-size: .7rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; letter-spacing: .03em; }
 .empty-roster { text-align: center; padding: 2.5rem; color: var(--sub); font-size: .88rem; }
 
-/* ── LOADING / ERROR ── */
 .loading-state { text-align: center; padding: 3rem 2rem; color: var(--sub); }
 .spinner { width: 32px; height: 32px; border: 3px solid var(--mid); border-top-color: var(--red); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 1rem; }
 @keyframes spin { to{transform:rotate(360deg)} }
 
-.skel-line { background: linear-gradient(90deg,#eee 25%,#f5f5f5 50%,#eee 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; border-radius: 4px; height: 13px; margin-bottom: 9px; }
-@keyframes shimmer { from{background-position:200% 0} to{background-position:-200% 0} }
-
-/* ── FOOTER ── */
 footer { background: var(--navy); color: rgba(255,255,255,.5); text-align: center; padding: 2.5rem 2rem; font-size: .72rem; letter-spacing: .08em; margin-top: 3rem; }
 .footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: .4rem 1.4rem; margin-bottom: 1.2rem; }
 .footer-links a { color: rgba(255,255,255,.45); font-size: .68rem; text-transform: uppercase; letter-spacing: .1em; text-decoration: none; transition: color .2s; }
@@ -186,76 +171,87 @@ const ABBR_TO_NAME = {
   "WV":"West Virginia","WI":"Wisconsin","WY":"Wyoming"
 };
 
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 const params    = new URLSearchParams(window.location.search);
 const teamId    = params.get('id');
 const teamName  = params.get('name');
 const teamState = params.get('state');
 
-if(teamName){ document.getElementById('page-title').textContent=teamName; document.title=`${teamName} – US Elite Baseball`; }
+if (teamName) {
+  document.getElementById('page-title').textContent = teamName;
+  document.title = `${teamName} – US Elite Baseball`;
+}
 
 const avatarSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`;
 
 async function loadTeam() {
-  if(!teamId||!teamState){ showError('Missing team information.'); return; }
+  if (!teamId || !teamState) { showError('Missing team information.'); return; }
 
   try {
-    // Fetch team details + roster in parallel
+    // FIX 1: roster now uses teamId not teamName
     const [teamRes, rosterRes] = await Promise.all([
-      fetch(`${API_BASE}/api/teams?state=${encodeURIComponent(teamState)}`).then(r=>r.json()),
-      fetch(`${API_BASE}/api/roster?teamName=${encodeURIComponent(teamName||'')}`).then(r=>r.json()).catch(()=>({players:[]}))
+      fetch(`${API_BASE}/api/teams?state=${encodeURIComponent(teamState)}`).then(r => r.json()),
+      fetch(`${API_BASE}/api/roster?teamId=${encodeURIComponent(teamId)}`).then(r => r.json()).catch(() => ({ players: [] }))
     ]);
 
-    const team = (teamRes.teams||[]).find(t=>t.id===teamId);
-    if(!team){ showError('Team not found.'); return; }
+    const team = (teamRes.teams || []).find(t => t.id === teamId);
+    if (!team) { showError('Team not found.'); return; }
 
-    renderPage(team, rosterRes.players||[]);
+    renderPage(team, rosterRes.players || []);
   } catch(err) {
     showError(err.message);
   }
 }
 
 function renderPage(team, players) {
-  const fullState = ABBR_TO_NAME[team.state]||team.state;
+  const fullState = ABBR_TO_NAME[team.state] || team.state;
 
   // ── COACHES ──
-  const coaches=[];
-  if(team.headCoach)       coaches.push({name:team.headCoach,       role:`${team.teamName} • Head Coach`});
-  if(team.assistantCoach1) coaches.push({name:team.assistantCoach1, role:`${team.teamName} • Assistant Coach`});
-  if(team.assistantCoach2) coaches.push({name:team.assistantCoach2, role:`${team.teamName} • Assistant Coach`});
+  const coaches = [];
+  if (team.headCoach)       coaches.push({ name: team.headCoach,       role: 'Head Coach' });
+  if (team.assistantCoach1) coaches.push({ name: team.assistantCoach1, role: 'Assistant Coach' });
+  if (team.assistantCoach2) coaches.push({ name: team.assistantCoach2, role: 'Assistant Coach' });
 
   const coachesHtml = coaches.length
-    ? coaches.map(c=>`
-      <div class="coach-item">
-        <div class="coach-avatar">${avatarSVG}</div>
-        <div>
-          <div class="coach-name">${esc(c.name)}</div>
-          <div class="coach-role">${esc(c.role)}</div>
-        </div>
-      </div>`).join('')
+    ? coaches.map(c => `
+        <div class="coach-item">
+          <div class="coach-avatar">${avatarSVG}</div>
+          <div>
+            <div class="coach-name">${esc(c.name)}</div>
+            <div class="coach-role">${esc(c.role)}</div>
+          </div>
+        </div>`).join('')
     : `<p class="no-info">No coach information available.</p>`;
 
   // ── TEAM DETAILS ──
-  const locDisplay = team.location ? `[State/${team.state}] ${fullState} — ${esc(team.location)}` : `[State/${team.state}] ${fullState}`;
+  const locDisplay = team.location
+    ? `${fullState} — ${esc(team.location)}`
+    : fullState;
+
   const detailRows = [
     `<tr><td>Location</td><td>${locDisplay}</td></tr>`,
-    team.ageGroup ? `<tr><td>Age Group</td><td>${esc(team.ageGroup)}</td></tr>` : ''
+    team.ageGroup ? `<tr><td>Age Group</td><td>${esc(team.ageGroup)}</td></tr>` : '',
   ].join('');
 
   // ── ROSTER TABLE ──
+  // FIX 2: use correct field names from API: playerName, jersey, gradYear, position, batThrow, heightWeight
   const rosterBody = players.length
-    ? players.map(p=>`
-      <tr>
-        <td><div class="player-cell"><div class="player-avatar">${avatarSVG}</div><span class="player-name">${esc(p.player)}</span></div></td>
-        <td>${esc(p.jersey)}</td>
-        <td>${esc(p.year)}</td>
-        <td>${esc(p.pos)}</td>
-        <td>${esc(p.bt)}</td>
-        <td>${esc(p.htwt)}</td>
-        <td>${p.commitment ? `<span class="commitment-badge">${esc(p.commitment)}</span>` : ''}</td>
-      </tr>`).join('')
-    : `<tr><td colspan="7"><div class="empty-roster">No roster data available for this team.</div></td></tr>`;
+    ? players.map(p => `
+        <tr>
+          <td>
+            <div class="player-cell">
+              <div class="player-avatar">${avatarSVG}</div>
+              <span class="player-name">${esc(p.playerName)}</span>
+            </div>
+          </td>
+          <td>${esc(p.jersey)}</td>
+          <td>${esc(p.gradYear)}</td>
+          <td>${esc(p.position)}</td>
+          <td>${esc(p.batThrow)}</td>
+          <td>${esc(p.heightWeight)}</td>
+        </tr>`).join('')
+    : `<tr><td colspan="6"><div class="empty-roster">No roster data available for this team.</div></td></tr>`;
 
   document.getElementById('main-content').innerHTML = `
     <div class="top-grid">
@@ -272,18 +268,17 @@ function renderPage(team, players) {
     </div>
 
     <div class="roster-card">
-      <div class="roster-header">Team Roster</div>
+      <div class="roster-header">Team Roster (${players.length} player${players.length !== 1 ? 's' : ''})</div>
       <div class="roster-table-wrap">
         <table class="roster-table">
           <thead>
             <tr>
               <th>Player</th>
               <th>Jersey</th>
-              <th>Year</th>
-              <th>Pos</th>
+              <th>Grad Year</th>
+              <th>Position</th>
               <th>B/T</th>
               <th>HT/WT</th>
-              <th>Commitment</th>
             </tr>
           </thead>
           <tbody>${rosterBody}</tbody>
@@ -294,7 +289,7 @@ function renderPage(team, players) {
 }
 
 function showError(msg) {
-  document.getElementById('main-content').innerHTML=`
+  document.getElementById('main-content').innerHTML = `
     <div class="card">
       <div class="card-body" style="text-align:center;padding:3rem;color:var(--red)">
         <strong style="display:block;font-size:1.1rem;margin-bottom:.5rem">⚠️ Unable to load team</strong>
