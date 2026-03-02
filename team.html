@@ -76,7 +76,7 @@ body { font-family: 'Open Sans', sans-serif; background: var(--light); color: va
 .tryout-banner { background: var(--red); padding: 2.2rem 2rem 2.5rem; text-align: center; margin-top: 2.5rem; border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.1); }
 .tryout-banner h2 { font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--white); letter-spacing: .08em; text-transform: uppercase; margin-bottom: .3rem; }
 .tryout-banner p { color: rgba(255,255,255,.85); font-size: .92rem; line-height: 1.7; margin-bottom: 1.5rem; }
-.tryout-banner iframe { border-radius: 3px; display: block; width: 100%; height: 904px; border: none; }
+.tryout-form-wrap { width: 100%; min-height: 904px; }
 
 @media (max-width: 680px) {
   .top-grid { grid-template-columns: 1fr; }
@@ -106,24 +106,9 @@ body { font-family: 'Open Sans', sans-serif; background: var(--light); color: va
   <div class="tryout-banner">
     <h2>Interested in Trying Out?</h2>
     <p>Please complete the form below.<br>We will be in touch soon!</p>
-    <iframe
-      src="/widget/form/u507FgUkvKFd4ThSMzoS"
-      style="width:100%;height:100%;border:none;border-radius:3px"
-      id="inline-u507FgUkvKFd4ThSMzoS"
-      data-layout="{'id':'INLINE'}"
-      data-trigger-type="alwaysShow"
-      data-trigger-value=""
-      data-activation-type="alwaysActivated"
-      data-activation-value=""
-      data-deactivation-type="neverDeactivate"
-      data-deactivation-value=""
-      data-form-name="Trying Out"
-      data-height="904"
-      data-layout-iframe-id="inline-u507FgUkvKFd4ThSMzoS"
-      data-form-id="u507FgUkvKFd4ThSMzoS"
-      title="Trying Out"
-    ></iframe>
-    <script src="https://link.msgsndr.com/js/form_embed.js"></script>
+    <div class="tryout-form-wrap">
+      <iframe    src="/widget/form/u507FgUkvKFd4ThSMzoS"    style="width:100%;height:100%;border:none;border-radius:3px"    id="inline-u507FgUkvKFd4ThSMzoS"    data-layout="{'id':'INLINE'}"    data-trigger-type="alwaysShow"    data-trigger-value=""    data-activation-type="alwaysActivated"    data-activation-value=""    data-deactivation-type="neverDeactivate"    data-deactivation-value=""    data-form-name="Trying Out"    data-height="904"    data-layout-iframe-id="inline-u507FgUkvKFd4ThSMzoS"    data-form-id="u507FgUkvKFd4ThSMzoS"    title="Trying Out"        ></iframe><script src="https://link.msgsndr.com/js/form_embed.js"></script>
+    </div>
   </div>
 </div>
 
