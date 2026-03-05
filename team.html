@@ -29,7 +29,7 @@ body { font-family: 'Open Sans', sans-serif; background: var(--light); color: va
 .back-btn { display: inline-flex; align-items: center; gap: .5rem; background: rgba(255,255,255,.15); color: var(--white); text-decoration: none; font-family: 'Oswald', sans-serif; font-size: .75rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; padding: 9px 16px; border-radius: 4px; transition: background .2s; white-space: nowrap; flex-shrink: 0; }
 .back-btn:hover { background: rgba(255,255,255,.26); }
 
-.main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+.main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 0; }
 
 /* SHARED CARD */
 .card { background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; }
@@ -153,7 +153,7 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
 
 /* FORM */
 .form-widget-container { max-width: 1100px; margin: 0 auto; background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; min-height: 904px; }
-.tryout-banner { background: var(--red); padding: 2.2rem 2rem; text-align: center; margin-top: 2.5rem; border-radius: 6px 6px 0 0; box-shadow: 0 2px 12px rgba(0,0,0,.1); }
+.tryout-banner { background: var(--red); padding: 2.2rem 2rem; text-align: center; border-radius: 6px 6px 0 0; box-shadow: 0 2px 12px rgba(0,0,0,.1); }
 .tryout-banner h2 { font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--white); letter-spacing: .08em; text-transform: uppercase; margin-bottom: .5rem; }
 .tryout-banner p { color: rgba(255,255,255,.85); font-size: .92rem; line-height: 1.7; }
 
@@ -294,7 +294,7 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
   </div>
 </div>
 
-<!-- MAIN DYNAMIC CONTENT -->
+<!-- ALL SECTIONS in one wrapper for consistent spacing -->
 <div class="main" id="main-content">
   <div class="loading-state">
     <div class="spinner"></div>
@@ -302,89 +302,91 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
   </div>
 </div>
 
-<!-- SCHEDULE — lives outside main-content so it's always in the DOM -->
-<div class="main" style="padding-top:0" id="schedule-section" hidden>
-  <div class="schedule-card">
-    <div class="schedule-header">Team Schedule</div>
-    <div class="schedule-controls">
-      <div class="schedule-show">
-        Show
-        <select id="sch-per-page">
-          <option value="5">5</option>
-          <option value="10" selected>10</option>
-          <option value="25">25</option>
-          <option value="all">All</option>
-        </select>
-        entries
-      </div>
-      <div class="schedule-search">
-        Search: <input type="text" id="sch-search" placeholder="Filter events…">
-      </div>
-    </div>
-    <div class="schedule-table-wrap">
-      <table class="schedule-table">
-        <thead>
-          <tr>
-            <th data-col="0">Date <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
-            <th data-col="1">Event Name <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
-            <th data-col="2">City <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
-            <th data-col="3">State <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
-          </tr>
-        </thead>
-        <tbody id="sch-body"></tbody>
-      </table>
-    </div>
-    <div class="schedule-footer">
-      <span id="sch-info">Showing 0 entries</span>
-      <div class="schedule-pagination">
-        <button class="page-btn" id="sch-prev" disabled>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
-          Previous
-        </button>
-        <button class="page-btn" id="sch-next" disabled>
-          Next
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="main" style="padding-top:0; padding-bottom:0;" id="extra-sections">
 
-<!-- TRYOUTS SECTION -->
-<div class="main" style="padding-top:0" id="tryouts-section">
-  <div class="tryouts-section-wrap">
-    <div class="card-header" style="background:var(--red);border-radius:6px 6px 0 0;font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:600;color:#fff;letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:11px 20px;">Upcoming Tryouts</div>
-    <div class="tryouts-grid" id="tryouts-grid">
-      <!-- populated by JS -->
+  <!-- SCHEDULE -->
+  <div id="schedule-section" style="margin-bottom:1.4rem;" hidden>
+    <div class="schedule-card">
+      <div class="schedule-header">Team Schedule</div>
+      <div class="schedule-controls">
+        <div class="schedule-show">
+          Show
+          <select id="sch-per-page">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="25">25</option>
+            <option value="all">All</option>
+          </select>
+          entries
+        </div>
+        <div class="schedule-search">
+          Search: <input type="text" id="sch-search" placeholder="Filter events…">
+        </div>
+      </div>
+      <div class="schedule-table-wrap">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th data-col="0">Date <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
+              <th data-col="1">Event Name <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
+              <th data-col="2">City <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
+              <th data-col="3">State <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
+            </tr>
+          </thead>
+          <tbody id="sch-body"></tbody>
+        </table>
+      </div>
+      <div class="schedule-footer">
+        <span id="sch-info">Showing 0 entries</span>
+        <div class="schedule-pagination">
+          <button class="page-btn" id="sch-prev" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+            Previous
+          </button>
+          <button class="page-btn" id="sch-next" disabled>
+            Next
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- TRYOUT FORM -->
-<div class="main" style="padding-top:0">
-  <div class="tryout-banner">
-    <h2>Interested in Trying Out?</h2>
-    <p>Please complete the form below.<br>We will be in touch soon!</p>
+  <!-- TRYOUTS -->
+  <div id="tryouts-section" style="margin-bottom:1.4rem;">
+    <div class="tryouts-section-wrap">
+      <div class="card-header" style="background:var(--red);border-radius:6px 6px 0 0;font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:600;color:#fff;letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:11px 20px;">Upcoming Tryouts</div>
+      <div class="tryouts-grid" id="tryouts-grid"></div>
+    </div>
   </div>
-  <div class="form-widget-container">
-    <iframe
-      src="https://link.msgsndr.com/widget/form/u507FgUkvKFd4ThSMzoS"
-      style="width:100%;height:100%;border:none;border-radius:3px"
-      id="inline-u507FgUkvKFd4ThSMzoS"
-      data-layout="{'id':'INLINE'}"
-      data-trigger-type="alwaysShow"
-      data-trigger-value=""
-      data-activation-type="alwaysActivated"
-      data-activation-value=""
-      data-deactivation-type="neverDeactivate"
-      data-deactivation-value=""
-      data-form-name="Trying Out"
-      data-height="904"
-      data-layout-iframe-id="inline-u507FgUkvKFd4ThSMzoS"
-      data-form-id="u507FgUkvKFd4ThSMzoS"
-      title="Trying Out"
-    ></iframe>
+
+  <!-- TRYOUT FORM -->
+  <div style="margin-bottom:4rem;">
+    <div class="tryout-banner">
+      <h2>Interested in Trying Out?</h2>
+      <p>Please complete the form below.<br>We will be in touch soon!</p>
+    </div>
+    <div class="form-widget-container">
+      <iframe
+        src="https://link.msgsndr.com/widget/form/u507FgUkvKFd4ThSMzoS"
+        style="width:100%;height:100%;border:none;border-radius:3px"
+        id="inline-u507FgUkvKFd4ThSMzoS"
+        data-layout="{'id':'INLINE'}"
+        data-trigger-type="alwaysShow"
+        data-trigger-value=""
+        data-activation-type="alwaysActivated"
+        data-activation-value=""
+        data-deactivation-type="neverDeactivate"
+        data-deactivation-value=""
+        data-form-name="Trying Out"
+        data-height="904"
+        data-layout-iframe-id="inline-u507FgUkvKFd4ThSMzoS"
+        data-form-id="u507FgUkvKFd4ThSMzoS"
+        title="Trying Out"
+      ></iframe>
+    </div>
   </div>
+
 </div>
 <script src="https://link.msgsndr.com/js/form_embed.js"></script>
 
