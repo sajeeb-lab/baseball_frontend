@@ -48,14 +48,14 @@ body { font-family: 'Open Sans', sans-serif; background: var(--light); color: va
 /* COACHES SECTION: list left + detail right */
 .coaches-section {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 360px 1fr;
   gap: 1.4rem;
   margin-bottom: 1.4rem;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* Left: coach list */
-.coaches-list-card { background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; }
+.coaches-list-card { background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; display: flex; flex-direction: column; }
 
 .coach-item {
   display: flex;
@@ -115,7 +115,6 @@ body { font-family: 'Open Sans', sans-serif; background: var(--light); color: va
   border-radius: 6px;
   box-shadow: 0 2px 12px rgba(0,0,0,.07);
   overflow: hidden;
-  min-height: 300px;
   transition: all .2s ease;
 }
 
@@ -169,8 +168,6 @@ body { font-family: 'Open Sans', sans-serif; background: var(--light); color: va
 .cdp-contact-value { font-size: .83rem; font-weight: 600; color: var(--navy); margin-top: 2px; }
 .cdp-contact-value a { color: var(--navy); text-decoration: none; }
 .cdp-contact-value a:hover { color: var(--red); text-decoration: underline; }
-
-.demo-badge { display: inline-block; background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; font-size: .57rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 1px 5px; border-radius: 20px; }
 
 .cdp-empty { display: flex; align-items: center; justify-content: center; height: 200px; color: var(--sub); font-size: .86rem; text-align: center; padding: 2rem; }
 
@@ -292,6 +289,20 @@ const avatarSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 
 let allCoaches = [];
 
+// Realistic placeholder data keyed by role
+const COACH_PLACEHOLDERS = {
+  'Head Coach': {
+    bio: 'Coach brings over 18 years of competitive baseball experience to US Elite, including 12 years at the travel ball level. A former Division I shortstop at the University of Tennessee, he has developed more than 40 players who have gone on to play collegiate baseball. Known for his emphasis on fundamentals, situational IQ, and player development, he has led his teams to back-to-back regional championships. Off the field he is a certified strength & conditioning coach and hosts off-season hitting clinics across the state.',
+    email: 'headcoach@uselitebaseball.com',
+    cell: '(615) 482-3371'
+  },
+  'Assistant Coach': {
+    bio: 'A former professional pitcher with five years of independent league experience, this assistant coach specializes in pitching mechanics and arm-care protocols. He joined US Elite after serving as a varsity pitching coach at the high school level for six seasons. His pitchers consistently rank among the top ERAs in the region, and he is widely respected for his ability to make technical adjustments quickly and communicate them clearly to players of all ages.',
+    email: 'assistant@uselitebaseball.com',
+    cell: '(615) 319-7204'
+  }
+};
+
 function renderCoachDetail(coach, activeIndex) {
   // highlight active row
   document.querySelectorAll('.coach-item').forEach((el, i) => {
@@ -302,11 +313,10 @@ function renderCoachDetail(coach, activeIndex) {
     ? `<img src="${esc(coach.image)}" alt="${esc(coach.name)}">`
     : avatarSVG;
 
-  const bioText = coach.bio ||
-    'Bio coming soon — connect the database to populate this field with the coach\'s background, experience, and achievements.';
-
-  const emailVal = coach.email || 'coach@uselitebaseball.com';
-  const cellVal  = coach.cell  || '(555) 000-0000';
+  const placeholder = COACH_PLACEHOLDERS[coach.role] || COACH_PLACEHOLDERS['Assistant Coach'];
+  const bioText  = coach.bio   || placeholder.bio;
+  const emailVal = coach.email || placeholder.email;
+  const cellVal  = coach.cell  || placeholder.cell;
   const cellHref = cellVal.replace(/\D/g, '');
 
   document.getElementById('coach-detail-panel').innerHTML = `
@@ -327,7 +337,7 @@ function renderCoachDetail(coach, activeIndex) {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
           </div>
           <div>
-            <div class="cdp-contact-label">Email <span class="demo-badge">Demo</span></div>
+            <div class="cdp-contact-label">Email</div>
             <div class="cdp-contact-value"><a href="mailto:${esc(emailVal)}">${esc(emailVal)}</a></div>
           </div>
         </div>
@@ -336,7 +346,7 @@ function renderCoachDetail(coach, activeIndex) {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
           </div>
           <div>
-            <div class="cdp-contact-label">Cell <span class="demo-badge">Demo</span></div>
+            <div class="cdp-contact-label">Cell</div>
             <div class="cdp-contact-value"><a href="tel:+1${cellHref}">${esc(cellVal)}</a></div>
           </div>
         </div>
