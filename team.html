@@ -130,7 +130,7 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
 .no-schedule-rows { text-align: center; padding: 2.5rem; color: var(--sub); font-size: .88rem; }
 
 /* ROSTER */
-.roster-card { background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; }
+.roster-card { background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; margin-bottom: 1.4rem; }
 .roster-header { background: var(--red); padding: 11px 20px; font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 600; color: var(--white); letter-spacing: .12em; text-transform: uppercase; text-align: center; }
 .roster-table-wrap { overflow-x: auto; }
 .roster-table { width: 100%; border-collapse: collapse; font-size: .84rem; }
@@ -272,11 +272,86 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
   grid-column: 1 / -1;
 }
 
+/* ACCEPT INVITATION / REGISTRATION */
+.registration-card { background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; margin-bottom: 1.4rem; }
+.registration-header { background: var(--red); padding: 11px 20px; font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 600; color: var(--white); letter-spacing: .12em; text-transform: uppercase; text-align: center; }
+.registration-body { padding: 1.6rem 1.8rem 1.8rem; }
+
+.reg-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem 1.4rem;
+}
+
+.reg-field { display: flex; flex-direction: column; gap: .45rem; }
+.reg-field.full { grid-column: 1 / -1; }
+
+.reg-label {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--sub);
+}
+
+.reg-input,
+.reg-select {
+  border: 1.5px solid var(--mid);
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-size: .88rem;
+  font-family: 'Open Sans', sans-serif;
+  color: var(--text);
+  background: var(--white);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  width: 100%;
+}
+.reg-input::placeholder { color: #b0bec5; }
+.reg-input:focus,
+.reg-select:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(200,16,46,.08); }
+
+.reg-row-3 { display: grid; grid-template-columns: 1fr 0.55fr 0.55fr; gap: 1.4rem; }
+
+.reg-submit-btn {
+  margin-top: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  width: 100%;
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  padding: 14px 0;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .15s;
+}
+.reg-submit-btn:hover { background: #162845; }
+.reg-submit-btn svg { width: 18px; height: 18px; }
+
+.reg-success {
+  display: none;
+  text-align: center;
+  padding: 2rem;
+  color: #2e7d32;
+  font-size: .95rem;
+  font-weight: 600;
+}
+
 /* RESPONSIVE */
 @media (max-width: 820px) {
   .coaches-inner { grid-template-columns: 1fr; }
   .coaches-list-card { border-right: none; border-bottom: 1px solid var(--mid); }
   .cdp-contact-grid { grid-template-columns: 1fr; }
+  .reg-form-grid { grid-template-columns: 1fr; }
+  .reg-form-grid > div[style*="grid-column:2"] { grid-column: 1; }
 }
 @media (max-width: 680px) {
   .page-header-inner { flex-direction: column; align-items: flex-start; }
@@ -357,6 +432,63 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
     <div class="tryouts-section-wrap">
       <div class="card-header" style="background:var(--red);border-radius:6px 6px 0 0;font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:600;color:#fff;letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:11px 20px;">Upcoming Tryouts</div>
       <div class="tryouts-grid" id="tryouts-grid"></div>
+    </div>
+  </div>
+
+  <!-- ACCEPT INVITATION / REGISTRATION -->
+  <div style="margin-bottom:1.4rem;">
+    <div class="registration-card">
+      <div class="registration-header">Accept Invitation / Registration</div>
+      <div class="registration-body">
+        <div class="reg-form-grid" id="reg-form">
+
+          <div class="reg-field">
+            <label class="reg-label">Player Name</label>
+            <input class="reg-input" type="text" placeholder="Full Name" id="reg-name">
+          </div>
+
+          <div class="reg-field">
+            <label class="reg-label">Preferred Jersey #</label>
+            <input class="reg-input" type="text" placeholder="e.g. 12" id="reg-jersey">
+          </div>
+
+          <div class="reg-field">
+            <label class="reg-label">Grad Year</label>
+            <input class="reg-input" type="text" placeholder="e.g. 2026" id="reg-gradyear">
+          </div>
+
+          <div class="reg-field">
+            <label class="reg-label">Position 1</label>
+            <input class="reg-input" type="text" placeholder="e.g. OF" id="reg-position">
+          </div>
+
+          <div class="reg-field" style="grid-column:1">
+            <label class="reg-label">Height / Weight</label>
+            <input class="reg-input" type="text" placeholder="e.g. 6'0 / 185lb" id="reg-hw">
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; grid-column:2">
+            <div class="reg-field">
+              <label class="reg-label">City</label>
+              <input class="reg-input" type="text" placeholder="City" id="reg-city">
+            </div>
+            <div class="reg-field">
+              <label class="reg-label">State</label>
+              <input class="reg-input" type="text" placeholder="e.g. TN" id="reg-state" maxlength="2">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="reg-success" id="reg-success">
+          ✅ Registration submitted successfully! We'll be in touch soon.
+        </div>
+
+        <button class="reg-submit-btn" id="reg-submit-btn">
+          Submit Registration
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -760,8 +892,30 @@ function renderTryouts() {
   `).join('');
 }
 
-renderTryouts();
+/* ── REGISTRATION FORM ── */
+document.getElementById('reg-submit-btn').addEventListener('click', function () {
+  const name     = document.getElementById('reg-name').value.trim();
+  const jersey   = document.getElementById('reg-jersey').value.trim();
+  const gradYear = document.getElementById('reg-gradyear').value.trim();
+  const position = document.getElementById('reg-position').value.trim();
+  const hw       = document.getElementById('reg-hw').value.trim();
+  const city     = document.getElementById('reg-city').value.trim();
+  const state    = document.getElementById('reg-state').value.trim();
 
+  if (!name || !gradYear || !position) {
+    alert('Please fill in at least Player Name, Grad Year, and Position.');
+    return;
+  }
+
+  // TODO: connect to backend — send { name, jersey, gradYear, position, hw, city, state }
+  console.log('Registration:', { name, jersey, gradYear, position, hw, city, state });
+
+  document.getElementById('reg-form').style.display = 'none';
+  this.style.display = 'none';
+  document.getElementById('reg-success').style.display = 'block';
+});
+
+renderTryouts();
 loadTeam();
 </script>
 </body>
