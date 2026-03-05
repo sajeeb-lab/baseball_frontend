@@ -36,7 +36,7 @@ body { font-family: 'Open Sans', sans-serif; background: var(--light); color: va
 .card-header { background: var(--red); padding: 11px 20px; font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 600; color: var(--white); letter-spacing: .12em; text-transform: uppercase; text-align: center; }
 .card-body { padding: 1.2rem 1.4rem; }
 
-/* TEAM DETAILS — full width on top */
+/* TEAM DETAILS */
 .team-details-card { margin-bottom: 1.4rem; }
 .detail-table { width: 100%; border-collapse: collapse; }
 .detail-table tr { border-bottom: 1px solid var(--mid); }
@@ -45,55 +45,17 @@ body { font-family: 'Open Sans', sans-serif; background: var(--light); color: va
 .detail-table td:first-child { color: var(--sub); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; width: 110px; padding-right: 12px; padding-top: 12px; }
 .detail-table td:last-child { font-weight: 600; color: var(--navy); }
 
-/* COACHES SECTION: single card, list left + detail right */
-.coaches-section {
-  background: var(--white);
-  border-radius: 6px;
-  box-shadow: 0 2px 12px rgba(0,0,0,.07);
-  overflow: hidden;
-  margin-bottom: 1.4rem;
-}
-
-.coaches-section-header {
-  background: var(--red);
-  padding: 11px 20px;
-  font-family: 'Oswald', sans-serif;
-  font-size: .9rem;
-  font-weight: 600;
-  color: var(--white);
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  text-align: center;
-}
-
-.coaches-inner {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-}
-
-/* Left: coach list */
+/* COACHES SECTION */
+.coaches-section { background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; margin-bottom: 1.4rem; }
+.coaches-section-header { background: var(--red); padding: 11px 20px; font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 600; color: var(--white); letter-spacing: .12em; text-transform: uppercase; text-align: center; }
+.coaches-inner { display: grid; grid-template-columns: 360px 1fr; }
 .coaches-list-card { display: flex; flex-direction: column; border-right: 1px solid var(--mid); }
 
-.coach-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--mid);
-  cursor: pointer;
-  transition: background .12s;
-  position: relative;
-}
+.coach-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--mid); cursor: pointer; transition: background .12s; position: relative; }
 .coach-item:last-child { border-bottom: none; }
 .coach-item:hover { background: var(--light); }
 .coach-item.active { background: #fef3f5; }
-.coach-item.active::after {
-  content: '';
-  position: absolute;
-  right: 0; top: 0; bottom: 0;
-  width: 3px;
-  background: var(--red);
-}
+.coach-item.active::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 3px; background: var(--red); }
 
 .coach-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--light); border: 1px solid var(--mid); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
 .coach-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
@@ -102,178 +64,69 @@ body { font-family: 'Open Sans', sans-serif; background: var(--light); color: va
 .coach-name { font-family: 'Oswald', sans-serif; font-size: .85rem; font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .coach-role { font-size: .68rem; color: var(--sub); margin-top: 2px; }
 
-.view-details-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--red);
-  color: var(--white);
-  border: none;
-  border-radius: 4px;
-  padding: 5px 9px;
-  font-family: 'Oswald', sans-serif;
-  font-size: .63rem;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: background .15s;
-}
+.view-details-btn { display: inline-flex; align-items: center; gap: 4px; background: var(--red); color: var(--white); border: none; border-radius: 4px; padding: 5px 9px; font-family: 'Oswald', sans-serif; font-size: .63rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: background .15s; }
 .view-details-btn:hover { background: var(--red2); }
 .view-details-btn svg { width: 11px; height: 11px; }
-
 .no-info { color: var(--sub); font-size: .86rem; padding: .8rem 14px; }
 
-/* Right: inline coach detail */
-.coach-detail-panel {
-  overflow: hidden;
-  transition: all .2s ease;
-}
+.coach-detail-panel { overflow: hidden; }
 
-.cdp-hero {
-  background: linear-gradient(135deg, var(--navy) 0%, #162845 100%);
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1.1rem;
-  position: relative;
-  overflow: hidden;
-}
-.cdp-hero::after {
-  content: '';
-  position: absolute;
-  bottom: -30px; right: -30px;
-  width: 120px; height: 120px;
-  border-radius: 50%;
-  background: rgba(200,16,46,.18);
-  pointer-events: none;
-}
-.cdp-photo {
-  width: 70px; height: 70px;
-  border-radius: 50%;
-  border: 3px solid rgba(255,255,255,.22);
-  background: #1e3457;
-  flex-shrink: 0;
-  overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-  position: relative; z-index: 1;
-}
+.cdp-hero { background: linear-gradient(135deg, var(--navy) 0%, #162845 100%); padding: 1.5rem; display: flex; align-items: center; gap: 1.1rem; position: relative; overflow: hidden; }
+.cdp-hero::after { content: ''; position: absolute; bottom: -30px; right: -30px; width: 120px; height: 120px; border-radius: 50%; background: rgba(200,16,46,.18); pointer-events: none; }
+.cdp-photo { width: 70px; height: 70px; border-radius: 50%; border: 3px solid rgba(255,255,255,.22); background: #1e3457; flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
 .cdp-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 .cdp-photo svg { width: 34px; height: 34px; color: rgba(255,255,255,.4); }
 .cdp-hero-text { flex: 1; min-width: 0; position: relative; z-index: 1; }
 .cdp-name { font-family: 'Oswald', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: .04em; line-height: 1.1; }
 .cdp-badge { display: inline-block; background: var(--red); color: var(--white); font-family: 'Oswald', sans-serif; font-size: .6rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; padding: 3px 9px; border-radius: 3px; margin-top: 6px; }
-
 .cdp-body { padding: 1.2rem 1.4rem; }
-
 .cdp-section-label { font-size: .64rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--sub); margin-bottom: .55rem; margin-top: 1.1rem; }
 .cdp-section-label:first-child { margin-top: 0; }
-
 .cdp-bio { background: var(--light); border-radius: 5px; padding: .85rem 1rem; font-size: .82rem; line-height: 1.7; color: var(--text); border-left: 3px solid var(--red); }
-
 .cdp-contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
-
 .cdp-contact-row { display: flex; align-items: center; gap: 10px; background: var(--light); border-radius: 6px; padding: .75rem .9rem; }
 .cdp-contact-icon { width: 34px; height: 34px; border-radius: 7px; background: var(--white); border: 1px solid var(--mid); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .cdp-contact-icon svg { width: 16px; height: 16px; color: var(--red); }
-.cdp-contact-label { font-size: .63rem; color: var(--sub); letter-spacing: .08em; text-transform: uppercase; display: flex; align-items: center; gap: 4px; }
+.cdp-contact-label { font-size: .63rem; color: var(--sub); letter-spacing: .08em; text-transform: uppercase; }
 .cdp-contact-value { font-size: .83rem; font-weight: 600; color: var(--navy); margin-top: 2px; }
 .cdp-contact-value a { color: var(--navy); text-decoration: none; }
 .cdp-contact-value a:hover { color: var(--red); text-decoration: underline; }
-
 .cdp-empty { display: flex; align-items: center; justify-content: center; height: 200px; color: var(--sub); font-size: .86rem; text-align: center; padding: 2rem; }
 
 /* SCHEDULE */
 .schedule-card { background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; margin-bottom: 1.4rem; }
 .schedule-header { background: var(--red); padding: 11px 20px; font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 600; color: var(--white); letter-spacing: .12em; text-transform: uppercase; text-align: center; }
-
-.schedule-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: .9rem 1.2rem;
-  border-bottom: 1px solid var(--mid);
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-.schedule-show {
-  display: flex; align-items: center; gap: .5rem;
-  font-size: .82rem; color: var(--sub);
-}
-.schedule-show select {
-  border: 1px solid var(--mid); border-radius: 4px;
-  padding: 3px 6px; font-size: .82rem; color: var(--text);
-  background: var(--white); cursor: pointer;
-}
-.schedule-search {
-  display: flex; align-items: center; gap: .5rem;
-  font-size: .82rem; color: var(--sub);
-}
-.schedule-search input {
-  border: 1px solid var(--mid); border-radius: 4px;
-  padding: 5px 10px; font-size: .82rem; color: var(--text);
-  background: var(--white); outline: none; width: 180px;
-  transition: border-color .15s;
-}
+.schedule-controls { display: flex; align-items: center; justify-content: space-between; padding: .9rem 1.2rem; border-bottom: 1px solid var(--mid); gap: 1rem; flex-wrap: wrap; }
+.schedule-show { display: flex; align-items: center; gap: .5rem; font-size: .82rem; color: var(--sub); }
+.schedule-show select { border: 1px solid var(--mid); border-radius: 4px; padding: 3px 6px; font-size: .82rem; color: var(--text); background: var(--white); cursor: pointer; }
+.schedule-search { display: flex; align-items: center; gap: .5rem; font-size: .82rem; color: var(--sub); }
+.schedule-search input { border: 1px solid var(--mid); border-radius: 4px; padding: 5px 10px; font-size: .82rem; color: var(--text); background: var(--white); outline: none; width: 180px; transition: border-color .15s; }
 .schedule-search input:focus { border-color: var(--red); }
-
 .schedule-table-wrap { overflow-x: auto; }
 .schedule-table { width: 100%; border-collapse: collapse; font-size: .84rem; }
 .schedule-table thead tr { background: var(--navy); }
-.schedule-table thead th {
-  padding: 11px 14px;
-  text-align: left;
-  font-family: 'Oswald', sans-serif;
-  font-size: .75rem; font-weight: 600;
-  color: var(--white);
-  letter-spacing: .1em; text-transform: uppercase;
-  white-space: nowrap;
-  user-select: none;
-  cursor: pointer;
-  position: relative;
-}
+.schedule-table thead th { padding: 11px 14px; text-align: left; font-family: 'Oswald', sans-serif; font-size: .75rem; font-weight: 600; color: var(--white); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; user-select: none; cursor: pointer; }
 .schedule-table thead th:hover { background: #1e3457; }
 .schedule-table thead th.sort-asc,
 .schedule-table thead th.sort-desc { background: #1e3457; }
-
-.sort-icon {
-  display: inline-flex; flex-direction: column;
-  gap: 1px; margin-left: 6px; vertical-align: middle; opacity: .45;
-}
-.sort-icon span { display: block; width: 0; height: 0; }
-.sort-icon .up   { border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 5px solid currentColor; }
-.sort-icon .down { border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; }
-th.sort-asc  .sort-icon { opacity: 1; }
-th.sort-asc  .sort-icon .down { opacity: .3; }
+.sort-icon { display: inline-flex; flex-direction: column; gap: 1px; margin-left: 6px; vertical-align: middle; opacity: .4; }
+.sort-icon .up   { display: block; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 5px solid currentColor; }
+.sort-icon .down { display: block; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; }
+th.sort-asc  .sort-icon,
 th.sort-desc .sort-icon { opacity: 1; }
+th.sort-asc  .sort-icon .down { opacity: .3; }
 th.sort-desc .sort-icon .up   { opacity: .3; }
-
 .schedule-table tbody tr { border-bottom: 1px solid var(--mid); transition: background .12s; }
 .schedule-table tbody tr:last-child { border-bottom: none; }
 .schedule-table tbody tr:hover { background: var(--light); }
 .schedule-table td { padding: 11px 14px; vertical-align: middle; color: var(--text); font-size: .83rem; }
 .schedule-table td:first-child { font-weight: 600; color: var(--navy); white-space: nowrap; }
-
-.schedule-footer {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: .75rem 1.2rem; border-top: 1px solid var(--mid);
-  font-size: .78rem; color: var(--sub); flex-wrap: wrap; gap: .5rem;
-}
+.schedule-footer { display: flex; align-items: center; justify-content: space-between; padding: .75rem 1.2rem; border-top: 1px solid var(--mid); font-size: .78rem; color: var(--sub); flex-wrap: wrap; gap: .5rem; }
 .schedule-pagination { display: flex; align-items: center; gap: .4rem; }
-.page-btn {
-  display: inline-flex; align-items: center; gap: 4px;
-  background: none; border: 1px solid var(--mid);
-  border-radius: 4px; padding: 4px 10px;
-  font-family: 'Oswald', sans-serif; font-size: .7rem;
-  font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
-  color: var(--navy); cursor: pointer; transition: all .15s;
-}
+.page-btn { display: inline-flex; align-items: center; gap: 4px; background: none; border: 1px solid var(--mid); border-radius: 4px; padding: 4px 10px; font-family: 'Oswald', sans-serif; font-size: .7rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--navy); cursor: pointer; transition: all .15s; }
 .page-btn:hover:not(:disabled) { background: var(--red); border-color: var(--red); color: var(--white); }
 .page-btn:disabled { opacity: .4; cursor: not-allowed; }
 .page-btn svg { width: 12px; height: 12px; }
-
 .no-schedule-rows { text-align: center; padding: 2.5rem; color: var(--sub); font-size: .88rem; }
 
 /* ROSTER */
@@ -296,7 +149,7 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
 /* LOADING */
 .loading-state { text-align: center; padding: 3rem 2rem; color: var(--sub); }
 .spinner { width: 32px; height: 32px; border: 3px solid var(--mid); border-top-color: var(--red); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 1rem; }
-@keyframes spin { to{transform:rotate(360deg)} }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* FORM */
 .form-widget-container { max-width: 1100px; margin: 0 auto; background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; min-height: 904px; }
@@ -326,6 +179,7 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
   </div>
 </div>
 
+<!-- MAIN DYNAMIC CONTENT -->
 <div class="main" id="main-content">
   <div class="loading-state">
     <div class="spinner"></div>
@@ -333,6 +187,55 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
   </div>
 </div>
 
+<!-- SCHEDULE — lives outside main-content so it's always in the DOM -->
+<div class="main" style="padding-top:0" id="schedule-section" hidden>
+  <div class="schedule-card">
+    <div class="schedule-header">Team Schedule</div>
+    <div class="schedule-controls">
+      <div class="schedule-show">
+        Show
+        <select id="sch-per-page">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="25">25</option>
+          <option value="all">All</option>
+        </select>
+        entries
+      </div>
+      <div class="schedule-search">
+        Search: <input type="text" id="sch-search" placeholder="Filter events…">
+      </div>
+    </div>
+    <div class="schedule-table-wrap">
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th data-col="0">Date <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
+            <th data-col="1">Event Name <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
+            <th data-col="2">City <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
+            <th data-col="3">State <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
+          </tr>
+        </thead>
+        <tbody id="sch-body"></tbody>
+      </table>
+    </div>
+    <div class="schedule-footer">
+      <span id="sch-info">Showing 0 entries</span>
+      <div class="schedule-pagination">
+        <button class="page-btn" id="sch-prev" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+          Previous
+        </button>
+        <button class="page-btn" id="sch-next" disabled>
+          Next
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRYOUT FORM -->
 <div class="main" style="padding-top:0">
   <div class="tryout-banner">
     <h2>Interested in Trying Out?</h2>
@@ -355,14 +258,15 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
       data-layout-iframe-id="inline-u507FgUkvKFd4ThSMzoS"
       data-form-id="u507FgUkvKFd4ThSMzoS"
       title="Trying Out"
-    >
-    </iframe>
+    ></iframe>
   </div>
 </div>
 <script src="https://link.msgsndr.com/js/form_embed.js"></script>
 
 <script>
 'use strict';
+
+/* ── CONSTANTS ── */
 const API_BASE = 'https://baseball-backend-five.vercel.app';
 
 const ABBR_TO_NAME = {
@@ -379,7 +283,9 @@ const ABBR_TO_NAME = {
   "WV":"West Virginia","WI":"Wisconsin","WY":"Wyoming"
 };
 
-function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
 const params    = new URLSearchParams(window.location.search);
 const teamId    = params.get('id');
@@ -395,22 +301,22 @@ const avatarSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 
 let allCoaches = [];
 
-// Realistic placeholder data keyed by role
+/* ── COACH PLACEHOLDERS ── */
 const COACH_PLACEHOLDERS = {
   'Head Coach': {
-    bio: 'Coach brings over 18 years of competitive baseball experience to US Elite, including 12 years at the travel ball level. A former Division I shortstop at the University of Tennessee, he has developed more than 40 players who have gone on to play collegiate baseball. Known for his emphasis on fundamentals, situational IQ, and player development, he has led his teams to back-to-back regional championships. Off the field he is a certified strength & conditioning coach and hosts off-season hitting clinics across the state.',
+    bio: 'Coach brings over 18 years of competitive baseball experience to US Elite, including 12 years at the travel ball level. A former Division I shortstop at the University of Tennessee, he has developed more than 40 players who have gone on to play collegiate baseball. Known for his emphasis on fundamentals, situational IQ, and player development, he has led his teams to back-to-back regional championships.',
     email: 'headcoach@uselitebaseball.com',
     cell: '(615) 482-3371'
   },
   'Assistant Coach': {
-    bio: 'A former professional pitcher with five years of independent league experience, this assistant coach specializes in pitching mechanics and arm-care protocols. He joined US Elite after serving as a varsity pitching coach at the high school level for six seasons. His pitchers consistently rank among the top ERAs in the region, and he is widely respected for his ability to make technical adjustments quickly and communicate them clearly to players of all ages.',
+    bio: 'A former professional pitcher with five years of independent league experience, this assistant coach specializes in pitching mechanics and arm-care protocols. He joined US Elite after serving as a varsity pitching coach at the high school level for six seasons. His pitchers consistently rank among the top ERAs in the region.',
     email: 'assistant@uselitebaseball.com',
     cell: '(615) 319-7204'
   }
 };
 
+/* ── RENDER COACH DETAIL ── */
 function renderCoachDetail(coach, activeIndex) {
-  // highlight active row
   document.querySelectorAll('.coach-item').forEach((el, i) => {
     el.classList.toggle('active', i === activeIndex);
   });
@@ -419,10 +325,10 @@ function renderCoachDetail(coach, activeIndex) {
     ? `<img src="${esc(coach.image)}" alt="${esc(coach.name)}">`
     : avatarSVG;
 
-  const placeholder = COACH_PLACEHOLDERS[coach.role] || COACH_PLACEHOLDERS['Assistant Coach'];
-  const bioText  = coach.bio   || placeholder.bio;
-  const emailVal = coach.email || placeholder.email;
-  const cellVal  = coach.cell  || placeholder.cell;
+  const ph       = COACH_PLACEHOLDERS[coach.role] || COACH_PLACEHOLDERS['Assistant Coach'];
+  const bioText  = coach.bio   || ph.bio;
+  const emailVal = coach.email || ph.email;
+  const cellVal  = coach.cell  || ph.cell;
   const cellHref = cellVal.replace(/\D/g, '');
 
   document.getElementById('coach-detail-panel').innerHTML = `
@@ -461,6 +367,108 @@ function renderCoachDetail(coach, activeIndex) {
   `;
 }
 
+/* ── SCHEDULE DATA & STATE ── */
+const SCHEDULE_DATA = [
+  { date: 'June 14 - 15',     event: 'Opening Day Classic',                city: 'Nashville',        state: 'TN' },
+  { date: 'June 26 - July 2', event: 'PBR National Championship',          city: 'Emerson',          state: 'GA' },
+  { date: 'July 6 - 13',      event: 'Perfect Game WWBA Nationals',        city: 'Atlanta',          state: 'GA' },
+  { date: 'July 18 - 20',     event: 'Dynamic Elite World Series',         city: 'Charlottesville',  state: 'VA' },
+  { date: 'July 24 - 27',     event: 'Dynamic World Championships',        city: 'Raleigh',          state: 'NC' },
+  { date: 'July 28 - 30',     event: 'College Exposure Camp',              city: 'Greenville',       state: 'SC' },
+  { date: 'Aug 2 - 4',        event: 'Big Show Elite Exposure Tournament', city: 'Leesport',         state: 'PA' },
+  { date: 'Aug 9 - 11',       event: 'Prep Baseball Report Showcase',      city: 'Crestwood',        state: 'IL' },
+  { date: 'Aug 16 - 18',      event: 'Area Code Games',                    city: 'Long Beach',       state: 'CA' },
+  { date: 'Sept 6 - 7',       event: 'Fall Showcase Invitational',         city: 'Franklin',         state: 'TN' },
+];
+
+let schSource   = [...SCHEDULE_DATA];
+let schFiltered = [...SCHEDULE_DATA];
+let schPage     = 0;
+let schPerPage  = 10;
+let schSortCol  = -1;
+let schSortDir  = 'asc';
+
+function schRender() {
+  const body    = document.getElementById('sch-body');
+  const info    = document.getElementById('sch-info');
+  const prevBtn = document.getElementById('sch-prev');
+  const nextBtn = document.getElementById('sch-next');
+
+  const total  = schFiltered.length;
+  const isAll  = schPerPage === Infinity;
+  const pages  = isAll ? 1 : Math.ceil(total / schPerPage) || 1;
+  if (schPage >= pages) schPage = pages - 1;
+  if (schPage < 0) schPage = 0;
+
+  const start   = isAll ? 0 : schPage * schPerPage;
+  const end     = isAll ? total : Math.min(start + schPerPage, total);
+  const visible = schFiltered.slice(start, end);
+
+  body.innerHTML = visible.length
+    ? visible.map(r => `
+        <tr>
+          <td>${esc(r.date)}</td>
+          <td>${esc(r.event)}</td>
+          <td>${esc(r.city)}</td>
+          <td>${esc(r.state)}</td>
+        </tr>`).join('')
+    : `<tr><td colspan="4"><div class="no-schedule-rows">No matching events found.</div></td></tr>`;
+
+  info.textContent = total === 0
+    ? 'No entries'
+    : `Showing ${start + 1} to ${end} of ${total} entr${total === 1 ? 'y' : 'ies'}`;
+
+  prevBtn.disabled = schPage === 0;
+  nextBtn.disabled = isAll || schPage >= pages - 1;
+}
+
+function schFilter() {
+  const q = document.getElementById('sch-search').value.trim().toLowerCase();
+  schFiltered = q
+    ? schSource.filter(r =>
+        r.date.toLowerCase().includes(q)     ||
+        r.event.toLowerCase().includes(q)    ||
+        r.city.toLowerCase().includes(q)     ||
+        r.state.toLowerCase().includes(q))
+    : [...schSource];
+  schPage = 0;
+  schRender();
+}
+
+function schSort(col) {
+  if (schSortCol === col) {
+    schSortDir = schSortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    schSortCol = col;
+    schSortDir = 'asc';
+  }
+  const keys = ['date', 'event', 'city', 'state'];
+  const key  = keys[col];
+  schSource.sort((a, b) => {
+    const av = a[key].toLowerCase(), bv = b[key].toLowerCase();
+    return schSortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+  });
+  document.querySelectorAll('.schedule-table thead th').forEach((th, i) => {
+    th.classList.remove('sort-asc', 'sort-desc');
+    if (i === col) th.classList.add(schSortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+  });
+  schFilter();
+}
+
+/* wire schedule controls — elements are always in DOM */
+document.getElementById('sch-per-page').addEventListener('change', function () {
+  schPerPage = this.value === 'all' ? Infinity : parseInt(this.value);
+  schPage = 0;
+  schRender();
+});
+document.getElementById('sch-search').addEventListener('input', schFilter);
+document.getElementById('sch-prev').addEventListener('click', () => { schPage--; schRender(); });
+document.getElementById('sch-next').addEventListener('click', () => { schPage++; schRender(); });
+document.querySelectorAll('.schedule-table thead th').forEach(th => {
+  th.addEventListener('click', () => schSort(parseInt(th.dataset.col)));
+});
+
+/* ── MAIN LOAD ── */
 async function loadTeam() {
   if (!teamId || !teamState) { showError('Missing team information.'); return; }
   try {
@@ -471,7 +479,7 @@ async function loadTeam() {
     const team = (teamRes.teams || []).find(t => t.id === teamId);
     if (!team) { showError('Team not found.'); return; }
     renderPage(team, rosterRes.players || []);
-  } catch(err) {
+  } catch (err) {
     showError(err.message);
   }
 }
@@ -518,8 +526,7 @@ function renderPage(team, players) {
     : `<tr><td colspan="6"><div class="empty-roster">No roster data available for this team.</div></td></tr>`;
 
   document.getElementById('main-content').innerHTML = `
-
-    <!-- 1. Team Details — full width on top -->
+    <!-- 1. Team Details -->
     <div class="card team-details-card">
       <div class="card-header">Team Details</div>
       <div class="card-body">
@@ -527,66 +534,18 @@ function renderPage(team, players) {
       </div>
     </div>
 
-    <!-- 2. Coaches: single card, list left, detail right -->
+    <!-- 2. Coaches -->
     <div class="coaches-section">
       <div class="coaches-section-header">Coaches</div>
       <div class="coaches-inner">
-        <div class="coaches-list-card">
-          ${coachListHtml}
-        </div>
+        <div class="coaches-list-card">${coachListHtml}</div>
         <div class="coach-detail-panel" id="coach-detail-panel">
           ${allCoaches.length === 0 ? '<div class="cdp-empty">No coach information available.</div>' : ''}
         </div>
       </div>
     </div>
 
-    <!-- 3. Schedule -->
-    <div class="schedule-card" id="schedule-card">
-      <div class="schedule-header">Team Schedule</div>
-      <div class="schedule-controls">
-        <div class="schedule-show">
-          Show
-          <select id="sch-per-page">
-            <option value="5">5</option>
-            <option value="10" selected>10</option>
-            <option value="25">25</option>
-            <option value="all">All</option>
-          </select>
-          entries
-        </div>
-        <div class="schedule-search">
-          Search: <input type="text" id="sch-search" placeholder="Filter events…">
-        </div>
-      </div>
-      <div class="schedule-table-wrap">
-        <table class="schedule-table" id="sch-table">
-          <thead>
-            <tr>
-              <th data-col="0">Date <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
-              <th data-col="1">Event Name <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
-              <th data-col="2">Venue <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
-              <th data-col="3">Location <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
-            </tr>
-          </thead>
-          <tbody id="sch-body"></tbody>
-        </table>
-      </div>
-      <div class="schedule-footer">
-        <span id="sch-info">Showing 0 entries</span>
-        <div class="schedule-pagination">
-          <button class="page-btn" id="sch-prev" disabled>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
-            Previous
-          </button>
-          <button class="page-btn" id="sch-next" disabled>
-            Next
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 4. Roster -->
+    <!-- 3. Roster -->
     <div class="roster-card">
       <div class="roster-header">Team Roster (${players.length} player${players.length !== 1 ? 's' : ''})</div>
       <div class="roster-table-wrap">
@@ -603,121 +562,22 @@ function renderPage(team, players) {
     </div>
   `;
 
-  // attach click listeners (both row and button)
+  /* coach click handlers */
   document.querySelectorAll('.coach-item, .view-details-btn').forEach(el => {
-    el.addEventListener('click', function(e) {
+    el.addEventListener('click', function (e) {
       e.stopPropagation();
       const idx = parseInt(this.dataset.index, 10);
       renderCoachDetail(allCoaches[idx], idx);
     });
   });
 
-  // default: show head coach on load
+  /* default: head coach */
   if (allCoaches.length > 0) {
     renderCoachDetail(allCoaches[0], 0);
   }
 
-  // ── SCHEDULE ──
-  const SCHEDULE_DATA = [
-    { date: 'June 14 - 15',    event: 'Opening Day Classic',               venue: 'Heritage Sports Complex',        location: 'Nashville, TN' },
-    { date: 'June 26 - July 2',event: 'PBR National Championship',         venue: 'Lake Point Sports Complex',       location: 'Emerson, GA' },
-    { date: 'July 6 - 13',     event: 'Perfect Game WWBA Nationals',       venue: 'East Cobb Complex',               location: 'Atlanta, GA' },
-    { date: 'July 18 - 20',    event: 'Dynamic Elite World Series',        venue: 'Virginia Baseball Club',          location: 'Charlottesville, VA' },
-    { date: 'July 24 - 27',    event: 'Dynamic World Championships',       venue: 'UNC, Campbell, Elon',             location: 'Raleigh, NC' },
-    { date: 'July 28 - 30',    event: 'College Exposure Camp',             venue: 'Conestee Park',                   location: 'Greenville, SC' },
-    { date: 'Aug 2 - 4',       event: 'Big Show Elite Exposure Tournament',venue: 'Big Show Complex',                location: 'Leesport, PA' },
-    { date: 'Aug 9 - 11',      event: 'Prep Baseball Report Showcase',     venue: 'Chicagoland Sports Center',       location: 'Crestwood, IL' },
-    { date: 'Aug 16 - 18',     event: 'Area Code Games',                   venue: 'Blair Field',                     location: 'Long Beach, CA' },
-    { date: 'Sept 6 - 7',      event: 'Fall Showcase Invitational',        venue: 'US Elite Training Facility',      location: 'Franklin, TN' },
-  ];
-
-  let schData      = [...SCHEDULE_DATA];
-  let schFiltered  = [...schData];
-  let schPage      = 0;
-  let schPerPage   = 10;
-  let schSortCol   = -1;
-  let schSortDir   = 'asc';
-
-  function schRender() {
-    const body    = document.getElementById('sch-body');
-    const info    = document.getElementById('sch-info');
-    const prevBtn = document.getElementById('sch-prev');
-    const nextBtn = document.getElementById('sch-next');
-    if (!body) return;
-
-    const total   = schFiltered.length;
-    const isAll   = schPerPage === Infinity;
-    const pages   = isAll ? 1 : Math.ceil(total / schPerPage);
-    if (schPage >= pages) schPage = Math.max(0, pages - 1);
-
-    const start   = isAll ? 0 : schPage * schPerPage;
-    const end     = isAll ? total : Math.min(start + schPerPage, total);
-    const visible = schFiltered.slice(start, end);
-
-    if (visible.length === 0) {
-      body.innerHTML = `<tr><td colspan="4"><div class="no-schedule-rows">No matching events found.</div></td></tr>`;
-    } else {
-      body.innerHTML = visible.map(r => `
-        <tr>
-          <td>${esc(r.date)}</td>
-          <td>${esc(r.event)}</td>
-          <td>${esc(r.venue)}</td>
-          <td>${esc(r.location)}</td>
-        </tr>`).join('');
-    }
-
-    const showing = total === 0 ? 'No entries' :
-      `Showing ${start + 1} to ${end} of ${total} entr${total === 1 ? 'y' : 'ies'}`;
-    info.textContent = showing;
-    prevBtn.disabled = schPage === 0;
-    nextBtn.disabled = schPage >= pages - 1 || isAll;
-  }
-
-  function schFilter() {
-    const q = (document.getElementById('sch-search').value || '').toLowerCase().trim();
-    schFiltered = q
-      ? schData.filter(r =>
-          r.date.toLowerCase().includes(q) ||
-          r.event.toLowerCase().includes(q) ||
-          r.venue.toLowerCase().includes(q) ||
-          r.location.toLowerCase().includes(q))
-      : [...schData];
-    schPage = 0;
-    schRender();
-  }
-
-  function schSort(col) {
-    if (schSortCol === col) {
-      schSortDir = schSortDir === 'asc' ? 'desc' : 'asc';
-    } else {
-      schSortCol = col; schSortDir = 'asc';
-    }
-    const keys = ['date','event','venue','location'];
-    const key  = keys[col];
-    schData.sort((a, b) => {
-      const av = a[key].toLowerCase(), bv = b[key].toLowerCase();
-      return schSortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
-    });
-    // update header classes
-    document.querySelectorAll('.schedule-table thead th').forEach((th, i) => {
-      th.classList.remove('sort-asc','sort-desc');
-      if (i === col) th.classList.add(schSortDir === 'asc' ? 'sort-asc' : 'sort-desc');
-    });
-    schFilter();
-  }
-
-  // wire up controls
-  document.getElementById('sch-per-page').addEventListener('change', function() {
-    schPerPage = this.value === 'all' ? Infinity : parseInt(this.value);
-    schPage = 0; schRender();
-  });
-  document.getElementById('sch-search').addEventListener('input', schFilter);
-  document.getElementById('sch-prev').addEventListener('click', () => { schPage--; schRender(); });
-  document.getElementById('sch-next').addEventListener('click', () => { schPage++; schRender(); });
-  document.querySelectorAll('.schedule-table thead th').forEach(th => {
-    th.addEventListener('click', () => schSort(parseInt(th.dataset.col)));
-  });
-
+  /* show schedule section and render it */
+  document.getElementById('schedule-section').hidden = false;
   schRender();
 }
 
