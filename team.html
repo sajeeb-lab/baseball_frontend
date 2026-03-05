@@ -185,6 +185,97 @@ body { font-family: 'Open Sans', sans-serif; background: var(--light); color: va
 
 .cdp-empty { display: flex; align-items: center; justify-content: center; height: 200px; color: var(--sub); font-size: .86rem; text-align: center; padding: 2rem; }
 
+/* SCHEDULE */
+.schedule-card { background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; margin-bottom: 1.4rem; }
+.schedule-header { background: var(--red); padding: 11px 20px; font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 600; color: var(--white); letter-spacing: .12em; text-transform: uppercase; text-align: center; }
+
+.schedule-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .9rem 1.2rem;
+  border-bottom: 1px solid var(--mid);
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.schedule-show {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .82rem; color: var(--sub);
+}
+.schedule-show select {
+  border: 1px solid var(--mid); border-radius: 4px;
+  padding: 3px 6px; font-size: .82rem; color: var(--text);
+  background: var(--white); cursor: pointer;
+}
+.schedule-search {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .82rem; color: var(--sub);
+}
+.schedule-search input {
+  border: 1px solid var(--mid); border-radius: 4px;
+  padding: 5px 10px; font-size: .82rem; color: var(--text);
+  background: var(--white); outline: none; width: 180px;
+  transition: border-color .15s;
+}
+.schedule-search input:focus { border-color: var(--red); }
+
+.schedule-table-wrap { overflow-x: auto; }
+.schedule-table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+.schedule-table thead tr { background: var(--navy); }
+.schedule-table thead th {
+  padding: 11px 14px;
+  text-align: left;
+  font-family: 'Oswald', sans-serif;
+  font-size: .75rem; font-weight: 600;
+  color: var(--white);
+  letter-spacing: .1em; text-transform: uppercase;
+  white-space: nowrap;
+  user-select: none;
+  cursor: pointer;
+  position: relative;
+}
+.schedule-table thead th:hover { background: #1e3457; }
+.schedule-table thead th.sort-asc,
+.schedule-table thead th.sort-desc { background: #1e3457; }
+
+.sort-icon {
+  display: inline-flex; flex-direction: column;
+  gap: 1px; margin-left: 6px; vertical-align: middle; opacity: .45;
+}
+.sort-icon span { display: block; width: 0; height: 0; }
+.sort-icon .up   { border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 5px solid currentColor; }
+.sort-icon .down { border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; }
+th.sort-asc  .sort-icon { opacity: 1; }
+th.sort-asc  .sort-icon .down { opacity: .3; }
+th.sort-desc .sort-icon { opacity: 1; }
+th.sort-desc .sort-icon .up   { opacity: .3; }
+
+.schedule-table tbody tr { border-bottom: 1px solid var(--mid); transition: background .12s; }
+.schedule-table tbody tr:last-child { border-bottom: none; }
+.schedule-table tbody tr:hover { background: var(--light); }
+.schedule-table td { padding: 11px 14px; vertical-align: middle; color: var(--text); font-size: .83rem; }
+.schedule-table td:first-child { font-weight: 600; color: var(--navy); white-space: nowrap; }
+
+.schedule-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .75rem 1.2rem; border-top: 1px solid var(--mid);
+  font-size: .78rem; color: var(--sub); flex-wrap: wrap; gap: .5rem;
+}
+.schedule-pagination { display: flex; align-items: center; gap: .4rem; }
+.page-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: none; border: 1px solid var(--mid);
+  border-radius: 4px; padding: 4px 10px;
+  font-family: 'Oswald', sans-serif; font-size: .7rem;
+  font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--navy); cursor: pointer; transition: all .15s;
+}
+.page-btn:hover:not(:disabled) { background: var(--red); border-color: var(--red); color: var(--white); }
+.page-btn:disabled { opacity: .4; cursor: not-allowed; }
+.page-btn svg { width: 12px; height: 12px; }
+
+.no-schedule-rows { text-align: center; padding: 2.5rem; color: var(--sub); font-size: .88rem; }
+
 /* ROSTER */
 .roster-card { background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; }
 .roster-header { background: var(--red); padding: 11px 20px; font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 600; color: var(--white); letter-spacing: .12em; text-transform: uppercase; text-align: center; }
@@ -449,7 +540,53 @@ function renderPage(team, players) {
       </div>
     </div>
 
-    <!-- 3. Roster -->
+    <!-- 3. Schedule -->
+    <div class="schedule-card" id="schedule-card">
+      <div class="schedule-header">Team Schedule</div>
+      <div class="schedule-controls">
+        <div class="schedule-show">
+          Show
+          <select id="sch-per-page">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="25">25</option>
+            <option value="all">All</option>
+          </select>
+          entries
+        </div>
+        <div class="schedule-search">
+          Search: <input type="text" id="sch-search" placeholder="Filter events…">
+        </div>
+      </div>
+      <div class="schedule-table-wrap">
+        <table class="schedule-table" id="sch-table">
+          <thead>
+            <tr>
+              <th data-col="0">Date <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
+              <th data-col="1">Event Name <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
+              <th data-col="2">Venue <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
+              <th data-col="3">Location <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
+            </tr>
+          </thead>
+          <tbody id="sch-body"></tbody>
+        </table>
+      </div>
+      <div class="schedule-footer">
+        <span id="sch-info">Showing 0 entries</span>
+        <div class="schedule-pagination">
+          <button class="page-btn" id="sch-prev" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+            Previous
+          </button>
+          <button class="page-btn" id="sch-next" disabled>
+            Next
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Roster -->
     <div class="roster-card">
       <div class="roster-header">Team Roster (${players.length} player${players.length !== 1 ? 's' : ''})</div>
       <div class="roster-table-wrap">
@@ -479,6 +616,109 @@ function renderPage(team, players) {
   if (allCoaches.length > 0) {
     renderCoachDetail(allCoaches[0], 0);
   }
+
+  // ── SCHEDULE ──
+  const SCHEDULE_DATA = [
+    { date: 'June 14 - 15',    event: 'Opening Day Classic',               venue: 'Heritage Sports Complex',        location: 'Nashville, TN' },
+    { date: 'June 26 - July 2',event: 'PBR National Championship',         venue: 'Lake Point Sports Complex',       location: 'Emerson, GA' },
+    { date: 'July 6 - 13',     event: 'Perfect Game WWBA Nationals',       venue: 'East Cobb Complex',               location: 'Atlanta, GA' },
+    { date: 'July 18 - 20',    event: 'Dynamic Elite World Series',        venue: 'Virginia Baseball Club',          location: 'Charlottesville, VA' },
+    { date: 'July 24 - 27',    event: 'Dynamic World Championships',       venue: 'UNC, Campbell, Elon',             location: 'Raleigh, NC' },
+    { date: 'July 28 - 30',    event: 'College Exposure Camp',             venue: 'Conestee Park',                   location: 'Greenville, SC' },
+    { date: 'Aug 2 - 4',       event: 'Big Show Elite Exposure Tournament',venue: 'Big Show Complex',                location: 'Leesport, PA' },
+    { date: 'Aug 9 - 11',      event: 'Prep Baseball Report Showcase',     venue: 'Chicagoland Sports Center',       location: 'Crestwood, IL' },
+    { date: 'Aug 16 - 18',     event: 'Area Code Games',                   venue: 'Blair Field',                     location: 'Long Beach, CA' },
+    { date: 'Sept 6 - 7',      event: 'Fall Showcase Invitational',        venue: 'US Elite Training Facility',      location: 'Franklin, TN' },
+  ];
+
+  let schData      = [...SCHEDULE_DATA];
+  let schFiltered  = [...schData];
+  let schPage      = 0;
+  let schPerPage   = 10;
+  let schSortCol   = -1;
+  let schSortDir   = 'asc';
+
+  function schRender() {
+    const body    = document.getElementById('sch-body');
+    const info    = document.getElementById('sch-info');
+    const prevBtn = document.getElementById('sch-prev');
+    const nextBtn = document.getElementById('sch-next');
+    if (!body) return;
+
+    const total   = schFiltered.length;
+    const isAll   = schPerPage === Infinity;
+    const pages   = isAll ? 1 : Math.ceil(total / schPerPage);
+    if (schPage >= pages) schPage = Math.max(0, pages - 1);
+
+    const start   = isAll ? 0 : schPage * schPerPage;
+    const end     = isAll ? total : Math.min(start + schPerPage, total);
+    const visible = schFiltered.slice(start, end);
+
+    if (visible.length === 0) {
+      body.innerHTML = `<tr><td colspan="4"><div class="no-schedule-rows">No matching events found.</div></td></tr>`;
+    } else {
+      body.innerHTML = visible.map(r => `
+        <tr>
+          <td>${esc(r.date)}</td>
+          <td>${esc(r.event)}</td>
+          <td>${esc(r.venue)}</td>
+          <td>${esc(r.location)}</td>
+        </tr>`).join('');
+    }
+
+    const showing = total === 0 ? 'No entries' :
+      `Showing ${start + 1} to ${end} of ${total} entr${total === 1 ? 'y' : 'ies'}`;
+    info.textContent = showing;
+    prevBtn.disabled = schPage === 0;
+    nextBtn.disabled = schPage >= pages - 1 || isAll;
+  }
+
+  function schFilter() {
+    const q = (document.getElementById('sch-search').value || '').toLowerCase().trim();
+    schFiltered = q
+      ? schData.filter(r =>
+          r.date.toLowerCase().includes(q) ||
+          r.event.toLowerCase().includes(q) ||
+          r.venue.toLowerCase().includes(q) ||
+          r.location.toLowerCase().includes(q))
+      : [...schData];
+    schPage = 0;
+    schRender();
+  }
+
+  function schSort(col) {
+    if (schSortCol === col) {
+      schSortDir = schSortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      schSortCol = col; schSortDir = 'asc';
+    }
+    const keys = ['date','event','venue','location'];
+    const key  = keys[col];
+    schData.sort((a, b) => {
+      const av = a[key].toLowerCase(), bv = b[key].toLowerCase();
+      return schSortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+    });
+    // update header classes
+    document.querySelectorAll('.schedule-table thead th').forEach((th, i) => {
+      th.classList.remove('sort-asc','sort-desc');
+      if (i === col) th.classList.add(schSortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    });
+    schFilter();
+  }
+
+  // wire up controls
+  document.getElementById('sch-per-page').addEventListener('change', function() {
+    schPerPage = this.value === 'all' ? Infinity : parseInt(this.value);
+    schPage = 0; schRender();
+  });
+  document.getElementById('sch-search').addEventListener('input', schFilter);
+  document.getElementById('sch-prev').addEventListener('click', () => { schPage--; schRender(); });
+  document.getElementById('sch-next').addEventListener('click', () => { schPage++; schRender(); });
+  document.querySelectorAll('.schedule-table thead th').forEach(th => {
+    th.addEventListener('click', () => schSort(parseInt(th.dataset.col)));
+  });
+
+  schRender();
 }
 
 function showError(msg) {
