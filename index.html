@@ -110,7 +110,7 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
     <span class="hint">Click any state to filter teams</span>
   </div>
   <div class="map-card">
-    <p class="map-hint">⚾ Click a state on the map to filter teams</p>
+    <p class="map-hint">Click a state on the map to filter teams</p>
     <div id="map-svg-container"><div id="map-loading">Loading map…</div></div>
   </div>
 
@@ -120,7 +120,7 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
         <h3 id="results-title">All Teams</h3>
         <div class="results-meta" id="results-meta">Loading teams…</div>
       </div>
-      <button class="clear-filter-btn" id="clear-filter-btn" onclick="clearFilter()">✕ Clear Filter</button>
+      <button class="clear-filter-btn" id="clear-filter-btn" onclick="clearFilter()">Clear Filter</button>
     </div>
     <div class="teams-grid" id="teams-grid">
       <div class="skeleton"></div><div class="skeleton"></div>
@@ -209,7 +209,7 @@ async function loadAllTeams() {
     renderTeams(allTeams, 'All Teams', `${allTeams.length} team${allTeams.length !== 1 ? 's' : ''} across all states`);
   } catch(err) {
     document.getElementById('teams-grid').innerHTML =
-      `<div class="error-state"><strong>⚠️ Failed to load teams</strong>${esc(err.message)}</div>`;
+      `<div class="error-state"><strong>Failed to load teams</strong>${esc(err.message)}</div>`;
     document.getElementById('results-meta').textContent = '';
   }
 }
@@ -287,7 +287,7 @@ async function initMap() {
       });
   } catch(err) {
     const el = document.getElementById('map-loading');
-    if (el) { el.textContent = '⚠️ Failed to load map.'; el.style.color = 'var(--red)'; }
+    if (el) { el.textContent = 'Failed to load map.'; el.style.color = 'var(--red)'; }
   }
 }
 
