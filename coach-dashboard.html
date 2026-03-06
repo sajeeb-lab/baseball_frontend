@@ -127,6 +127,24 @@ input[type="file"].hidden-file{display:none}
 .edit-save-btn:hover{background:#162845}
 
 
+
+/* SCHEDULE */
+.sched-mgmt-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.sched-mgmt-table thead tr{background:var(--navy)}
+.sched-mgmt-table thead th{padding:10px 14px;text-align:left;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;color:var(--white);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.sched-mgmt-table tbody tr{border-bottom:1px solid var(--mid);transition:background .12s}
+.sched-mgmt-table tbody tr:last-child{border-bottom:none}
+.sched-mgmt-table tbody tr:hover{background:var(--light)}
+.sched-mgmt-table td{padding:10px 14px;vertical-align:middle;font-size:.83rem}
+.sched-mgmt-table td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.sched-table-wrap{overflow-x:auto}
+.result-badge{display:inline-block;font-family:'Oswald',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:20px}
+.result-badge.win{background:#dcfce7;color:#16a34a}
+.result-badge.loss{background:#fef2f2;color:var(--red)}
+.result-badge.tie{background:#fef9c3;color:#92400e}
+.result-badge.upcoming{background:var(--mid);color:var(--sub)}
+.no-schedule-dash{text-align:center;padding:2.5rem;color:var(--sub);font-size:.88rem;background:var(--light);border-radius:0 0 6px 6px}
+
 @media(max-width:700px){.form-grid-2,.form-grid-3{grid-template-columns:1fr}.page-header-inner{flex-direction:column;align-items:flex-start}.section-tabs{gap:.4rem}.section-tab{padding:8px 12px;font-size:.72rem}}
 </style>
 </head>
@@ -235,6 +253,10 @@ function renderDashboard(coach){
       <button class="section-tab" id="tab-roster" onclick="switchPanel('roster')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
         Team Roster
+      </button>
+      <button class="section-tab" id="tab-schedule" onclick="switchPanel('schedule')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+        Schedule
       </button>
     </div>
 
@@ -414,6 +436,64 @@ function renderDashboard(coach){
       </div>
     </div>
 
+    <!-- SCHEDULE -->
+    <div class="dash-panel" id="panel-schedule">
+      <div class="card">
+        <div class="card-header">Add Game / Event</div>
+        <div class="card-body">
+          <div class="msg" id="msg-sched-add"></div>
+          <div class="form-grid-2">
+            <div class="field-group">
+              <label class="field-label">Date</label>
+              <input class="field-input" type="text" id="s-date" placeholder="e.g. June 14, 2026">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Result</label>
+              <select class="field-select" id="s-result">
+                <option value="Upcoming">Upcoming</option>
+                <option value="W">W — Win</option>
+                <option value="L">L — Loss</option>
+                <option value="T">T — Tie</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Opponent / Event Name</label>
+            <input class="field-input" type="text" id="s-event" placeholder="e.g. vs. Nashville Elite 17U">
+          </div>
+          <div class="form-grid-2">
+            <div class="field-group">
+              <label class="field-label">City</label>
+              <input class="field-input" type="text" id="s-city" placeholder="e.g. Nashville">
+            </div>
+            <div class="field-group">
+              <label class="field-label">State</label>
+              <input class="field-input" type="text" id="s-state" placeholder="e.g. TN" maxlength="2">
+            </div>
+          </div>
+          <button class="save-btn" id="add-game-btn" onclick="addGame()">
+            <span id="add-game-txt">Add to Schedule</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">Team Schedule</div>
+        <div class="sched-table-wrap">
+          <table class="sched-mgmt-table">
+            <thead>
+              <tr>
+                <th>Date</th><th>Opponent / Event</th><th>City</th><th>State</th><th>Result</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="dash-sched-body">
+              <tr><td colspan="6"><div class="no-schedule-dash">Loading schedule…</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <!-- TRYOUTS -->
     <div class="dash-panel" id="panel-tryouts">
       <div class="card">
@@ -446,6 +526,7 @@ function renderDashboard(coach){
 
   loadTryouts();
   loadDashRoster();
+  loadDashSchedule();
 }
 
 /* ── SAVE PROFILE ── */
@@ -736,6 +817,88 @@ async function deletePlayer(id) {
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEditModal(); });
 
+
+/* ── DASHBOARD SCHEDULE ── */
+let dashSchedData = [];
+
+async function loadDashSchedule() {
+  try {
+    const res  = await fetch(`${API_BASE}/api/coach/schedule`, { headers: authH() });
+    const data = await res.json();
+    dashSchedData = data.schedule || [];
+    renderDashSchedule(dashSchedData);
+  } catch(err) {
+    const tbody = document.getElementById('dash-sched-body');
+    if (tbody) tbody.innerHTML = '<tr><td colspan="6"><div class="no-schedule-dash">Failed to load schedule.</div></td></tr>';
+  }
+}
+
+function resultBadge(r) {
+  if (!r || r === 'Upcoming') return '<span class="result-badge upcoming">Upcoming</span>';
+  if (r === 'W') return '<span class="result-badge win">Win</span>';
+  if (r === 'L') return '<span class="result-badge loss">Loss</span>';
+  if (r === 'T') return '<span class="result-badge tie">Tie</span>';
+  return '<span class="result-badge upcoming">'+esc(r)+'</span>';
+}
+
+function renderDashSchedule(games) {
+  const tbody = document.getElementById('dash-sched-body');
+  if (!tbody) return;
+  if (!games.length) {
+    tbody.innerHTML = '<tr><td colspan="6"><div class="no-schedule-dash">No games added yet. Add one above!</div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = games.map(g => `
+    <tr id="grow-${esc(g._id)}">
+      <td>${esc(g.date)}</td>
+      <td>${esc(g.event)}</td>
+      <td>${esc(g.city||'—')}</td>
+      <td>${esc(g.state||'—')}</td>
+      <td>${resultBadge(g.result)}</td>
+      <td>
+        <button class="roster-del-btn" onclick="deleteGame('${esc(g._id)}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          Delete
+        </button>
+      </td>
+    </tr>`).join('');
+}
+
+async function addGame() {
+  const date   = document.getElementById('s-date').value.trim();
+  const event  = document.getElementById('s-event').value.trim();
+  const city   = document.getElementById('s-city').value.trim();
+  const state  = document.getElementById('s-state').value.trim().toUpperCase();
+  const result = document.getElementById('s-result').value;
+  if (!date || !event) { showMsg('msg-sched-add', 'Date and opponent/event are required.', 'error'); return; }
+  setLoading('add-game-btn', 'add-game-txt', true);
+  try {
+    const res  = await fetch(`${API_BASE}/api/coach/schedule`, {
+      method: 'POST', headers: authH(),
+      body: JSON.stringify({ date, event, city, state, result })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed');
+    ['s-date','s-event','s-city','s-state'].forEach(id => { document.getElementById(id).value = ''; });
+    document.getElementById('s-result').value = 'Upcoming';
+    showMsg('msg-sched-add', 'Game added!', 'success');
+    await loadDashSchedule();
+  } catch(err) { showMsg('msg-sched-add', err.message, 'error'); }
+  finally { setLoading('add-game-btn', 'add-game-txt', false, 'Add to Schedule'); }
+}
+
+async function deleteGame(id) {
+  if (!confirm('Remove this game from the schedule?')) return;
+  try {
+    const res  = await fetch(`${API_BASE}/api/coach/schedule/${id}`, {
+      method: 'DELETE', headers: authH()
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed');
+    dashSchedData = dashSchedData.filter(g => g._id !== id);
+    renderDashSchedule(dashSchedData);
+  } catch(err) { alert('Error: ' + err.message); }
+}
 
 loadDashboard();
 </script>
