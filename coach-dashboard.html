@@ -426,7 +426,7 @@ function renderDashboard(coach){
           </div>
           <div class="form-grid-2">
             <div class="field-group"><label class="field-label">Location / Field Name</label><input class="field-input" type="text" id="t-location" placeholder="e.g. Westside Sports Complex"></div>
-            <div class="field-group"><label class="field-label">Tryout Fee</label><input class="field-input" type="text" id="t-fee" placeholder="e.g. $45 Fee"></div>
+            <div class="field-group"><label class="field-label">Tryout Fee</label><input class="field-input" type="text" id="t-fee" placeholder="e.g. $45 Fee or Free"></div>
           </div>
           <button class="save-btn" id="add-tryout-btn" onclick="addTryout()">
             <span id="add-tryout-txt">Add Tryout</span>
@@ -536,7 +536,8 @@ async function addTryout(){
   const time=document.getElementById('t-time').value.trim();
   const location=document.getElementById('t-location').value.trim();
   const fee=document.getElementById('t-fee').value.trim();
-  if(!date||!time||!location||!fee){ showMsg('msg-tryout-add','Please fill in all tryout fields.','error'); return; }
+  if(!date||!time||!location){ showMsg('msg-tryout-add','Please fill in date, time and location.','error'); return; }
+  if(!fee) { document.getElementById('t-fee').value='Free'; }
   setLoading('add-tryout-btn','add-tryout-txt',true);
   try {
     const res=await fetch(`${API_BASE}/api/coach/tryouts`,{method:'POST',headers:authH(),body:JSON.stringify({date,time,location,fee})});
