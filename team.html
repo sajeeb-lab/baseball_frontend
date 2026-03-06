@@ -714,9 +714,7 @@ async function loadTeamSchedule(coachId) {
       state: g.state || '',
       result: g.result || ''
     }));
-    if (schSource.length > 0) {
-      document.getElementById('schedule-section').hidden = false;
-    }
+    document.getElementById('schedule-section').hidden = false;
     schFiltered = [...schSource];
     schRender();
   } catch(err) {
