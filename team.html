@@ -699,10 +699,29 @@ function renderPage(team) {
   // Default: show head coach
   if (allCoaches.length > 0) renderCoachDetail(allCoaches[0], 0);
 
-  // Show schedule section (empty for now)
-  document.getElementById('schedule-section').hidden = false;
-  schFiltered = [...schSource];
-  schRender();
+  // Load real schedule from API
+  loadTeamSchedule(team._id || team.id);
+}
+
+async function loadTeamSchedule(coachId) {
+  try {
+    const res  = await fetch(`${API_BASE}/api/teams/${coachId}/schedule`);
+    const data = await res.json();
+    schSource   = (data.schedule || []).map(g => ({
+      date:  g.date  || '',
+      event: g.event || '',
+      city:  g.city  || '',
+      state: g.state || '',
+      result: g.result || ''
+    }));
+    if (schSource.length > 0) {
+      document.getElementById('schedule-section').hidden = false;
+    }
+    schFiltered = [...schSource];
+    schRender();
+  } catch(err) {
+    console.error('[schedule]', err);
+  }
 }
 
 /* ── LOAD TRYOUTS from new API ── */
