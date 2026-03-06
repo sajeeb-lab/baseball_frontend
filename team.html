@@ -367,35 +367,8 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
     </div>
   </div>
 
-  <!-- TRYOUT FORM -->
-  <div style="margin-bottom:4rem;">
-    <div class="tryout-banner">
-      <h2>Interested in Trying Out?</h2>
-      <p>Please complete the form below.<br>We will be in touch soon!</p>
-    </div>
-    <div class="form-widget-container">
-      <iframe
-        src="https://link.msgsndr.com/widget/form/u507FgUkvKFd4ThSMzoS"
-        style="width:100%;height:100%;border:none;border-radius:3px"
-        id="inline-u507FgUkvKFd4ThSMzoS"
-        data-layout="{'id':'INLINE'}"
-        data-trigger-type="alwaysShow"
-        data-trigger-value=""
-        data-activation-type="alwaysActivated"
-        data-activation-value=""
-        data-deactivation-type="neverDeactivate"
-        data-deactivation-value=""
-        data-form-name="Trying Out"
-        data-height="904"
-        data-layout-iframe-id="inline-u507FgUkvKFd4ThSMzoS"
-        data-form-id="u507FgUkvKFd4ThSMzoS"
-        title="Trying Out"
-      ></iframe>
-    </div>
-  </div>
 
 </div>
-<script src="https://link.msgsndr.com/js/form_embed.js"></script>
 
 <!-- TRYOUT REGISTRATION MODAL -->
 <div class="tr-overlay" id="trOverlay">
@@ -633,6 +606,7 @@ async function loadTeam() {
     if (!res.ok) throw new Error(data.message || 'Team not found');
     renderPage(data.team);
     loadTryouts(teamId);
+    loadRoster(teamId);
   } catch (err) {
     showError(err.message);
   }
@@ -674,8 +648,7 @@ function renderPage(team) {
       </button>
     </div>`).join('');
 
-  // Roster: empty state (no roster API yet)
-  const rosterBody = `<tr><td colspan="6"><div class="empty-roster">No roster data available for this team.</div></td></tr>`;
+  const rosterBody = `<tr><td colspan="6"><div class="empty-roster" id="roster-empty">Loading roster…</div></td></tr>`;
 
   document.getElementById('main-content').innerHTML = `
     <!-- 1. Team Details -->
@@ -708,7 +681,7 @@ function renderPage(team) {
               <th>Position</th><th>B/T</th><th>HT/WT</th>
             </tr>
           </thead>
-          <tbody>${rosterBody}</tbody>
+          <tbody id="roster-body">${rosterBody}</tbody>
         </table>
       </div>
     </div>
@@ -772,17 +745,40 @@ async function loadTryouts(id) {
 }
 
 /* ── REGISTRATION FORM ── */
-document.getElementById('reg-submit-btn').addEventListener('click', function () {
+document.getElementById('reg-submit-btn').addEventListener('click', async function () {
   const name     = document.getElementById('reg-name').value.trim();
+  const jersey   = document.getElementById('reg-jersey').value.trim();
   const gradYear = document.getElementById('reg-gradyear').value.trim();
-  const position = document.getElementById('reg-position').value.trim();
+  const position = document.getElementById('reg-position').value;
+  const hw       = document.getElementById('reg-hw').value.trim();
+  const city     = document.getElementById('reg-city').value.trim();
+  const state    = document.getElementById('reg-state').value.trim();
+
   if (!name || !gradYear || !position) {
     alert('Please fill in at least Player Name, Grad Year, and Position.');
     return;
   }
-  document.getElementById('reg-form').style.display = 'none';
-  this.style.display = 'none';
-  document.getElementById('reg-success').style.display = 'block';
+
+  this.disabled = true;
+  this.textContent = 'Submitting…';
+
+  try {
+    const res = await fetch(`${API_BASE}/api/teams/${teamId}/roster`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, jersey, gradYear, position, hw, city, state })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to submit');
+    document.getElementById('reg-form').style.display = 'none';
+    this.style.display = 'none';
+    document.getElementById('reg-success').style.display = 'block';
+    loadRoster(teamId);
+  } catch (err) {
+    alert('Error: ' + err.message);
+    this.disabled = false;
+    this.innerHTML = 'Submit Registration <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>';
+  }
 });
 
 /* ── TRYOUT MODAL ── */
@@ -828,6 +824,41 @@ document.getElementById('tr-submit-btn').addEventListener('click', function () {
     </div>`;
   document.getElementById('tr-modal-foot').style.display = 'none';
 });
+
+/* ── LOAD ROSTER ── */
+async function loadRoster(id) {
+  try {
+    const res  = await fetch(`${API_BASE}/api/teams/${id}/roster`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    const players = data.players || [];
+    const tbody = document.getElementById('roster-body');
+    if (!tbody) return;
+    if (!players.length) {
+      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-roster">No players have registered yet.</div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = players.map(p => `
+      <tr>
+        <td>
+          <div class="player-cell">
+            <div class="player-avatar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            </div>
+            <span class="player-name">${esc(p.name)}</span>
+          </div>
+        </td>
+        <td>${esc(p.jersey || '—')}</td>
+        <td>${esc(p.gradYear || '—')}</td>
+        <td>${esc(p.position || '—')}</td>
+        <td>—</td>
+        <td>${esc(p.hw || '—')}</td>
+      </tr>`).join('');
+  } catch (err) {
+    const tbody = document.getElementById('roster-body');
+    if (tbody) tbody.innerHTML = `<tr><td colspan="6"><div class="empty-roster">No players have registered yet.</div></td></tr>`;
+  }
+}
 
 /* ── ERROR STATE ── */
 function showError(msg) {
