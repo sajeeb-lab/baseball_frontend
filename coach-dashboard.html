@@ -69,6 +69,24 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
 .spinner{width:32px;height:32px;border:3px solid var(--mid);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 1rem}
 @keyframes spin{to{transform:rotate(360deg)}}
 .btn-spinner{width:15px;height:15px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle}
+
+.photo-upload-wrap{display:flex;align-items:center;gap:1.4rem;margin-bottom:1.3rem;padding:1.1rem 1.2rem;background:var(--light);border-radius:8px;border:1.5px solid var(--mid)}
+.photo-preview{width:72px;height:72px;border-radius:50%;background:#dce3ec;border:2px solid var(--mid);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.photo-preview img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.photo-preview svg{width:32px;height:32px;color:#aab}
+.photo-upload-right{flex:1;min-width:0}
+.photo-upload-right .field-label{margin-bottom:.5rem;display:block}
+.photo-upload-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--white);border:1.5px solid var(--mid);border-radius:6px;padding:8px 14px;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);cursor:pointer;transition:all .15s}
+.photo-upload-btn:hover{border-color:var(--red);color:var(--red)}
+.photo-upload-btn svg{width:14px;height:14px}
+.photo-upload-hint{font-size:.72rem;color:var(--sub);margin-top:.4rem}
+.photo-uploading{font-size:.75rem;color:var(--sub);margin-top:.4rem;display:none}
+input[type="file"].hidden-file{display:none}
+.asst-photo-wrap{display:flex;align-items:center;gap:1rem;margin-bottom:1.1rem;padding:.9rem 1rem;background:var(--light);border-radius:8px;border:1.5px solid var(--mid)}
+.asst-photo-preview{width:52px;height:52px;border-radius:50%;background:#dce3ec;border:2px solid var(--mid);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.asst-photo-preview img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.asst-photo-preview svg{width:24px;height:24px;color:#aab}
+
 @media(max-width:700px){.form-grid-2,.form-grid-3{grid-template-columns:1fr}.page-header-inner{flex-direction:column;align-items:flex-start}.section-tabs{gap:.4rem}.section-tab{padding:8px 12px;font-size:.72rem}}
 </style>
 </head>
@@ -171,6 +189,21 @@ function renderDashboard(coach){
             Your profile is displayed publicly on your team page as the Head Coach.
           </div>
           <div class="msg" id="msg-profile"></div>
+          <div class="photo-upload-wrap">
+            <div class="photo-preview" id="p-photo-preview">
+              ${coach.image ? `<img src="${esc(coach.image)}" id="p-photo-img">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`}
+            </div>
+            <div class="photo-upload-right">
+              <span class="field-label">Profile Photo</span>
+              <input type="file" accept="image/*" class="hidden-file" id="p-photo-input" onchange="handlePhotoUpload(this,'p-photo-preview','p-photo-status','p-photo-img')">
+              <button class="photo-upload-btn" onclick="document.getElementById('p-photo-input').click()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Upload Photo
+              </button>
+              <div class="photo-upload-hint">JPG or PNG, max 5MB</div>
+              <div class="photo-uploading" id="p-photo-status">Uploading…</div>
+            </div>
+          </div>
           <div class="form-grid-2">
             <div class="field-group">
               <label class="field-label">First Name</label>
@@ -251,6 +284,21 @@ function renderDashboard(coach){
           <div class="msg" id="msg-assistants"></div>
 
           <div class="asst-label">Assistant Coach 1</div>
+          <div class="asst-photo-wrap">
+            <div class="asst-photo-preview" id="a1-photo-preview">
+              ${coach.assistant1?.image ? `<img src="${esc(coach.assistant1.image)}" id="a1-photo-img">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`}
+            </div>
+            <div class="photo-upload-right">
+              <span class="field-label">Assistant 1 Photo</span>
+              <input type="file" accept="image/*" class="hidden-file" id="a1-photo-input" onchange="handleAsstPhotoUpload(this,'a1-photo-preview','a1-photo-status','a1-photo-img','a1-image-url')">
+              <button class="photo-upload-btn" onclick="document.getElementById('a1-photo-input').click()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Upload Photo
+              </button>
+              <div class="photo-uploading" id="a1-photo-status">Uploading…</div>
+            </div>
+          </div>
+          <input type="hidden" id="a1-image-url" value="${esc(coach.assistant1?.image||'')}">
           <div class="form-grid-2">
             <div class="field-group"><label class="field-label">Full Name</label><input class="field-input" type="text" id="a1-name" value="${esc(coach.assistant1?.name||'')}" placeholder="Full Name"></div>
             <div class="field-group"><label class="field-label">Role / Title</label><input class="field-input" type="text" id="a1-role" value="${esc(coach.assistant1?.role||'Assistant Coach')}" placeholder="e.g. Pitching Coach"></div>
@@ -264,6 +312,21 @@ function renderDashboard(coach){
           <hr class="section-divider">
 
           <div class="asst-label">Assistant Coach 2</div>
+          <div class="asst-photo-wrap">
+            <div class="asst-photo-preview" id="a2-photo-preview">
+              ${coach.assistant2?.image ? `<img src="${esc(coach.assistant2.image)}" id="a2-photo-img">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`}
+            </div>
+            <div class="photo-upload-right">
+              <span class="field-label">Assistant 2 Photo</span>
+              <input type="file" accept="image/*" class="hidden-file" id="a2-photo-input" onchange="handleAsstPhotoUpload(this,'a2-photo-preview','a2-photo-status','a2-photo-img','a2-image-url')">
+              <button class="photo-upload-btn" onclick="document.getElementById('a2-photo-input').click()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Upload Photo
+              </button>
+              <div class="photo-uploading" id="a2-photo-status">Uploading…</div>
+            </div>
+          </div>
+          <input type="hidden" id="a2-image-url" value="${esc(coach.assistant2?.image||'')}">
           <div class="form-grid-2">
             <div class="field-group"><label class="field-label">Full Name</label><input class="field-input" type="text" id="a2-name" value="${esc(coach.assistant2?.name||'')}" placeholder="Full Name"></div>
             <div class="field-group"><label class="field-label">Role / Title</label><input class="field-input" type="text" id="a2-role" value="${esc(coach.assistant2?.role||'Assistant Coach')}" placeholder="e.g. Hitting Coach"></div>
@@ -359,8 +422,8 @@ async function saveAssistants(){
   setLoading('save-asst-btn','save-asst-txt',true);
   try {
     const payload={
-      assistant1:{ name:document.getElementById('a1-name').value.trim(), role:document.getElementById('a1-role').value.trim()||'Assistant Coach', email:document.getElementById('a1-email').value.trim(), cell:document.getElementById('a1-cell').value.trim(), bio:document.getElementById('a1-bio').value.trim() },
-      assistant2:{ name:document.getElementById('a2-name').value.trim(), role:document.getElementById('a2-role').value.trim()||'Assistant Coach', email:document.getElementById('a2-email').value.trim(), cell:document.getElementById('a2-cell').value.trim(), bio:document.getElementById('a2-bio').value.trim() }
+      assistant1:{ name:document.getElementById('a1-name').value.trim(), role:document.getElementById('a1-role').value.trim()||'Assistant Coach', email:document.getElementById('a1-email').value.trim(), cell:document.getElementById('a1-cell').value.trim(), bio:document.getElementById('a1-bio').value.trim(), image:document.getElementById('a1-image-url')?.value||'' },
+      assistant2:{ name:document.getElementById('a2-name').value.trim(), role:document.getElementById('a2-role').value.trim()||'Assistant Coach', email:document.getElementById('a2-email').value.trim(), cell:document.getElementById('a2-cell').value.trim(), bio:document.getElementById('a2-bio').value.trim(), image:document.getElementById('a2-image-url')?.value||'' }
     };
     const res=await fetch(`${API_BASE}/api/coach/update-assistants`,{method:'PUT',headers:authH(),body:JSON.stringify(payload)});
     const data=await res.json();
@@ -428,6 +491,85 @@ async function deleteTryout(id){
     if(list&&!list.children.length) document.getElementById('tryouts-list-wrap').innerHTML=`<div class="no-tryouts-dash">No tryouts scheduled yet. Create one above!</div>`;
     showMsg('msg-tryout-list','✅ Tryout deleted.','success');
   } catch(err){ showMsg('msg-tryout-list',err.message,'error'); }
+}
+
+/* ── PHOTO UPLOAD — HEAD COACH ── */
+async function handlePhotoUpload(input, previewId, statusId, imgId) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { alert('Image must be under 5MB'); return; }
+
+  const status = document.getElementById(statusId);
+  status.style.display = 'block';
+
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    const base64 = e.target.result.split(',')[1];
+    try {
+      const res  = await fetch(`${API_BASE}/api/coach/upload-image`, {
+        method: 'POST',
+        headers: authH(),
+        body: JSON.stringify({ base64, fileName: file.name, mimeType: file.type })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+
+      // Update preview
+      const preview = document.getElementById(previewId);
+      let img = document.getElementById(imgId);
+      if (!img) {
+        preview.innerHTML = `<img id="${imgId}" src="${data.imageUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+      } else {
+        img.src = data.imageUrl;
+      }
+      status.textContent = '✅ Photo saved!';
+      setTimeout(() => { status.style.display = 'none'; }, 2500);
+    } catch(err) {
+      status.textContent = '⚠️ ' + err.message;
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ── PHOTO UPLOAD — ASSISTANT (stores URL in hidden input, saved on Save Assistants) ── */
+async function handleAsstPhotoUpload(input, previewId, statusId, imgId, hiddenId) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { alert('Image must be under 5MB'); return; }
+
+  const status = document.getElementById(statusId);
+  status.style.display = 'block';
+  status.textContent = 'Uploading…';
+
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    const base64 = e.target.result.split(',')[1];
+    try {
+      const res  = await fetch(`${API_BASE}/api/coach/upload-image`, {
+        method: 'POST',
+        headers: authH(),
+        body: JSON.stringify({ base64, fileName: file.name, mimeType: file.type })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+
+      // Update preview
+      const preview = document.getElementById(previewId);
+      let img = document.getElementById(imgId);
+      if (!img) {
+        preview.innerHTML = `<img id="${imgId}" src="${data.imageUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+      } else {
+        img.src = data.imageUrl;
+      }
+      // Store in hidden input so saveAssistants picks it up
+      document.getElementById(hiddenId).value = data.imageUrl;
+      status.textContent = '✅ Photo ready — click Save Assistants to confirm';
+      setTimeout(() => { status.style.display = 'none'; }, 3000);
+    } catch(err) {
+      status.textContent = '⚠️ ' + err.message;
+    }
+  };
+  reader.readAsDataURL(file);
 }
 
 loadDashboard();
