@@ -648,7 +648,7 @@ function renderPage(team) {
       </button>
     </div>`).join('');
 
-  const rosterBody = `<tr><td colspan="6"><div class="empty-roster" id="roster-empty">Loading roster…</div></td></tr>`;
+  const rosterBody = `<tr><td colspan="5"><div class="empty-roster" id="roster-empty">Loading roster…</div></td></tr>`;
 
   document.getElementById('main-content').innerHTML = `
     <!-- 1. Team Details -->
@@ -678,7 +678,7 @@ function renderPage(team) {
           <thead>
             <tr>
               <th>Player</th><th>Jersey</th><th>Grad Year</th>
-              <th>Position</th><th>B/T</th><th>HT/WT</th>
+              <th>Position</th><th>HT/WT</th>
             </tr>
           </thead>
           <tbody id="roster-body">${rosterBody}</tbody>
@@ -856,7 +856,7 @@ async function loadRoster(id) {
     const tbody = document.getElementById('roster-body');
     if (!tbody) return;
     if (!players.length) {
-      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-roster">No players have registered yet.</div></td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5"><div class="empty-roster">No players have registered yet.</div></td></tr>`;
       return;
     }
     tbody.innerHTML = players.map(p => `
@@ -872,12 +872,11 @@ async function loadRoster(id) {
         <td>${esc(p.jersey || '—')}</td>
         <td>${esc(p.gradYear || '—')}</td>
         <td>${esc(p.position || '—')}</td>
-        <td>—</td>
         <td>${esc(p.hw || '—')}</td>
       </tr>`).join('');
   } catch (err) {
     const tbody = document.getElementById('roster-body');
-    if (tbody) tbody.innerHTML = `<tr><td colspan="6"><div class="empty-roster">No players have registered yet.</div></td></tr>`;
+    if (tbody) tbody.innerHTML = `<tr><td colspan="5"><div class="empty-roster">No players have registered yet.</div></td></tr>`;
   }
 }
 
