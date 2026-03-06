@@ -290,7 +290,7 @@ function renderDashboard(coach){
             </div>
             <div class="photo-upload-right">
               <span class="field-label">Assistant 1 Photo</span>
-              <input type="file" accept="image/*" class="hidden-file" id="a1-photo-input" onchange="handleAsstPhotoUpload(this,'a1-photo-preview','a1-photo-status','a1-photo-img','a1-image-url')">
+              <input type="file" accept="image/*" class="hidden-file" id="a1-photo-input" onchange="handleAsstPhotoUpload(this,'a1-photo-preview','a1-photo-status','a1-photo-img','a1-image-url','asst1')">
               <button class="photo-upload-btn" onclick="document.getElementById('a1-photo-input').click()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                 Upload Photo
@@ -318,7 +318,7 @@ function renderDashboard(coach){
             </div>
             <div class="photo-upload-right">
               <span class="field-label">Assistant 2 Photo</span>
-              <input type="file" accept="image/*" class="hidden-file" id="a2-photo-input" onchange="handleAsstPhotoUpload(this,'a2-photo-preview','a2-photo-status','a2-photo-img','a2-image-url')">
+              <input type="file" accept="image/*" class="hidden-file" id="a2-photo-input" onchange="handleAsstPhotoUpload(this,'a2-photo-preview','a2-photo-status','a2-photo-img','a2-image-url','asst2')">
               <button class="photo-upload-btn" onclick="document.getElementById('a2-photo-input').click()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                 Upload Photo
@@ -509,7 +509,7 @@ async function handlePhotoUpload(input, previewId, statusId, imgId) {
       const res  = await fetch(`${API_BASE}/api/coach/upload-image`, {
         method: 'POST',
         headers: authH(),
-        body: JSON.stringify({ base64, fileName: file.name, mimeType: file.type })
+        body: JSON.stringify({ base64, fileName: file.name, mimeType: file.type, saveToProfile: true, slot: 'head' })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
@@ -532,7 +532,7 @@ async function handlePhotoUpload(input, previewId, statusId, imgId) {
 }
 
 /* ── PHOTO UPLOAD — ASSISTANT (stores URL in hidden input, saved on Save Assistants) ── */
-async function handleAsstPhotoUpload(input, previewId, statusId, imgId, hiddenId) {
+async function handleAsstPhotoUpload(input, previewId, statusId, imgId, hiddenId, slot) {
   const file = input.files[0];
   if (!file) return;
   if (file.size > 5 * 1024 * 1024) { alert('Image must be under 5MB'); return; }
@@ -548,7 +548,7 @@ async function handleAsstPhotoUpload(input, previewId, statusId, imgId, hiddenId
       const res  = await fetch(`${API_BASE}/api/coach/upload-image`, {
         method: 'POST',
         headers: authH(),
-        body: JSON.stringify({ base64, fileName: file.name, mimeType: file.type })
+        body: JSON.stringify({ base64, fileName: file.name, mimeType: file.type, saveToProfile: true, slot: 'head' })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
