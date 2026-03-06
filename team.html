@@ -626,8 +626,8 @@ function renderPage(team) {
     cell:  team.phonePublic || '',
     image: team.image       || '',
   });
-  if (team.assistant1?.name) allCoaches.push({ name: team.assistant1.name, role: team.assistant1.role || 'Assistant Coach', bio: team.assistant1.bio || '', email: team.assistant1.email || '', cell: team.assistant1.cell || '', image: '' });
-  if (team.assistant2?.name) allCoaches.push({ name: team.assistant2.name, role: team.assistant2.role || 'Assistant Coach', bio: team.assistant2.bio || '', email: team.assistant2.email || '', cell: team.assistant2.cell || '', image: '' });
+  if (team.assistant1?.name) allCoaches.push({ name: team.assistant1.name, role: team.assistant1.role || 'Assistant Coach', bio: team.assistant1.bio || '', email: team.assistant1.email || '', cell: team.assistant1.cell || '', image: team.assistant1.image || '' });
+  if (team.assistant2?.name) allCoaches.push({ name: team.assistant2.name, role: team.assistant2.role || 'Assistant Coach', bio: team.assistant2.bio || '', email: team.assistant2.email || '', cell: team.assistant2.cell || '', image: team.assistant2.image || '' });
 
   const locParts = [team.location, fullState].filter(Boolean);
   let detailRows = '';
