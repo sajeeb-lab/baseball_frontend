@@ -87,6 +87,41 @@ input[type="file"].hidden-file{display:none}
 .asst-photo-preview img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .asst-photo-preview svg{width:24px;height:24px;color:#aab}
 
+
+/* ROSTER MANAGEMENT */
+.roster-mgmt-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.roster-mgmt-table thead tr{background:var(--navy)}
+.roster-mgmt-table thead th{padding:10px 14px;text-align:left;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;color:var(--white);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.roster-mgmt-table tbody tr{border-bottom:1px solid var(--mid);transition:background .12s}
+.roster-mgmt-table tbody tr:last-child{border-bottom:none}
+.roster-mgmt-table tbody tr:hover{background:var(--light)}
+.roster-mgmt-table td{padding:10px 14px;vertical-align:middle;font-size:.83rem}
+.roster-mgmt-table td:first-child{font-weight:600;color:var(--navy)}
+.roster-edit-btn{display:inline-flex;align-items:center;gap:4px;background:none;border:1.5px solid var(--mid);border-radius:5px;padding:5px 10px;font-family:'Oswald',sans-serif;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);cursor:pointer;transition:all .15s;margin-right:4px}
+.roster-edit-btn:hover{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.roster-del-btn{display:inline-flex;align-items:center;gap:4px;background:none;border:1.5px solid #f5c6cb;border-radius:5px;padding:5px 10px;font-family:'Oswald',sans-serif;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--red);cursor:pointer;transition:all .15s}
+.roster-del-btn:hover{background:var(--red);color:var(--white);border-color:var(--red)}
+.roster-del-btn svg,.roster-edit-btn svg{width:12px;height:12px}
+.empty-roster-dash{text-align:center;padding:2.5rem;color:var(--sub);font-size:.88rem;background:var(--light);border-radius:0 0 6px 6px}
+.roster-table-wrap{overflow-x:auto}
+/* Edit modal */
+.edit-overlay{position:fixed;inset:0;background:rgba(10,22,40,.55);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s}
+.edit-overlay.open{opacity:1;pointer-events:all}
+.edit-modal{background:var(--white);border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.25);width:100%;max-width:560px;overflow:hidden;transform:translateY(20px) scale(.97);transition:transform .28s cubic-bezier(.4,0,.2,1)}
+.edit-overlay.open .edit-modal{transform:translateY(0) scale(1)}
+.edit-modal-head{background:var(--red);padding:1rem 1.4rem;display:flex;align-items:center;justify-content:space-between}
+.edit-modal-head h3{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.08em}
+.edit-modal-close{background:rgba(255,255,255,.2);border:none;color:var(--white);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
+.edit-modal-close:hover{background:rgba(255,255,255,.35)}
+.edit-modal-close svg{width:13px;height:13px}
+.edit-modal-body{padding:1.4rem 1.5rem 1.6rem}
+.edit-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem 1.2rem}
+.edit-modal-foot{padding:.9rem 1.4rem;border-top:1px solid var(--mid);display:flex;justify-content:flex-end;gap:.6rem}
+.edit-cancel-btn{background:none;border:1.5px solid var(--mid);border-radius:6px;padding:9px 20px;font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s}
+.edit-cancel-btn:hover{border-color:var(--navy);color:var(--navy)}
+.edit-save-btn{background:var(--navy);border:none;border-radius:6px;padding:9px 24px;font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--white);cursor:pointer;transition:background .15s}
+.edit-save-btn:hover{background:#162845}
+
 @media(max-width:700px){.form-grid-2,.form-grid-3{grid-template-columns:1fr}.page-header-inner{flex-direction:column;align-items:flex-start}.section-tabs{gap:.4rem}.section-tab{padding:8px 12px;font-size:.72rem}}
 </style>
 </head>
@@ -176,6 +211,10 @@ function renderDashboard(coach){
       <button class="section-tab" id="tab-tryouts" onclick="switchPanel('tryouts')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
         Tryouts
+      </button>
+      <button class="section-tab" id="tab-roster" onclick="switchPanel('roster')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="23" y2="17"/><line x1="20" y1="14" x2="26" y2="14"/></svg>
+        Team Roster
       </button>
     </div>
 
@@ -345,6 +384,26 @@ function renderDashboard(coach){
       </div>
     </div>
 
+    <!-- ROSTER -->
+    <div class="dash-panel" id="panel-roster">
+      <div class="card">
+        <div class="card-header">Team Roster</div>
+        <div class="roster-table-wrap">
+          <table class="roster-mgmt-table">
+            <thead>
+              <tr>
+                <th>Player</th><th>Jersey</th><th>Grad Year</th>
+                <th>Position</th><th>HT/WT</th><th>City</th><th>State</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="dash-roster-body">
+              <tr><td colspan="8"><div class="empty-roster-dash">Loading roster…</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <!-- TRYOUTS -->
     <div class="dash-panel" id="panel-tryouts">
       <div class="card">
@@ -376,6 +435,7 @@ function renderDashboard(coach){
   `;
 
   loadTryouts();
+  loadDashRoster();
 }
 
 /* ── SAVE PROFILE ── */
@@ -572,7 +632,169 @@ async function handleAsstPhotoUpload(input, previewId, statusId, imgId, hiddenId
   reader.readAsDataURL(file);
 }
 
+/* ── DASHBOARD ROSTER ── */
+let dashRosterData = [];
+let editingPlayerId = null;
+
+async function loadDashRoster() {
+  const coachId = localStorage.getItem('coach_id');
+  if (!coachId) return;
+  try {
+    const res  = await fetch(`${API_BASE}/api/teams/${coachId}/roster`);
+    const data = await res.json();
+    dashRosterData = data.players || [];
+    renderDashRoster(dashRosterData);
+  } catch(err) {
+    const tbody = document.getElementById('dash-roster-body');
+    if (tbody) tbody.innerHTML = `<tr><td colspan="8"><div class="empty-roster-dash">Failed to load roster.</div></td></tr>`;
+  }
+}
+
+function renderDashRoster(players) {
+  const tbody = document.getElementById('dash-roster-body');
+  if (!tbody) return;
+  if (!players.length) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty-roster-dash">No players have registered yet.</div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = players.map(p => `
+    <tr id="prow-${esc(p._id)}">
+      <td style="font-weight:600;color:var(--navy)">${esc(p.name)}</td>
+      <td>${esc(p.jersey||'—')}</td>
+      <td>${esc(p.gradYear||'—')}</td>
+      <td>${esc(p.position||'—')}</td>
+      <td>${esc(p.hw||'—')}</td>
+      <td>${esc(p.city||'—')}</td>
+      <td>${esc(p.state||'—')}</td>
+      <td style="white-space:nowrap">
+        <button class="roster-edit-btn" onclick="openEditPlayer('${esc(p._id)}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Edit
+        </button>
+        <button class="roster-del-btn" onclick="deletePlayer('${esc(p._id)}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          Delete
+        </button>
+      </td>
+    </tr>`).join('');
+}
+
+function openEditPlayer(id) {
+  const p = dashRosterData.find(x => x._id === id);
+  if (!p) return;
+  editingPlayerId = id;
+  document.getElementById('ep-name').value     = p.name     || '';
+  document.getElementById('ep-jersey').value   = p.jersey   || '';
+  document.getElementById('ep-gradyear').value = p.gradYear || '';
+  document.getElementById('ep-position').value = p.position || '';
+  document.getElementById('ep-hw').value       = p.hw       || '';
+  document.getElementById('ep-city').value     = p.city     || '';
+  document.getElementById('ep-state').value    = p.state    || '';
+  document.getElementById('edit-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeEditModal() {
+  document.getElementById('edit-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  editingPlayerId = null;
+}
+
+async function saveEditPlayer() {
+  if (!editingPlayerId) return;
+  const coachId = localStorage.getItem('coach_id');
+  const payload = {
+    name:     document.getElementById('ep-name').value.trim(),
+    jersey:   document.getElementById('ep-jersey').value.trim(),
+    gradYear: document.getElementById('ep-gradyear').value.trim(),
+    position: document.getElementById('ep-position').value.trim(),
+    hw:       document.getElementById('ep-hw').value.trim(),
+    city:     document.getElementById('ep-city').value.trim(),
+    state:    document.getElementById('ep-state').value.trim(),
+  };
+  if (!payload.name) { alert('Player name is required'); return; }
+  const btn = document.getElementById('ep-save-btn');
+  btn.textContent = 'Saving…'; btn.disabled = true;
+  try {
+    const res  = await fetch(`${API_BASE}/api/teams/${coachId}/roster/${editingPlayerId}`, {
+      method: 'PUT',
+      headers: authH(),
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed');
+    closeEditModal();
+    await loadDashRoster();
+  } catch(err) { alert('Error: ' + err.message); }
+  finally { btn.textContent = 'Save Changes'; btn.disabled = false; }
+}
+
+async function deletePlayer(id) {
+  if (!confirm('Remove this player from the roster?')) return;
+  const coachId = localStorage.getItem('coach_id');
+  try {
+    const res  = await fetch(`${API_BASE}/api/teams/${coachId}/roster/${id}`, {
+      method: 'DELETE',
+      headers: authH()
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed');
+    dashRosterData = dashRosterData.filter(p => p._id !== id);
+    renderDashRoster(dashRosterData);
+  } catch(err) { alert('Error: ' + err.message); }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEditModal(); });
+
 loadDashboard();
 </script>
+
+<!-- EDIT PLAYER MODAL -->
+<div class="edit-overlay" id="edit-overlay">
+  <div class="edit-modal">
+    <div class="edit-modal-head">
+      <h3>Edit Player</h3>
+      <button class="edit-modal-close" onclick="closeEditModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="edit-modal-body">
+      <div class="edit-modal-grid">
+        <div class="field-group" style="grid-column:1/-1">
+          <label class="field-label">Player Name</label>
+          <input class="field-input" type="text" id="ep-name" placeholder="Full Name">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Jersey #</label>
+          <input class="field-input" type="text" id="ep-jersey" placeholder="e.g. 12">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Grad Year</label>
+          <input class="field-input" type="text" id="ep-gradyear" placeholder="e.g. 2026">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Position</label>
+          <input class="field-input" type="text" id="ep-position" placeholder="e.g. OF">
+        </div>
+        <div class="field-group">
+          <label class="field-label">HT / WT</label>
+          <input class="field-input" type="text" id="ep-hw" placeholder="e.g. 6'0 / 185lb">
+        </div>
+        <div class="field-group">
+          <label class="field-label">City</label>
+          <input class="field-input" type="text" id="ep-city" placeholder="City">
+        </div>
+        <div class="field-group">
+          <label class="field-label">State</label>
+          <input class="field-input" type="text" id="ep-state" placeholder="e.g. TN" maxlength="2">
+        </div>
+      </div>
+    </div>
+    <div class="edit-modal-foot">
+      <button class="edit-cancel-btn" onclick="closeEditModal()">Cancel</button>
+      <button class="edit-save-btn" id="ep-save-btn" onclick="saveEditPlayer()">Save Changes</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
