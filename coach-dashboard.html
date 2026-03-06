@@ -175,7 +175,6 @@ async function loadDashboard(){
     const res=await fetch(`${API_BASE}/api/coach/me`,{headers:authH()});
     if(res.status===401){ handleLogout(); return; }
     const {coach}=await res.json();
-    if (coach._id) localStorage.setItem('coach_id', coach._id);
     renderDashboard(coach);
   } catch(err){
     document.getElementById('dash-main').innerHTML=`<div class="card"><div class="card-body" style="text-align:center;color:var(--red);padding:3rem">${esc(err.message)}</div></div>`;
@@ -231,7 +230,7 @@ function renderDashboard(coach){
           <div class="msg" id="msg-profile"></div>
           <div class="photo-upload-wrap">
             <div class="photo-preview" id="p-photo-preview">
-              ${coach.image ? '<img src="' + esc(coach.image) + '" id="p-photo-img">' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>'}
+              ${coach.image ? `<img src="${esc(coach.image)}" id="p-photo-img">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`}
             </div>
             <div class="photo-upload-right">
               <span class="field-label">Profile Photo</span>
@@ -326,7 +325,7 @@ function renderDashboard(coach){
           <div class="asst-label">Assistant Coach 1</div>
           <div class="asst-photo-wrap">
             <div class="asst-photo-preview" id="a1-photo-preview">
-              ${coach.assistant1?.image ? '<img src="' + esc(coach.assistant1.image) + '" id="a1-photo-img">' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>'}
+              ${coach.assistant1?.image ? `<img src="${esc(coach.assistant1.image)}" id="a1-photo-img">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`}
             </div>
             <div class="photo-upload-right">
               <span class="field-label">Assistant 1 Photo</span>
@@ -354,7 +353,7 @@ function renderDashboard(coach){
           <div class="asst-label">Assistant Coach 2</div>
           <div class="asst-photo-wrap">
             <div class="asst-photo-preview" id="a2-photo-preview">
-              ${coach.assistant2?.image ? '<img src="' + esc(coach.assistant2.image) + '" id="a2-photo-img">' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>'}
+              ${coach.assistant2?.image ? `<img src="${esc(coach.assistant2.image)}" id="a2-photo-img">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`}
             </div>
             <div class="photo-upload-right">
               <span class="field-label">Assistant 2 Photo</span>
@@ -412,26 +411,8 @@ function renderDashboard(coach){
         <div class="card-body">
           <div class="msg" id="msg-tryout-add"></div>
           <div class="form-grid-2">
-            <div class="field-group">
-              <label class="field-label">Date</label>
-              <div style="position:relative">
-                <input class="field-input" type="text" id="t-date" placeholder="e.g. June 10, 2026" autocomplete="off" style="padding-right:42px">
-                <input type="date" id="t-date-picker" style="position:absolute;right:0;top:0;width:40px;height:100%;opacity:0;cursor:pointer;border:none" onchange="document.getElementById('t-date').value = formatDateDisplay(this.value)">
-                <div onclick="document.getElementById('t-date-picker').showPicker()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--sub)">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-                </div>
-              </div>
-            </div>
-            <div class="field-group">
-              <label class="field-label">Start Time</label>
-              <div style="position:relative">
-                <input class="field-input" type="text" id="t-time" placeholder="e.g. 4:00 PM – 7:00 PM" autocomplete="off" style="padding-right:42px">
-                <input type="time" id="t-time-picker" style="position:absolute;right:0;top:0;width:40px;height:100%;opacity:0;cursor:pointer;border:none" onchange="document.getElementById('t-time').value = formatTimeDisplay(this.value)">
-                <div onclick="document.getElementById('t-time-picker').showPicker()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--sub)">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                </div>
-              </div>
-            </div>
+            <div class="field-group"><label class="field-label">Date</label><input class="field-input" type="text" id="t-date" placeholder="e.g. June 10, 2026"></div>
+            <div class="field-group"><label class="field-label">Time</label><input class="field-input" type="text" id="t-time" placeholder="e.g. 4:00 PM – 7:00 PM"></div>
           </div>
           <div class="form-grid-2">
             <div class="field-group"><label class="field-label">Location / Field Name</label><input class="field-input" type="text" id="t-location" placeholder="e.g. Westside Sports Complex"></div>
@@ -471,7 +452,7 @@ async function saveProfile(){
     const res=await fetch(`${API_BASE}/api/coach/update-profile`,{method:'PUT',headers:authH(),body:JSON.stringify(payload)});
     const data=await res.json();
     if(!res.ok) throw new Error(data.message||'Save failed');
-    showMsg('msg-profile','Profile saved!','success');
+    showMsg('msg-profile','✅ Profile saved!','success');
     document.getElementById('dash-title').textContent=`${payload.firstName} ${payload.lastName}`;
   } catch(err){ showMsg('msg-profile',err.message,'error'); }
   finally{ setLoading('save-profile-btn','save-profile-txt',false,'Save Profile'); }
@@ -490,7 +471,7 @@ async function saveTeamDetails(){
     const res=await fetch(`${API_BASE}/api/coach/update-profile`,{method:'PUT',headers:authH(),body:JSON.stringify(payload)});
     const data=await res.json();
     if(!res.ok) throw new Error(data.message||'Save failed');
-    showMsg('msg-teamdetails','Team details saved!','success');
+    showMsg('msg-teamdetails','✅ Team details saved!','success');
     document.getElementById('dash-sub').textContent=`Head Coach — ${payload.teamName}`;
   } catch(err){ showMsg('msg-teamdetails',err.message,'error'); }
   finally{ setLoading('save-td-btn','save-td-txt',false,'Save Team Details'); }
@@ -507,7 +488,7 @@ async function saveAssistants(){
     const res=await fetch(`${API_BASE}/api/coach/update-assistants`,{method:'PUT',headers:authH(),body:JSON.stringify(payload)});
     const data=await res.json();
     if(!res.ok) throw new Error(data.message||'Save failed');
-    showMsg('msg-assistants','Assistant coaches saved!','success');
+    showMsg('msg-assistants','✅ Assistant coaches saved!','success');
   } catch(err){ showMsg('msg-assistants',err.message,'error'); }
   finally{ setLoading('save-asst-btn','save-asst-txt',false,'Save Assistants'); }
 }
@@ -530,7 +511,7 @@ function renderTryoutsList(tryouts){
     <div class="tryout-item" id="tryout-${esc(t._id)}">
       <div>
         <div class="tryout-item-date">${esc(t.date)}<span class="tryout-item-fee">${esc(t.fee)}</span></div>
-        <div class="tryout-item-meta">${esc(t.time)} &nbsp;·&nbsp; ${esc(t.location)}</div>
+        <div class="tryout-item-meta">🕐 ${esc(t.time)} &nbsp;·&nbsp; 📍 ${esc(t.location)}</div>
       </div>
       <button class="delete-btn" onclick="deleteTryout('${esc(t._id)}')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
@@ -552,7 +533,7 @@ async function addTryout(){
     const data=await res.json();
     if(!res.ok) throw new Error(data.message||'Failed');
     ['t-date','t-time','t-location','t-fee'].forEach(id=>{ document.getElementById(id).value=''; });
-    showMsg('msg-tryout-add','Tryout added!','success');
+    showMsg('msg-tryout-add','✅ Tryout added!','success');
     loadTryouts();
   } catch(err){ showMsg('msg-tryout-add',err.message,'error'); }
   finally{ setLoading('add-tryout-btn','add-tryout-txt',false,'Add Tryout'); }
@@ -568,7 +549,7 @@ async function deleteTryout(id){
     document.getElementById('tryout-'+id)?.remove();
     const list=document.querySelector('.tryouts-list');
     if(list&&!list.children.length) document.getElementById('tryouts-list-wrap').innerHTML=`<div class="no-tryouts-dash">No tryouts scheduled yet. Create one above!</div>`;
-    showMsg('msg-tryout-list','Tryout deleted.','success');
+    showMsg('msg-tryout-list','✅ Tryout deleted.','success');
   } catch(err){ showMsg('msg-tryout-list',err.message,'error'); }
 }
 
@@ -601,10 +582,10 @@ async function handlePhotoUpload(input, previewId, statusId, imgId) {
       } else {
         img.src = data.imageUrl;
       }
-      status.textContent = 'Photo saved!';
+      status.textContent = '✅ Photo saved!';
       setTimeout(() => { status.style.display = 'none'; }, 2500);
     } catch(err) {
-      status.textContent = '"Error: " + err.message;
+      status.textContent = '⚠️ ' + err.message;
     }
   };
   reader.readAsDataURL(file);
@@ -642,10 +623,10 @@ async function handleAsstPhotoUpload(input, previewId, statusId, imgId, hiddenId
       }
       // Store in hidden input so saveAssistants picks it up
       document.getElementById(hiddenId).value = data.imageUrl;
-      status.textContent = 'Photo ready — click Save Assistants to confirm';
+      status.textContent = '✅ Photo ready — click Save Assistants to confirm';
       setTimeout(() => { status.style.display = 'none'; }, 3000);
     } catch(err) {
-      status.textContent = '"Error: " + err.message;
+      status.textContent = '⚠️ ' + err.message;
     }
   };
   reader.readAsDataURL(file);
@@ -705,11 +686,7 @@ function openEditPlayer(id) {
   document.getElementById('ep-name').value     = p.name     || '';
   document.getElementById('ep-jersey').value   = p.jersey   || '';
   document.getElementById('ep-gradyear').value = p.gradYear || '';
-  // Set position checkboxes
-  const positions = (p.position || '').split(',').map(s => s.trim()).filter(Boolean);
-  document.querySelectorAll('input[name="ep-pos"]').forEach(cb => {
-    cb.checked = positions.includes(cb.value);
-  });
+  document.getElementById('ep-position').value = p.position || '';
   document.getElementById('ep-hw').value       = p.hw       || '';
   document.getElementById('ep-city').value     = p.city     || '';
   document.getElementById('ep-state').value    = p.state    || '';
@@ -730,7 +707,7 @@ async function saveEditPlayer() {
     name:     document.getElementById('ep-name').value.trim(),
     jersey:   document.getElementById('ep-jersey').value.trim(),
     gradYear: document.getElementById('ep-gradyear').value.trim(),
-    position: Array.from(document.querySelectorAll('input[name="ep-pos"]:checked')).map(cb => cb.value).join(', '),
+    position: document.getElementById('ep-position').value.trim(),
     hw:       document.getElementById('ep-hw').value.trim(),
     city:     document.getElementById('ep-city').value.trim(),
     state:    document.getElementById('ep-state').value.trim(),
@@ -769,23 +746,6 @@ async function deletePlayer(id) {
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEditModal(); });
 
-/* ── DATE / TIME FORMATTERS ── */
-function formatDateDisplay(val) {
-  if (!val) return '';
-  const [y, m, d] = val.split('-');
-  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  return `${months[parseInt(m,10)-1]} ${parseInt(d,10)}, ${y}`;
-}
-
-function formatTimeDisplay(val) {
-  if (!val) return '';
-  const [hRaw, min] = val.split(':');
-  const h   = parseInt(hRaw, 10);
-  const ampm = h >= 12 ? 'PM' : 'AM';
-  const h12  = h % 12 || 12;
-  return `${h12}:${min} ${ampm}`;
-}
-
 loadDashboard();
 </script>
 
@@ -812,17 +772,9 @@ loadDashboard();
           <label class="field-label">Grad Year</label>
           <input class="field-input" type="text" id="ep-gradyear" placeholder="e.g. 2026">
         </div>
-        <div class="field-group" style="grid-column:1/-1">
-          <label class="field-label" style="margin-bottom:.6rem;display:block">Position</label>
-          <div style="display:flex;flex-wrap:wrap;gap:.5rem .8rem" id="ep-position-group">
-            <label style="display:flex;align-items:center;gap:.35rem;font-size:.83rem;cursor:pointer"><input type="checkbox" name="ep-pos" value="OF" style="accent-color:var(--red);width:15px;height:15px"> OF</label>
-            <label style="display:flex;align-items:center;gap:.35rem;font-size:.83rem;cursor:pointer"><input type="checkbox" name="ep-pos" value="INF" style="accent-color:var(--red);width:15px;height:15px"> INF</label>
-            <label style="display:flex;align-items:center;gap:.35rem;font-size:.83rem;cursor:pointer"><input type="checkbox" name="ep-pos" value="C" style="accent-color:var(--red);width:15px;height:15px"> C</label>
-            <label style="display:flex;align-items:center;gap:.35rem;font-size:.83rem;cursor:pointer"><input type="checkbox" name="ep-pos" value="RHP" style="accent-color:var(--red);width:15px;height:15px"> RHP</label>
-            <label style="display:flex;align-items:center;gap:.35rem;font-size:.83rem;cursor:pointer"><input type="checkbox" name="ep-pos" value="LHP" style="accent-color:var(--red);width:15px;height:15px"> LHP</label>
-            <label style="display:flex;align-items:center;gap:.35rem;font-size:.83rem;cursor:pointer"><input type="checkbox" name="ep-pos" value="DH" style="accent-color:var(--red);width:15px;height:15px"> DH</label>
-            <label style="display:flex;align-items:center;gap:.35rem;font-size:.83rem;cursor:pointer"><input type="checkbox" name="ep-pos" value="P" style="accent-color:var(--red);width:15px;height:15px"> P</label>
-          </div>
+        <div class="field-group">
+          <label class="field-label">Position</label>
+          <input class="field-input" type="text" id="ep-position" placeholder="e.g. OF">
         </div>
         <div class="field-group">
           <label class="field-label">HT / WT</label>
