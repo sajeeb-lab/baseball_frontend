@@ -138,11 +138,6 @@ input[type="file"].hidden-file{display:none}
 .sched-mgmt-table td{padding:10px 14px;vertical-align:middle;font-size:.83rem}
 .sched-mgmt-table td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
 .sched-table-wrap{overflow-x:auto}
-.result-badge{display:inline-block;font-family:'Oswald',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:20px}
-.result-badge.win{background:#dcfce7;color:#16a34a}
-.result-badge.loss{background:#fef2f2;color:var(--red)}
-.result-badge.tie{background:#fef9c3;color:#92400e}
-.result-badge.upcoming{background:var(--mid);color:var(--sub)}
 .no-schedule-dash{text-align:center;padding:2.5rem;color:var(--sub);font-size:.88rem;background:var(--light);border-radius:0 0 6px 6px}
 
 @media(max-width:700px){.form-grid-2,.form-grid-3{grid-template-columns:1fr}.page-header-inner{flex-direction:column;align-items:flex-start}.section-tabs{gap:.4rem}.section-tab{padding:8px 12px;font-size:.72rem}}
@@ -448,18 +443,9 @@ function renderDashboard(coach){
               <input class="field-input" type="text" id="s-date" placeholder="e.g. June 14, 2026">
             </div>
             <div class="field-group">
-              <label class="field-label">Result</label>
-              <select class="field-select" id="s-result">
-                <option value="Upcoming">Upcoming</option>
-                <option value="W">W — Win</option>
-                <option value="L">L — Loss</option>
-                <option value="T">T — Tie</option>
-              </select>
+              <label class="field-label">Event Name</label>
+              <input class="field-input" type="text" id="s-event" placeholder="e.g. vs. Nashville Elite 17U">
             </div>
-          </div>
-          <div class="field-group">
-            <label class="field-label">Opponent / Event Name</label>
-            <input class="field-input" type="text" id="s-event" placeholder="e.g. vs. Nashville Elite 17U">
           </div>
           <div class="form-grid-2">
             <div class="field-group">
@@ -483,7 +469,7 @@ function renderDashboard(coach){
           <table class="sched-mgmt-table">
             <thead>
               <tr>
-                <th>Date</th><th>Opponent / Event</th><th>City</th><th>State</th><th>Result</th><th>Actions</th>
+                <th>Date</th><th>Event Name</th><th>City</th><th>State</th><th>Actions</th>
               </tr>
             </thead>
             <tbody id="dash-sched-body">
@@ -829,23 +815,15 @@ async function loadDashSchedule() {
     renderDashSchedule(dashSchedData);
   } catch(err) {
     const tbody = document.getElementById('dash-sched-body');
-    if (tbody) tbody.innerHTML = '<tr><td colspan="6"><div class="no-schedule-dash">Failed to load schedule.</div></td></tr>';
+    if (tbody) tbody.innerHTML = '<tr><td colspan="5"><div class="no-schedule-dash">Failed to load schedule.</div></td></tr>';
   }
-}
-
-function resultBadge(r) {
-  if (!r || r === 'Upcoming') return '<span class="result-badge upcoming">Upcoming</span>';
-  if (r === 'W') return '<span class="result-badge win">Win</span>';
-  if (r === 'L') return '<span class="result-badge loss">Loss</span>';
-  if (r === 'T') return '<span class="result-badge tie">Tie</span>';
-  return '<span class="result-badge upcoming">'+esc(r)+'</span>';
 }
 
 function renderDashSchedule(games) {
   const tbody = document.getElementById('dash-sched-body');
   if (!tbody) return;
   if (!games.length) {
-    tbody.innerHTML = '<tr><td colspan="6"><div class="no-schedule-dash">No games added yet. Add one above!</div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5"><div class="no-schedule-dash">No games added yet. Add one above!</div></td></tr>';
     return;
   }
   tbody.innerHTML = games.map(g => `
@@ -854,7 +832,6 @@ function renderDashSchedule(games) {
       <td>${esc(g.event)}</td>
       <td>${esc(g.city||'—')}</td>
       <td>${esc(g.state||'—')}</td>
-      <td>${resultBadge(g.result)}</td>
       <td>
         <button class="roster-del-btn" onclick="deleteGame('${esc(g._id)}')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
@@ -869,18 +846,16 @@ async function addGame() {
   const event  = document.getElementById('s-event').value.trim();
   const city   = document.getElementById('s-city').value.trim();
   const state  = document.getElementById('s-state').value.trim().toUpperCase();
-  const result = document.getElementById('s-result').value;
-  if (!date || !event) { showMsg('msg-sched-add', 'Date and opponent/event are required.', 'error'); return; }
+  if (!date || !event) { showMsg('msg-sched-add', 'Date and event name are required.', 'error'); return; }
   setLoading('add-game-btn', 'add-game-txt', true);
   try {
     const res  = await fetch(`${API_BASE}/api/coach/schedule`, {
       method: 'POST', headers: authH(),
-      body: JSON.stringify({ date, event, city, state, result })
+      body: JSON.stringify({ date, event, city, state })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Failed');
     ['s-date','s-event','s-city','s-state'].forEach(id => { document.getElementById(id).value = ''; });
-    document.getElementById('s-result').value = 'Upcoming';
     showMsg('msg-sched-add', 'Game added!', 'success');
     await loadDashSchedule();
   } catch(err) { showMsg('msg-sched-add', err.message, 'error'); }
