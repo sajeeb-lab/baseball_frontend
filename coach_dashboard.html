@@ -7,14 +7,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --navy:#0a1628; --red:#c8102e; --red2:#a50d25;
-  --white:#ffffff; --light:#f4f6f9; --mid:#dce3ec; --text:#1a1a2e; --sub:#5a6a7a;
-}
+:root{--navy:#0a1628;--red:#c8102e;--red2:#a50d25;--white:#ffffff;--light:#f4f6f9;--mid:#dce3ec;--text:#1a1a2e;--sub:#5a6a7a}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text);min-height:100vh}
-
-/* HEADER */
 .page-header{background:linear-gradient(135deg,var(--navy) 0%,#162845 100%);padding:2rem 2rem 1.6rem;position:relative;overflow:hidden}
 .page-header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")}
 .page-header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;position:relative}
@@ -23,16 +18,10 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
 .logout-btn{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.15);color:var(--white);border:none;font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border-radius:4px;cursor:pointer;transition:background .2s}
 .logout-btn:hover{background:rgba(200,16,46,.5)}
 .logout-btn svg{width:15px;height:15px}
-
-/* MAIN */
 .main{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem}
-
-/* CARD */
 .card{background:var(--white);border-radius:6px;box-shadow:0 2px 12px rgba(0,0,0,.07);overflow:hidden;margin-bottom:1.4rem}
 .card-header{background:var(--red);padding:11px 20px;font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:600;color:var(--white);letter-spacing:.12em;text-transform:uppercase;text-align:center}
 .card-body{padding:1.4rem 1.6rem 1.6rem}
-
-/* WELCOME */
 .welcome-banner{background:linear-gradient(135deg,var(--navy) 0%,#162845 100%);border-radius:6px;padding:1.4rem 1.6rem;margin-bottom:1.4rem;display:flex;align-items:center;gap:1rem;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.1)}
 .welcome-banner::after{content:'';position:absolute;right:-40px;bottom:-40px;width:140px;height:140px;border-radius:50%;background:rgba(200,16,46,.15);pointer-events:none}
 .welcome-icon{width:52px;height:52px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1}
@@ -40,19 +29,13 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
 .welcome-text{position:relative;z-index:1}
 .welcome-text h2{font-family:'Oswald',sans-serif;font-size:1.2rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.04em}
 .welcome-text p{color:rgba(255,255,255,.7);font-size:.82rem;margin-top:.25rem}
-
-/* TABS */
 .section-tabs{display:flex;gap:.5rem;margin-bottom:1.4rem;flex-wrap:wrap}
 .section-tab{display:inline-flex;align-items:center;gap:.45rem;background:var(--white);border:1.5px solid var(--mid);border-radius:6px;padding:9px 18px;font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s}
 .section-tab:hover{border-color:var(--navy);color:var(--navy)}
 .section-tab.active{background:var(--navy);border-color:var(--navy);color:var(--white)}
 .section-tab svg{width:15px;height:15px}
-
-/* PANELS */
 .dash-panel{display:none}
 .dash-panel.active{display:block}
-
-/* FORM */
 .field-group{display:flex;flex-direction:column;gap:.42rem;margin-bottom:1.1rem}
 .field-label{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sub)}
 .field-input,.field-select,.field-textarea{border:1.5px solid var(--mid);border-radius:8px;padding:11px 14px;font-size:.88rem;font-family:'Open Sans',sans-serif;color:var(--text);background:var(--white);outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
@@ -61,61 +44,35 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
 .field-textarea{resize:vertical;min-height:100px;line-height:1.6}
 .form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0 1.4rem}
 .form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 1.4rem}
-
-/* SAVE BTN */
 .save-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:12px 28px;font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s;margin-top:.4rem}
 .save-btn:hover{background:#162845}
 .save-btn:disabled{opacity:.6;cursor:not-allowed}
-.save-btn svg{width:17px;height:17px}
-
-/* MSG */
 .msg{padding:.75rem 1rem;border-radius:6px;font-size:.82rem;margin-bottom:1.1rem;display:none}
 .msg.error{background:#fef3f5;border:1px solid #f5c6cb;color:var(--red);display:block}
 .msg.success{background:#f0fdf4;border:1px solid #bbf7d0;color:#16a34a;display:block}
-
-/* INFO NOTE */
 .info-note{background:#fffbea;border:1px solid #fde68a;border-radius:6px;padding:.75rem 1rem;font-size:.8rem;color:#92400e;margin-bottom:1.2rem;display:flex;align-items:flex-start;gap:.6rem}
 .info-note svg{width:15px;height:15px;flex-shrink:0;margin-top:2px}
-
-/* SECTION DIVIDER */
 .section-divider{border:none;border-top:1px solid var(--mid);margin:1.3rem 0}
-
-/* ASSISTANT SECTION LABEL */
 .asst-label{font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--white);background:var(--navy);padding:7px 14px;border-radius:4px;display:inline-block;margin-bottom:1.1rem}
-
-/* TRYOUTS LIST */
-.tryouts-list{display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.4rem}
+/* TRYOUTS */
+.tryouts-list{display:flex;flex-direction:column;gap:.75rem}
 .tryout-item{background:var(--light);border:1.5px solid var(--mid);border-radius:8px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.tryout-item-info{flex:1;min-width:0}
 .tryout-item-date{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;color:var(--navy)}
 .tryout-item-meta{font-size:.78rem;color:var(--sub);margin-top:3px}
 .tryout-item-fee{display:inline-block;background:var(--navy);color:var(--white);font-family:'Oswald',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-left:.5rem;vertical-align:middle}
 .delete-btn{display:inline-flex;align-items:center;gap:.35rem;background:none;border:1.5px solid #f5c6cb;border-radius:6px;padding:6px 12px;font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--red);cursor:pointer;transition:all .15s;flex-shrink:0}
 .delete-btn:hover{background:var(--red);color:var(--white);border-color:var(--red)}
 .delete-btn svg{width:13px;height:13px}
-.no-tryouts{text-align:center;padding:2rem;color:var(--sub);font-size:.86rem;background:var(--light);border-radius:6px;border:1.5px dashed var(--mid)}
-
-/* ADD TRYOUT FORM */
-.add-tryout-card{background:var(--light);border:1.5px solid var(--mid);border-radius:8px;padding:1.3rem 1.4rem;margin-bottom:1.4rem}
-.add-tryout-title{font-family:'Oswald',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
-.add-tryout-title svg{width:16px;height:16px;color:var(--red)}
-
+.no-tryouts-dash{text-align:center;padding:2rem;color:var(--sub);font-size:.86rem;background:var(--light);border-radius:6px;border:1.5px dashed var(--mid)}
 /* LOADING */
 .loading-state{text-align:center;padding:3rem 2rem;color:var(--sub)}
 .spinner{width:32px;height:32px;border:3px solid var(--mid);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 1rem}
 @keyframes spin{to{transform:rotate(360deg)}}
 .btn-spinner{width:15px;height:15px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle}
-
-@media(max-width:700px){
-  .form-grid-2,.form-grid-3{grid-template-columns:1fr}
-  .page-header-inner{flex-direction:column;align-items:flex-start}
-  .section-tabs{gap:.4rem}
-  .section-tab{padding:8px 12px;font-size:.72rem}
-}
+@media(max-width:700px){.form-grid-2,.form-grid-3{grid-template-columns:1fr}.page-header-inner{flex-direction:column;align-items:flex-start}.section-tabs{gap:.4rem}.section-tab{padding:8px 12px;font-size:.72rem}}
 </style>
 </head>
 <body>
-
 <div class="page-header">
   <div class="page-header-inner">
     <div class="header-left">
@@ -128,86 +85,74 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
     </button>
   </div>
 </div>
-
 <div class="main" id="dash-main">
   <div class="loading-state"><div class="spinner"></div>Loading your dashboard…</div>
 </div>
-
 <script>
 'use strict';
-const API_BASE = 'http://localhost:4000'; // ← change to your deployed backend URL
+const API_BASE = 'https://backend-baseball-inky.vercel.app'; // ← change to your deployed backend URL
 
 const token = localStorage.getItem('coach_token');
 if (!token) window.location.href = 'coach-auth.html';
 
-const authH = () => ({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` });
+const authH = () => ({ 'Content-Type':'application/json', 'Authorization':`Bearer ${token}` });
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-function showMsg(id, text, type) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.textContent = text;
-  el.className = 'msg ' + type;
-  setTimeout(() => { el.className = 'msg'; }, 4000);
+function showMsg(id,text,type){
+  const el=document.getElementById(id); if(!el) return;
+  el.textContent=text; el.className='msg '+type;
+  setTimeout(()=>{ el.className='msg'; },4000);
 }
-
-function setLoading(btnId, textId, loading, label) {
-  const btn = document.getElementById(btnId);
-  if (!btn) return;
-  document.getElementById(textId).innerHTML = loading ? '<span class="btn-spinner"></span>' : label;
-  btn.disabled = loading;
+function setLoading(btnId,textId,loading,label){
+  const btn=document.getElementById(btnId); if(!btn) return;
+  document.getElementById(textId).innerHTML=loading?'<span class="btn-spinner"></span>':label;
+  btn.disabled=loading;
 }
-
-function handleLogout() {
-  localStorage.removeItem('coach_token');
-  window.location.href = 'coach-auth.html';
-}
-
-function switchPanel(name) {
-  document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('panel-' + name).classList.add('active');
-  document.getElementById('tab-' + name).classList.add('active');
+function handleLogout(){ localStorage.removeItem('coach_token'); localStorage.removeItem('coach_id'); window.location.href='coach-auth.html'; }
+function switchPanel(name){
+  document.querySelectorAll('.dash-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.section-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
 }
 
 /* ── LOAD ── */
-async function loadDashboard() {
+async function loadDashboard(){
   try {
-    const res  = await fetch(`${API_BASE}/api/coach/me`, { headers: authH() });
-    if (res.status === 401) { handleLogout(); return; }
-    const { coach } = await res.json();
+    const res=await fetch(`${API_BASE}/api/coach/me`,{headers:authH()});
+    if(res.status===401){ handleLogout(); return; }
+    const {coach}=await res.json();
     renderDashboard(coach);
-  } catch(err) {
-    document.getElementById('dash-main').innerHTML = `<div class="card"><div class="card-body" style="text-align:center;color:var(--red);padding:3rem">${esc(err.message)}</div></div>`;
+  } catch(err){
+    document.getElementById('dash-main').innerHTML=`<div class="card"><div class="card-body" style="text-align:center;color:var(--red);padding:3rem">${esc(err.message)}</div></div>`;
   }
 }
 
 /* ── RENDER ── */
-function renderDashboard(coach) {
-  document.getElementById('dash-title').textContent = `${coach.firstName} ${coach.lastName}`;
-  document.getElementById('dash-sub').textContent   = `Head Coach — ${coach.teamName}`;
+function renderDashboard(coach){
+  document.getElementById('dash-title').textContent=`${coach.firstName} ${coach.lastName}`;
+  document.getElementById('dash-sub').textContent=`Head Coach — ${coach.teamName}`;
 
-  document.getElementById('dash-main').innerHTML = `
-
+  document.getElementById('dash-main').innerHTML=`
     <div class="welcome-banner">
-      <div class="welcome-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-      </div>
+      <div class="welcome-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
       <div class="welcome-text">
         <h2>Welcome back, ${esc(coach.firstName)}!</h2>
         <p>Team: ${esc(coach.teamName)}</p>
       </div>
     </div>
 
-    <!-- TABS -->
     <div class="section-tabs">
       <button class="section-tab active" id="tab-profile" onclick="switchPanel('profile')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
         My Profile
       </button>
+      <button class="section-tab" id="tab-teamdetails" onclick="switchPanel('teamdetails')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Team Details
+      </button>
       <button class="section-tab" id="tab-assistants" onclick="switchPanel('assistants')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
         Assistant Coaches
       </button>
       <button class="section-tab" id="tab-tryouts" onclick="switchPanel('tryouts')">
@@ -216,17 +161,16 @@ function renderDashboard(coach) {
       </button>
     </div>
 
-    <!-- PROFILE PANEL -->
+    <!-- MY PROFILE -->
     <div class="dash-panel active" id="panel-profile">
       <div class="card">
         <div class="card-header">My Profile</div>
         <div class="card-body">
           <div class="info-note">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            Your public profile is displayed on your team's detail page under the Coaches section.
+            Your profile is displayed publicly on your team page as the Head Coach.
           </div>
           <div class="msg" id="msg-profile"></div>
-
           <div class="form-grid-2">
             <div class="field-group">
               <label class="field-label">First Name</label>
@@ -237,7 +181,6 @@ function renderDashboard(coach) {
               <input class="field-input" type="text" id="p-lastname" value="${esc(coach.lastName)}" placeholder="Last Name">
             </div>
           </div>
-
           <div class="form-grid-2">
             <div class="field-group">
               <label class="field-label">Public Email</label>
@@ -248,37 +191,10 @@ function renderDashboard(coach) {
               <input class="field-input" type="tel" id="p-phone-pub" value="${esc(coach.phonePublic||'')}" placeholder="(615) 000-0000">
             </div>
           </div>
-
           <div class="field-group">
             <label class="field-label">Bio</label>
             <textarea class="field-textarea" id="p-bio" placeholder="Write a short coaching bio…">${esc(coach.bio||'')}</textarea>
           </div>
-
-          <hr class="section-divider">
-          <p style="font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sub);margin-bottom:.9rem">Team Info</p>
-
-          <div class="form-grid-2">
-            <div class="field-group">
-              <label class="field-label">Team Name</label>
-              <input class="field-input" type="text" id="p-teamname" value="${esc(coach.teamName)}" placeholder="Team Name">
-            </div>
-            <div class="field-group">
-              <label class="field-label">Age Group</label>
-              <input class="field-input" type="text" id="p-agegroup" value="${esc(coach.ageGroup||'')}" placeholder="e.g. 17U">
-            </div>
-          </div>
-
-          <div class="form-grid-2">
-            <div class="field-group">
-              <label class="field-label">City / Location</label>
-              <input class="field-input" type="text" id="p-location" value="${esc(coach.location||'')}" placeholder="e.g. Nashville">
-            </div>
-            <div class="field-group">
-              <label class="field-label">State</label>
-              <input class="field-input" type="text" id="p-state" value="${esc(coach.state||'')}" placeholder="e.g. TN" maxlength="2">
-            </div>
-          </div>
-
           <button class="save-btn" id="save-profile-btn" onclick="saveProfile()">
             <span id="save-profile-txt">Save Profile</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -287,72 +203,76 @@ function renderDashboard(coach) {
       </div>
     </div>
 
-    <!-- ASSISTANTS PANEL -->
+    <!-- TEAM DETAILS -->
+    <div class="dash-panel" id="panel-teamdetails">
+      <div class="card">
+        <div class="card-header">Team Details</div>
+        <div class="card-body">
+          <div class="info-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            This info is shown in the Team Details section on your team page and on the team directory map.
+          </div>
+          <div class="msg" id="msg-teamdetails"></div>
+          <div class="field-group">
+            <label class="field-label">Team Name</label>
+            <input class="field-input" type="text" id="td-teamname" value="${esc(coach.teamName)}" placeholder="Team Name">
+          </div>
+          <div class="form-grid-3">
+            <div class="field-group">
+              <label class="field-label">State</label>
+              <input class="field-input" type="text" id="td-state" value="${esc(coach.state||'')}" placeholder="e.g. TN" maxlength="2">
+            </div>
+            <div class="field-group">
+              <label class="field-label">City / Location</label>
+              <input class="field-input" type="text" id="td-location" value="${esc(coach.location||'')}" placeholder="e.g. Nashville">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Age Group</label>
+              <input class="field-input" type="text" id="td-agegroup" value="${esc(coach.ageGroup||'')}" placeholder="e.g. 17U">
+            </div>
+          </div>
+          <button class="save-btn" id="save-td-btn" onclick="saveTeamDetails()">
+            <span id="save-td-txt">Save Team Details</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ASSISTANTS -->
     <div class="dash-panel" id="panel-assistants">
       <div class="card">
         <div class="card-header">Assistant Coaches</div>
         <div class="card-body">
           <div class="info-note">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            You can add up to 2 assistant coaches. Their info will appear on your team's page. Leave Name blank to hide.
+            Add up to 2 assistant coaches. Leave Name blank to hide from the team page.
           </div>
           <div class="msg" id="msg-assistants"></div>
 
-          <!-- ASSISTANT 1 -->
           <div class="asst-label">Assistant Coach 1</div>
           <div class="form-grid-2">
-            <div class="field-group">
-              <label class="field-label">Full Name</label>
-              <input class="field-input" type="text" id="a1-name" value="${esc(coach.assistant1?.name||'')}" placeholder="Full Name">
-            </div>
-            <div class="field-group">
-              <label class="field-label">Role / Title</label>
-              <input class="field-input" type="text" id="a1-role" value="${esc(coach.assistant1?.role||'Assistant Coach')}" placeholder="e.g. Pitching Coach">
-            </div>
+            <div class="field-group"><label class="field-label">Full Name</label><input class="field-input" type="text" id="a1-name" value="${esc(coach.assistant1?.name||'')}" placeholder="Full Name"></div>
+            <div class="field-group"><label class="field-label">Role / Title</label><input class="field-input" type="text" id="a1-role" value="${esc(coach.assistant1?.role||'Assistant Coach')}" placeholder="e.g. Pitching Coach"></div>
           </div>
           <div class="form-grid-2">
-            <div class="field-group">
-              <label class="field-label">Email</label>
-              <input class="field-input" type="email" id="a1-email" value="${esc(coach.assistant1?.email||'')}" placeholder="Email address">
-            </div>
-            <div class="field-group">
-              <label class="field-label">Cell</label>
-              <input class="field-input" type="tel" id="a1-cell" value="${esc(coach.assistant1?.cell||'')}" placeholder="(615) 000-0000">
-            </div>
+            <div class="field-group"><label class="field-label">Email</label><input class="field-input" type="email" id="a1-email" value="${esc(coach.assistant1?.email||'')}" placeholder="Email address"></div>
+            <div class="field-group"><label class="field-label">Cell</label><input class="field-input" type="tel" id="a1-cell" value="${esc(coach.assistant1?.cell||'')}" placeholder="(615) 000-0000"></div>
           </div>
-          <div class="field-group">
-            <label class="field-label">Bio</label>
-            <textarea class="field-textarea" id="a1-bio" placeholder="Short bio…">${esc(coach.assistant1?.bio||'')}</textarea>
-          </div>
+          <div class="field-group"><label class="field-label">Bio</label><textarea class="field-textarea" id="a1-bio" placeholder="Short bio…">${esc(coach.assistant1?.bio||'')}</textarea></div>
 
           <hr class="section-divider">
 
-          <!-- ASSISTANT 2 -->
           <div class="asst-label">Assistant Coach 2</div>
           <div class="form-grid-2">
-            <div class="field-group">
-              <label class="field-label">Full Name</label>
-              <input class="field-input" type="text" id="a2-name" value="${esc(coach.assistant2?.name||'')}" placeholder="Full Name">
-            </div>
-            <div class="field-group">
-              <label class="field-label">Role / Title</label>
-              <input class="field-input" type="text" id="a2-role" value="${esc(coach.assistant2?.role||'Assistant Coach')}" placeholder="e.g. Hitting Coach">
-            </div>
+            <div class="field-group"><label class="field-label">Full Name</label><input class="field-input" type="text" id="a2-name" value="${esc(coach.assistant2?.name||'')}" placeholder="Full Name"></div>
+            <div class="field-group"><label class="field-label">Role / Title</label><input class="field-input" type="text" id="a2-role" value="${esc(coach.assistant2?.role||'Assistant Coach')}" placeholder="e.g. Hitting Coach"></div>
           </div>
           <div class="form-grid-2">
-            <div class="field-group">
-              <label class="field-label">Email</label>
-              <input class="field-input" type="email" id="a2-email" value="${esc(coach.assistant2?.email||'')}" placeholder="Email address">
-            </div>
-            <div class="field-group">
-              <label class="field-label">Cell</label>
-              <input class="field-input" type="tel" id="a2-cell" value="${esc(coach.assistant2?.cell||'')}" placeholder="(615) 000-0000">
-            </div>
+            <div class="field-group"><label class="field-label">Email</label><input class="field-input" type="email" id="a2-email" value="${esc(coach.assistant2?.email||'')}" placeholder="Email address"></div>
+            <div class="field-group"><label class="field-label">Cell</label><input class="field-input" type="tel" id="a2-cell" value="${esc(coach.assistant2?.cell||'')}" placeholder="(615) 000-0000"></div>
           </div>
-          <div class="field-group">
-            <label class="field-label">Bio</label>
-            <textarea class="field-textarea" id="a2-bio" placeholder="Short bio…">${esc(coach.assistant2?.bio||'')}</textarea>
-          </div>
+          <div class="field-group"><label class="field-label">Bio</label><textarea class="field-textarea" id="a2-bio" placeholder="Short bio…">${esc(coach.assistant2?.bio||'')}</textarea></div>
 
           <button class="save-btn" id="save-asst-btn" onclick="saveAssistants()">
             <span id="save-asst-txt">Save Assistants</span>
@@ -362,33 +282,19 @@ function renderDashboard(coach) {
       </div>
     </div>
 
-    <!-- TRYOUTS PANEL -->
+    <!-- TRYOUTS -->
     <div class="dash-panel" id="panel-tryouts">
-
-      <!-- ADD TRYOUT FORM -->
       <div class="card">
         <div class="card-header">Create New Tryout</div>
         <div class="card-body">
           <div class="msg" id="msg-tryout-add"></div>
           <div class="form-grid-2">
-            <div class="field-group">
-              <label class="field-label">Date</label>
-              <input class="field-input" type="text" id="t-date" placeholder="e.g. June 10, 2026">
-            </div>
-            <div class="field-group">
-              <label class="field-label">Time</label>
-              <input class="field-input" type="text" id="t-time" placeholder="e.g. 4:00 PM – 7:00 PM">
-            </div>
+            <div class="field-group"><label class="field-label">Date</label><input class="field-input" type="text" id="t-date" placeholder="e.g. June 10, 2026"></div>
+            <div class="field-group"><label class="field-label">Time</label><input class="field-input" type="text" id="t-time" placeholder="e.g. 4:00 PM – 7:00 PM"></div>
           </div>
           <div class="form-grid-2">
-            <div class="field-group">
-              <label class="field-label">Location / Field Name</label>
-              <input class="field-input" type="text" id="t-location" placeholder="e.g. Westside Sports Complex">
-            </div>
-            <div class="field-group">
-              <label class="field-label">Tryout Fee</label>
-              <input class="field-input" type="text" id="t-fee" placeholder="e.g. $45 Fee">
-            </div>
+            <div class="field-group"><label class="field-label">Location / Field Name</label><input class="field-input" type="text" id="t-location" placeholder="e.g. Westside Sports Complex"></div>
+            <div class="field-group"><label class="field-label">Tryout Fee</label><input class="field-input" type="text" id="t-fee" placeholder="e.g. $45 Fee"></div>
           </div>
           <button class="save-btn" id="add-tryout-btn" onclick="addTryout()">
             <span id="add-tryout-txt">Add Tryout</span>
@@ -396,18 +302,13 @@ function renderDashboard(coach) {
           </button>
         </div>
       </div>
-
-      <!-- TRYOUTS LIST -->
       <div class="card">
         <div class="card-header">Scheduled Tryouts</div>
-        <div class="card-body" style="padding-bottom:1rem">
+        <div class="card-body">
           <div class="msg" id="msg-tryout-list"></div>
-          <div id="tryouts-list-wrap">
-            <div class="loading-state" style="padding:1.5rem"><div class="spinner"></div></div>
-          </div>
+          <div id="tryouts-list-wrap"><div class="loading-state" style="padding:1.5rem"><div class="spinner"></div></div></div>
         </div>
       </div>
-
     </div>
   `;
 
@@ -415,95 +316,79 @@ function renderDashboard(coach) {
 }
 
 /* ── SAVE PROFILE ── */
-async function saveProfile() {
+async function saveProfile(){
   setLoading('save-profile-btn','save-profile-txt',true);
   try {
-    const payload = {
+    const payload={
       firstName:   document.getElementById('p-firstname').value.trim(),
       lastName:    document.getElementById('p-lastname').value.trim(),
       emailPublic: document.getElementById('p-email-pub').value.trim(),
       phonePublic: document.getElementById('p-phone-pub').value.trim(),
       bio:         document.getElementById('p-bio').value.trim(),
-      teamName:    document.getElementById('p-teamname').value.trim(),
-      ageGroup:    document.getElementById('p-agegroup').value.trim(),
-      location:    document.getElementById('p-location').value.trim(),
-      state:       document.getElementById('p-state').value.trim().toUpperCase(),
     };
-    const res  = await fetch(`${API_BASE}/api/coach/update-profile`, { method:'PUT', headers:authH(), body:JSON.stringify(payload) });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Save failed');
+    const res=await fetch(`${API_BASE}/api/coach/update-profile`,{method:'PUT',headers:authH(),body:JSON.stringify(payload)});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.message||'Save failed');
     showMsg('msg-profile','✅ Profile saved!','success');
-    document.getElementById('dash-title').textContent = `${payload.firstName} ${payload.lastName}`;
-    document.getElementById('dash-sub').textContent   = `Head Coach — ${payload.teamName}`;
-  } catch(err) {
-    showMsg('msg-profile', err.message, 'error');
-  } finally {
-    setLoading('save-profile-btn','save-profile-txt',false,'Save Profile');
-  }
+    document.getElementById('dash-title').textContent=`${payload.firstName} ${payload.lastName}`;
+  } catch(err){ showMsg('msg-profile',err.message,'error'); }
+  finally{ setLoading('save-profile-btn','save-profile-txt',false,'Save Profile'); }
+}
+
+/* ── SAVE TEAM DETAILS ── */
+async function saveTeamDetails(){
+  setLoading('save-td-btn','save-td-txt',true);
+  try {
+    const payload={
+      teamName: document.getElementById('td-teamname').value.trim(),
+      state:    document.getElementById('td-state').value.trim().toUpperCase(),
+      location: document.getElementById('td-location').value.trim(),
+      ageGroup: document.getElementById('td-agegroup').value.trim(),
+    };
+    const res=await fetch(`${API_BASE}/api/coach/update-profile`,{method:'PUT',headers:authH(),body:JSON.stringify(payload)});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.message||'Save failed');
+    showMsg('msg-teamdetails','✅ Team details saved!','success');
+    document.getElementById('dash-sub').textContent=`Head Coach — ${payload.teamName}`;
+  } catch(err){ showMsg('msg-teamdetails',err.message,'error'); }
+  finally{ setLoading('save-td-btn','save-td-txt',false,'Save Team Details'); }
 }
 
 /* ── SAVE ASSISTANTS ── */
-async function saveAssistants() {
+async function saveAssistants(){
   setLoading('save-asst-btn','save-asst-txt',true);
   try {
-    const payload = {
-      assistant1: {
-        name:  document.getElementById('a1-name').value.trim(),
-        role:  document.getElementById('a1-role').value.trim() || 'Assistant Coach',
-        email: document.getElementById('a1-email').value.trim(),
-        cell:  document.getElementById('a1-cell').value.trim(),
-        bio:   document.getElementById('a1-bio').value.trim(),
-      },
-      assistant2: {
-        name:  document.getElementById('a2-name').value.trim(),
-        role:  document.getElementById('a2-role').value.trim() || 'Assistant Coach',
-        email: document.getElementById('a2-email').value.trim(),
-        cell:  document.getElementById('a2-cell').value.trim(),
-        bio:   document.getElementById('a2-bio').value.trim(),
-      }
+    const payload={
+      assistant1:{ name:document.getElementById('a1-name').value.trim(), role:document.getElementById('a1-role').value.trim()||'Assistant Coach', email:document.getElementById('a1-email').value.trim(), cell:document.getElementById('a1-cell').value.trim(), bio:document.getElementById('a1-bio').value.trim() },
+      assistant2:{ name:document.getElementById('a2-name').value.trim(), role:document.getElementById('a2-role').value.trim()||'Assistant Coach', email:document.getElementById('a2-email').value.trim(), cell:document.getElementById('a2-cell').value.trim(), bio:document.getElementById('a2-bio').value.trim() }
     };
-    const res  = await fetch(`${API_BASE}/api/coach/update-assistants`, { method:'PUT', headers:authH(), body:JSON.stringify(payload) });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Save failed');
+    const res=await fetch(`${API_BASE}/api/coach/update-assistants`,{method:'PUT',headers:authH(),body:JSON.stringify(payload)});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.message||'Save failed');
     showMsg('msg-assistants','✅ Assistant coaches saved!','success');
-  } catch(err) {
-    showMsg('msg-assistants', err.message, 'error');
-  } finally {
-    setLoading('save-asst-btn','save-asst-txt',false,'Save Assistants');
-  }
+  } catch(err){ showMsg('msg-assistants',err.message,'error'); }
+  finally{ setLoading('save-asst-btn','save-asst-txt',false,'Save Assistants'); }
 }
 
 /* ── LOAD TRYOUTS ── */
-async function loadTryouts() {
-  const wrap = document.getElementById('tryouts-list-wrap');
-  if (!wrap) return;
+async function loadTryouts(){
+  const wrap=document.getElementById('tryouts-list-wrap'); if(!wrap) return;
   try {
-    const res  = await fetch(`${API_BASE}/api/coach/tryouts`, { headers: authH() });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Failed to load tryouts');
-    renderTryoutsList(data.tryouts || []);
-  } catch(err) {
-    wrap.innerHTML = `<p style="color:var(--red);font-size:.84rem">${esc(err.message)}</p>`;
-  }
+    const res=await fetch(`${API_BASE}/api/coach/tryouts`,{headers:authH()});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.message||'Failed');
+    renderTryoutsList(data.tryouts||[]);
+  } catch(err){ wrap.innerHTML=`<p style="color:var(--red);font-size:.84rem">${esc(err.message)}</p>`; }
 }
 
-function renderTryoutsList(tryouts) {
-  const wrap = document.getElementById('tryouts-list-wrap');
-  if (!wrap) return;
-  if (!tryouts.length) {
-    wrap.innerHTML = `<div class="no-tryouts">No tryouts scheduled yet. Create one above!</div>`;
-    return;
-  }
-  wrap.innerHTML = `<div class="tryouts-list">${tryouts.map(t => `
+function renderTryoutsList(tryouts){
+  const wrap=document.getElementById('tryouts-list-wrap'); if(!wrap) return;
+  if(!tryouts.length){ wrap.innerHTML=`<div class="no-tryouts-dash">No tryouts scheduled yet. Create one above!</div>`; return; }
+  wrap.innerHTML=`<div class="tryouts-list">${tryouts.map(t=>`
     <div class="tryout-item" id="tryout-${esc(t._id)}">
-      <div class="tryout-item-info">
-        <div class="tryout-item-date">
-          ${esc(t.date)}
-          <span class="tryout-item-fee">${esc(t.fee)}</span>
-        </div>
-        <div class="tryout-item-meta">
-          🕐 ${esc(t.time)} &nbsp;·&nbsp; 📍 ${esc(t.location)}
-        </div>
+      <div>
+        <div class="tryout-item-date">${esc(t.date)}<span class="tryout-item-fee">${esc(t.fee)}</span></div>
+        <div class="tryout-item-meta">🕐 ${esc(t.time)} &nbsp;·&nbsp; 📍 ${esc(t.location)}</div>
       </div>
       <button class="delete-btn" onclick="deleteTryout('${esc(t._id)}')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
@@ -513,51 +398,36 @@ function renderTryoutsList(tryouts) {
 }
 
 /* ── ADD TRYOUT ── */
-async function addTryout() {
-  const date     = document.getElementById('t-date').value.trim();
-  const time     = document.getElementById('t-time').value.trim();
-  const location = document.getElementById('t-location').value.trim();
-  const fee      = document.getElementById('t-fee').value.trim();
-
-  if (!date || !time || !location || !fee) {
-    showMsg('msg-tryout-add','Please fill in all tryout fields.','error'); return;
-  }
+async function addTryout(){
+  const date=document.getElementById('t-date').value.trim();
+  const time=document.getElementById('t-time').value.trim();
+  const location=document.getElementById('t-location').value.trim();
+  const fee=document.getElementById('t-fee').value.trim();
+  if(!date||!time||!location||!fee){ showMsg('msg-tryout-add','Please fill in all tryout fields.','error'); return; }
   setLoading('add-tryout-btn','add-tryout-txt',true);
   try {
-    const res  = await fetch(`${API_BASE}/api/coach/tryouts`, {
-      method:'POST', headers:authH(), body:JSON.stringify({ date, time, location, fee })
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Failed to add tryout');
-    // clear fields
-    ['t-date','t-time','t-location','t-fee'].forEach(id => { document.getElementById(id).value = ''; });
+    const res=await fetch(`${API_BASE}/api/coach/tryouts`,{method:'POST',headers:authH(),body:JSON.stringify({date,time,location,fee})});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.message||'Failed');
+    ['t-date','t-time','t-location','t-fee'].forEach(id=>{ document.getElementById(id).value=''; });
     showMsg('msg-tryout-add','✅ Tryout added!','success');
     loadTryouts();
-  } catch(err) {
-    showMsg('msg-tryout-add', err.message, 'error');
-  } finally {
-    setLoading('add-tryout-btn','add-tryout-txt',false,'Add Tryout');
-  }
+  } catch(err){ showMsg('msg-tryout-add',err.message,'error'); }
+  finally{ setLoading('add-tryout-btn','add-tryout-txt',false,'Add Tryout'); }
 }
 
 /* ── DELETE TRYOUT ── */
-async function deleteTryout(id) {
-  if (!confirm('Delete this tryout?')) return;
+async function deleteTryout(id){
+  if(!confirm('Delete this tryout?')) return;
   try {
-    const res  = await fetch(`${API_BASE}/api/coach/tryouts/${id}`, { method:'DELETE', headers:authH() });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Delete failed');
-    const el = document.getElementById('tryout-' + id);
-    if (el) el.remove();
-    // show empty state if no items left
-    const list = document.querySelector('.tryouts-list');
-    if (list && !list.children.length) {
-      document.getElementById('tryouts-list-wrap').innerHTML = `<div class="no-tryouts">No tryouts scheduled yet. Create one above!</div>`;
-    }
+    const res=await fetch(`${API_BASE}/api/coach/tryouts/${id}`,{method:'DELETE',headers:authH()});
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.message||'Delete failed');
+    document.getElementById('tryout-'+id)?.remove();
+    const list=document.querySelector('.tryouts-list');
+    if(list&&!list.children.length) document.getElementById('tryouts-list-wrap').innerHTML=`<div class="no-tryouts-dash">No tryouts scheduled yet. Create one above!</div>`;
     showMsg('msg-tryout-list','✅ Tryout deleted.','success');
-  } catch(err) {
-    showMsg('msg-tryout-list', err.message, 'error');
-  }
+  } catch(err){ showMsg('msg-tryout-list',err.message,'error'); }
 }
 
 loadDashboard();
