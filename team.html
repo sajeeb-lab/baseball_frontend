@@ -704,6 +704,10 @@ function renderPage(team) {
 }
 
 async function loadTeamSchedule(coachId) {
+  // Always show the section immediately
+  document.getElementById('schedule-section').hidden = false;
+  schFiltered = [...schSource];
+  schRender();
   try {
     const res  = await fetch(`${API_BASE}/api/teams/${coachId}/schedule`);
     const data = await res.json();
@@ -714,10 +718,10 @@ async function loadTeamSchedule(coachId) {
       state: g.state || '',
       result: g.result || ''
     }));
-    document.getElementById('schedule-section').hidden = false;
     schFiltered = [...schSource];
     schRender();
   } catch(err) {
+    // section already visible, just leave it with empty state
     console.error('[schedule]', err);
   }
 }
