@@ -357,7 +357,7 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
           </div>
         </div>
         <div class="reg-success" id="reg-success">
-          ✅ Registration submitted successfully! We'll be in touch soon.
+          Registration submitted successfully! We'll be in touch soon.
         </div>
         <button class="reg-submit-btn" id="reg-submit-btn">
           Submit Registration
@@ -818,7 +818,7 @@ document.getElementById('tr-submit-btn').addEventListener('click', function () {
   }
   document.getElementById('tr-modal-body').innerHTML = `
     <div class="tr-success">
-      ✅ Registration submitted!<br>
+      Registration submitted!<br>
       We look forward to seeing <strong>${esc(playerName)}</strong> at the tryout.<br>
       A confirmation will be sent to ${esc(document.getElementById('tr-email').value || 'your email')}.
     </div>`;
@@ -865,7 +865,7 @@ function showError(msg) {
   document.getElementById('main-content').innerHTML = `
     <div class="card">
       <div class="card-body" style="text-align:center;padding:3rem;color:var(--red)">
-        <strong style="display:block;font-size:1.1rem;margin-bottom:.5rem">⚠️ Unable to load team</strong>
+        <strong style="display:block;font-size:1.1rem;margin-bottom:.5rem">Unable to load team</strong>
         ${esc(msg)}<br><br>
         <a href="index.html" style="color:var(--red);font-family:'Oswald',sans-serif;letter-spacing:.05em">← Back to Team Directory</a>
       </div>
