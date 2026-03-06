@@ -160,295 +160,66 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
 /* TRYOUTS SECTION */
 .tryouts-section-wrap { margin-bottom: 1.4rem; }
 .tryouts-section-wrap .card-header { border-radius: 6px 6px 0 0; }
-
-.tryouts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.2rem;
-  padding: 1.4rem;
-  background: var(--white);
-  border-radius: 0 0 6px 6px;
-  box-shadow: 0 2px 12px rgba(0,0,0,.07);
-}
-
-.tryout-card {
-  background: var(--white);
-  border: 1px solid var(--mid);
-  border-radius: 10px;
-  padding: 1.2rem 1.3rem 1.1rem;
-  display: flex;
-  flex-direction: column;
-  gap: .55rem;
-  transition: box-shadow .15s, transform .15s;
-  position: relative;
-}
-.tryout-card:hover {
-  box-shadow: 0 6px 24px rgba(0,0,0,.1);
-  transform: translateY(-2px);
-}
-
-.tryout-card-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: .5rem;
-}
-
-.tryout-fee-badge {
-  display: inline-flex;
-  align-items: center;
-  background: var(--navy);
-  color: var(--white);
-  font-family: 'Oswald', sans-serif;
-  font-size: .65rem;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  padding: 4px 11px;
-  border-radius: 20px;
-  white-space: nowrap;
-}
-
-.tryout-cal-icon {
-  color: var(--mid);
-  flex-shrink: 0;
-  margin-top: 2px;
-}
+.tryouts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; padding: 1.4rem; background: var(--white); border-radius: 0 0 6px 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
+.tryout-card { background: var(--white); border: 1px solid var(--mid); border-radius: 10px; padding: 1.2rem 1.3rem 1.1rem; display: flex; flex-direction: column; gap: .55rem; transition: box-shadow .15s, transform .15s; position: relative; }
+.tryout-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,.1); transform: translateY(-2px); }
+.tryout-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; }
+.tryout-fee-badge { display: inline-flex; align-items: center; background: var(--navy); color: var(--white); font-family: 'Oswald', sans-serif; font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 4px 11px; border-radius: 20px; white-space: nowrap; }
+.tryout-cal-icon { color: var(--mid); flex-shrink: 0; margin-top: 2px; }
 .tryout-cal-icon svg { width: 18px; height: 18px; }
-
-.tryout-date {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--navy);
-  margin-top: .3rem;
-  line-height: 1.1;
-}
-.tryout-time {
-  font-size: .8rem;
-  color: var(--sub);
-  margin-top: .1rem;
-}
-
-.tryout-location {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: .82rem;
-  color: var(--sub);
-  margin-top: .2rem;
-}
+.tryout-date { font-family: 'Oswald', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--navy); margin-top: .3rem; line-height: 1.1; }
+.tryout-time { font-size: .8rem; color: var(--sub); margin-top: .1rem; }
+.tryout-location { display: flex; align-items: center; gap: 6px; font-size: .82rem; color: var(--sub); margin-top: .2rem; }
 .tryout-location svg { width: 15px; height: 15px; color: var(--sub); flex-shrink: 0; }
+.tryout-register-btn { display: block; width: 100%; margin-top: .6rem; padding: 10px 0; background: var(--white); color: var(--navy); border: 2px solid var(--navy); border-radius: 8px; font-family: 'Oswald', sans-serif; font-size: .82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; text-align: center; text-decoration: none; transition: background .15s, color .15s; }
+.tryout-register-btn:hover { background: var(--navy); color: var(--white); }
+.no-tryouts { text-align: center; padding: 2.5rem; color: var(--sub); font-size: .88rem; grid-column: 1 / -1; }
 
-.tryout-register-btn {
-  display: block;
-  width: 100%;
-  margin-top: .6rem;
-  padding: 10px 0;
-  background: var(--white);
-  color: var(--navy);
-  border: 2px solid var(--navy);
-  border-radius: 8px;
-  font-family: 'Oswald', sans-serif;
-  font-size: .82rem;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  transition: background .15s, color .15s;
-}
-.tryout-register-btn:hover {
-  background: var(--navy);
-  color: var(--white);
-}
-
-.no-tryouts {
-  text-align: center;
-  padding: 2.5rem;
-  color: var(--sub);
-  font-size: .88rem;
-  grid-column: 1 / -1;
-}
-
-/* ACCEPT INVITATION / REGISTRATION */
+/* REGISTRATION */
 .registration-card { background: var(--white); border-radius: 6px; box-shadow: 0 2px 12px rgba(0,0,0,.07); overflow: hidden; margin-bottom: 1.4rem; }
 .registration-header { background: var(--red); padding: 11px 20px; font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 600; color: var(--white); letter-spacing: .12em; text-transform: uppercase; text-align: center; }
 .registration-body { padding: 1.6rem 1.8rem 1.8rem; }
-
-.reg-form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.2rem 1.4rem;
-}
-
+.reg-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem 1.4rem; }
 .reg-field { display: flex; flex-direction: column; gap: .45rem; }
-.reg-field.full { grid-column: 1 / -1; }
-
-.reg-label {
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--sub);
-}
-
-.reg-input,
-.reg-select {
-  border: 1.5px solid var(--mid);
-  border-radius: 8px;
-  padding: 11px 14px;
-  font-size: .88rem;
-  font-family: 'Open Sans', sans-serif;
-  color: var(--text);
-  background: var(--white);
-  outline: none;
-  transition: border-color .15s, box-shadow .15s;
-  width: 100%;
-}
+.reg-label { font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--sub); }
+.reg-input, .reg-select { border: 1.5px solid var(--mid); border-radius: 8px; padding: 11px 14px; font-size: .88rem; font-family: 'Open Sans', sans-serif; color: var(--text); background: var(--white); outline: none; transition: border-color .15s, box-shadow .15s; width: 100%; }
 .reg-input::placeholder { color: #b0bec5; }
-.reg-input:focus,
-.reg-select:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(200,16,46,.08); }
-
-.reg-row-3 { display: grid; grid-template-columns: 1fr 0.55fr 0.55fr; gap: 1.4rem; }
-
-.reg-submit-btn {
-  margin-top: 1.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .5rem;
-  width: 100%;
-  background: var(--navy);
-  color: var(--white);
-  border: none;
-  border-radius: 8px;
-  padding: 14px 0;
-  font-family: 'Oswald', sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background .15s;
-}
+.reg-input:focus, .reg-select:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(200,16,46,.08); }
+.reg-submit-btn { margin-top: 1.4rem; display: flex; align-items: center; justify-content: center; gap: .5rem; width: 100%; background: var(--navy); color: var(--white); border: none; border-radius: 8px; padding: 14px 0; font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .15s; }
 .reg-submit-btn:hover { background: #162845; }
 .reg-submit-btn svg { width: 18px; height: 18px; }
-
-.reg-success {
-  display: none;
-  text-align: center;
-  padding: 2rem;
-  color: #2e7d32;
-  font-size: .95rem;
-  font-weight: 600;
-}
+.reg-success { display: none; text-align: center; padding: 2rem; color: #2e7d32; font-size: .95rem; font-weight: 600; }
 
 /* TRYOUT REGISTRATION MODAL */
-.tr-overlay {
-  position: fixed; inset: 0;
-  background: rgba(10,22,40,.55);
-  backdrop-filter: blur(4px);
-  z-index: 1000;
-  display: flex; align-items: center; justify-content: center;
-  padding: 1rem;
-  opacity: 0; pointer-events: none;
-  transition: opacity .25s ease;
-}
+.tr-overlay { position: fixed; inset: 0; background: rgba(10,22,40,.55); backdrop-filter: blur(4px); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
 .tr-overlay.open { opacity: 1; pointer-events: all; }
-
-.tr-modal {
-  background: var(--white);
-  border-radius: 8px;
-  box-shadow: 0 20px 60px rgba(0,0,0,.25);
-  width: 100%; max-width: 640px;
-  max-height: 92vh;
-  display: flex; flex-direction: column;
-  transform: translateY(24px) scale(.97);
-  transition: transform .28s cubic-bezier(.4,0,.2,1);
-  overflow: hidden;
-}
+.tr-modal { background: var(--white); border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,.25); width: 100%; max-width: 640px; max-height: 92vh; display: flex; flex-direction: column; transform: translateY(24px) scale(.97); transition: transform .28s cubic-bezier(.4,0,.2,1); overflow: hidden; }
 .tr-overlay.open .tr-modal { transform: translateY(0) scale(1); }
-
-/* red header - matches card headers */
-.tr-modal-head {
-  background: var(--red);
-  padding: 1.1rem 1.5rem;
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
-  flex-shrink: 0;
-}
+.tr-modal-head { background: var(--red); padding: 1.1rem 1.5rem; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-shrink: 0; }
 .tr-modal-title { font-family: 'Oswald', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: .08em; line-height: 1.2; }
 .tr-modal-sub { font-size: .72rem; color: rgba(255,255,255,.8); margin-top: 3px; }
-.tr-modal-close {
-  background: rgba(255,255,255,.2); border: none; color: var(--white);
-  width: 28px; height: 28px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; flex-shrink: 0; transition: background .15s;
-}
+.tr-modal-close { background: rgba(255,255,255,.2); border: none; color: var(--white); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: background .15s; }
 .tr-modal-close:hover { background: rgba(255,255,255,.35); }
 .tr-modal-close svg { width: 13px; height: 13px; }
-
-/* white body */
 .tr-modal-body { overflow-y: auto; padding: 1.4rem 1.5rem; flex: 1; background: var(--white); }
-
-/* dark navy section labels */
-.tr-section-title {
-  font-family: 'Oswald', sans-serif; font-size: .72rem; font-weight: 600;
-  letter-spacing: .16em; text-transform: uppercase;
-  color: var(--white);
-  background: var(--red);
-  padding: 6px 12px; border-radius: 4px;
-  margin: 1.3rem 0 1rem; display: block;
-}
+.tr-section-title { font-family: 'Oswald', sans-serif; font-size: .72rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--white); background: var(--red); padding: 6px 12px; border-radius: 4px; margin: 1.3rem 0 1rem; display: block; }
 .tr-section-title:first-child { margin-top: 0; }
-
 .tr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem 1.1rem; }
 .tr-grid.full-col { grid-template-columns: 1fr; }
 .tr-field { display: flex; flex-direction: column; gap: .35rem; }
 .tr-field.span2 { grid-column: 1 / -1; }
-
 .tr-label { font-size: .63rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--sub); }
-
-.tr-input, .tr-select {
-  border: 1.5px solid var(--mid); border-radius: 7px;
-  padding: 9px 12px; font-size: .84rem; font-family: 'Open Sans', sans-serif;
-  color: var(--text); background: var(--white); outline: none; width: 100%;
-  transition: border-color .15s, box-shadow .15s;
-}
+.tr-input, .tr-select { border: 1.5px solid var(--mid); border-radius: 7px; padding: 9px 12px; font-size: .84rem; font-family: 'Open Sans', sans-serif; color: var(--text); background: var(--white); outline: none; width: 100%; transition: border-color .15s, box-shadow .15s; }
 .tr-input::placeholder { color: #b0bec5; }
 .tr-input:focus, .tr-select:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(200,16,46,.08); }
-
-.tr-checkbox-row {
-  display: flex; align-items: flex-start; gap: .75rem;
-  background: var(--light); border: 1px solid var(--mid);
-  border-radius: 7px; padding: .9rem 1rem; margin-top: 1.1rem; cursor: pointer;
-}
+.tr-checkbox-row { display: flex; align-items: flex-start; gap: .75rem; background: var(--light); border: 1px solid var(--mid); border-radius: 7px; padding: .9rem 1rem; margin-top: 1.1rem; cursor: pointer; }
 .tr-checkbox-row input[type="checkbox"] { width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px; accent-color: var(--red); cursor: pointer; }
 .tr-checkbox-label { font-size: .81rem; color: var(--sub); line-height: 1.55; }
-
-/* footer */
-.tr-modal-foot {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid var(--mid);
-  background: var(--white);
-  flex-shrink: 0;
-}
-.tr-submit-btn {
-  width: 100%; background: var(--navy); color: var(--white); border: none;
-  border-radius: 7px; padding: 13px 0;
-  font-family: 'Oswald', sans-serif; font-size: .95rem; font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase;
-  cursor: pointer; transition: background .15s;
-  display: flex; align-items: center; justify-content: center; gap: .5rem;
-}
+.tr-modal-foot { padding: 1rem 1.5rem; border-top: 1px solid var(--mid); background: var(--white); flex-shrink: 0; }
+.tr-submit-btn { width: 100%; background: var(--navy); color: var(--white); border: none; border-radius: 7px; padding: 13px 0; font-family: 'Oswald', sans-serif; font-size: .95rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; transition: background .15s; display: flex; align-items: center; justify-content: center; gap: .5rem; }
 .tr-submit-btn:hover { background: #162845; }
 .tr-submit-btn svg { width: 17px; height: 17px; }
-
-.tr-success {
-  text-align: center; padding: 2.5rem 1rem;
-  color: #2e7d32; font-size: .95rem; font-weight: 600; line-height: 1.8;
-}
+.tr-success { text-align: center; padding: 2.5rem 1rem; color: #2e7d32; font-size: .95rem; font-weight: 600; line-height: 1.8; }
 
 /* RESPONSIVE */
 @media (max-width: 820px) {
@@ -456,7 +227,6 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
   .coaches-list-card { border-right: none; border-bottom: 1px solid var(--mid); }
   .cdp-contact-grid { grid-template-columns: 1fr; }
   .reg-form-grid { grid-template-columns: 1fr; }
-  .reg-form-grid > div[style*="grid-column:2"] { grid-column: 1; }
 }
 @media (max-width: 680px) {
   .page-header-inner { flex-direction: column; align-items: flex-start; }
@@ -474,7 +244,7 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
   </div>
 </div>
 
-<!-- ALL SECTIONS in one wrapper for consistent spacing -->
+<!-- TEAM DETAILS · COACHES · ROSTER — rendered by JS -->
 <div class="main" id="main-content">
   <div class="loading-state">
     <div class="spinner"></div>
@@ -536,7 +306,9 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
   <div id="tryouts-section" style="margin-bottom:1.4rem;">
     <div class="tryouts-section-wrap">
       <div class="card-header" style="background:var(--red);border-radius:6px 6px 0 0;font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:600;color:#fff;letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:11px 20px;">Upcoming Tryouts</div>
-      <div class="tryouts-grid" id="tryouts-grid"></div>
+      <div class="tryouts-grid" id="tryouts-grid">
+        <div class="no-tryouts">Loading tryouts…</div>
+      </div>
     </div>
   </div>
 
@@ -546,22 +318,18 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
       <div class="registration-header">Accept Invitation / Registration</div>
       <div class="registration-body">
         <div class="reg-form-grid" id="reg-form">
-
           <div class="reg-field">
             <label class="reg-label">Player Name</label>
             <input class="reg-input" type="text" placeholder="Full Name" id="reg-name">
           </div>
-
           <div class="reg-field">
             <label class="reg-label">Preferred Jersey #</label>
             <input class="reg-input" type="text" placeholder="e.g. 12" id="reg-jersey">
           </div>
-
           <div class="reg-field">
             <label class="reg-label">Grad Year</label>
             <input class="reg-input" type="text" placeholder="e.g. 2026" id="reg-gradyear">
           </div>
-
           <div class="reg-field">
             <label class="reg-label">Position 1</label>
             <select class="reg-select" id="reg-position">
@@ -573,12 +341,10 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
               <option value="LHP">LHP</option>
             </select>
           </div>
-
           <div class="reg-field" style="grid-column:1">
             <label class="reg-label">Height / Weight</label>
             <input class="reg-input" type="text" placeholder="e.g. 6'0 / 185lb" id="reg-hw">
           </div>
-
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; grid-column:2">
             <div class="reg-field">
               <label class="reg-label">City</label>
@@ -589,13 +355,10 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
               <input class="reg-input" type="text" placeholder="e.g. TN" id="reg-state" maxlength="2">
             </div>
           </div>
-
         </div>
-
         <div class="reg-success" id="reg-success">
           ✅ Registration submitted successfully! We'll be in touch soon.
         </div>
-
         <button class="reg-submit-btn" id="reg-submit-btn">
           Submit Registration
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
@@ -637,7 +400,6 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
 <!-- TRYOUT REGISTRATION MODAL -->
 <div class="tr-overlay" id="trOverlay">
   <div class="tr-modal" role="dialog" aria-modal="true" aria-label="Tryout Registration">
-
     <div class="tr-modal-head">
       <div>
         <div class="tr-modal-title">Register for Tryout</div>
@@ -647,126 +409,65 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
     </div>
-
     <div class="tr-modal-body" id="tr-modal-body">
-
-      <!-- GUARDIAN INFO -->
       <span class="tr-section-title">Form completed by</span>
       <div class="tr-grid full-col">
         <div class="tr-field">
           <label class="tr-label">This form is being completed by</label>
           <select class="tr-select" id="tr-completed-by">
             <option value="" disabled selected>Select one</option>
-            <option>Mother</option>
-            <option>Father</option>
-            <option>Grandparent</option>
-            <option>Guardian</option>
+            <option>Mother</option><option>Father</option>
+            <option>Grandparent</option><option>Guardian</option>
             <option>Coach (referring a player)</option>
           </select>
         </div>
       </div>
-
       <span class="tr-section-title">Contact Information</span>
       <div class="tr-grid">
-        <div class="tr-field span2">
-          <label class="tr-label">Name</label>
-          <input class="tr-input" type="text" placeholder="Full Name" id="tr-name">
-        </div>
-        <div class="tr-field span2">
-          <label class="tr-label">Address</label>
-          <input class="tr-input" type="text" placeholder="Street Address" id="tr-address">
-        </div>
-        <div class="tr-field">
-          <label class="tr-label">City</label>
-          <input class="tr-input" type="text" placeholder="City" id="tr-city">
-        </div>
+        <div class="tr-field span2"><label class="tr-label">Name</label><input class="tr-input" type="text" placeholder="Full Name" id="tr-name"></div>
+        <div class="tr-field span2"><label class="tr-label">Address</label><input class="tr-input" type="text" placeholder="Street Address" id="tr-address"></div>
+        <div class="tr-field"><label class="tr-label">City</label><input class="tr-input" type="text" placeholder="City" id="tr-city"></div>
         <div class="tr-field" style="display:grid;grid-template-columns:1fr 1fr;gap:.9rem;align-items:end;">
-          <div class="tr-field">
-            <label class="tr-label">State</label>
-            <input class="tr-input" type="text" placeholder="e.g. TN" id="tr-state" maxlength="2">
-          </div>
-          <div class="tr-field">
-            <label class="tr-label">Zip</label>
-            <input class="tr-input" type="text" placeholder="ZIP" id="tr-zip" maxlength="10">
-          </div>
+          <div class="tr-field"><label class="tr-label">State</label><input class="tr-input" type="text" placeholder="e.g. TN" id="tr-state" maxlength="2"></div>
+          <div class="tr-field"><label class="tr-label">Zip</label><input class="tr-input" type="text" placeholder="ZIP" id="tr-zip" maxlength="10"></div>
         </div>
-        <div class="tr-field">
-          <label class="tr-label">Cell</label>
-          <input class="tr-input" type="tel" placeholder="(000) 000-0000" id="tr-cell">
-        </div>
-        <div class="tr-field">
-          <label class="tr-label">Email</label>
-          <input class="tr-input" type="email" placeholder="email@example.com" id="tr-email">
-        </div>
+        <div class="tr-field"><label class="tr-label">Cell</label><input class="tr-input" type="tel" placeholder="(000) 000-0000" id="tr-cell"></div>
+        <div class="tr-field"><label class="tr-label">Email</label><input class="tr-input" type="email" placeholder="email@example.com" id="tr-email"></div>
       </div>
-
-      <!-- PLAYER INFO -->
       <span class="tr-section-title">Player Information</span>
       <div class="tr-grid">
-        <div class="tr-field span2">
-          <label class="tr-label">Player Name</label>
-          <input class="tr-input" type="text" placeholder="Full Name" id="tr-player-name">
-        </div>
-        <div class="tr-field">
-          <label class="tr-label">Age</label>
-          <input class="tr-input" type="number" placeholder="e.g. 16" id="tr-age" min="5" max="25">
-        </div>
-        <div class="tr-field">
-          <label class="tr-label">Date of Birth</label>
-          <input class="tr-input" type="date" id="tr-dob">
-        </div>
-        <div class="tr-field">
-          <label class="tr-label">Height / Weight</label>
-          <input class="tr-input" type="text" placeholder="e.g. 6'0 / 185lb" id="tr-hw">
-        </div>
+        <div class="tr-field span2"><label class="tr-label">Player Name</label><input class="tr-input" type="text" placeholder="Full Name" id="tr-player-name"></div>
+        <div class="tr-field"><label class="tr-label">Age</label><input class="tr-input" type="number" placeholder="e.g. 16" id="tr-age" min="5" max="25"></div>
+        <div class="tr-field"><label class="tr-label">Date of Birth</label><input class="tr-input" type="date" id="tr-dob"></div>
+        <div class="tr-field"><label class="tr-label">Height / Weight</label><input class="tr-input" type="text" placeholder="e.g. 6'0 / 185lb" id="tr-hw"></div>
         <div class="tr-field"></div>
         <div class="tr-field">
           <label class="tr-label">Position 1</label>
-          <select class="tr-select" id="tr-pos1">
-            <option value="" disabled selected>Select position</option>
-            <option>OF</option>
-            <option>INF</option>
-            <option>C</option>
-            <option>RHP</option>
-            <option>LHP</option>
-          </select>
+          <select class="tr-select" id="tr-pos1"><option value="" disabled selected>Select position</option><option>OF</option><option>INF</option><option>C</option><option>RHP</option><option>LHP</option></select>
         </div>
         <div class="tr-field">
           <label class="tr-label">Position 2</label>
-          <select class="tr-select" id="tr-pos2">
-            <option value="" disabled selected>Select position</option>
-            <option>OF</option>
-            <option>INF</option>
-            <option>C</option>
-            <option>RHP</option>
-            <option>LHP</option>
-          </select>
+          <select class="tr-select" id="tr-pos2"><option value="" disabled selected>Select position</option><option>OF</option><option>INF</option><option>C</option><option>RHP</option><option>LHP</option></select>
         </div>
       </div>
-
-      <!-- ACKNOWLEDGEMENT -->
       <label class="tr-checkbox-row" for="tr-ack">
         <input type="checkbox" id="tr-ack">
         <span class="tr-checkbox-label">By completing this form you are registering for this tryout and acknowledging that you plan to attend.</span>
       </label>
-
     </div>
-
     <div class="tr-modal-foot">
       <button class="tr-submit-btn" id="tr-submit-btn">
         Submit Registration
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
       </button>
     </div>
-
   </div>
 </div>
 
 <script>
 'use strict';
 
-/* ── CONSTANTS ── */
-const API_BASE = 'https://baseball-backend-five.vercel.app';
+const API_BASE = 'https://backend-baseball-inky.vercel.app'; // ← change to your deployed backend URL
 
 const ABBR_TO_NAME = {
   "AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":"California",
@@ -800,20 +501,6 @@ const avatarSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 
 let allCoaches = [];
 
-/* ── COACH PLACEHOLDERS ── */
-const COACH_PLACEHOLDERS = {
-  'Head Coach': {
-    bio: 'Coach brings over 18 years of competitive baseball experience to US Elite, including 12 years at the travel ball level. A former Division I shortstop at the University of Tennessee, he has developed more than 40 players who have gone on to play collegiate baseball. Known for his emphasis on fundamentals, situational IQ, and player development, he has led his teams to back-to-back regional championships.',
-    email: 'headcoach@uselitebaseball.com',
-    cell: '(615) 482-3371'
-  },
-  'Assistant Coach': {
-    bio: 'A former professional pitcher with five years of independent league experience, this assistant coach specializes in pitching mechanics and arm-care protocols. He joined US Elite after serving as a varsity pitching coach at the high school level for six seasons. His pitchers consistently rank among the top ERAs in the region.',
-    email: 'assistant@uselitebaseball.com',
-    cell: '(615) 319-7204'
-  }
-};
-
 /* ── RENDER COACH DETAIL ── */
 function renderCoachDetail(coach, activeIndex) {
   document.querySelectorAll('.coach-item').forEach((el, i) => {
@@ -824,10 +511,8 @@ function renderCoachDetail(coach, activeIndex) {
     ? `<img src="${esc(coach.image)}" alt="${esc(coach.name)}">`
     : avatarSVG;
 
-  const ph       = COACH_PLACEHOLDERS[coach.role] || COACH_PLACEHOLDERS['Assistant Coach'];
-  const bioText  = coach.bio   || ph.bio;
-  const emailVal = coach.email || ph.email;
-  const cellVal  = coach.cell  || ph.cell;
+  const emailVal = coach.email || '';
+  const cellVal  = coach.cell  || '';
   const cellHref = cellVal.replace(/\D/g, '');
 
   document.getElementById('coach-detail-panel').innerHTML = `
@@ -839,8 +524,7 @@ function renderCoachDetail(coach, activeIndex) {
       </div>
     </div>
     <div class="cdp-body">
-      <div class="cdp-section-label">Bio</div>
-      <div class="cdp-bio">${esc(bioText)}</div>
+      ${coach.bio ? `<div class="cdp-section-label">Bio</div><div class="cdp-bio">${esc(coach.bio)}</div>` : ''}
       <div class="cdp-section-label">Contact Information</div>
       <div class="cdp-contact-grid">
         <div class="cdp-contact-row">
@@ -849,7 +533,7 @@ function renderCoachDetail(coach, activeIndex) {
           </div>
           <div>
             <div class="cdp-contact-label">Email</div>
-            <div class="cdp-contact-value"><a href="mailto:${esc(emailVal)}">${esc(emailVal)}</a></div>
+            <div class="cdp-contact-value">${emailVal ? `<a href="mailto:${esc(emailVal)}">${esc(emailVal)}</a>` : '—'}</div>
           </div>
         </div>
         <div class="cdp-contact-row">
@@ -858,30 +542,16 @@ function renderCoachDetail(coach, activeIndex) {
           </div>
           <div>
             <div class="cdp-contact-label">Cell</div>
-            <div class="cdp-contact-value"><a href="tel:+1${cellHref}">${esc(cellVal)}</a></div>
+            <div class="cdp-contact-value">${cellVal ? `<a href="tel:+1${cellHref}">${esc(cellVal)}</a>` : '—'}</div>
           </div>
         </div>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
-/* ── SCHEDULE DATA & STATE ── */
-const SCHEDULE_DATA = [
-  { date: 'June 14 - 15',     event: 'Opening Day Classic',                city: 'Nashville',        state: 'TN' },
-  { date: 'June 26 - July 2', event: 'PBR National Championship',          city: 'Emerson',          state: 'GA' },
-  { date: 'July 6 - 13',      event: 'Perfect Game WWBA Nationals',        city: 'Atlanta',          state: 'GA' },
-  { date: 'July 18 - 20',     event: 'Dynamic Elite World Series',         city: 'Charlottesville',  state: 'VA' },
-  { date: 'July 24 - 27',     event: 'Dynamic World Championships',        city: 'Raleigh',          state: 'NC' },
-  { date: 'July 28 - 30',     event: 'College Exposure Camp',              city: 'Greenville',       state: 'SC' },
-  { date: 'Aug 2 - 4',        event: 'Big Show Elite Exposure Tournament', city: 'Leesport',         state: 'PA' },
-  { date: 'Aug 9 - 11',       event: 'Prep Baseball Report Showcase',      city: 'Crestwood',        state: 'IL' },
-  { date: 'Aug 16 - 18',      event: 'Area Code Games',                    city: 'Long Beach',       state: 'CA' },
-  { date: 'Sept 6 - 7',       event: 'Fall Showcase Invitational',         city: 'Franklin',         state: 'TN' },
-];
-
-let schSource   = [...SCHEDULE_DATA];
-let schFiltered = [...SCHEDULE_DATA];
+/* ── SCHEDULE — empty until wired to backend ── */
+let schSource   = [];
+let schFiltered = [];
 let schPage     = 0;
 let schPerPage  = 10;
 let schSortCol  = -1;
@@ -911,7 +581,7 @@ function schRender() {
           <td>${esc(r.city)}</td>
           <td>${esc(r.state)}</td>
         </tr>`).join('')
-    : `<tr><td colspan="4"><div class="no-schedule-rows">No matching events found.</div></td></tr>`;
+    : `<tr><td colspan="4"><div class="no-schedule-rows">No schedule data available for this team.</div></td></tr>`;
 
   info.textContent = total === 0
     ? 'No entries'
@@ -921,108 +591,91 @@ function schRender() {
   nextBtn.disabled = isAll || schPage >= pages - 1;
 }
 
-function schFilter() {
-  const q = document.getElementById('sch-search').value.trim().toLowerCase();
-  schFiltered = q
-    ? schSource.filter(r =>
-        r.date.toLowerCase().includes(q)     ||
-        r.event.toLowerCase().includes(q)    ||
-        r.city.toLowerCase().includes(q)     ||
-        r.state.toLowerCase().includes(q))
-    : [...schSource];
-  schPage = 0;
-  schRender();
-}
-
-function schSort(col) {
-  if (schSortCol === col) {
-    schSortDir = schSortDir === 'asc' ? 'desc' : 'asc';
-  } else {
-    schSortCol = col;
-    schSortDir = 'asc';
-  }
-  const keys = ['date', 'event', 'city', 'state'];
-  const key  = keys[col];
-  schSource.sort((a, b) => {
-    const av = a[key].toLowerCase(), bv = b[key].toLowerCase();
-    return schSortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
-  });
-  document.querySelectorAll('.schedule-table thead th').forEach((th, i) => {
-    th.classList.remove('sort-asc', 'sort-desc');
-    if (i === col) th.classList.add(schSortDir === 'asc' ? 'sort-asc' : 'sort-desc');
-  });
-  schFilter();
-}
-
-/* wire schedule controls — elements are always in DOM */
 document.getElementById('sch-per-page').addEventListener('change', function () {
   schPerPage = this.value === 'all' ? Infinity : parseInt(this.value);
-  schPage = 0;
-  schRender();
+  schPage = 0; schRender();
 });
-document.getElementById('sch-search').addEventListener('input', schFilter);
+document.getElementById('sch-search').addEventListener('input', function () {
+  const q = this.value.trim().toLowerCase();
+  schFiltered = q
+    ? schSource.filter(r =>
+        r.date.toLowerCase().includes(q)  || r.event.toLowerCase().includes(q) ||
+        r.city.toLowerCase().includes(q)  || r.state.toLowerCase().includes(q))
+    : [...schSource];
+  schPage = 0; schRender();
+});
 document.getElementById('sch-prev').addEventListener('click', () => { schPage--; schRender(); });
 document.getElementById('sch-next').addEventListener('click', () => { schPage++; schRender(); });
 document.querySelectorAll('.schedule-table thead th').forEach(th => {
-  th.addEventListener('click', () => schSort(parseInt(th.dataset.col)));
+  th.addEventListener('click', () => {
+    const col  = parseInt(th.dataset.col);
+    if (schSortCol === col) schSortDir = schSortDir === 'asc' ? 'desc' : 'asc';
+    else { schSortCol = col; schSortDir = 'asc'; }
+    const keys = ['date', 'event', 'city', 'state'];
+    schSource.sort((a, b) => {
+      const av = a[keys[col]].toLowerCase(), bv = b[keys[col]].toLowerCase();
+      return schSortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+    });
+    document.querySelectorAll('.schedule-table thead th').forEach((t, i) => {
+      t.classList.remove('sort-asc', 'sort-desc');
+      if (i === col) t.classList.add(schSortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    });
+    schFiltered = [...schSource]; schPage = 0; schRender();
+  });
 });
 
 /* ── MAIN LOAD ── */
 async function loadTeam() {
-  if (!teamId || !teamState) { showError('Missing team information.'); return; }
+  if (!teamId) { showError('Missing team information.'); return; }
   try {
-    const [teamRes, rosterRes] = await Promise.all([
-      fetch(`${API_BASE}/api/teams?state=${encodeURIComponent(teamState)}`).then(r => r.json()),
-      fetch(`${API_BASE}/api/roster?teamId=${encodeURIComponent(teamId)}`).then(r => r.json()).catch(() => ({ players: [] }))
-    ]);
-    const team = (teamRes.teams || []).find(t => t.id === teamId);
-    if (!team) { showError('Team not found.'); return; }
-    renderPage(team, rosterRes.players || []);
+    const res  = await fetch(`${API_BASE}/api/teams/${teamId}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Team not found');
+    renderPage(data.team);
+    loadTryouts(teamId);
   } catch (err) {
     showError(err.message);
   }
 }
 
-function renderPage(team, players) {
-  const fullState = ABBR_TO_NAME[team.state] || team.state;
+/* ── RENDER PAGE ── */
+function renderPage(team) {
+  const fullState = ABBR_TO_NAME[team.state] || team.state || '';
 
+  // Head coach from coach profile, assistants from nested objects
   allCoaches = [];
-  if (team.headCoach)       allCoaches.push({ name: team.headCoach,       role: 'Head Coach' });
-  if (team.assistantCoach1) allCoaches.push({ name: team.assistantCoach1, role: 'Assistant Coach' });
-  if (team.assistantCoach2) allCoaches.push({ name: team.assistantCoach2, role: 'Assistant Coach' });
+  allCoaches.push({
+    name:  `${team.firstName} ${team.lastName}`,
+    role:  'Head Coach',
+    bio:   team.bio         || '',
+    email: team.emailPublic || '',
+    cell:  team.phonePublic || '',
+    image: team.image       || '',
+  });
+  if (team.assistant1?.name) allCoaches.push({ name: team.assistant1.name, role: team.assistant1.role || 'Assistant Coach', bio: team.assistant1.bio || '', email: team.assistant1.email || '', cell: team.assistant1.cell || '', image: '' });
+  if (team.assistant2?.name) allCoaches.push({ name: team.assistant2.name, role: team.assistant2.role || 'Assistant Coach', bio: team.assistant2.bio || '', email: team.assistant2.email || '', cell: team.assistant2.cell || '', image: '' });
 
-  const locDisplay = team.location ? `${fullState} — ${esc(team.location)}` : fullState;
-  const detailRows = [
-    `<tr><td>Location</td><td>${locDisplay}</td></tr>`,
-    team.ageGroup ? `<tr><td>Age Group</td><td>${esc(team.ageGroup)}</td></tr>` : '',
-  ].join('');
+  const locParts = [team.location, fullState].filter(Boolean);
+  let detailRows = '';
+  if (locParts.length) detailRows += `<tr><td>Location</td><td>${esc(locParts.join(' — '))}</td></tr>`;
+  if (team.ageGroup)   detailRows += `<tr><td>Age Group</td><td>${esc(team.ageGroup)}</td></tr>`;
+  if (!detailRows)     detailRows  = `<tr><td colspan="2" style="color:var(--sub);font-size:.84rem;padding:.75rem 0">No team details added yet.</td></tr>`;
 
-  const coachListHtml = allCoaches.length
-    ? allCoaches.map((c, i) => `
-        <div class="coach-item${i === 0 ? ' active' : ''}" data-index="${i}">
-          <div class="coach-avatar">${avatarSVG}</div>
-          <div class="coach-info">
-            <div class="coach-name">${esc(c.name)}</div>
-            <div class="coach-role">${esc(c.role)}</div>
-          </div>
-          <button class="view-details-btn" data-index="${i}" aria-label="View details for ${esc(c.name)}">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            View
-          </button>
-        </div>`).join('')
-    : `<p class="no-info">No coach information available.</p>`;
+  const coachListHtml = allCoaches.map((c, i) => `
+    <div class="coach-item${i === 0 ? ' active' : ''}" data-index="${i}">
+      <div class="coach-avatar">${avatarSVG}</div>
+      <div class="coach-info">
+        <div class="coach-name">${esc(c.name)}</div>
+        <div class="coach-role">${esc(c.role)}</div>
+      </div>
+      <button class="view-details-btn" data-index="${i}" aria-label="View details for ${esc(c.name)}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        View
+      </button>
+    </div>`).join('');
 
-  const rosterBody = players.length
-    ? players.map(p => `
-        <tr>
-          <td><div class="player-cell"><div class="player-avatar">${avatarSVG}</div><span class="player-name">${esc(p.playerName)}</span></div></td>
-          <td>${esc(p.jersey)}</td>
-          <td>${esc(p.gradYear)}</td>
-          <td>${esc(p.position)}</td>
-          <td>${esc(p.batThrow)}</td>
-          <td>${esc(p.heightWeight)}</td>
-        </tr>`).join('')
-    : `<tr><td colspan="6"><div class="empty-roster">No roster data available for this team.</div></td></tr>`;
+  // Roster: empty state (no roster API yet)
+  const rosterBody = `<tr><td colspan="6"><div class="empty-roster">No roster data available for this team.</div></td></tr>`;
 
   document.getElementById('main-content').innerHTML = `
     <!-- 1. Team Details -->
@@ -1039,14 +692,14 @@ function renderPage(team, players) {
       <div class="coaches-inner">
         <div class="coaches-list-card">${coachListHtml}</div>
         <div class="coach-detail-panel" id="coach-detail-panel">
-          ${allCoaches.length === 0 ? '<div class="cdp-empty">No coach information available.</div>' : ''}
+          <div class="cdp-empty">Select a coach to view details</div>
         </div>
       </div>
     </div>
 
     <!-- 3. Roster -->
     <div class="roster-card">
-      <div class="roster-header">Team Roster (${players.length} player${players.length !== 1 ? 's' : ''})</div>
+      <div class="roster-header">Team Roster</div>
       <div class="roster-table-wrap">
         <table class="roster-table">
           <thead>
@@ -1061,7 +714,7 @@ function renderPage(team, players) {
     </div>
   `;
 
-  /* coach click handlers */
+  // Coach click handlers
   document.querySelectorAll('.coach-item, .view-details-btn').forEach(el => {
     el.addEventListener('click', function (e) {
       e.stopPropagation();
@@ -1070,16 +723,113 @@ function renderPage(team, players) {
     });
   });
 
-  /* default: head coach */
-  if (allCoaches.length > 0) {
-    renderCoachDetail(allCoaches[0], 0);
-  }
+  // Default: show head coach
+  if (allCoaches.length > 0) renderCoachDetail(allCoaches[0], 0);
 
-  /* show schedule section and render it */
+  // Show schedule section (empty for now)
   document.getElementById('schedule-section').hidden = false;
+  schFiltered = [...schSource];
   schRender();
 }
 
+/* ── LOAD TRYOUTS from new API ── */
+async function loadTryouts(id) {
+  const grid = document.getElementById('tryouts-grid');
+  try {
+    const res  = await fetch(`${API_BASE}/api/teams/${id}/tryouts`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    const tryouts = data.tryouts || [];
+    if (!tryouts.length) {
+      grid.innerHTML = `<div class="no-tryouts">No upcoming tryouts scheduled. Check back soon!</div>`;
+      return;
+    }
+    grid.innerHTML = tryouts.map(t => `
+      <div class="tryout-card">
+        <div class="tryout-card-top">
+          <span class="tryout-fee-badge">${esc(t.fee)}</span>
+          <span class="tryout-cal-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <path d="M16 2v4M8 2v4M3 10h18"/>
+            </svg>
+          </span>
+        </div>
+        <div class="tryout-date">${esc(t.date)}</div>
+        <div class="tryout-time">${esc(t.time)}</div>
+        <div class="tryout-location">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+            <circle cx="12" cy="9" r="2.5"/>
+          </svg>
+          ${esc(t.location)}
+        </div>
+        <button class="tryout-register-btn" onclick="openTryoutModal('${esc(t.date)}')">Register for Tryout</button>
+      </div>`).join('');
+  } catch (err) {
+    grid.innerHTML = `<div class="no-tryouts">No upcoming tryouts scheduled. Check back soon!</div>`;
+  }
+}
+
+/* ── REGISTRATION FORM ── */
+document.getElementById('reg-submit-btn').addEventListener('click', function () {
+  const name     = document.getElementById('reg-name').value.trim();
+  const gradYear = document.getElementById('reg-gradyear').value.trim();
+  const position = document.getElementById('reg-position').value.trim();
+  if (!name || !gradYear || !position) {
+    alert('Please fill in at least Player Name, Grad Year, and Position.');
+    return;
+  }
+  document.getElementById('reg-form').style.display = 'none';
+  this.style.display = 'none';
+  document.getElementById('reg-success').style.display = 'block';
+});
+
+/* ── TRYOUT MODAL ── */
+const trOverlay = document.getElementById('trOverlay');
+
+function openTryoutModal(dateLabel) {
+  document.getElementById('tr-modal-sub').textContent = dateLabel || 'Complete the form below to reserve your spot';
+  trOverlay.querySelectorAll('input, select').forEach(el => {
+    if (el.type === 'checkbox') el.checked = false; else el.value = '';
+  });
+  document.getElementById('tr-modal-body').innerHTML = document.getElementById('tr-modal-body').innerHTML; // reset success state if shown
+  trOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTryoutModal() {
+  trOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+trOverlay.addEventListener('click', e => { if (e.target === trOverlay) closeTryoutModal(); });
+document.getElementById('trModalClose').addEventListener('click', closeTryoutModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTryoutModal(); });
+
+document.getElementById('tr-submit-btn').addEventListener('click', function () {
+  const completedBy = document.getElementById('tr-completed-by').value;
+  const name        = document.getElementById('tr-name').value.trim();
+  const playerName  = document.getElementById('tr-player-name').value.trim();
+  const ack         = document.getElementById('tr-ack').checked;
+  if (!completedBy || !name || !playerName) {
+    alert('Please fill in who is completing the form, your name, and the player name.');
+    return;
+  }
+  if (!ack) {
+    alert('Please check the acknowledgement box to confirm you plan to attend.');
+    return;
+  }
+  document.getElementById('tr-modal-body').innerHTML = `
+    <div class="tr-success">
+      ✅ Registration submitted!<br>
+      We look forward to seeing <strong>${esc(playerName)}</strong> at the tryout.<br>
+      A confirmation will be sent to ${esc(document.getElementById('tr-email').value || 'your email')}.
+    </div>`;
+  document.getElementById('tr-modal-foot').style.display = 'none';
+});
+
+/* ── ERROR STATE ── */
 function showError(msg) {
   document.getElementById('main-content').innerHTML = `
     <div class="card">
@@ -1091,116 +841,6 @@ function showError(msg) {
     </div>`;
 }
 
-/* ── TRYOUTS ── */
-const TRYOUT_DATA = [
-  { fee: '$45 Fee', date: 'June 10, 2026', time: '4:00 PM – 7:00 PM', location: 'Westside Sports Complex' },
-  { fee: '$45 Fee', date: 'June 12, 2026', time: '4:00 PM – 7:00 PM', location: 'Westside Sports Complex' },
-  { fee: '$45 Fee', date: 'June 15, 2026', time: '9:00 AM – 12:00 PM', location: 'City Park Field 4'       },
-];
-
-function renderTryouts() {
-  const grid = document.getElementById('tryouts-grid');
-  if (!grid) return;
-
-  if (!TRYOUT_DATA.length) {
-    grid.innerHTML = `<div class="no-tryouts">No upcoming tryouts scheduled. Check back soon!</div>`;
-    return;
-  }
-
-  grid.innerHTML = TRYOUT_DATA.map(t => `
-    <div class="tryout-card">
-      <div class="tryout-card-top">
-        <span class="tryout-fee-badge">${esc(t.fee)}</span>
-        <span class="tryout-cal-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="3" y="4" width="18" height="18" rx="2"/>
-            <path d="M16 2v4M8 2v4M3 10h18"/>
-          </svg>
-        </span>
-      </div>
-      <div class="tryout-date">${esc(t.date)}</div>
-      <div class="tryout-time">${esc(t.time)}</div>
-      <div class="tryout-location">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-          <circle cx="12" cy="9" r="2.5"/>
-        </svg>
-        ${esc(t.location)}
-      </div>
-      <button class="tryout-register-btn" onclick="openTryoutModal('${esc(t.date)}')">Register for Tryout</button>
-    </div>
-  `).join('');
-}
-
-/* ── REGISTRATION FORM ── */
-document.getElementById('reg-submit-btn').addEventListener('click', function () {
-  const name     = document.getElementById('reg-name').value.trim();
-  const jersey   = document.getElementById('reg-jersey').value.trim();
-  const gradYear = document.getElementById('reg-gradyear').value.trim();
-  const position = document.getElementById('reg-position').value.trim();
-  const hw       = document.getElementById('reg-hw').value.trim();
-  const city     = document.getElementById('reg-city').value.trim();
-  const state    = document.getElementById('reg-state').value.trim();
-
-  if (!name || !gradYear || !position) {
-    alert('Please fill in at least Player Name, Grad Year, and Position.');
-    return;
-  }
-
-  // TODO: connect to backend — send { name, jersey, gradYear, position, hw, city, state }
-  console.log('Registration:', { name, jersey, gradYear, position, hw, city, state });
-
-  document.getElementById('reg-form').style.display = 'none';
-  this.style.display = 'none';
-  document.getElementById('reg-success').style.display = 'block';
-});
-
-/* ── TRYOUT MODAL ── */
-const trOverlay = document.getElementById('trOverlay');
-
-function openTryoutModal(dateLabel) {
-  document.getElementById('tr-modal-sub').textContent = dateLabel || 'Complete the form below to reserve your spot';
-  // reset form
-  trOverlay.querySelectorAll('input, select').forEach(el => { el.value = el.type === 'checkbox' ? '' : ''; });
-  document.getElementById('tr-ack').checked = false;
-  document.getElementById('tr-modal-body').innerHTML !== '' && restoreTrForm();
-  trOverlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeTryoutModal() {
-  trOverlay.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function restoreTrForm() { /* body content is static HTML, no restore needed */ }
-
-trOverlay.addEventListener('click', e => { if (e.target === trOverlay) closeTryoutModal(); });
-document.getElementById('trModalClose').addEventListener('click', closeTryoutModal);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTryoutModal(); });
-
-document.getElementById('tr-submit-btn').addEventListener('click', function () {
-  const completedBy = document.getElementById('tr-completed-by').value;
-  const name        = document.getElementById('tr-name').value.trim();
-  const playerName  = document.getElementById('tr-player-name').value.trim();
-  const ack         = document.getElementById('tr-ack').checked;
-
-  if (!completedBy || !name || !playerName) {
-    alert('Please fill in who is completing the form, your name, and the player name.');
-    return;
-  }
-  if (!ack) {
-    alert('Please check the acknowledgement box to confirm you plan to attend.');
-    return;
-  }
-
-  // TODO: send to backend
-  const body = document.getElementById('tr-modal-body');
-  body.innerHTML = `<div class="tr-success">✅ Registration submitted!<br>We look forward to seeing <strong>${esc(playerName)}</strong> at the tryout.<br>A confirmation will be sent to ${esc(document.getElementById('tr-email').value || 'your email')}.</div>`;
-  document.getElementById('tr-modal-foot').style.display = 'none';
-});
-
-renderTryouts();
 loadTeam();
 </script>
 </body>
