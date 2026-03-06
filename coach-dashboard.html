@@ -548,7 +548,7 @@ async function handleAsstPhotoUpload(input, previewId, statusId, imgId, hiddenId
       const res  = await fetch(`${API_BASE}/api/coach/upload-image`, {
         method: 'POST',
         headers: authH(),
-        body: JSON.stringify({ base64, fileName: file.name, mimeType: file.type, saveToProfile: true, slot: 'head' })
+        body: JSON.stringify({ base64, fileName: file.name, mimeType: file.type, saveToProfile: false, slot: slot })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
