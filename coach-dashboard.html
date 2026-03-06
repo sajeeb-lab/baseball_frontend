@@ -175,6 +175,7 @@ async function loadDashboard(){
     const res=await fetch(`${API_BASE}/api/coach/me`,{headers:authH()});
     if(res.status===401){ handleLogout(); return; }
     const {coach}=await res.json();
+    if (coach._id) localStorage.setItem('coach_id', coach._id);
     renderDashboard(coach);
   } catch(err){
     document.getElementById('dash-main').innerHTML=`<div class="card"><div class="card-body" style="text-align:center;color:var(--red);padding:3rem">${esc(err.message)}</div></div>`;
@@ -230,7 +231,7 @@ function renderDashboard(coach){
           <div class="msg" id="msg-profile"></div>
           <div class="photo-upload-wrap">
             <div class="photo-preview" id="p-photo-preview">
-              ${coach.image ? `<img src="${esc(coach.image)}" id="p-photo-img">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`}
+              ${coach.image ? '<img src="' + esc(coach.image) + '" id="p-photo-img">' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>'}
             </div>
             <div class="photo-upload-right">
               <span class="field-label">Profile Photo</span>
@@ -325,7 +326,7 @@ function renderDashboard(coach){
           <div class="asst-label">Assistant Coach 1</div>
           <div class="asst-photo-wrap">
             <div class="asst-photo-preview" id="a1-photo-preview">
-              ${coach.assistant1?.image ? `<img src="${esc(coach.assistant1.image)}" id="a1-photo-img">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`}
+              ${coach.assistant1?.image ? '<img src="' + esc(coach.assistant1.image) + '" id="a1-photo-img">' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>'}
             </div>
             <div class="photo-upload-right">
               <span class="field-label">Assistant 1 Photo</span>
@@ -353,7 +354,7 @@ function renderDashboard(coach){
           <div class="asst-label">Assistant Coach 2</div>
           <div class="asst-photo-wrap">
             <div class="asst-photo-preview" id="a2-photo-preview">
-              ${coach.assistant2?.image ? `<img src="${esc(coach.assistant2.image)}" id="a2-photo-img">` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`}
+              ${coach.assistant2?.image ? '<img src="' + esc(coach.assistant2.image) + '" id="a2-photo-img">' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>'}
             </div>
             <div class="photo-upload-right">
               <span class="field-label">Assistant 2 Photo</span>
