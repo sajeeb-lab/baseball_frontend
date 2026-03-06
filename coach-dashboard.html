@@ -801,7 +801,7 @@ async function deletePlayer(id) {
   } catch(err) { alert('Error: ' + err.message); }
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEditModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeEditModal(); closeEditGameModal(); } });
 
 
 /* ── DASHBOARD SCHEDULE ── */
@@ -832,13 +832,57 @@ function renderDashSchedule(games) {
       <td>${esc(g.event)}</td>
       <td>${esc(g.city||'—')}</td>
       <td>${esc(g.state||'—')}</td>
-      <td>
+      <td style="white-space:nowrap">
+        <button class="roster-edit-btn" onclick="openEditGame('${esc(g._id)}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Edit
+        </button>
         <button class="roster-del-btn" onclick="deleteGame('${esc(g._id)}')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
           Delete
         </button>
       </td>
     </tr>`).join('');
+}
+
+
+async function openEditGame(id) {
+  const g = dashSchedData.find(x => x._id === id);
+  if (!g) return;
+  document.getElementById('eg-id').value    = id;
+  document.getElementById('eg-date').value  = g.date  || '';
+  document.getElementById('eg-event').value = g.event || '';
+  document.getElementById('eg-city').value  = g.city  || '';
+  document.getElementById('eg-state').value = g.state || '';
+  document.getElementById('sched-edit-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeEditGameModal() {
+  document.getElementById('sched-edit-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+async function saveEditGame() {
+  const id     = document.getElementById('eg-id').value;
+  const date   = document.getElementById('eg-date').value.trim();
+  const event  = document.getElementById('eg-event').value.trim();
+  const city   = document.getElementById('eg-city').value.trim();
+  const state  = document.getElementById('eg-state').value.trim().toUpperCase();
+  if (!date || !event) { alert('Date and event name are required.'); return; }
+  const btn = document.getElementById('eg-save-btn');
+  btn.textContent = 'Saving…'; btn.disabled = true;
+  try {
+    const res  = await fetch(`${API_BASE}/api/coach/schedule/${id}`, {
+      method: 'PUT', headers: authH(),
+      body: JSON.stringify({ date, event, city, state })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed');
+    closeEditGameModal();
+    await loadDashSchedule();
+  } catch(err) { alert('Error: ' + err.message); }
+  finally { btn.textContent = 'Save Changes'; btn.disabled = false; }
 }
 
 async function addGame() {
@@ -929,6 +973,43 @@ loadDashboard();
     <div class="edit-modal-foot">
       <button class="edit-cancel-btn" onclick="closeEditModal()">Cancel</button>
       <button class="edit-save-btn" id="ep-save-btn" onclick="saveEditPlayer()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT GAME MODAL -->
+<div class="edit-overlay" id="sched-edit-overlay">
+  <div class="edit-modal">
+    <div class="edit-modal-head">
+      <h3>Edit Game / Event</h3>
+      <button class="edit-modal-close" onclick="closeEditGameModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="edit-modal-body">
+      <input type="hidden" id="eg-id">
+      <div class="edit-modal-grid">
+        <div class="field-group">
+          <label class="field-label">Date</label>
+          <input class="field-input" type="text" id="eg-date" placeholder="e.g. June 14, 2026">
+        </div>
+        <div class="field-group">
+          <label class="field-label">State</label>
+          <input class="field-input" type="text" id="eg-state" placeholder="e.g. TN" maxlength="2">
+        </div>
+        <div class="field-group" style="grid-column:1/-1">
+          <label class="field-label">Event Name</label>
+          <input class="field-input" type="text" id="eg-event" placeholder="e.g. vs. Nashville Elite 17U">
+        </div>
+        <div class="field-group" style="grid-column:1/-1">
+          <label class="field-label">City</label>
+          <input class="field-input" type="text" id="eg-city" placeholder="e.g. Nashville">
+        </div>
+      </div>
+    </div>
+    <div class="edit-modal-foot">
+      <button class="edit-cancel-btn" onclick="closeEditGameModal()">Cancel</button>
+      <button class="edit-save-btn" id="eg-save-btn" onclick="saveEditGame()">Save Changes</button>
     </div>
   </div>
 </div>
