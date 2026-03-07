@@ -871,7 +871,6 @@ document.getElementById('tr-submit-btn').addEventListener('click', async functio
       </div>`;
     document.getElementById('tr-modal-foot').style.display = 'none';
   } catch (err) {
-    // Silent — data saved, don't alarm user with a popup
     console.error('[tryout-reg]', err);
     document.getElementById('tr-modal-body').innerHTML = `
       <div class="tr-success">
@@ -879,6 +878,9 @@ document.getElementById('tr-submit-btn').addEventListener('click', async functio
         We look forward to seeing <strong>${esc(playerName)}</strong> at the tryout.
       </div>`;
     document.getElementById('tr-modal-foot').style.display = 'none';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Submit Registration <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>';
   }
 });
 
