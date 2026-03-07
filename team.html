@@ -890,12 +890,7 @@ document.getElementById('tr-submit-btn').addEventListener('click', async functio
       </div>`;
     document.getElementById('tr-modal-foot').style.display = 'none';
   } finally {
-    // Only reset button if footer is still visible (i.e. not success state)
-    const foot = document.getElementById('tr-modal-foot');
-    if (foot && foot.style.display !== 'none') {
-      btn.disabled = false;
-      btn.innerHTML = 'Submit Registration <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>';
-    }
+    document.getElementById('tr-modal-foot').style.display = 'none';
   }
 });
 
