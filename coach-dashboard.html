@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coach Dashboard – US Elite Baseball</title>
+<title>Coach Dashboard – Ambassadors Baseball</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
@@ -919,52 +919,83 @@ async function saveEditGame() {
 }
 
 
+let _allTryoutRegs = [];
+let _allDashTryouts = [];
+
 async function loadTryoutRegs() {
-  const tbody = document.getElementById('tryreg-body');
+  const cardsWrap = document.getElementById('tryreg-cards-wrap');
+  const tableWrap = document.getElementById('tryreg-table-wrap');
+  cardsWrap.innerHTML = '<div class="no-schedule-dash">Loading…</div>';
+  tableWrap.style.display = 'none';
   try {
-    const res  = await fetch(`${API_BASE}/api/coach/tryout-registrations`, { headers: authH() });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message);
-    const regs = data.registrations || [];
-    if (!regs.length) {
-      tbody.innerHTML = '<tr><td colspan="7"><div class="no-schedule-dash">No tryout registrations yet.</div></td></tr>';
+    // Load tryouts and registrations in parallel
+    const [tryoutsRes, regsRes] = await Promise.all([
+      fetch(`${API_BASE}/api/coach/tryouts`, { headers: authH() }),
+      fetch(`${API_BASE}/api/coach/tryout-registrations`, { headers: authH() })
+    ]);
+    const tryoutsData = await tryoutsRes.json();
+    const regsData    = await regsRes.json();
+    _allDashTryouts   = tryoutsData.tryouts  || [];
+    _allTryoutRegs    = regsData.registrations || [];
+
+    if (!_allDashTryouts.length) {
+      cardsWrap.innerHTML = '<div class="no-schedule-dash">No tryouts created yet. Add one in the Tryouts tab.</div>';
       return;
     }
-    tbody.innerHTML = regs.map((r, i) => `
-      <tr>
-        <td>${esc(r.player_name||'—')}</td>
-        <td>${esc(r.tryout_date||'—')}</td>
-        <td>${esc(r.name||'—')}</td>
-        <td>${esc(r.email||'—')}</td>
-        <td>${esc(r.cell||'—')}</td>
-        <td>${esc([r.pos1,r.pos2].filter(Boolean).join(', ')||'—')}</td>
-        <td>
-          <button class="tryreg-expand-btn" onclick="toggleTryregDetail(${i})">View</button>
-        </td>
-      </tr>
-      <tr class="tryreg-detail-row" id="tryreg-detail-${i}" style="display:none">
-        <td colspan="7">
-          <div class="tryreg-detail-grid">
-            <div><strong>Completed By</strong>${esc(r.completed_by||'—')}</div>
-            <div><strong>Age</strong>${esc(r.age||'—')}</div>
-            <div><strong>DOB</strong>${esc(r.dob||'—')}</div>
-            <div><strong>HT/WT</strong>${esc(r.hw||'—')}</div>
-            <div><strong>Address</strong>${esc(r.address||'—')}</div>
-            <div><strong>City</strong>${esc(r.city||'—')}</div>
-            <div><strong>State</strong>${esc(r.state||'—')}</div>
-            <div><strong>Zip</strong>${esc(r.zip||'—')}</div>
+
+    cardsWrap.innerHTML = _allDashTryouts.map(t => {
+      const count = _allTryoutRegs.filter(r => r.tryout_date === t.date).length;
+      return `
+        <div class="tryreg-tryout-card" onclick="showTryregForTryout('${esc(t.date)}', '${esc(t.location||'')}')">
+          <div class="tryreg-tryout-card-top">
+            <span class="tryout-fee-badge">${esc(t.fee||'Free')}</span>
+            <span class="tryreg-count-badge">${count} registered</span>
           </div>
-        </td>
-      </tr>`).join('');
+          <div class="tryreg-tryout-date">${esc(t.date)}</div>
+          <div class="tryreg-tryout-meta">${esc(t.time||'')}</div>
+          <div class="tryreg-tryout-meta" style="display:flex;align-items:center;gap:5px;margin-top:4px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:13px;height:13px;flex-shrink:0"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            ${esc(t.location||'—')}
+          </div>
+          <div class="tryreg-view-regs-btn">View Registrations</div>
+        </div>`;
+    }).join('');
   } catch(err) {
-    tbody.innerHTML = '<tr><td colspan="7"><div class="no-schedule-dash">Failed to load registrations.</div></td></tr>';
+    cardsWrap.innerHTML = '<div class="no-schedule-dash">Failed to load tryouts.</div>';
   }
 }
 
-function toggleTryregDetail(i) {
-  const row = document.getElementById('tryreg-detail-' + i);
-  if (!row) return;
-  row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+function showTryregForTryout(date, location) {
+  // Highlight selected card
+  document.querySelectorAll('.tryreg-tryout-card').forEach(c => c.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+
+  const tableWrap = document.getElementById('tryreg-table-wrap');
+  const tbody     = document.getElementById('tryreg-body');
+  const heading   = document.getElementById('tryreg-table-heading');
+
+  const regs = _allTryoutRegs.filter(r => r.tryout_date === date);
+  heading.textContent = `Registrations — ${date}${location ? ' @ ' + location : ''} (${regs.length})`;
+  tableWrap.style.display = 'block';
+
+  if (!regs.length) {
+    tbody.innerHTML = '<tr><td colspan="9"><div class="no-schedule-dash">No registrations for this tryout yet.</div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = regs.map(r => `
+    <tr>
+      <td style="font-weight:600;color:var(--navy)">${esc(r.player_name||'—')}</td>
+      <td>${esc(r.name||'—')}</td>
+      <td>${esc(r.email||'—')}</td>
+      <td>${esc(r.cell||'—')}</td>
+      <td>${esc([r.pos1,r.pos2].filter(Boolean).join(', ')||'—')}</td>
+      <td>${esc(r.age||'—')}</td>
+      <td>${esc(r.hw||'—')}</td>
+      <td>${esc(r.completed_by||'—')}</td>
+      <td>${esc([r.address, r.city, r.state, r.zip].filter(Boolean).join(', ')||'—')}</td>
+    </tr>`).join('');
+
+  tableWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 async function addGame() {
@@ -1064,31 +1095,39 @@ loadDashboard();
         <div class="section-title-row">
           <div>
             <div class="section-title">Tryout Registrations</div>
-            <div class="section-sub">Players who registered via your tryout forms</div>
+            <div class="section-sub">Click a tryout below to view its registrations</div>
           </div>
-          <button class="save-btn" onclick="loadTryoutRegs()" style="background:var(--navy)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
-            Refresh
-          </button>
         </div>
         <div class="msg" id="msg-tryreg"></div>
-        <div style="overflow-x:auto;background:var(--white);border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.06)">
-          <table class="tryreg-table">
-            <thead>
-              <tr>
-                <th>Player Name</th>
-                <th>Tryout Date</th>
-                <th>Contact Name</th>
-                <th>Email</th>
-                <th>Cell</th>
-                <th>Position(s)</th>
-                <th>Details</th>
-              </tr>
-            </thead>
-            <tbody id="tryreg-body">
-              <tr><td colspan="7"><div class="no-schedule-dash">Loading registrations…</div></td></tr>
-            </tbody>
-          </table>
+
+        <!-- Tryout selection cards -->
+        <div id="tryreg-cards-wrap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-bottom:1.6rem"></div>
+
+        <!-- Registrations table (hidden until a tryout is selected) -->
+        <div id="tryreg-table-wrap" style="display:none">
+          <div class="card">
+            <div class="card-header" id="tryreg-table-heading">Registrations</div>
+            <div style="overflow-x:auto">
+              <table class="tryreg-table">
+                <thead>
+                  <tr>
+                    <th>Player Name</th>
+                    <th>Contact Name</th>
+                    <th>Email</th>
+                    <th>Cell</th>
+                    <th>Position(s)</th>
+                    <th>Age</th>
+                    <th>HT/WT</th>
+                    <th>Completed By</th>
+                    <th>Address</th>
+                  </tr>
+                </thead>
+                <tbody id="tryreg-body">
+                  <tr><td colspan="9"><div class="no-schedule-dash">Select a tryout above to view registrations.</div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
 
