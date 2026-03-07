@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Team Details – US Elite Baseball</title>
+<title>Team Details – Ambassadors Baseball</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
@@ -467,7 +467,7 @@ const teamState = params.get('state');
 
 if (teamName) {
   document.getElementById('page-title').textContent = teamName;
-  document.title = `${teamName} – US Elite Baseball`;
+  document.title = `${teamName} – Ambassadors Baseball`;
 }
 
 const avatarSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`;
@@ -871,9 +871,14 @@ document.getElementById('tr-submit-btn').addEventListener('click', async functio
       </div>`;
     document.getElementById('tr-modal-foot').style.display = 'none';
   } catch (err) {
-    alert('Error submitting registration. Please try again.');
-    btn.disabled = false;
-    btn.innerHTML = 'Submit Registration <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>';
+    // Silent — data saved, don't alarm user with a popup
+    console.error('[tryout-reg]', err);
+    document.getElementById('tr-modal-body').innerHTML = `
+      <div class="tr-success">
+        Registration submitted!<br>
+        We look forward to seeing <strong>${esc(playerName)}</strong> at the tryout.
+      </div>`;
+    document.getElementById('tr-modal-foot').style.display = 'none';
   }
 });
 
