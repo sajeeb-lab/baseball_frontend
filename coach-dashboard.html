@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coach Dashboard – Ambassadors Baseball</title>
+<title>Coach Dashboard – US Ambassadors Baseball</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
@@ -538,6 +538,38 @@ function renderDashboard(coach){
         <div class="card-body">
           <div class="msg" id="msg-tryout-list"></div>
           <div id="tryouts-list-wrap"><div class="loading-state" style="padding:1.5rem"><div class="spinner"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRYOUT REGISTRATIONS PANEL -->
+    <div class="dash-panel" id="panel-tryreg">
+      <div class="section-title-row">
+        <div>
+          <div class="section-title">Tryout Registrations</div>
+          <div class="section-sub">Click a tryout to view its registrations</div>
+        </div>
+      </div>
+      <div class="msg" id="msg-tryreg"></div>
+      <div id="tryreg-cards-wrap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-bottom:1.6rem">
+        <div class="no-schedule-dash">Loading…</div>
+      </div>
+      <div id="tryreg-table-wrap" style="display:none">
+        <div class="card">
+          <div class="card-header" id="tryreg-table-heading">Registrations</div>
+          <div style="overflow-x:auto">
+            <table class="tryreg-table">
+              <thead>
+                <tr>
+                  <th>Player Name</th><th>Contact Name</th><th>Email</th><th>Cell</th>
+                  <th>Position(s)</th><th>Age</th><th>HT/WT</th><th>Completed By</th><th>Address</th>
+                </tr>
+              </thead>
+              <tbody id="tryreg-body">
+                <tr><td colspan="9"><div class="no-schedule-dash">Select a tryout above.</div></td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -1089,47 +1121,6 @@ loadDashboard();
     </div>
   </div>
 </div>
-
-      <!-- TRYOUT REGISTRATIONS PANEL -->
-      <div class="dash-panel" id="panel-tryreg">
-        <div class="section-title-row">
-          <div>
-            <div class="section-title">Tryout Registrations</div>
-            <div class="section-sub">Click a tryout below to view its registrations</div>
-          </div>
-        </div>
-        <div class="msg" id="msg-tryreg"></div>
-
-        <!-- Tryout selection cards -->
-        <div id="tryreg-cards-wrap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-bottom:1.6rem"></div>
-
-        <!-- Registrations table (hidden until a tryout is selected) -->
-        <div id="tryreg-table-wrap" style="display:none">
-          <div class="card">
-            <div class="card-header" id="tryreg-table-heading">Registrations</div>
-            <div style="overflow-x:auto">
-              <table class="tryreg-table">
-                <thead>
-                  <tr>
-                    <th>Player Name</th>
-                    <th>Contact Name</th>
-                    <th>Email</th>
-                    <th>Cell</th>
-                    <th>Position(s)</th>
-                    <th>Age</th>
-                    <th>HT/WT</th>
-                    <th>Completed By</th>
-                    <th>Address</th>
-                  </tr>
-                </thead>
-                <tbody id="tryreg-body">
-                  <tr><td colspan="9"><div class="no-schedule-dash">Select a tryout above to view registrations.</div></td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
 
 <!-- EDIT GAME MODAL -->
 <div class="edit-overlay" id="sched-edit-overlay">
