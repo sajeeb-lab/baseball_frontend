@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coach Dashboard – US Ambassadors Baseball</title>
+<title>Coach Dashboard – Ambassadors Baseball</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
@@ -139,6 +139,23 @@ input[type="file"].hidden-file{display:none}
 .sched-mgmt-table td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
 .sched-table-wrap{overflow-x:auto}
 .no-schedule-dash{text-align:center;padding:2.5rem;color:var(--sub);font-size:.88rem;background:var(--light);border-radius:0 0 6px 6px}
+.tryreg-tryout-card{background:var(--white);border:2px solid var(--mid);border-radius:10px;padding:1.2rem 1.3rem 1rem;cursor:pointer;transition:box-shadow .15s,transform .15s,border-color .15s;display:flex;flex-direction:column;gap:.45rem}
+.tryreg-tryout-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.1);transform:translateY(-2px);border-color:var(--red)}
+.tryreg-tryout-card.selected{border-color:var(--red);box-shadow:0 6px 24px rgba(200,16,46,.15)}
+.tryreg-tryout-card-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.tryreg-count-badge{font-family:'Oswald',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:#fef3f5;color:var(--red);border:1px solid #f5c6cb;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.tryreg-tryout-date{font-family:'Oswald',sans-serif;font-size:1.15rem;font-weight:700;color:var(--navy);line-height:1.1}
+.tryreg-tryout-meta{font-size:.78rem;color:var(--sub)}
+.tryreg-view-regs-btn{margin-top:.5rem;text-align:center;background:var(--navy);color:var(--white);font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:8px 0;border-radius:6px;transition:background .15s}
+.tryreg-tryout-card:hover .tryreg-view-regs-btn,.tryreg-tryout-card.selected .tryreg-view-regs-btn{background:var(--red)}
+.tryreg-table{width:100%;border-collapse:collapse;font-size:.83rem}
+.tryreg-table thead tr{background:var(--navy)}
+.tryreg-table thead th{padding:10px 14px;text-align:left;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;color:var(--white);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.tryreg-table tbody tr{border-bottom:1px solid var(--mid);transition:background .12s}
+.tryreg-table tbody tr:last-child{border-bottom:none}
+.tryreg-table tbody tr:hover{background:var(--light)}
+.tryreg-table td{padding:10px 14px;vertical-align:middle;font-size:.82rem;color:var(--text)}
+.tryreg-table td:first-child{font-weight:600;color:var(--navy)}
 
 @media(max-width:700px){.form-grid-2,.form-grid-3{grid-template-columns:1fr}.page-header-inner{flex-direction:column;align-items:flex-start}.section-tabs{gap:.4rem}.section-tab{padding:8px 12px;font-size:.72rem}}
 </style>
@@ -198,7 +215,7 @@ function switchPanel(name){
 
   // Clear old poll, start new one for live tabs
   clearInterval(_pollInterval);
-  const liveTabs = { roster: loadDashRoster, schedule: loadDashSchedule, tryouts: loadTryouts, tryreg: loadTryoutRegs };
+  const liveTabs = { roster: loadDashRoster, schedule: loadDashSchedule, tryouts: loadTryouts };
   if (liveTabs[name]) {
     _pollInterval = setInterval(liveTabs[name], 15000);
   }
@@ -208,7 +225,7 @@ function switchPanel(name){
 document.addEventListener('visibilitychange', () => {
   clearInterval(_pollInterval);
   if (document.visibilityState === 'visible') {
-    const liveTabs = { roster: loadDashRoster, schedule: loadDashSchedule, tryouts: loadTryouts, tryreg: loadTryoutRegs };
+    const liveTabs = { roster: loadDashRoster, schedule: loadDashSchedule, tryouts: loadTryouts };
     if (liveTabs[_activePanel]) {
       liveTabs[_activePanel]();
       _pollInterval = setInterval(liveTabs[_activePanel], 15000);
