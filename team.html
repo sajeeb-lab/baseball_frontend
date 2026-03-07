@@ -423,10 +423,13 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
           <select class="tr-select" id="tr-pos2"><option value="" disabled selected>Select position</option><option>OF</option><option>INF</option><option>C</option><option>RHP</option><option>LHP</option></select>
         </div>
       </div>
-      <label class="tr-checkbox-row" for="tr-ack">
+      <label class="tr-checkbox-row" id="tr-ack-row" for="tr-ack">
         <input type="checkbox" id="tr-ack">
         <span class="tr-checkbox-label">By completing this form you are registering for this tryout and acknowledging that you plan to attend.</span>
       </label>
+      <div id="tr-ack-error" style="display:none;color:var(--red);font-size:.78rem;font-weight:600;margin-top:.5rem;padding:.5rem .75rem;background:#fef3f5;border:1px solid #f5c6cb;border-radius:6px;">
+        Please check the acknowledgement box to confirm you plan to attend.
+      </div>
     </div>
     <div class="tr-modal-foot">
       <button class="tr-submit-btn" id="tr-submit-btn">
@@ -830,11 +833,19 @@ document.getElementById('tr-submit-btn').addEventListener('click', async functio
   const playerName  = document.getElementById('tr-player-name').value.trim();
   const ack         = document.getElementById('tr-ack').checked;
   if (!completedBy || !name || !playerName) {
-    alert('Please fill in who is completing the form, your name, and the player name.');
+    const firstEmpty = !completedBy ? 'tr-completed-by' : !name ? 'tr-name' : 'tr-player-name';
+    document.getElementById(firstEmpty).style.borderColor = 'var(--red)';
+    document.getElementById(firstEmpty).focus();
+    setTimeout(() => { document.getElementById(firstEmpty).style.borderColor = ''; }, 3000);
     return;
   }
   if (!ack) {
-    alert('Please check the acknowledgement box to confirm you plan to attend.');
+    const ackRow = document.getElementById('tr-ack-row');
+    const ackErr = document.getElementById('tr-ack-error');
+    ackRow.style.borderColor = 'var(--red)';
+    ackErr.style.display = 'block';
+    ackRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => { ackRow.style.borderColor = ''; ackErr.style.display = 'none'; }, 4000);
     return;
   }
   const btn = document.getElementById('tr-submit-btn');
@@ -879,8 +890,12 @@ document.getElementById('tr-submit-btn').addEventListener('click', async functio
       </div>`;
     document.getElementById('tr-modal-foot').style.display = 'none';
   } finally {
-    btn.disabled = false;
-    btn.innerHTML = 'Submit Registration <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>';
+    // Only reset button if footer is still visible (i.e. not success state)
+    const foot = document.getElementById('tr-modal-foot');
+    if (foot && foot.style.display !== 'none') {
+      btn.disabled = false;
+      btn.innerHTML = 'Submit Registration <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>';
+    }
   }
 });
 
