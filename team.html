@@ -890,7 +890,12 @@ document.getElementById('tr-submit-btn').addEventListener('click', async functio
       </div>`;
     document.getElementById('tr-modal-foot').style.display = 'none';
   } finally {
-    document.getElementById('tr-modal-foot').style.display = 'none';
+    const foot = document.getElementById('tr-modal-foot');
+    foot.innerHTML = `
+      <button class="tr-submit-btn" onclick="closeTryoutModal()" style="background:var(--navy)">
+        Return
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:17px;height:17px"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>`;
   }
 });
 
