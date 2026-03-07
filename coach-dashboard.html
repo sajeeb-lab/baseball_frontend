@@ -772,7 +772,7 @@ async function handlePhotoUpload(input, previewId, statusId, imgId) {
       const preview = document.getElementById(previewId);
       preview.innerHTML = '<img id="'+imgId+'" src="'+data.imageUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
       // Show Edit/Delete buttons
-      setPhotoBtns('p-photo-btn-row', true, () => document.getElementById('p-photo-input').click(), () => deletePhoto('head','p-photo-preview','p-photo-status','p-photo-btn-row'));
+      setPhotoBtns('p-photo-btn-row', true, 'p-photo-input', 'head', 'p-photo-preview', 'p-photo-status', null);
       status.textContent = 'Photo saved!';
       setTimeout(()=>{ status.textContent=''; }, 2500);
     } catch(err) { status.textContent = 'Error: ' + err.message; }
@@ -780,22 +780,25 @@ async function handlePhotoUpload(input, previewId, statusId, imgId) {
   reader.readAsDataURL(file);
 }
 /* ── PHOTO DELETE ── */
-function setPhotoBtns(btnRowId, hasPhoto, onEdit, onDelete) {
+function setPhotoBtns(btnRowId, hasPhoto, inputId, slot, previewId, statusId, hiddenId) {
   const row = document.getElementById(btnRowId);
   if (!row) return;
+  // Reset the file input so selecting the same file again fires onchange
+  const fileInput = document.getElementById(inputId);
+  if (fileInput) fileInput.value = '';
   if (hasPhoto) {
     row.innerHTML = `
-      <button class="photo-edit-btn edit" onclick="(${onEdit.toString()})()">
+      <button class="photo-edit-btn edit" onclick="document.getElementById('${inputId}').value='';document.getElementById('${inputId}').click()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         Edit Photo
       </button>
-      <button class="photo-edit-btn delete" onclick="(${onDelete.toString()})()">
+      <button class="photo-edit-btn delete" onclick="deletePhoto('${slot}','${previewId}','${statusId}','${btnRowId}'${hiddenId ? `,'${hiddenId}'` : ''})">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
         Delete
       </button>`;
   } else {
     row.innerHTML = `
-      <button class="photo-edit-btn edit" onclick="(${onEdit.toString()})()">
+      <button class="photo-edit-btn edit" onclick="document.getElementById('${inputId}').value='';document.getElementById('${inputId}').click()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         Upload Photo
       </button>`;
@@ -819,7 +822,7 @@ async function deletePhoto(slot, previewId, statusId, btnRowId, hiddenId) {
     if (hiddenId) { const h = document.getElementById(hiddenId); if (h) h.value = ''; }
     // Show upload button
     const inputId = slot === 'head' ? 'p-photo-input' : slot === 'asst1' ? 'a1-photo-input' : 'a2-photo-input';
-    setPhotoBtns(btnRowId, false, () => document.getElementById(inputId).click(), null);
+    setPhotoBtns(btnRowId, false, inputId, slot, previewId, statusId, hiddenId);
     if (slot !== 'head') await saveAssistantsSilent();
     status.textContent = 'Photo deleted.';
     setTimeout(()=>{ status.textContent=''; }, 2500);
@@ -849,10 +852,7 @@ async function handleAsstPhotoUpload(input, previewId, statusId, imgId, hiddenId
       // Store URL and show Edit/Delete buttons
       const hiddenEl = document.getElementById(hiddenId);
       if (hiddenEl) hiddenEl.value = data.imageUrl;
-      setPhotoBtns(btnRowId, true,
-        () => document.getElementById(input.id).click(),
-        () => deletePhoto(slot, previewId, statusId, btnRowId, hiddenId)
-      );
+      setPhotoBtns(btnRowId, true, input.id, slot, previewId, statusId, hiddenId);
       await saveAssistantsSilent();
       status.textContent = 'Photo saved!';
       setTimeout(()=>{ status.textContent=''; }, 2500);
