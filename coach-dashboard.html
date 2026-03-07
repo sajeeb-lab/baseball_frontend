@@ -78,6 +78,10 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
 .photo-preview{width:72px;height:72px;border-radius:50%;background:#dce3ec;border:2px solid var(--mid);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .photo-preview img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .photo-preview svg{width:32px;height:32px;color:#aab}
+.photo-btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.4rem}
+.photo-edit-btn{display:inline-flex;align-items:center;gap:.4rem;padding:7px 14px;border-radius:6px;font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:none;transition:background .15s}
+.photo-edit-btn.edit{background:var(--navy);color:#fff}.photo-edit-btn.edit:hover{background:#162845}
+.photo-edit-btn.delete{background:#fef3f5;color:var(--red);border:1.5px solid #f5c6cb}.photo-edit-btn.delete:hover{background:#fde8ec}
 .photo-upload-right{flex:1;min-width:0}
 .photo-upload-right .field-label{margin-bottom:.5rem;display:block}
 .photo-upload-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--white);border:1.5px solid var(--mid);border-radius:6px;padding:8px 14px;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);cursor:pointer;transition:all .15s}
@@ -320,12 +324,25 @@ function renderDashboard(coach){
             <div class="photo-upload-right">
               <span class="field-label">Profile Photo</span>
               <input type="file" accept="image/*" class="hidden-file" id="p-photo-input" onchange="handlePhotoUpload(this,'p-photo-preview','p-photo-status','p-photo-img')">
-              <button class="photo-upload-btn" onclick="document.getElementById('p-photo-input').click()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Upload Photo
-              </button>
+              <div class="photo-btn-row" id="p-photo-btn-row">
+                ${coach.image ? `
+                  <button class="photo-edit-btn edit" onclick="document.getElementById('p-photo-input').click()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Edit Photo
+                  </button>
+                  <button class="photo-edit-btn delete" onclick="deletePhoto('head','p-photo-preview','p-photo-status','p-photo-btn-row')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+                    Delete
+                  </button>
+                ` : `
+                  <button class="photo-edit-btn edit" onclick="document.getElementById('p-photo-input').click()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Upload Photo
+                  </button>
+                `}
+              </div>
               <div class="photo-upload-hint">JPG or PNG, max 5MB</div>
-              <div class="photo-uploading" id="p-photo-status">Uploading…</div>
+              <div class="photo-uploading" id="p-photo-status"></div>
             </div>
           </div>
           <div class="form-grid-2">
@@ -411,12 +428,25 @@ function renderDashboard(coach){
             <div class="asst-photo-preview" id="a1-photo-preview">${a1PhotoHtml}</div>
             <div class="photo-upload-right">
               <span class="field-label">Assistant 1 Photo</span>
-              <input type="file" accept="image/*" class="hidden-file" id="a1-photo-input" onchange="handleAsstPhotoUpload(this,'a1-photo-preview','a1-photo-status','a1-photo-img','a1-image-url','asst1')">
-              <button class="photo-upload-btn" onclick="document.getElementById('a1-photo-input').click()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Upload Photo
-              </button>
-              <div class="photo-uploading" id="a1-photo-status">Uploading…</div>
+              <input type="file" accept="image/*" class="hidden-file" id="a1-photo-input" onchange="handleAsstPhotoUpload(this,'a1-photo-preview','a1-photo-status','a1-photo-img','a1-image-url','asst1','a1-photo-btn-row')">
+              <div class="photo-btn-row" id="a1-photo-btn-row">
+                ${(coach.assistant1&&coach.assistant1.image) ? `
+                  <button class="photo-edit-btn edit" onclick="document.getElementById('a1-photo-input').click()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Edit Photo
+                  </button>
+                  <button class="photo-edit-btn delete" onclick="deletePhoto('asst1','a1-photo-preview','a1-photo-status','a1-photo-btn-row','a1-image-url')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+                    Delete
+                  </button>
+                ` : `
+                  <button class="photo-edit-btn edit" onclick="document.getElementById('a1-photo-input').click()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Upload Photo
+                  </button>
+                `}
+              </div>
+              <div class="photo-uploading" id="a1-photo-status"></div>
             </div>
           </div>
           <input type="hidden" id="a1-image-url" value="${esc((coach.assistant1&&coach.assistant1.image)||'')}">
@@ -435,12 +465,25 @@ function renderDashboard(coach){
             <div class="asst-photo-preview" id="a2-photo-preview">${a2PhotoHtml}</div>
             <div class="photo-upload-right">
               <span class="field-label">Assistant 2 Photo</span>
-              <input type="file" accept="image/*" class="hidden-file" id="a2-photo-input" onchange="handleAsstPhotoUpload(this,'a2-photo-preview','a2-photo-status','a2-photo-img','a2-image-url','asst2')">
-              <button class="photo-upload-btn" onclick="document.getElementById('a2-photo-input').click()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Upload Photo
-              </button>
-              <div class="photo-uploading" id="a2-photo-status">Uploading…</div>
+              <input type="file" accept="image/*" class="hidden-file" id="a2-photo-input" onchange="handleAsstPhotoUpload(this,'a2-photo-preview','a2-photo-status','a2-photo-img','a2-image-url','asst2','a2-photo-btn-row')">
+              <div class="photo-btn-row" id="a2-photo-btn-row">
+                ${(coach.assistant2&&coach.assistant2.image) ? `
+                  <button class="photo-edit-btn edit" onclick="document.getElementById('a2-photo-input').click()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Edit Photo
+                  </button>
+                  <button class="photo-edit-btn delete" onclick="deletePhoto('asst2','a2-photo-preview','a2-photo-status','a2-photo-btn-row','a2-image-url')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+                    Delete
+                  </button>
+                ` : `
+                  <button class="photo-edit-btn edit" onclick="document.getElementById('a2-photo-input').click()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Upload Photo
+                  </button>
+                `}
+              </div>
+              <div class="photo-uploading" id="a2-photo-status"></div>
             </div>
           </div>
           <input type="hidden" id="a2-image-url" value="${esc((coach.assistant2&&coach.assistant2.image)||'')}">
@@ -714,7 +757,6 @@ async function handlePhotoUpload(input, previewId, statusId, imgId) {
   if (!file) return;
   if (file.size > 5 * 1024 * 1024) { alert('Image must be under 5MB'); return; }
   const status = document.getElementById(statusId);
-  status.style.display = 'block';
   status.textContent = 'Uploading…';
   const reader = new FileReader();
   reader.onload = async function(e) {
@@ -726,25 +768,71 @@ async function handlePhotoUpload(input, previewId, statusId, imgId) {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
+      // Update preview
       const preview = document.getElementById(previewId);
-      let img = document.getElementById(imgId);
-      if (!img) {
-        preview.innerHTML = '<img id="'+imgId+'" src="'+data.imageUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
-      } else { img.src = data.imageUrl; }
+      preview.innerHTML = '<img id="'+imgId+'" src="'+data.imageUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+      // Show Edit/Delete buttons
+      setPhotoBtns('p-photo-btn-row', true, () => document.getElementById('p-photo-input').click(), () => deletePhoto('head','p-photo-preview','p-photo-status','p-photo-btn-row'));
       status.textContent = 'Photo saved!';
-      setTimeout(()=>{ status.style.display='none'; }, 2500);
+      setTimeout(()=>{ status.textContent=''; }, 2500);
     } catch(err) { status.textContent = 'Error: ' + err.message; }
   };
   reader.readAsDataURL(file);
 }
+/* ── PHOTO DELETE ── */
+function setPhotoBtns(btnRowId, hasPhoto, onEdit, onDelete) {
+  const row = document.getElementById(btnRowId);
+  if (!row) return;
+  if (hasPhoto) {
+    row.innerHTML = `
+      <button class="photo-edit-btn edit" onclick="(${onEdit.toString()})()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Edit Photo
+      </button>
+      <button class="photo-edit-btn delete" onclick="(${onDelete.toString()})()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+        Delete
+      </button>`;
+  } else {
+    row.innerHTML = `
+      <button class="photo-edit-btn edit" onclick="(${onEdit.toString()})()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Upload Photo
+      </button>`;
+  }
+}
+
+async function deletePhoto(slot, previewId, statusId, btnRowId, hiddenId) {
+  const status = document.getElementById(statusId);
+  status.textContent = 'Deleting…';
+  try {
+    const res = await fetch(`${API_BASE}/api/coach/delete-image`, {
+      method: 'DELETE', headers: authH(),
+      body: JSON.stringify({ slot })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    // Clear preview
+    const preview = document.getElementById(previewId);
+    preview.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>';
+    // Clear hidden input
+    if (hiddenId) { const h = document.getElementById(hiddenId); if (h) h.value = ''; }
+    // Show upload button
+    const inputId = slot === 'head' ? 'p-photo-input' : slot === 'asst1' ? 'a1-photo-input' : 'a2-photo-input';
+    setPhotoBtns(btnRowId, false, () => document.getElementById(inputId).click(), null);
+    if (slot !== 'head') await saveAssistantsSilent();
+    status.textContent = 'Photo deleted.';
+    setTimeout(()=>{ status.textContent=''; }, 2500);
+  } catch(err) { status.textContent = 'Error: ' + err.message; }
+}
+
 
 /* ── PHOTO UPLOAD — ASSISTANT ── */
-async function handleAsstPhotoUpload(input, previewId, statusId, imgId, hiddenId, slot) {
+async function handleAsstPhotoUpload(input, previewId, statusId, imgId, hiddenId, slot, btnRowId) {
   const file = input.files[0];
   if (!file) return;
   if (file.size > 5 * 1024 * 1024) { alert('Image must be under 5MB'); return; }
   const status = document.getElementById(statusId);
-  status.style.display = 'block';
   status.textContent = 'Uploading…';
   const reader = new FileReader();
   reader.onload = async function(e) {
@@ -752,21 +840,36 @@ async function handleAsstPhotoUpload(input, previewId, statusId, imgId, hiddenId
     try {
       const res = await fetch(`${API_BASE}/api/coach/upload-image`, {
         method: 'POST', headers: authH(),
-        body: JSON.stringify({ base64, fileName: file.name, mimeType: file.type, saveToProfile: false, slot: slot })
+        body: JSON.stringify({ base64, fileName: file.name, mimeType: file.type, saveToProfile: false, slot })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
-      const preview = document.getElementById(previewId);
-      let img = document.getElementById(imgId);
-      if (!img) {
-        preview.innerHTML = '<img id="'+imgId+'" src="'+data.imageUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
-      } else { img.src = data.imageUrl; }
-      document.getElementById(hiddenId).value = data.imageUrl;
-      status.textContent = 'Photo ready — click Save Assistants to confirm';
-      setTimeout(()=>{ status.style.display='none'; }, 3000);
-    } catch(err) { status.textContent = 'Error: ' + err.message; }
+      // Update preview
+      document.getElementById(previewId).innerHTML = '<img id="'+imgId+'" src="'+data.imageUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+      // Store URL and show Edit/Delete buttons
+      const hiddenEl = document.getElementById(hiddenId);
+      if (hiddenEl) hiddenEl.value = data.imageUrl;
+      setPhotoBtns(btnRowId, true,
+        () => document.getElementById(input.id).click(),
+        () => deletePhoto(slot, previewId, statusId, btnRowId, hiddenId)
+      );
+      await saveAssistantsSilent();
+      status.textContent = 'Photo saved!';
+      setTimeout(()=>{ status.textContent=''; }, 2500);
+    } catch(err) { status.textContent = 'Upload failed: ' + err.message; }
   };
   reader.readAsDataURL(file);
+}
+
+// Save assistants without showing success/error messages — used after image upload
+async function saveAssistantsSilent() {
+  try {
+    const payload = {
+      assistant1:{ name:document.getElementById('a1-name')?.value.trim()||'', role:document.getElementById('a1-role')?.value.trim()||'Assistant Coach', email:document.getElementById('a1-email')?.value.trim()||'', cell:document.getElementById('a1-cell')?.value.trim()||'', bio:document.getElementById('a1-bio')?.value.trim()||'', image:document.getElementById('a1-image-url')?.value||'' },
+      assistant2:{ name:document.getElementById('a2-name')?.value.trim()||'', role:document.getElementById('a2-role')?.value.trim()||'Assistant Coach', email:document.getElementById('a2-email')?.value.trim()||'', cell:document.getElementById('a2-cell')?.value.trim()||'', bio:document.getElementById('a2-bio')?.value.trim()||'', image:document.getElementById('a2-image-url')?.value||'' }
+    };
+    await fetch(`${API_BASE}/api/coach/update-assistants`, { method:'PUT', headers:authH(), body:JSON.stringify(payload) });
+  } catch(e) { /* silent */ }
 }
 
 /* ── DASHBOARD ROSTER ── */
