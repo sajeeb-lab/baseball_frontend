@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coach Dashboard – Ambassadors Baseball</title>
+<title>Coach Dashboard – US Elite Baseball</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
@@ -180,12 +180,41 @@ function setLoading(btnId,textId,loading,label){
   btn.disabled=loading;
 }
 function handleLogout(){ localStorage.removeItem('coach_token'); localStorage.removeItem('coach_id'); window.location.href='coach-auth.html'; }
+let _pollInterval = null;
+let _activePanel  = 'profile';
+
 function switchPanel(name){
   document.querySelectorAll('.dash-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.section-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('panel-'+name).classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
+  _activePanel = name;
+
+  // Fetch immediately on tab switch
+  if (name === 'roster')   loadDashRoster();
+  if (name === 'schedule') loadDashSchedule();
+  if (name === 'tryouts')  loadTryouts();
+  if (name === 'tryreg')   loadTryoutRegs();
+
+  // Clear old poll, start new one for live tabs
+  clearInterval(_pollInterval);
+  const liveTabs = { roster: loadDashRoster, schedule: loadDashSchedule, tryouts: loadTryouts, tryreg: loadTryoutRegs };
+  if (liveTabs[name]) {
+    _pollInterval = setInterval(liveTabs[name], 15000);
+  }
 }
+
+// Stop polling when tab is hidden, resume when visible
+document.addEventListener('visibilitychange', () => {
+  clearInterval(_pollInterval);
+  if (document.visibilityState === 'visible') {
+    const liveTabs = { roster: loadDashRoster, schedule: loadDashSchedule, tryouts: loadTryouts, tryreg: loadTryoutRegs };
+    if (liveTabs[_activePanel]) {
+      liveTabs[_activePanel]();
+      _pollInterval = setInterval(liveTabs[_activePanel], 15000);
+    }
+  }
+});
 
 
 
@@ -252,6 +281,10 @@ function renderDashboard(coach){
       <button class="section-tab" id="tab-schedule" onclick="switchPanel('schedule')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
         Schedule
+      </button>
+      <button class="section-tab" id="tab-tryreg" onclick="switchPanel('tryreg')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Tryout Registrations
       </button>
     </div>
 
@@ -434,7 +467,7 @@ function renderDashboard(coach){
     <!-- SCHEDULE -->
     <div class="dash-panel" id="panel-schedule">
       <div class="card">
-        <div class="card-header">Add TEAM SCHEDULE</div>
+        <div class="card-header">Add Game / Event</div>
         <div class="card-body">
           <div class="msg" id="msg-sched-add"></div>
           <div class="form-grid-2">
@@ -885,6 +918,55 @@ async function saveEditGame() {
   finally { btn.textContent = 'Save Changes'; btn.disabled = false; }
 }
 
+
+async function loadTryoutRegs() {
+  const tbody = document.getElementById('tryreg-body');
+  try {
+    const res  = await fetch(`${API_BASE}/api/coach/tryout-registrations`, { headers: authH() });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    const regs = data.registrations || [];
+    if (!regs.length) {
+      tbody.innerHTML = '<tr><td colspan="7"><div class="no-schedule-dash">No tryout registrations yet.</div></td></tr>';
+      return;
+    }
+    tbody.innerHTML = regs.map((r, i) => `
+      <tr>
+        <td>${esc(r.player_name||'—')}</td>
+        <td>${esc(r.tryout_date||'—')}</td>
+        <td>${esc(r.name||'—')}</td>
+        <td>${esc(r.email||'—')}</td>
+        <td>${esc(r.cell||'—')}</td>
+        <td>${esc([r.pos1,r.pos2].filter(Boolean).join(', ')||'—')}</td>
+        <td>
+          <button class="tryreg-expand-btn" onclick="toggleTryregDetail(${i})">View</button>
+        </td>
+      </tr>
+      <tr class="tryreg-detail-row" id="tryreg-detail-${i}" style="display:none">
+        <td colspan="7">
+          <div class="tryreg-detail-grid">
+            <div><strong>Completed By</strong>${esc(r.completed_by||'—')}</div>
+            <div><strong>Age</strong>${esc(r.age||'—')}</div>
+            <div><strong>DOB</strong>${esc(r.dob||'—')}</div>
+            <div><strong>HT/WT</strong>${esc(r.hw||'—')}</div>
+            <div><strong>Address</strong>${esc(r.address||'—')}</div>
+            <div><strong>City</strong>${esc(r.city||'—')}</div>
+            <div><strong>State</strong>${esc(r.state||'—')}</div>
+            <div><strong>Zip</strong>${esc(r.zip||'—')}</div>
+          </div>
+        </td>
+      </tr>`).join('');
+  } catch(err) {
+    tbody.innerHTML = '<tr><td colspan="7"><div class="no-schedule-dash">Failed to load registrations.</div></td></tr>';
+  }
+}
+
+function toggleTryregDetail(i) {
+  const row = document.getElementById('tryreg-detail-' + i);
+  if (!row) return;
+  row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+}
+
 async function addGame() {
   const date   = document.getElementById('s-date').value.trim();
   const event  = document.getElementById('s-event').value.trim();
@@ -976,6 +1058,39 @@ loadDashboard();
     </div>
   </div>
 </div>
+
+      <!-- TRYOUT REGISTRATIONS PANEL -->
+      <div class="dash-panel" id="panel-tryreg">
+        <div class="section-title-row">
+          <div>
+            <div class="section-title">Tryout Registrations</div>
+            <div class="section-sub">Players who registered via your tryout forms</div>
+          </div>
+          <button class="save-btn" onclick="loadTryoutRegs()" style="background:var(--navy)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+            Refresh
+          </button>
+        </div>
+        <div class="msg" id="msg-tryreg"></div>
+        <div style="overflow-x:auto;background:var(--white);border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+          <table class="tryreg-table">
+            <thead>
+              <tr>
+                <th>Player Name</th>
+                <th>Tryout Date</th>
+                <th>Contact Name</th>
+                <th>Email</th>
+                <th>Cell</th>
+                <th>Position(s)</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody id="tryreg-body">
+              <tr><td colspan="7"><div class="no-schedule-dash">Loading registrations…</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
 <!-- EDIT GAME MODAL -->
 <div class="edit-overlay" id="sched-edit-overlay">
