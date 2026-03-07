@@ -808,12 +808,17 @@ document.getElementById('reg-submit-btn').addEventListener('click', async functi
 /* ── TRYOUT MODAL ── */
 const trOverlay = document.getElementById('trOverlay');
 
+const _originalModalBody = document.getElementById('tr-modal-body').innerHTML;
+const _originalModalFoot = document.getElementById('tr-modal-foot').innerHTML;
+
 function openTryoutModal(dateLabel) {
   document.getElementById('tr-modal-sub').textContent = dateLabel || 'Complete the form below to reserve your spot';
-  trOverlay.querySelectorAll('input, select').forEach(el => {
-    if (el.type === 'checkbox') el.checked = false; else el.value = '';
-  });
-  document.getElementById('tr-modal-body').innerHTML = document.getElementById('tr-modal-body').innerHTML; // reset success state if shown
+  // Fully reset body and footer back to original form
+  document.getElementById('tr-modal-body').innerHTML = _originalModalBody;
+  document.getElementById('tr-modal-foot').innerHTML = _originalModalFoot;
+  document.getElementById('tr-modal-foot').style.display = 'block';
+  // Re-attach submit listener since innerHTML was replaced
+  document.getElementById('tr-submit-btn').addEventListener('click', handleTryoutSubmit);
   trOverlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -827,7 +832,9 @@ trOverlay.addEventListener('click', e => { if (e.target === trOverlay) closeTryo
 document.getElementById('trModalClose').addEventListener('click', closeTryoutModal);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTryoutModal(); });
 
-document.getElementById('tr-submit-btn').addEventListener('click', async function () {
+document.getElementById('tr-submit-btn').addEventListener('click', handleTryoutSubmit);
+
+async function handleTryoutSubmit() {
   const completedBy = document.getElementById('tr-completed-by').value;
   const name        = document.getElementById('tr-name').value.trim();
   const playerName  = document.getElementById('tr-player-name').value.trim();
@@ -896,7 +903,7 @@ document.getElementById('tr-submit-btn').addEventListener('click', async functio
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:17px;height:17px"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>`;
   }
-});
+}
 
 /* ── LOAD ROSTER ── */
 async function loadRoster(id) {
