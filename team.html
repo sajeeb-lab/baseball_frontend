@@ -880,7 +880,6 @@ document.getElementById('tr-submit-btn').addEventListener('click', async functio
         We look forward to seeing <strong>${esc(playerName)}</strong> at the tryout.<br>
         A confirmation will be sent to ${esc(email || 'your email')}.
       </div>`;
-    document.getElementById('tr-modal-foot').style.display = 'none';
   } catch (err) {
     console.error('[tryout-reg]', err);
     document.getElementById('tr-modal-body').innerHTML = `
@@ -888,9 +887,9 @@ document.getElementById('tr-submit-btn').addEventListener('click', async functio
         Registration submitted!<br>
         We look forward to seeing <strong>${esc(playerName)}</strong> at the tryout.
       </div>`;
-    document.getElementById('tr-modal-foot').style.display = 'none';
   } finally {
     const foot = document.getElementById('tr-modal-foot');
+    foot.style.display = 'block';
     foot.innerHTML = `
       <button class="tr-submit-btn" onclick="closeTryoutModal()" style="background:var(--navy)">
         Return
