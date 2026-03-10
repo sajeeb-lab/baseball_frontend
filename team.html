@@ -355,14 +355,6 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
               <input class="reg-input" type="text" placeholder="e.g. TN" id="reg-state" maxlength="2">
             </div>
           </div>
-          <div class="reg-field">
-            <label class="reg-label">Email</label>
-            <input class="reg-input" type="email" placeholder="player@email.com" id="reg-email">
-          </div>
-          <div class="reg-field">
-            <label class="reg-label">Cell / Phone</label>
-            <input class="reg-input" type="tel" placeholder="e.g. 6150000000" id="reg-cell">
-          </div>
         </div>
         <div class="reg-success" id="reg-success">
           Registration submitted successfully! We'll be in touch soon.
@@ -785,8 +777,6 @@ document.getElementById('reg-submit-btn').addEventListener('click', async functi
   const hw       = document.getElementById('reg-hw').value.trim();
   const city     = document.getElementById('reg-city').value.trim();
   const state    = document.getElementById('reg-state').value.trim();
-  const email    = document.getElementById('reg-email').value.trim();
-  const cell     = document.getElementById('reg-cell').value.trim();
 
   if (!name || !gradYear || !position) {
     alert('Please fill in at least Player Name, Grad Year, and Position.');
@@ -800,7 +790,7 @@ document.getElementById('reg-submit-btn').addEventListener('click', async functi
     const res = await fetch(`${API_BASE}/api/teams/${teamId}/roster`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, jersey, gradYear, position, hw, city, state, email, cell })
+      body: JSON.stringify({ name, jersey, gradYear, position, hw, city, state })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Failed to submit');
