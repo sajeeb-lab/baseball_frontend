@@ -392,10 +392,7 @@ function renderDashboard(coach){
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg>
         Cost Calculator
       </button>
-      <button class="section-tab" id="tab-budget" onclick="switchPanel('budget')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-        Team Budget
-      </button>
+
     </div>
 
     <!-- MY PROFILE -->
@@ -706,102 +703,6 @@ function renderDashboard(coach){
     </div>
 
     <!-- BUDGET PANEL -->
-    <div class="dash-panel" id="panel-budget">
-      <div class="card">
-        <div class="card-header">Create Team Budget</div>
-        <div class="card-body">
-          <div class="msg" id="msg-budget"></div>
-          <span class="budget-section-label">Team Overview</span>
-          <div class="budget-row">
-            <div class="budget-field"><label class="budget-label">Team Budget Name</label><input class="budget-input" type="text" id="b-name" placeholder="e.g. 2026 Season Budget"></div>
-            <div class="budget-field"><label class="budget-label">Number of Paying Players</label><input class="budget-input" type="number" id="b-players" placeholder="e.g. 14" min="1" oninput="calcBudget()"></div>
-          </div>
-          <div class="budget-row single">
-            <div class="budget-field"><label class="budget-label"># of Seasons</label><input class="budget-input" type="number" id="b-seasons" placeholder="e.g. 2" min="1" oninput="calcBudget()"></div>
-          </div>
-
-          <span class="budget-section-label">Tournaments / Events</span>
-          <div class="budget-row triple">
-            <div class="budget-field"><label class="budget-label">No. of Events</label><input class="budget-input" type="number" id="b-events-num" placeholder="e.g. 10" min="0" oninput="calcBudget()"></div>
-            <div class="budget-field"><label class="budget-label">Ave. Cost Per Event $</label><input class="budget-input" type="number" id="b-events-cost" placeholder="e.g. 500" min="0" oninput="calcBudget()"></div>
-            <div class="budget-field"><label class="budget-label">Total Tournaments $</label><input class="budget-input" type="number" id="b-events-total" readonly placeholder="Auto calculated"></div>
-          </div>
-
-          <span class="budget-section-label">Coaching</span>
-          <div class="budget-row">
-            <div class="budget-field"><label class="budget-label">Head Coach Pay $</label><input class="budget-input" type="number" id="b-head-pay" placeholder="e.g. 3000" min="0" oninput="calcBudget()"></div>
-            <div class="budget-field"><label class="budget-label">Assistant Coach Pay $</label><input class="budget-input" type="number" id="b-asst-pay" placeholder="e.g. 1500" min="0" oninput="calcBudget()"></div>
-          </div>
-
-          <span class="budget-section-label">Facilities & Travel</span>
-          <div class="budget-row">
-            <div class="budget-field"><label class="budget-label">Rentals $</label><input class="budget-input" type="number" id="b-rentals" placeholder="e.g. 800" min="0" oninput="calcBudget()"></div>
-            <div class="budget-field"><label class="budget-label">Gas $</label><input class="budget-input" type="number" id="b-gas" placeholder="e.g. 600" min="0" oninput="calcBudget()"></div>
-          </div>
-          <div class="budget-row triple">
-            <div class="budget-field"><label class="budget-label">Nights (Hotels)</label><input class="budget-input" type="number" id="b-hotel-nights" placeholder="e.g. 8" min="0" oninput="calcBudget()"></div>
-            <div class="budget-field"><label class="budget-label">Ave. Hotel Cost $ / Night</label><input class="budget-input" type="number" id="b-hotel-cost" placeholder="e.g. 120" min="0" oninput="calcBudget()"></div>
-            <div class="budget-field"><label class="budget-label">Total Hotel Cost $</label><input class="budget-input" type="number" id="b-hotel-total" readonly placeholder="Auto calculated"></div>
-          </div>
-
-          <span class="budget-section-label">Equipment & Insurance</span>
-          <div class="budget-row">
-            <div class="budget-field"><label class="budget-label">No. of Coach Uniforms $</label><input class="budget-input" type="number" id="b-uniforms" placeholder="e.g. 400" min="0" oninput="calcBudget()"></div>
-            <div class="budget-field"><label class="budget-label">Equipment (Balls/Fungo etc.) $</label><input class="budget-input" type="number" id="b-equipment" placeholder="e.g. 600" min="0" oninput="calcBudget()"></div>
-          </div>
-          <div class="budget-row">
-            <div class="budget-field"><label class="budget-label">Coach Liability Insurance $</label><input class="budget-input" type="number" id="b-insurance" placeholder="e.g. 300" min="0" oninput="calcBudget()"></div>
-            <div class="budget-field"><label class="budget-label">Ambassadors Baseball $</label><input class="budget-input" type="number" id="b-ambassadors" value="450" min="0" oninput="calcBudget()"></div>
-          </div>
-
-          <span class="budget-section-label">Other Expenses</span>
-          <div class="budget-row single"><div class="budget-field"><label class="budget-label">Other 1 — Label</label><input class="budget-input" type="text" id="b-other1-label" placeholder="e.g. Team Dinner"></div></div>
-          <div class="budget-row single"><div class="budget-field"><label class="budget-label">Other 1 — Amount $</label><input class="budget-input" type="number" id="b-other1-amt" placeholder="0" min="0" oninput="calcBudget()"></div></div>
-          <div class="budget-row single"><div class="budget-field"><label class="budget-label">Other 2 — Label</label><input class="budget-input" type="text" id="b-other2-label" placeholder="e.g. Team Photos"></div></div>
-          <div class="budget-row single"><div class="budget-field"><label class="budget-label">Other 2 — Amount $</label><input class="budget-input" type="number" id="b-other2-amt" placeholder="0" min="0" oninput="calcBudget()"></div></div>
-          <div class="budget-row single"><div class="budget-field"><label class="budget-label">Other 3 — Label</label><input class="budget-input" type="text" id="b-other3-label" placeholder="e.g. Miscellaneous"></div></div>
-          <div class="budget-row single"><div class="budget-field"><label class="budget-label">Other 3 — Amount $</label><input class="budget-input" type="number" id="b-other3-amt" placeholder="0" min="0" oninput="calcBudget()"></div></div>
-
-          <!-- LIVE TOTALS -->
-          <div class="budget-totals" id="budget-totals-box">
-            <div class="budget-totals-title">Budget Summary</div>
-            <div class="budget-total-row"><span class="budget-total-label">Tournaments / Events</span><span class="budget-total-value" id="bt-events">$0</span></div>
-            <div class="budget-total-row"><span class="budget-total-label">Head Coach Pay</span><span class="budget-total-value" id="bt-head">$0</span></div>
-            <div class="budget-total-row"><span class="budget-total-label">Assistant Coach Pay</span><span class="budget-total-value" id="bt-asst">$0</span></div>
-            <div class="budget-total-row"><span class="budget-total-label">Rentals</span><span class="budget-total-value" id="bt-rentals">$0</span></div>
-            <div class="budget-total-row"><span class="budget-total-label">Hotel Costs</span><span class="budget-total-value" id="bt-hotel">$0</span></div>
-            <div class="budget-total-row"><span class="budget-total-label">Gas</span><span class="budget-total-value" id="bt-gas">$0</span></div>
-            <div class="budget-total-row"><span class="budget-total-label">Coach Uniforms</span><span class="budget-total-value" id="bt-uniforms">$0</span></div>
-            <div class="budget-total-row"><span class="budget-total-label">Equipment</span><span class="budget-total-value" id="bt-equipment">$0</span></div>
-            <div class="budget-total-row"><span class="budget-total-label">Coach Liability Insurance</span><span class="budget-total-value" id="bt-insurance">$0</span></div>
-            <div class="budget-total-row"><span class="budget-total-label">Ambassadors Baseball</span><span class="budget-total-value" id="bt-ambassadors">$0</span></div>
-            <div class="budget-total-row"><span class="budget-total-label" id="bt-other1-lbl">Other 1</span><span class="budget-total-value" id="bt-other1">$0</span></div>
-            <div class="budget-total-row"><span class="budget-total-label" id="bt-other2-lbl">Other 2</span><span class="budget-total-value" id="bt-other2">$0</span></div>
-            <div class="budget-total-row"><span class="budget-total-label" id="bt-other3-lbl">Other 3</span><span class="budget-total-value" id="bt-other3">$0</span></div>
-            <div class="budget-total-row grand"><span class="budget-total-label">Total Expenses</span><span class="budget-total-value" id="bt-total">$0</span></div>
-          </div>
-          <div class="budget-player-fee" id="budget-player-fee-box">
-            <span class="budget-player-fee-label">Player Fee (Total ÷ Paying Players)</span>
-            <span class="budget-player-fee-value" id="bt-player-fee">$0 / player</span>
-          </div>
-
-          <button class="save-btn" id="add-budget-btn" onclick="saveBudget()" style="margin-top:1.4rem">
-            <span id="add-budget-txt">Save Budget</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- SAVED BUDGETS LIST -->
-      <div class="card" style="margin-top:1.4rem">
-        <div class="card-header">Saved Budgets</div>
-        <div class="card-body" id="budget-list-wrap">
-          <div class="no-tryouts-dash">No budgets saved yet. Create one above!</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TRYOUT REGISTRATIONS PANEL -->
     <div class="dash-panel" id="panel-tryreg">
 
       <div class="msg" id="msg-tryreg"></div>
@@ -1806,7 +1707,6 @@ function editBudget(i) {
   document.getElementById('b-other3-amt').value    = b.other3Amt || '';
   calcBudget();
   document.getElementById('add-budget-txt').textContent = 'Update Budget';
-  document.getElementById('panel-budget').scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
 function deleteBudget(i) {
