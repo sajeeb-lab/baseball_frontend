@@ -195,6 +195,45 @@ input[type="file"].hidden-file{display:none}
 .calc-reset-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;border:1.5px solid var(--mid);border-radius:6px;padding:8px 18px;font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s;margin-top:1rem}
 .calc-reset-btn:hover{border-color:var(--red);color:var(--red)}
 /* SAVED BUDGET CARDS */
+/* TEAM FINANCIALS */
+.fin-toggle-group{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.3rem}
+.fin-toggle{display:flex;align-items:center;gap:.5rem;background:var(--light);border:1.5px solid var(--mid);border-radius:8px;padding:10px 16px;cursor:pointer;transition:all .15s;user-select:none;font-size:.84rem;color:var(--sub);font-weight:600}
+.fin-toggle.selected{background:var(--navy);border-color:var(--navy);color:var(--white)}
+.fin-toggle svg{width:16px;height:16px;flex-shrink:0}
+.fin-plan-preview{background:linear-gradient(135deg,var(--navy) 0%,#162845 100%);border-radius:8px;padding:1.4rem 1.6rem;margin-top:1.2rem}
+.fin-plan-title{font-family:'Oswald',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:1rem}
+.fin-plan-row{display:flex;align-items:center;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.fin-plan-row:last-child{border-bottom:none}
+.fin-plan-month{font-size:.82rem;color:rgba(255,255,255,.75)}
+.fin-plan-amount{font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;color:var(--white)}
+.fin-plan-empty{color:rgba(255,255,255,.4);font-size:.84rem;text-align:center;padding:1rem}
+.ar-table{width:100%;border-collapse:collapse;font-size:.83rem}
+.ar-table thead tr{background:var(--navy)}
+.ar-table thead th{padding:10px 14px;text-align:left;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:600;color:var(--white);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.ar-table tbody tr{border-bottom:1px solid var(--mid);transition:background .12s}
+.ar-table tbody tr:last-child{border-bottom:none}
+.ar-table tbody tr:hover{background:var(--light)}
+.ar-table td{padding:10px 14px;vertical-align:middle;font-size:.82rem}
+.ar-table td:first-child{font-weight:600;color:var(--navy)}
+.ar-status{display:inline-block;padding:3px 10px;border-radius:20px;font-family:'Oswald',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.ar-status.paid{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+.ar-status.partial{background:#fffbea;color:#92400e;border:1px solid #fde68a}
+.ar-status.pending{background:#fef3f5;color:var(--red);border:1px solid #f5c6cb}
+.ar-mark-btn{display:inline-flex;align-items:center;gap:4px;background:none;border:1.5px solid var(--mid);border-radius:5px;padding:5px 10px;font-family:'Oswald',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);cursor:pointer;transition:all .15s;white-space:nowrap}
+.ar-mark-btn:hover{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.ar-mark-btn svg{width:12px;height:12px}
+.fin-summary-bar{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:1.4rem}
+.fin-stat{background:var(--white);border:1.5px solid var(--mid);border-radius:8px;padding:1rem 1.2rem}
+.fin-stat-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.4rem}
+.fin-stat-value{font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;color:var(--navy)}
+.fin-stat-value.green{color:#16a34a}
+.fin-stat-value.red{color:var(--red)}
+.plan-detail-wrap{display:flex;flex-direction:column;gap:.3rem;margin-top:.4rem}
+.plan-detail-item{display:flex;align-items:center;justify-content:space-between;font-size:.75rem;padding:4px 8px;border-radius:4px;background:var(--light)}
+.plan-detail-item.paid-item{background:#f0fdf4;color:#16a34a}
+.plan-detail-check{width:14px;height:14px;border:1.5px solid var(--mid);border-radius:3px;cursor:pointer;accent-color:var(--navy)}
+.no-ar-state{text-align:center;padding:2.5rem;color:var(--sub);font-size:.88rem}
+
 .budget-card{background:var(--light);border:1.5px solid var(--mid);border-radius:10px;padding:1.1rem 1.3rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;transition:box-shadow .15s}
 .budget-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08)}
 .budget-card-info{flex:1;min-width:0}
@@ -352,6 +391,7 @@ function switchPanel(name){
   if (name === 'schedule') loadDashSchedule();
   if (name === 'tryouts')  loadTryouts();
   if (name === 'tryreg')   loadTryoutRegs();
+  if (name === 'financials') loadFinancials();
   if (name === 'budget')   loadBudgetsLocal();
 
   // Clear old poll, start new one for live tabs
@@ -447,6 +487,10 @@ function renderDashboard(coach){
       <button class="section-tab" id="tab-calculator" onclick="switchPanel('calculator')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg>
         Cost Calculator
+      </button>
+      <button class="section-tab" id="tab-financials" onclick="switchPanel('financials')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        Team Financials
       </button>
 
     </div>
@@ -785,6 +829,130 @@ function renderDashboard(coach){
       </div>
     </div>
 
+    <!-- TEAM FINANCIALS PANEL -->
+    <div class="dash-panel" id="panel-financials">
+
+      <!-- SETUP CARD -->
+      <div class="card" style="margin-bottom:1.4rem">
+        <div class="card-header">Team Financial Setup</div>
+        <div class="card-body">
+          <div class="info-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Set up your team's payment model. Players will automatically receive a payment plan when they register.
+          </div>
+          <div class="msg" id="msg-financials"></div>
+          <div class="form-grid-2">
+            <div class="field-group">
+              <label class="field-label">Player Fee Amount</label>
+              <div style="position:relative">
+                <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem">$</span>
+                <input class="field-input" type="number" id="fin-fee" placeholder="e.g. 2000" min="0" style="padding-left:26px" oninput="finPreviewUpdate()">
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Payment Deadline</label>
+              <div class="date-input-wrap">
+                <input class="field-input" type="text" id="fin-deadline" placeholder="Select deadline date" oninput="finPreviewUpdate()">
+                <span class="cal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+              </div>
+            </div>
+          </div>
+          <div class="field-group" style="margin-top:.5rem">
+            <label class="field-label">Payment Options</label>
+            <div class="fin-toggle-group">
+              <div class="fin-toggle selected" id="fin-fullpay-toggle" onclick="finToggle('fullpay')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Full Pay Only (Recommended)
+              </div>
+            </div>
+          </div>
+          <div class="field-group" style="margin-top:.5rem">
+            <label class="field-label">Deposit Option</label>
+            <div class="fin-toggle-group">
+              <div class="fin-toggle" id="fin-deposit-yes" onclick="finDepositToggle(true)">Yes</div>
+              <div class="fin-toggle selected" id="fin-deposit-no" onclick="finDepositToggle(false)">No</div>
+            </div>
+          </div>
+          <div class="field-group" id="fin-deposit-amount-wrap" style="display:none;margin-top:.5rem">
+            <label class="field-label">Deposit Amount</label>
+            <div style="position:relative;max-width:240px">
+              <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem">$</span>
+              <input class="field-input" type="number" id="fin-deposit-amt" value="250" min="0" style="padding-left:26px" oninput="finPreviewUpdate()">
+            </div>
+            <span style="font-size:.72rem;color:var(--sub);margin-top:.3rem">$250 recommended</span>
+          </div>
+          <div class="field-group" style="margin-top:.5rem">
+            <label class="field-label">Allow Monthly Payments</label>
+            <div class="fin-toggle-group">
+              <div class="fin-toggle" id="fin-monthly-yes" onclick="finMonthlyToggle(true)">Yes</div>
+              <div class="fin-toggle selected" id="fin-monthly-no" onclick="finMonthlyToggle(false)">No</div>
+            </div>
+          </div>
+
+          <!-- PAYMENT PLAN PREVIEW -->
+          <div class="fin-plan-preview" id="fin-plan-preview" style="display:none">
+            <div class="fin-plan-title">Payment Plan Preview <span style="font-family:'Open Sans',sans-serif;font-size:.72rem;opacity:.6;font-weight:400">(based on registration today)</span></div>
+            <div id="fin-plan-rows"><div class="fin-plan-empty">Fill in fee and deadline to see preview</div></div>
+          </div>
+
+          <button class="save-btn" id="save-fin-btn" onclick="saveFinancials()" style="margin-top:1.2rem">
+            <span id="save-fin-txt">Save Financial Setup</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ACCOUNTS RECEIVABLE -->
+      <div class="card">
+        <div class="card-header">Accounts Receivable — Player Balances</div>
+        <div class="card-body" style="padding:0">
+          <div class="fin-summary-bar" style="padding:1.2rem 1.4rem 0" id="fin-summary-bar">
+            <div class="fin-stat"><div class="fin-stat-label">Total Players</div><div class="fin-stat-value" id="fin-stat-players">0</div></div>
+            <div class="fin-stat"><div class="fin-stat-label">Total Expected</div><div class="fin-stat-value" id="fin-stat-expected">$0</div></div>
+            <div class="fin-stat"><div class="fin-stat-label">Total Collected</div><div class="fin-stat-value green" id="fin-stat-collected">$0</div></div>
+            <div class="fin-stat"><div class="fin-stat-label">Outstanding</div><div class="fin-stat-value red" id="fin-stat-outstanding">$0</div></div>
+          </div>
+          <div style="overflow-x:auto;margin-top:1.2rem">
+            <table class="ar-table">
+              <thead>
+                <tr>
+                  <th>Player</th>
+                  <th>Registered</th>
+                  <th>Total Fee</th>
+                  <th>Deposit</th>
+                  <th>Paid</th>
+                  <th>Balance</th>
+                  <th>Deadline</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="ar-table-body">
+                <tr><td colspan="9"><div class="no-ar-state">No player payment records yet.</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAYMENT DETAIL MODAL -->
+      <div class="edit-overlay" id="payment-detail-overlay">
+        <div class="edit-modal" style="max-width:600px">
+          <div class="edit-modal-head">
+            <h3 id="pd-modal-title">Payment Plan</h3>
+            <button class="edit-modal-close" onclick="closePaymentDetail()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="edit-modal-body" id="pd-modal-body" style="max-height:65vh;overflow-y:auto"></div>
+          <div class="edit-modal-foot">
+            <button class="edit-cancel-btn" onclick="closePaymentDetail()">Close</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
     <!-- COST CALCULATOR PANEL -->
     <div class="dash-panel" id="panel-calculator">
       <div class="card">
@@ -908,6 +1076,7 @@ function renderDashboard(coach){
     };
     flatpickr('#t-date', fpConfig);
     flatpickr('#s-date', fpConfig);
+    flatpickr('#fin-deadline', { dateFormat: 'F j, Y', allowInput: false, disableMobile: true, onChange: function() { finPreviewUpdate(); } });
 
     // Time range pickers
     const timeConfig = {
@@ -1371,7 +1540,7 @@ async function deletePlayer(id) {
   } catch(err) { alert('Error: ' + err.message); }
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeEditModal(); closeEditGameModal(); closeEditTryoutModal(); closeBudgetView(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeEditModal(); closeEditGameModal(); closeEditTryoutModal(); closeBudgetView(); closePaymentDetail(); } });
 
 
 /* ── DASHBOARD SCHEDULE ── */
@@ -1803,6 +1972,300 @@ function deleteBudget(i) {
   renderBudgetList();
 }
 
+/* ── TEAM FINANCIALS ── */
+let _finSetup = null;
+let _playerPayments = [];
+let _finFullPay = true;
+let _finDepositEnabled = false;
+let _finMonthly = false;
+
+function finToggle(type) {
+  // Full pay is just a label/recommendation, not exclusive
+  const el = document.getElementById('fin-fullpay-toggle');
+  el.classList.toggle('selected');
+  _finFullPay = el.classList.contains('selected');
+}
+
+function finDepositToggle(enabled) {
+  _finDepositEnabled = enabled;
+  document.getElementById('fin-deposit-yes').classList.toggle('selected', enabled);
+  document.getElementById('fin-deposit-no').classList.toggle('selected', !enabled);
+  document.getElementById('fin-deposit-amount-wrap').style.display = enabled ? 'block' : 'none';
+  finPreviewUpdate();
+}
+
+function finMonthlyToggle(enabled) {
+  _finMonthly = enabled;
+  document.getElementById('fin-monthly-yes').classList.toggle('selected', enabled);
+  document.getElementById('fin-monthly-no').classList.toggle('selected', !enabled);
+  const preview = document.getElementById('fin-plan-preview');
+  if (preview) preview.style.display = enabled ? 'block' : 'none';
+  finPreviewUpdate();
+}
+
+function finPreviewUpdate() {
+  if (!_finMonthly) return;
+  const fee      = parseFloat(document.getElementById('fin-fee')?.value) || 0;
+  const deadline = document.getElementById('fin-deadline')?.value?.trim() || '';
+  const rowsEl   = document.getElementById('fin-plan-rows');
+  if (!fee || !deadline || !rowsEl) return;
+
+  const plan = generatePaymentPlan(fee, deadline, new Date());
+  if (!plan.length) {
+    rowsEl.innerHTML = '<div class="fin-plan-empty">Deadline must be in the future</div>';
+    return;
+  }
+  rowsEl.innerHTML = plan.map(p =>
+    `<div class="fin-plan-row">
+      <span class="fin-plan-month">${p.month}</span>
+      <span class="fin-plan-amount">$${p.amount.toFixed(2)}</span>
+    </div>`).join('');
+}
+
+function generatePaymentPlan(fee, deadlineStr, fromDate) {
+  const deadline = new Date(deadlineStr);
+  if (isNaN(deadline) || deadline <= fromDate) return [];
+  const months = [];
+  const cur = new Date(fromDate.getFullYear(), fromDate.getMonth(), 1);
+  const end = new Date(deadline.getFullYear(), deadline.getMonth(), 1);
+  while (cur <= end) {
+    months.push(new Date(cur));
+    cur.setMonth(cur.getMonth() + 1);
+  }
+  if (!months.length) return [];
+  const perMonth = fee / months.length;
+  return months.map(d => ({
+    month:  d.toLocaleDateString('en-US', { month:'long', year:'numeric' }),
+    amount: parseFloat(perMonth.toFixed(2)),
+    paid:   false,
+  }));
+}
+
+async function saveFinancials() {
+  const fee      = parseFloat(document.getElementById('fin-fee')?.value) || 0;
+  const deadline = document.getElementById('fin-deadline')?.value?.trim() || '';
+  const depAmt   = parseFloat(document.getElementById('fin-deposit-amt')?.value) || 250;
+  if (!fee) { showMsg('msg-financials', 'Please enter a player fee amount.', 'error'); return; }
+  if (!deadline) { showMsg('msg-financials', 'Please select a payment deadline.', 'error'); return; }
+
+  setLoading('save-fin-btn', 'save-fin-txt', true);
+  try {
+    const res  = await fetch(`${API_BASE}/api/coach/financials`, {
+      method: 'POST', headers: authH(),
+      body: JSON.stringify({
+        playerFee:       fee,
+        paymentDeadline: deadline,
+        fullPayOnly:     _finFullPay,
+        depositEnabled:  _finDepositEnabled,
+        depositAmount:   depAmt,
+        monthlyPayments: _finMonthly,
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed');
+    _finSetup = data.financials;
+    showMsg('msg-financials', 'Financial setup saved!', 'success');
+  } catch(err) { showMsg('msg-financials', err.message, 'error'); }
+  finally { setLoading('save-fin-btn', 'save-fin-txt', false, 'Save Financial Setup'); }
+}
+
+async function loadFinancials() {
+  try {
+    const [finRes, payRes] = await Promise.all([
+      fetch(`${API_BASE}/api/coach/financials`, { headers: authH() }),
+      fetch(`${API_BASE}/api/coach/player-payments`, { headers: authH() }),
+    ]);
+    const finData = await finRes.json();
+    const payData = await payRes.json();
+    _finSetup       = finData.financials || null;
+    _playerPayments = payData.payments   || [];
+
+    if (_finSetup) {
+      const f = _finSetup;
+      document.getElementById('fin-fee').value      = f.player_fee || '';
+      document.getElementById('fin-deadline').value = f.payment_deadline || '';
+      // Re-init flatpickr on deadline
+      setTimeout(() => {
+        const fp = flatpickr('#fin-deadline', { dateFormat: 'F j, Y', allowInput: false, disableMobile: true });
+        if (f.payment_deadline) fp.setDate(f.payment_deadline, false);
+      }, 50);
+      _finFullPay        = f.full_pay_only;
+      _finDepositEnabled = f.deposit_enabled;
+      _finMonthly        = f.monthly_payments;
+      document.getElementById('fin-fullpay-toggle').classList.toggle('selected', _finFullPay);
+      finDepositToggle(_finDepositEnabled);
+      finMonthlyToggle(_finMonthly);
+      if (f.deposit_amount) document.getElementById('fin-deposit-amt').value = f.deposit_amount;
+      finPreviewUpdate();
+    }
+    renderARTable();
+  } catch(err) { console.error('loadFinancials:', err); }
+}
+
+function renderARTable() {
+  const tbody  = document.getElementById('ar-table-body');
+  const fmt2   = n => '$' + (parseFloat(n)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  if (!tbody) return;
+
+  // Update summary stats
+  const total      = _playerPayments.length;
+  const expected   = _playerPayments.reduce((s, p) => s + (parseFloat(p.total_fee)||0), 0);
+  const collected  = _playerPayments.reduce((s, p) => s + (parseFloat(p.amount_paid)||0), 0);
+  const outstanding = expected - collected;
+  const setEl = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  setEl('fin-stat-players',     total);
+  setEl('fin-stat-expected',    fmt2(expected));
+  setEl('fin-stat-collected',   fmt2(collected));
+  setEl('fin-stat-outstanding', fmt2(outstanding));
+
+  if (!_playerPayments.length) {
+    tbody.innerHTML = '<tr><td colspan="9"><div class="no-ar-state">No player payment records yet. Players will appear here when they register.</div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = _playerPayments.map(p => {
+    const statusClass = p.status === 'Paid' ? 'paid' : p.status === 'Partial' ? 'partial' : 'pending';
+    const depHtml = p.deposit_amount > 0
+      ? (p.deposit_paid
+          ? `<span class="ar-status paid">Paid</span>`
+          : `<button class="ar-mark-btn" onclick="markDepositPaid('${p.id}')">
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+               Mark Paid
+             </button>`)
+      : '—';
+    return `
+      <tr>
+        <td>${esc(p.player_name||'—')}</td>
+        <td style="font-size:.76rem;color:var(--sub)">${esc(p.registered_date||'—')}</td>
+        <td>${fmt2(p.total_fee)}</td>
+        <td>${depHtml}</td>
+        <td>${fmt2(p.amount_paid)}</td>
+        <td style="font-weight:700;color:${parseFloat(p.balance)>0?'var(--red)':'#16a34a'}">${fmt2(p.balance)}</td>
+        <td style="font-size:.76rem;color:var(--sub)">${esc(p.payment_deadline||'—')}</td>
+        <td><span class="ar-status ${statusClass}">${esc(p.status)}</span></td>
+        <td>
+          <button class="ar-mark-btn" onclick="openPaymentDetail('${p.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            View Plan
+          </button>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+async function markDepositPaid(paymentId) {
+  const today = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+  try {
+    const p    = _playerPayments.find(x => x.id === paymentId);
+    if (!p) return;
+    const newPaid   = (parseFloat(p.amount_paid)||0) + (parseFloat(p.deposit_amount)||0);
+    const newBalance = (parseFloat(p.total_fee)||0) - newPaid;
+    const newStatus  = newBalance <= 0 ? 'Paid' : 'Partial';
+    const res = await fetch(`${API_BASE}/api/coach/player-payments/${paymentId}`, {
+      method: 'PUT', headers: authH(),
+      body: JSON.stringify({
+        depositPaid: true, depositPaidDate: today,
+        amountPaid: newPaid, balance: newBalance, status: newStatus
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    const idx = _playerPayments.findIndex(x => x.id === paymentId);
+    if (idx !== -1) _playerPayments[idx] = data.payment;
+    renderARTable();
+  } catch(err) { alert('Error: ' + err.message); }
+}
+
+function openPaymentDetail(paymentId) {
+  const p = _playerPayments.find(x => x.id === paymentId);
+  if (!p) return;
+  document.getElementById('pd-modal-title').textContent = (p.player_name||'Player') + ' — Payment Plan';
+  const fmt2 = n => '$' + (parseFloat(n)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const plan = p.payment_plan || [];
+
+  let planHtml = '';
+  if (plan.length) {
+    planHtml = plan.map((item, idx) => `
+      <div class="plan-detail-item ${item.paid ? 'paid-item' : ''}">
+        <span>${esc(item.month)}</span>
+        <div style="display:flex;align-items:center;gap:.6rem">
+          <span style="font-weight:700">${fmt2(item.amount)}</span>
+          <label style="display:flex;align-items:center;gap:.3rem;cursor:pointer;font-size:.72rem">
+            <input type="checkbox" class="plan-detail-check" ${item.paid?'checked':''} onchange="markMonthPaid('${p.id}',${idx},this.checked)">
+            ${item.paid ? 'Paid' : 'Mark Paid'}
+          </label>
+        </div>
+      </div>`).join('');
+  } else {
+    planHtml = '<div style="color:var(--sub);font-size:.84rem;padding:.5rem">No monthly plan — full payment expected by deadline.</div>';
+  }
+
+  document.getElementById('pd-modal-body').innerHTML = `
+    <div style="padding:.5rem 0">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.2rem">
+        <div style="background:var(--light);border-radius:6px;padding:.75rem 1rem">
+          <div style="font-size:.62rem;color:var(--sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Total Fee</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy)">${fmt2(p.total_fee)}</div>
+        </div>
+        <div style="background:var(--light);border-radius:6px;padding:.75rem 1rem">
+          <div style="font-size:.62rem;color:var(--sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Balance</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:${parseFloat(p.balance)>0?'var(--red)':'#16a34a'}">${fmt2(p.balance)}</div>
+        </div>
+        <div style="background:var(--light);border-radius:6px;padding:.75rem 1rem">
+          <div style="font-size:.62rem;color:var(--sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Amount Paid</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:#16a34a">${fmt2(p.amount_paid)}</div>
+        </div>
+        <div style="background:var(--light);border-radius:6px;padding:.75rem 1rem">
+          <div style="font-size:.62rem;color:var(--sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Deadline</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:700;color:var(--navy)">${esc(p.payment_deadline||'—')}</div>
+        </div>
+      </div>
+      ${p.deposit_amount > 0 ? `
+        <div style="background:${p.deposit_paid?'#f0fdf4':'#fffbea'};border-radius:6px;padding:.75rem 1rem;margin-bottom:1rem;border:1px solid ${p.deposit_paid?'#bbf7d0':'#fde68a'}">
+          <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.2rem;color:${p.deposit_paid?'#16a34a':'#92400e'}">Deposit — ${fmt2(p.deposit_amount)}</div>
+          <div style="font-size:.82rem;color:${p.deposit_paid?'#16a34a':'var(--sub)'}">
+            ${p.deposit_paid ? '✓ Paid on ' + (p.deposit_paid_date||'') : 'Not yet paid'}
+          </div>
+        </div>` : ''}
+      <div style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.6rem">Monthly Payment Schedule</div>
+      <div class="plan-detail-wrap">${planHtml}</div>
+    </div>`;
+
+  document.getElementById('payment-detail-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+async function markMonthPaid(paymentId, monthIdx, isPaid) {
+  const p = _playerPayments.find(x => x.id === paymentId);
+  if (!p) return;
+  const plan = [...(p.payment_plan || [])];
+  if (!plan[monthIdx]) return;
+  plan[monthIdx].paid = isPaid;
+
+  const totalPaid  = plan.filter(x => x.paid).reduce((s, x) => s + (parseFloat(x.amount)||0), 0)
+                   + (p.deposit_paid ? (parseFloat(p.deposit_amount)||0) : 0);
+  const newBalance = (parseFloat(p.total_fee)||0) - totalPaid;
+  const newStatus  = newBalance <= 0 ? 'Paid' : totalPaid > 0 ? 'Partial' : 'Pending';
+
+  try {
+    const res = await fetch(`${API_BASE}/api/coach/player-payments/${paymentId}`, {
+      method: 'PUT', headers: authH(),
+      body: JSON.stringify({ paymentPlan: plan, amountPaid: totalPaid, balance: newBalance, status: newStatus })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    const idx = _playerPayments.findIndex(x => x.id === paymentId);
+    if (idx !== -1) _playerPayments[idx] = data.payment;
+    renderARTable();
+    openPaymentDetail(paymentId); // refresh modal
+  } catch(err) { alert('Error: ' + err.message); }
+}
+
+function closePaymentDetail() {
+  document.getElementById('payment-detail-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 /* ── COST CALCULATOR ── */
 let _otherCount = 0;
 
@@ -1830,6 +2293,12 @@ function removeOther(idx) {
 }
 
 function calcUpdate() {
+  // User changed a field — allow saving again
+  _budgetSaved = false;
+  const btn = document.getElementById('save-budget-btn');
+  const txt = document.getElementById('save-budget-txt');
+  if (btn) { btn.disabled = false; btn.style.background = ''; }
+  if (txt && txt.textContent === 'Saved! ✓') txt.textContent = 'Save Budget';
   const tournaments = val('calc-num-events') * val('calc-event-cost');
   const head        = val('calc-head-pay');
   const asst        = val('calc-asst-pay');
@@ -1895,7 +2364,10 @@ function calcReset() {
 /* ── BUDGET SAVE / VIEW / DELETE ── */
 let _savedBudgets = [];
 
+let _budgetSaved = false;
+
 async function saveBudget() {
+  if (_budgetSaved) { alert('This budget has already been saved. Change any field to save a new one.'); return; }
   const total     = parseFloat(document.getElementById('ct-total')?.textContent?.replace(/[$,]/g,'')) || 0;
   const perPlayer = parseFloat(document.getElementById('ct-player-fee')?.textContent?.replace(/[$,]/g,'')) || 0;
   if (total === 0) { alert('Please fill in the calculator before saving.'); return; }
@@ -1944,8 +2416,10 @@ async function saveBudget() {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Failed to save');
-    txt.textContent = 'Saved!';
-    setTimeout(() => { txt.textContent = 'Save Budget'; btn.disabled = false; }, 2000);
+    txt.textContent = 'Saved! ✓';
+    _budgetSaved = true;
+    btn.style.background = '#16a34a';
+    setTimeout(() => { txt.textContent = 'Save Budget'; btn.style.background = ''; btn.disabled = false; }, 2000);
     await loadBudgetsLocal();
   } catch(err) {
     alert('Error: ' + err.message);
