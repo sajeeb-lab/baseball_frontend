@@ -44,7 +44,7 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
 .field-textarea{resize:vertical;min-height:100px;line-height:1.6}
 .form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0 1.4rem}
 .form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 1.4rem}
-.save-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:9px 18px;font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .15s;margin-top:.4rem;white-space:nowrap}
+.save-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:11px 22px;font-family:'Oswald',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .15s;margin-top:.4rem;white-space:nowrap}
 .save-btn:hover{background:#162845}
 .save-btn:disabled{opacity:.6;cursor:not-allowed}
 .msg{padding:.75rem 1rem;border-radius:6px;font-size:.82rem;margin-bottom:1.1rem;display:none}
@@ -79,7 +79,7 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
 .photo-preview img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .photo-preview svg{width:32px;height:32px;color:#aab}
 .photo-btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.4rem}
-.photo-edit-btn{display:inline-flex;align-items:center;gap:.4rem;padding:6px 11px;border-radius:6px;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:none;transition:background .15s;white-space:nowrap}
+.photo-edit-btn{display:inline-flex;align-items:center;gap:.4rem;padding:8px 14px;border-radius:6px;font-family:'Oswald',sans-serif;font-size:.74rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;border:none;transition:background .15s;white-space:nowrap}
 .photo-edit-btn.edit{background:var(--navy);color:#fff}.photo-edit-btn.edit:hover{background:#162845}
 .photo-edit-btn.delete{background:#fef3f5;color:var(--red);border:1.5px solid #f5c6cb}.photo-edit-btn.delete:hover{background:#fde8ec}
 .photo-upload-right{flex:1;min-width:0}
@@ -187,12 +187,12 @@ input[type="file"].hidden-file{display:none}
 .calc-total-row.grand .calc-total-value{color:#ff6b6b;font-size:1.3rem}
 .calc-other-wrap{display:flex;flex-direction:column;gap:.6rem;margin-top:.5rem}
 .calc-other-row{display:grid;grid-template-columns:1fr 1fr auto;gap:.6rem;align-items:end}
-.calc-add-other-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;border:1.5px dashed var(--mid);border-radius:6px;padding:6px 11px;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s;margin-top:.5rem;white-space:nowrap}
+.calc-add-other-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;border:1.5px dashed var(--mid);border-radius:6px;padding:8px 14px;font-family:'Oswald',sans-serif;font-size:.74rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s;margin-top:.5rem;white-space:nowrap}
 .calc-add-other-btn:hover{border-color:var(--navy);color:var(--navy)}
 .calc-remove-btn{background:none;border:none;color:var(--red);cursor:pointer;padding:4px;border-radius:4px;display:flex;align-items:center;justify-content:center}
 .calc-remove-btn:hover{background:#fef3f5}
 .calc-remove-btn svg{width:15px;height:15px}
-.calc-reset-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;border:1.5px solid var(--mid);border-radius:6px;padding:7px 14px;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s;margin-top:1rem;white-space:nowrap}
+.calc-reset-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;border:1.5px solid var(--mid);border-radius:6px;padding:9px 16px;font-family:'Oswald',sans-serif;font-size:.74rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s;margin-top:1rem;white-space:nowrap}
 .calc-reset-btn:hover{border-color:var(--red);color:var(--red)}
 /* SAVED BUDGET CARDS */
 /* TEAM FINANCIALS */
@@ -1065,6 +1065,8 @@ function renderDashboard(coach){
           <div id="saved-budgets-wrap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem">
             <div class="no-tryouts-dash" style="grid-column:1/-1">No budgets saved yet. Fill in the calculator and click Save Budget.</div>
           </div>
+          <!-- INLINE BUDGET DETAIL -->
+          <div id="budget-inline-detail" style="display:none;margin-top:1.4rem;border-top:2px solid var(--mid);padding-top:1.2rem"></div>
         </div>
       </div>
 
@@ -1937,30 +1939,51 @@ function renderBudgetList() {
 
 function viewBudget(i) {
   const b = _budgets[i];
-  document.getElementById('bv-name').textContent      = b.name;
-  document.getElementById('bv-players').textContent   = b.players;
-  document.getElementById('bv-seasons').textContent   = b.seasons;
-  document.getElementById('bv-events').textContent    = fmt(b.eventsTotal);
-  document.getElementById('bv-head').textContent      = fmt(b.headPay);
-  document.getElementById('bv-asst').textContent      = fmt(b.asstPay);
-  document.getElementById('bv-rentals').textContent   = fmt(b.rentals);
-  document.getElementById('bv-hotel').textContent     = fmt(b.hotelTotal);
-  document.getElementById('bv-gas').textContent       = fmt(b.gas);
-  document.getElementById('bv-uniforms').textContent  = fmt(b.uniforms);
-  document.getElementById('bv-equipment').textContent = fmt(b.equipment);
-  document.getElementById('bv-insurance').textContent = fmt(b.insurance);
-  document.getElementById('bv-ambassadors').textContent = fmt(b.ambassadors);
-  document.getElementById('bv-other1').textContent    = (b.other1Label||'Other 1') + ': ' + fmt(b.other1Amt);
-  document.getElementById('bv-other2').textContent    = (b.other2Label||'Other 2') + ': ' + fmt(b.other2Amt);
-  document.getElementById('bv-other3').textContent    = (b.other3Label||'Other 3') + ': ' + fmt(b.other3Amt);
-  document.getElementById('bv-total').textContent     = fmt(b.totalExpenses);
-  document.getElementById('bv-fee').textContent       = fmt(b.playerFee) + ' / player';
-  document.getElementById('budget-view-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  const detail = document.getElementById('budget-inline-detail');
+  if (!detail) return;
+
+  const otherRows = [
+    b.other1Amt ? `<tr><td>${esc(b.other1Label||'Other 1')}</td><td>${fmt(b.other1Amt)}</td></tr>` : '',
+    b.other2Amt ? `<tr><td>${esc(b.other2Label||'Other 2')}</td><td>${fmt(b.other2Amt)}</td></tr>` : '',
+    b.other3Amt ? `<tr><td>${esc(b.other3Label||'Other 3')}</td><td>${fmt(b.other3Amt)}</td></tr>` : '',
+  ].join('');
+
+  detail.style.display = 'block';
+  detail.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+      <div style="font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.04em">${esc(b.name||'Budget Details')}</div>
+      <button onclick="document.getElementById('budget-inline-detail').style.display='none'" style="background:none;border:1.5px solid var(--mid);border-radius:6px;padding:5px 12px;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sub);cursor:pointer">✕ Close</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1rem">
+      <div style="background:var(--light);border-radius:6px;padding:.7rem .9rem">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.3rem">Paying Players</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy)">${b.players||'—'}</div>
+      </div>
+      <div style="background:var(--light);border-radius:6px;padding:.7rem .9rem">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.3rem">Seasons</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy)">${b.seasons||'—'}</div>
+      </div>
+    </div>
+    <table class="budget-detail-table">
+      <tr><td>Tournaments / Events</td><td>${fmt(b.eventsTotal||0)}</td></tr>
+      <tr><td>Head Coach Pay</td><td>${fmt(b.headPay||0)}</td></tr>
+      <tr><td>Assistant Coach Pay</td><td>${fmt(b.asstPay||0)}</td></tr>
+      <tr><td>Rentals</td><td>${fmt(b.rentals||0)}</td></tr>
+      <tr><td>Hotel Costs</td><td>${fmt(b.hotelTotal||0)}</td></tr>
+      <tr><td>Gas</td><td>${fmt(b.gas||0)}</td></tr>
+      <tr><td>Coach Uniforms</td><td>${fmt(b.uniforms||0)}</td></tr>
+      <tr><td>Equipment</td><td>${fmt(b.equipment||0)}</td></tr>
+      <tr><td>Coach Liability Insurance</td><td>${fmt(b.insurance||0)}</td></tr>
+      <tr><td>Ambassadors Baseball</td><td>${fmt(b.ambassadors||450)}</td></tr>
+      ${otherRows}
+      <tr class="highlight"><td>Total Expenses</td><td>${fmt(b.totalExpenses||0)}</td></tr>
+      <tr class="grand"><td>Player Fee (Total ÷ ${b.players||0} Players)</td><td>${fmt(b.playerFee||0)}</td></tr>
+    </table>`;
+  detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function closeBudgetView() {
-  document.getElementById('budget-view-overlay').classList.remove('open');
+  document.getElementById('budget-view-overlay')?.classList.remove('open');
   document.body.style.overflow = '';
 }
 
@@ -2590,17 +2613,29 @@ async function deleteBudget(id) {
 function viewBudget(id) {
   const b = _savedBudgets.find(x => x.id === id);
   if (!b) return;
-  document.getElementById('bv-modal-title').textContent = 'Budget — ' + b.date;
+  const detail = document.getElementById('budget-inline-detail');
+  if (!detail) return;
 
   const otherRows = (b.others||[]).map(o =>
     `<tr><td>${esc(o.desc)}</td><td>${fmt(o.amt)}</td></tr>`).join('');
 
-  document.getElementById('bv-modal-body').innerHTML = `
+  detail.style.display = 'block';
+  detail.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+      <div style="font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.04em">Budget — ${esc(b.date)}</div>
+      <button onclick="document.getElementById('budget-inline-detail').style.display='none'" style="background:none;border:1.5px solid var(--mid);border-radius:6px;padding:5px 12px;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sub);cursor:pointer">✕ Close</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1rem">
+      <div style="background:var(--light);border-radius:6px;padding:.7rem .9rem">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.3rem">Paying Players</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy)">${b.players||'—'}</div>
+      </div>
+      <div style="background:var(--light);border-radius:6px;padding:.7rem .9rem">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.3rem">Seasons</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy)">${b.seasons||'—'}</div>
+      </div>
+    </div>
     <table class="budget-detail-table">
-      <tr><td>Date Calculated</td><td>${esc(b.date)}</td></tr>
-      <tr><td>Paying Players</td><td>${b.players||'—'}</td></tr>
-      <tr><td>Seasons</td><td>${b.seasons||'—'}</td></tr>
-      <tr><td colspan="2" style="padding:6px 12px;background:var(--light);font-family:'Oswald',sans-serif;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--sub)">Breakdown</td></tr>
       <tr><td>Tournaments / Events (${b.num_events||0} × $${b.event_cost||0})</td><td>${fmt(b.tournaments||0)}</td></tr>
       <tr><td>Head Coach Pay</td><td>${fmt(b.head_pay||0)}</td></tr>
       <tr><td>Assistant Coach Pay</td><td>${fmt(b.asst_pay||0)}</td></tr>
@@ -2615,13 +2650,12 @@ function viewBudget(id) {
       <tr class="highlight"><td>Total Expenses</td><td>${fmt(b.total||0)}</td></tr>
       <tr class="grand"><td>Player Fee (Total ÷ ${b.players||0} Players)</td><td>${fmt(b.per_player||0)}</td></tr>
     </table>`;
-
-  document.getElementById('budget-view-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function closeBudgetView() {
-  document.getElementById('budget-view-overlay').classList.remove('open');
+  const overlay = document.getElementById('budget-view-overlay');
+  if (overlay) overlay.classList.remove('open');
   document.body.style.overflow = '';
 }
 
