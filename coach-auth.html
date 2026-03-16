@@ -113,6 +113,10 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
           <input class="field-input" type="text" id="reg-state" placeholder="e.g. TN" maxlength="2">
         </div>
         <div class="field-group">
+          <label class="field-label">Age Group</label>
+          <input class="field-input" type="text" id="reg-agegroup" placeholder="e.g. 17U">
+        </div>
+        <div class="field-group">
           <label class="field-label">Password</label>
           <input class="field-input" type="password" id="reg-password" placeholder="Min 8 characters">
         </div>
@@ -171,6 +175,7 @@ async function handleRegister() {
   const phone=document.getElementById('reg-phone').value.trim();
   const teamName=document.getElementById('reg-teamname').value.trim();
   const state=document.getElementById('reg-state').value.trim().toUpperCase();
+  const ageGroup=document.getElementById('reg-agegroup').value.trim();
   const password=document.getElementById('reg-password').value;
   const confirm=document.getElementById('reg-confirm').value;
   if (!firstName||!lastName||!email||!phone||!teamName||!password){ showMsg('reg-msg','Please fill in all fields.','error'); return; }
@@ -178,7 +183,7 @@ async function handleRegister() {
   if (password!==confirm){ showMsg('reg-msg','Passwords do not match.','error'); return; }
   setLoading('reg-btn','reg-btn-text',true);
   try {
-    const res=await fetch(`${API_BASE}/api/coach/register`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({firstName,lastName,email,phone,teamName,state,password})});
+    const res=await fetch(`${API_BASE}/api/coach/register`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({firstName,lastName,email,phone,teamName,state,ageGroup,password})});
     const data=await res.json();
     if (!res.ok) throw new Error(data.message||'Registration failed');
     showMsg('reg-msg','Account created! Please login.','success');
