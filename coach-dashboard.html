@@ -161,7 +161,70 @@ input[type="file"].hidden-file{display:none}
 .tryreg-table td{padding:10px 14px;vertical-align:middle;font-size:.82rem;color:var(--text)}
 .tryreg-table td:first-child{font-weight:600;color:var(--navy)}
 
+/* COST CALCULATOR */
+.calc-section{margin-bottom:1.6rem}
+.calc-section-title{font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--white);background:var(--navy);padding:8px 14px;border-radius:4px;display:block;margin-bottom:1rem}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem 1.4rem}
+.calc-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.85rem 1.4rem}
+.calc-field{display:flex;flex-direction:column;gap:.38rem}
+.calc-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub)}
+.calc-input{border:1.5px solid var(--mid);border-radius:8px;padding:10px 14px;font-size:.88rem;font-family:'Open Sans',sans-serif;color:var(--text);background:var(--white);outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
+.calc-input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(200,16,46,.08)}
+.calc-input[readonly]{background:var(--light);color:var(--navy);font-weight:700;cursor:default}
+.calc-prefix{position:relative}
+.calc-prefix::before{content:'$';position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none}
+.calc-prefix .calc-input{padding-left:24px}
+.calc-divider{border:none;border-top:1px solid var(--mid);margin:1.4rem 0}
+.calc-totals-card{background:linear-gradient(135deg,var(--navy) 0%,#162845 100%);border-radius:8px;padding:1.4rem 1.6rem;margin-top:1.4rem}
+.calc-totals-title{font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--white);margin-bottom:1.1rem}
+.calc-total-row{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.calc-total-row:last-child{border-bottom:none}
+.calc-total-label{font-size:.8rem;color:rgba(255,255,255,.65)}
+.calc-total-value{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;color:var(--white)}
+.calc-total-row.highlight .calc-total-label{color:var(--white);font-weight:600;font-size:.85rem}
+.calc-total-row.highlight .calc-total-value{color:#ffd700;font-size:1.2rem}
+.calc-total-row.grand .calc-total-label{color:var(--white);font-weight:700;font-size:.9rem}
+.calc-total-row.grand .calc-total-value{color:#ff6b6b;font-size:1.3rem}
+.calc-other-wrap{display:flex;flex-direction:column;gap:.6rem;margin-top:.5rem}
+.calc-other-row{display:grid;grid-template-columns:1fr 1fr auto;gap:.6rem;align-items:end}
+.calc-add-other-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;border:1.5px dashed var(--mid);border-radius:6px;padding:7px 14px;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s;margin-top:.5rem}
+.calc-add-other-btn:hover{border-color:var(--navy);color:var(--navy)}
+.calc-remove-btn{background:none;border:none;color:var(--red);cursor:pointer;padding:4px;border-radius:4px;display:flex;align-items:center;justify-content:center}
+.calc-remove-btn:hover{background:#fef3f5}
+.calc-remove-btn svg{width:15px;height:15px}
+.calc-reset-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;border:1.5px solid var(--mid);border-radius:6px;padding:8px 18px;font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s;margin-top:1rem}
+.calc-reset-btn:hover{border-color:var(--red);color:var(--red)}
 @media(max-width:700px){.form-grid-2,.form-grid-3{grid-template-columns:1fr}.page-header-inner{flex-direction:column;align-items:flex-start}.section-tabs{gap:.4rem}.section-tab{padding:8px 12px;font-size:.72rem}}
+
+/* BUDGET */
+.budget-section-label{font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--white);background:var(--navy);padding:6px 14px;border-radius:4px;display:block;margin:1.2rem 0 .9rem}
+.budget-section-label:first-child{margin-top:0}
+.budget-row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem 1.2rem;margin-bottom:.7rem;align-items:end}
+.budget-row.single{grid-template-columns:1fr}
+.budget-row.triple{grid-template-columns:1fr 1fr 1fr}
+.budget-field{display:flex;flex-direction:column;gap:.3rem}
+.budget-label{font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub)}
+.budget-input{border:1.5px solid var(--mid);border-radius:7px;padding:9px 12px;font-size:.86rem;font-family:'Open Sans',sans-serif;color:var(--text);background:var(--white);outline:none;transition:border-color .15s;width:100%}
+.budget-input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(200,16,46,.08)}
+.budget-input[readonly]{background:#f9fafb;color:var(--navy);font-weight:700;cursor:default}
+.budget-totals{background:linear-gradient(135deg,var(--navy) 0%,#162845 100%);border-radius:8px;padding:1.2rem 1.4rem;margin-top:1.4rem}
+.budget-totals-title{font-family:'Oswald',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:.9rem}
+.budget-total-row{display:flex;align-items:center;justify-content:space-between;padding:.45rem 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.budget-total-row:last-child{border-bottom:none;padding-top:.8rem;margin-top:.4rem}
+.budget-total-label{font-size:.8rem;color:rgba(255,255,255,.7)}
+.budget-total-value{font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;color:var(--white)}
+.budget-total-row.grand{border-top:2px solid rgba(255,255,255,.2)}
+.budget-total-row.grand .budget-total-label{font-size:.88rem;color:var(--white);font-weight:700}
+.budget-total-row.grand .budget-total-value{font-size:1.15rem;color:#f5c518}
+.budget-player-fee{background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:8px;padding:1rem 1.2rem;margin-top:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.budget-player-fee-label{font-size:.8rem;color:#166534;font-weight:600}
+.budget-player-fee-value{font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;color:#15803d}
+.budget-list-item{background:var(--light);border:1.5px solid var(--mid);border-radius:8px;padding:1rem 1.2rem;margin-bottom:.75rem}
+.budget-list-item-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.budget-list-name{font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;color:var(--navy)}
+.budget-list-meta{font-size:.78rem;color:var(--sub);margin-top:.3rem}
+.budget-list-fee{font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--red)}
+.budget-list-actions{display:flex;gap:.4rem;flex-shrink:0}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
 <style>
@@ -233,6 +296,7 @@ function switchPanel(name){
   if (name === 'schedule') loadDashSchedule();
   if (name === 'tryouts')  loadTryouts();
   if (name === 'tryreg')   loadTryoutRegs();
+  if (name === 'budget')   loadBudgetsLocal();
 
   // Clear old poll, start new one for live tabs
   clearInterval(_pollInterval);
@@ -323,6 +387,14 @@ function renderDashboard(coach){
       <button class="section-tab" id="tab-tryreg" onclick="switchPanel('tryreg')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
         Tryout Registrations
+      </button>
+      <button class="section-tab" id="tab-calculator" onclick="switchPanel('calculator')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg>
+        Cost Calculator
+      </button>
+      <button class="section-tab" id="tab-budget" onclick="switchPanel('budget')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        Team Budget
       </button>
     </div>
 
@@ -633,6 +705,102 @@ function renderDashboard(coach){
       </div>
     </div>
 
+    <!-- BUDGET PANEL -->
+    <div class="dash-panel" id="panel-budget">
+      <div class="card">
+        <div class="card-header">Create Team Budget</div>
+        <div class="card-body">
+          <div class="msg" id="msg-budget"></div>
+          <span class="budget-section-label">Team Overview</span>
+          <div class="budget-row">
+            <div class="budget-field"><label class="budget-label">Team Budget Name</label><input class="budget-input" type="text" id="b-name" placeholder="e.g. 2026 Season Budget"></div>
+            <div class="budget-field"><label class="budget-label">Number of Paying Players</label><input class="budget-input" type="number" id="b-players" placeholder="e.g. 14" min="1" oninput="calcBudget()"></div>
+          </div>
+          <div class="budget-row single">
+            <div class="budget-field"><label class="budget-label"># of Seasons</label><input class="budget-input" type="number" id="b-seasons" placeholder="e.g. 2" min="1" oninput="calcBudget()"></div>
+          </div>
+
+          <span class="budget-section-label">Tournaments / Events</span>
+          <div class="budget-row triple">
+            <div class="budget-field"><label class="budget-label">No. of Events</label><input class="budget-input" type="number" id="b-events-num" placeholder="e.g. 10" min="0" oninput="calcBudget()"></div>
+            <div class="budget-field"><label class="budget-label">Ave. Cost Per Event $</label><input class="budget-input" type="number" id="b-events-cost" placeholder="e.g. 500" min="0" oninput="calcBudget()"></div>
+            <div class="budget-field"><label class="budget-label">Total Tournaments $</label><input class="budget-input" type="number" id="b-events-total" readonly placeholder="Auto calculated"></div>
+          </div>
+
+          <span class="budget-section-label">Coaching</span>
+          <div class="budget-row">
+            <div class="budget-field"><label class="budget-label">Head Coach Pay $</label><input class="budget-input" type="number" id="b-head-pay" placeholder="e.g. 3000" min="0" oninput="calcBudget()"></div>
+            <div class="budget-field"><label class="budget-label">Assistant Coach Pay $</label><input class="budget-input" type="number" id="b-asst-pay" placeholder="e.g. 1500" min="0" oninput="calcBudget()"></div>
+          </div>
+
+          <span class="budget-section-label">Facilities & Travel</span>
+          <div class="budget-row">
+            <div class="budget-field"><label class="budget-label">Rentals $</label><input class="budget-input" type="number" id="b-rentals" placeholder="e.g. 800" min="0" oninput="calcBudget()"></div>
+            <div class="budget-field"><label class="budget-label">Gas $</label><input class="budget-input" type="number" id="b-gas" placeholder="e.g. 600" min="0" oninput="calcBudget()"></div>
+          </div>
+          <div class="budget-row triple">
+            <div class="budget-field"><label class="budget-label">Nights (Hotels)</label><input class="budget-input" type="number" id="b-hotel-nights" placeholder="e.g. 8" min="0" oninput="calcBudget()"></div>
+            <div class="budget-field"><label class="budget-label">Ave. Hotel Cost $ / Night</label><input class="budget-input" type="number" id="b-hotel-cost" placeholder="e.g. 120" min="0" oninput="calcBudget()"></div>
+            <div class="budget-field"><label class="budget-label">Total Hotel Cost $</label><input class="budget-input" type="number" id="b-hotel-total" readonly placeholder="Auto calculated"></div>
+          </div>
+
+          <span class="budget-section-label">Equipment & Insurance</span>
+          <div class="budget-row">
+            <div class="budget-field"><label class="budget-label">No. of Coach Uniforms $</label><input class="budget-input" type="number" id="b-uniforms" placeholder="e.g. 400" min="0" oninput="calcBudget()"></div>
+            <div class="budget-field"><label class="budget-label">Equipment (Balls/Fungo etc.) $</label><input class="budget-input" type="number" id="b-equipment" placeholder="e.g. 600" min="0" oninput="calcBudget()"></div>
+          </div>
+          <div class="budget-row">
+            <div class="budget-field"><label class="budget-label">Coach Liability Insurance $</label><input class="budget-input" type="number" id="b-insurance" placeholder="e.g. 300" min="0" oninput="calcBudget()"></div>
+            <div class="budget-field"><label class="budget-label">Ambassadors Baseball $</label><input class="budget-input" type="number" id="b-ambassadors" value="450" min="0" oninput="calcBudget()"></div>
+          </div>
+
+          <span class="budget-section-label">Other Expenses</span>
+          <div class="budget-row single"><div class="budget-field"><label class="budget-label">Other 1 — Label</label><input class="budget-input" type="text" id="b-other1-label" placeholder="e.g. Team Dinner"></div></div>
+          <div class="budget-row single"><div class="budget-field"><label class="budget-label">Other 1 — Amount $</label><input class="budget-input" type="number" id="b-other1-amt" placeholder="0" min="0" oninput="calcBudget()"></div></div>
+          <div class="budget-row single"><div class="budget-field"><label class="budget-label">Other 2 — Label</label><input class="budget-input" type="text" id="b-other2-label" placeholder="e.g. Team Photos"></div></div>
+          <div class="budget-row single"><div class="budget-field"><label class="budget-label">Other 2 — Amount $</label><input class="budget-input" type="number" id="b-other2-amt" placeholder="0" min="0" oninput="calcBudget()"></div></div>
+          <div class="budget-row single"><div class="budget-field"><label class="budget-label">Other 3 — Label</label><input class="budget-input" type="text" id="b-other3-label" placeholder="e.g. Miscellaneous"></div></div>
+          <div class="budget-row single"><div class="budget-field"><label class="budget-label">Other 3 — Amount $</label><input class="budget-input" type="number" id="b-other3-amt" placeholder="0" min="0" oninput="calcBudget()"></div></div>
+
+          <!-- LIVE TOTALS -->
+          <div class="budget-totals" id="budget-totals-box">
+            <div class="budget-totals-title">Budget Summary</div>
+            <div class="budget-total-row"><span class="budget-total-label">Tournaments / Events</span><span class="budget-total-value" id="bt-events">$0</span></div>
+            <div class="budget-total-row"><span class="budget-total-label">Head Coach Pay</span><span class="budget-total-value" id="bt-head">$0</span></div>
+            <div class="budget-total-row"><span class="budget-total-label">Assistant Coach Pay</span><span class="budget-total-value" id="bt-asst">$0</span></div>
+            <div class="budget-total-row"><span class="budget-total-label">Rentals</span><span class="budget-total-value" id="bt-rentals">$0</span></div>
+            <div class="budget-total-row"><span class="budget-total-label">Hotel Costs</span><span class="budget-total-value" id="bt-hotel">$0</span></div>
+            <div class="budget-total-row"><span class="budget-total-label">Gas</span><span class="budget-total-value" id="bt-gas">$0</span></div>
+            <div class="budget-total-row"><span class="budget-total-label">Coach Uniforms</span><span class="budget-total-value" id="bt-uniforms">$0</span></div>
+            <div class="budget-total-row"><span class="budget-total-label">Equipment</span><span class="budget-total-value" id="bt-equipment">$0</span></div>
+            <div class="budget-total-row"><span class="budget-total-label">Coach Liability Insurance</span><span class="budget-total-value" id="bt-insurance">$0</span></div>
+            <div class="budget-total-row"><span class="budget-total-label">Ambassadors Baseball</span><span class="budget-total-value" id="bt-ambassadors">$0</span></div>
+            <div class="budget-total-row"><span class="budget-total-label" id="bt-other1-lbl">Other 1</span><span class="budget-total-value" id="bt-other1">$0</span></div>
+            <div class="budget-total-row"><span class="budget-total-label" id="bt-other2-lbl">Other 2</span><span class="budget-total-value" id="bt-other2">$0</span></div>
+            <div class="budget-total-row"><span class="budget-total-label" id="bt-other3-lbl">Other 3</span><span class="budget-total-value" id="bt-other3">$0</span></div>
+            <div class="budget-total-row grand"><span class="budget-total-label">Total Expenses</span><span class="budget-total-value" id="bt-total">$0</span></div>
+          </div>
+          <div class="budget-player-fee" id="budget-player-fee-box">
+            <span class="budget-player-fee-label">Player Fee (Total ÷ Paying Players)</span>
+            <span class="budget-player-fee-value" id="bt-player-fee">$0 / player</span>
+          </div>
+
+          <button class="save-btn" id="add-budget-btn" onclick="saveBudget()" style="margin-top:1.4rem">
+            <span id="add-budget-txt">Save Budget</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- SAVED BUDGETS LIST -->
+      <div class="card" style="margin-top:1.4rem">
+        <div class="card-header">Saved Budgets</div>
+        <div class="card-body" id="budget-list-wrap">
+          <div class="no-tryouts-dash">No budgets saved yet. Create one above!</div>
+        </div>
+      </div>
+    </div>
+
     <!-- TRYOUT REGISTRATIONS PANEL -->
     <div class="dash-panel" id="panel-tryreg">
 
@@ -659,11 +827,89 @@ function renderDashboard(coach){
         </div>
       </div>
     </div>
+
+    <!-- COST CALCULATOR PANEL -->
+    <div class="dash-panel" id="panel-calculator">
+      <div class="card">
+        <div class="card-header">Team Budget Calculator</div>
+        <div class="card-body">
+          <span class="calc-section-title">Budget Setup</span>
+          <div class="calc-grid">
+            <div class="calc-field"><label class="calc-label">Number of Paying Players</label><input class="calc-input" type="number" id="calc-players" placeholder="e.g. 14" min="0" oninput="calcUpdate()"></div>
+            <div class="calc-field"><label class="calc-label"># of Seasons</label><input class="calc-input" type="number" id="calc-seasons" placeholder="e.g. 2" min="0" oninput="calcUpdate()"></div>
+          </div>
+          <hr class="calc-divider">
+          <span class="calc-section-title">Tournaments / Events</span>
+          <div class="calc-grid">
+            <div class="calc-field"><label class="calc-label">Number of Events</label><input class="calc-input" type="number" id="calc-num-events" placeholder="e.g. 10" min="0" oninput="calcUpdate()"></div>
+            <div class="calc-field"><label class="calc-label">Average Cost per Event</label><div class="calc-prefix"><input class="calc-input" type="number" id="calc-event-cost" placeholder="e.g. 500" min="0" oninput="calcUpdate()"></div></div>
+          </div>
+          <hr class="calc-divider">
+          <span class="calc-section-title">Coaching Costs</span>
+          <div class="calc-grid">
+            <div class="calc-field"><label class="calc-label">Head Coach Pay</label><div class="calc-prefix"><input class="calc-input" type="number" id="calc-head-pay" placeholder="e.g. 3000" min="0" oninput="calcUpdate()"></div></div>
+            <div class="calc-field"><label class="calc-label">Assistant Coach Pay</label><div class="calc-prefix"><input class="calc-input" type="number" id="calc-asst-pay" placeholder="e.g. 1500" min="0" oninput="calcUpdate()"></div></div>
+          </div>
+          <hr class="calc-divider">
+          <span class="calc-section-title">Travel & Accommodations</span>
+          <div class="calc-grid">
+            <div class="calc-field"><label class="calc-label">Rentals</label><div class="calc-prefix"><input class="calc-input" type="number" id="calc-rentals" placeholder="e.g. 800" min="0" oninput="calcUpdate()"></div></div>
+            <div class="calc-field"><label class="calc-label">Gas</label><div class="calc-prefix"><input class="calc-input" type="number" id="calc-gas" placeholder="e.g. 600" min="0" oninput="calcUpdate()"></div></div>
+          </div>
+          <div class="calc-grid" style="margin-top:.85rem">
+            <div class="calc-field"><label class="calc-label">Nights of Hotels</label><input class="calc-input" type="number" id="calc-hotel-nights" placeholder="e.g. 5" min="0" oninput="calcUpdate()"></div>
+            <div class="calc-field"><label class="calc-label">Average Hotel Cost per Night</label><div class="calc-prefix"><input class="calc-input" type="number" id="calc-hotel-avg" placeholder="e.g. 120" min="0" oninput="calcUpdate()"></div></div>
+          </div>
+          <hr class="calc-divider">
+          <span class="calc-section-title">Equipment & Misc</span>
+          <div class="calc-grid">
+            <div class="calc-field"><label class="calc-label">No. of Coach Uniforms</label><input class="calc-input" type="number" id="calc-uniforms" placeholder="e.g. 3" min="0" oninput="calcUpdate()"></div>
+            <div class="calc-field"><label class="calc-label">Uniform Cost Each</label><div class="calc-prefix"><input class="calc-input" type="number" id="calc-uniform-cost" placeholder="e.g. 80" min="0" oninput="calcUpdate()"></div></div>
+          </div>
+          <div class="calc-grid" style="margin-top:.85rem">
+            <div class="calc-field"><label class="calc-label">Equipment (Balls, Fungo, etc.)</label><div class="calc-prefix"><input class="calc-input" type="number" id="calc-equipment" placeholder="e.g. 400" min="0" oninput="calcUpdate()"></div></div>
+            <div class="calc-field"><label class="calc-label">Coach Liability Insurance</label><div class="calc-prefix"><input class="calc-input" type="number" id="calc-insurance" placeholder="e.g. 200" min="0" oninput="calcUpdate()"></div></div>
+          </div>
+          <div class="calc-grid" style="margin-top:.85rem">
+            <div class="calc-field"><label class="calc-label">Ambassadors Baseball Fee</label><div class="calc-prefix"><input class="calc-input" type="number" id="calc-ambassadors" value="450" min="0" oninput="calcUpdate()"></div></div>
+          </div>
+          <hr class="calc-divider">
+          <span class="calc-section-title">Other Expenses</span>
+          <div class="calc-other-wrap" id="calc-other-wrap"></div>
+          <button class="calc-add-other-btn" onclick="addOther()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Other Expense
+          </button>
+          <div class="calc-totals-card">
+            <div class="calc-totals-title">Budget Summary</div>
+            <div class="calc-total-row"><span class="calc-total-label">Total Tournaments / Events</span><span class="calc-total-value" id="ct-tournaments">$0.00</span></div>
+            <div class="calc-total-row"><span class="calc-total-label">Head Coach Pay</span><span class="calc-total-value" id="ct-head">$0.00</span></div>
+            <div class="calc-total-row"><span class="calc-total-label">Assistant Coach Pay</span><span class="calc-total-value" id="ct-asst">$0.00</span></div>
+            <div class="calc-total-row"><span class="calc-total-label">Rentals</span><span class="calc-total-value" id="ct-rentals">$0.00</span></div>
+            <div class="calc-total-row"><span class="calc-total-label">Hotel Costs</span><span class="calc-total-value" id="ct-hotels">$0.00</span></div>
+            <div class="calc-total-row"><span class="calc-total-label">Gas</span><span class="calc-total-value" id="ct-gas">$0.00</span></div>
+            <div class="calc-total-row"><span class="calc-total-label">Coach Uniforms</span><span class="calc-total-value" id="ct-uniforms">$0.00</span></div>
+            <div class="calc-total-row"><span class="calc-total-label">Equipment</span><span class="calc-total-value" id="ct-equipment">$0.00</span></div>
+            <div class="calc-total-row"><span class="calc-total-label">Coach Liability Insurance</span><span class="calc-total-value" id="ct-insurance">$0.00</span></div>
+            <div class="calc-total-row"><span class="calc-total-label">Ambassadors Baseball</span><span class="calc-total-value" id="ct-ambassadors">$0.00</span></div>
+            <div id="ct-other-rows"></div>
+            <div class="calc-total-row highlight"><span class="calc-total-label">Total Expenses</span><span class="calc-total-value" id="ct-total">$0.00</span></div>
+            <div class="calc-total-row grand"><span class="calc-total-label">Player Fee (Total Expenses &divide; Paying Players)</span><span class="calc-total-value" id="ct-player-fee">$0.00</span></div>
+          </div>
+          <button class="calc-reset-btn" onclick="calcReset()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+            Reset Calculator
+          </button>
+        </div>
+      </div>
+    </div>
+
   `;
 
   loadTryouts();
   loadDashRoster();
   loadDashSchedule();
+  loadBudgetsLocal();
 
   // Init date pickers after DOM is rendered
   setTimeout(() => {
@@ -1137,7 +1383,7 @@ async function deletePlayer(id) {
   } catch(err) { alert('Error: ' + err.message); }
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeEditModal(); closeEditGameModal(); closeEditTryoutModal(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeEditModal(); closeEditGameModal(); closeEditTryoutModal(); closeBudgetView(); } });
 
 
 /* ── DASHBOARD SCHEDULE ── */
@@ -1339,6 +1585,329 @@ async function deleteGame(id) {
   } catch(err) { alert('Error: ' + err.message); }
 }
 
+/* ══════════════════════════════════════
+   BUDGET CALCULATOR
+══════════════════════════════════════ */
+let _budgets = [];
+let _editingBudgetIdx = null;
+
+function fmt(n){ return '$' + (isNaN(n) ? 0 : Number(n)).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function num(id){ return parseFloat(document.getElementById(id)?.value) || 0; }
+function str(id){ return document.getElementById(id)?.value?.trim() || ''; }
+
+function calcBudget() {
+  const events  = num('b-events-num') * num('b-events-cost');
+  const hotel   = num('b-hotel-nights') * num('b-hotel-cost');
+  const head    = num('b-head-pay');
+  const asst    = num('b-asst-pay');
+  const rentals = num('b-rentals');
+  const gas     = num('b-gas');
+  const uni     = num('b-uniforms');
+  const equip   = num('b-equipment');
+  const ins     = num('b-insurance');
+  const amb     = num('b-ambassadors');
+  const oth1    = num('b-other1-amt');
+  const oth2    = num('b-other2-amt');
+  const oth3    = num('b-other3-amt');
+  const total   = events + head + asst + rentals + hotel + gas + uni + equip + ins + amb + oth1 + oth2 + oth3;
+  const players = num('b-players') || 0;
+
+  // Auto-fill totals
+  document.getElementById('b-events-total').value = events || '';
+  document.getElementById('b-hotel-total').value  = hotel  || '';
+
+  // Update summary
+  document.getElementById('bt-events').textContent     = fmt(events);
+  document.getElementById('bt-head').textContent       = fmt(head);
+  document.getElementById('bt-asst').textContent       = fmt(asst);
+  document.getElementById('bt-rentals').textContent    = fmt(rentals);
+  document.getElementById('bt-hotel').textContent      = fmt(hotel);
+  document.getElementById('bt-gas').textContent        = fmt(gas);
+  document.getElementById('bt-uniforms').textContent   = fmt(uni);
+  document.getElementById('bt-equipment').textContent  = fmt(equip);
+  document.getElementById('bt-insurance').textContent  = fmt(ins);
+  document.getElementById('bt-ambassadors').textContent= fmt(amb);
+
+  const o1lbl = str('b-other1-label') || 'Other 1';
+  const o2lbl = str('b-other2-label') || 'Other 2';
+  const o3lbl = str('b-other3-label') || 'Other 3';
+  document.getElementById('bt-other1-lbl').textContent = o1lbl;
+  document.getElementById('bt-other2-lbl').textContent = o2lbl;
+  document.getElementById('bt-other3-lbl').textContent = o3lbl;
+  document.getElementById('bt-other1').textContent     = fmt(oth1);
+  document.getElementById('bt-other2').textContent     = fmt(oth2);
+  document.getElementById('bt-other3').textContent     = fmt(oth3);
+  document.getElementById('bt-total').textContent      = fmt(total);
+
+  const fee = players > 0 ? total / players : 0;
+  document.getElementById('bt-player-fee').textContent = fmt(fee) + ' / player';
+}
+
+function getBudgetData() {
+  const events = num('b-events-num') * num('b-events-cost');
+  const hotel  = num('b-hotel-nights') * num('b-hotel-cost');
+  const head   = num('b-head-pay');
+  const asst   = num('b-asst-pay');
+  const rentals= num('b-rentals');
+  const gas    = num('b-gas');
+  const uni    = num('b-uniforms');
+  const equip  = num('b-equipment');
+  const ins    = num('b-insurance');
+  const amb    = num('b-ambassadors');
+  const oth1   = num('b-other1-amt');
+  const oth2   = num('b-other2-amt');
+  const oth3   = num('b-other3-amt');
+  const total  = events + head + asst + rentals + hotel + gas + uni + equip + ins + amb + oth1 + oth2 + oth3;
+  const players= num('b-players');
+  return {
+    name: str('b-name') || 'Untitled Budget',
+    players, seasons: num('b-seasons'),
+    eventsNum: num('b-events-num'), eventsCost: num('b-events-cost'), eventsTotal: events,
+    headPay: head, asstPay: asst, rentals, gas,
+    hotelNights: num('b-hotel-nights'), hotelCost: num('b-hotel-cost'), hotelTotal: hotel,
+    uniforms: uni, equipment: equip, insurance: ins, ambassadors: amb,
+    other1Label: str('b-other1-label'), other1Amt: oth1,
+    other2Label: str('b-other2-label'), other2Amt: oth2,
+    other3Label: str('b-other3-label'), other3Amt: oth3,
+    totalExpenses: total,
+    playerFee: players > 0 ? total / players : 0,
+    createdAt: new Date().toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})
+  };
+}
+
+function saveBudget() {
+  const data = getBudgetData();
+  if (!data.name) { showMsg('msg-budget','Please enter a budget name.','error'); return; }
+  if (_editingBudgetIdx !== null) {
+    _budgets[_editingBudgetIdx] = data;
+    _editingBudgetIdx = null;
+    document.getElementById('add-budget-txt').textContent = 'Save Budget';
+  } else {
+    _budgets.unshift(data);
+  }
+  saveBudgetsLocal();
+  renderBudgetList();
+  clearBudgetForm();
+  showMsg('msg-budget', 'Budget saved!', 'success');
+}
+
+function saveBudgetsLocal() {
+  try { localStorage.setItem('coach_budgets_' + localStorage.getItem('coach_id'), JSON.stringify(_budgets)); } catch(e){}
+}
+
+function loadBudgetsLocal() {
+  try {
+    const raw = localStorage.getItem('coach_budgets_' + localStorage.getItem('coach_id'));
+    _budgets = raw ? JSON.parse(raw) : [];
+  } catch(e) { _budgets = []; }
+  renderBudgetList();
+}
+
+function clearBudgetForm() {
+  ['b-name','b-players','b-seasons','b-events-num','b-events-cost','b-events-total',
+   'b-head-pay','b-asst-pay','b-rentals','b-gas','b-hotel-nights','b-hotel-cost','b-hotel-total',
+   'b-uniforms','b-equipment','b-insurance','b-other1-label','b-other1-amt',
+   'b-other2-label','b-other2-amt','b-other3-label','b-other3-amt'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = id === 'b-ambassadors' ? '450' : '';
+  });
+  document.getElementById('b-ambassadors').value = '450';
+  calcBudget();
+}
+
+function renderBudgetList() {
+  const wrap = document.getElementById('budget-list-wrap');
+  if (!wrap) return;
+  if (!_budgets.length) {
+    wrap.innerHTML = '<div class="no-tryouts-dash">No budgets saved yet. Create one above!</div>';
+    return;
+  }
+  wrap.innerHTML = _budgets.map((b, i) => `
+    <div class="budget-list-item">
+      <div class="budget-list-item-header">
+        <div>
+          <div class="budget-list-name">${esc(b.name)}</div>
+          <div class="budget-list-meta">${esc(b.createdAt)} &nbsp;·&nbsp; ${b.players || 0} players &nbsp;·&nbsp; ${b.seasons || 1} season(s)</div>
+        </div>
+        <div style="text-align:right">
+          <div class="budget-list-fee">${fmt(b.totalExpenses)}</div>
+          <div style="font-size:.72rem;color:var(--sub);margin-top:2px">Player Fee: ${fmt(b.playerFee)}</div>
+        </div>
+      </div>
+      <div class="budget-list-actions" style="margin-top:.75rem">
+        <button class="roster-edit-btn" onclick="viewBudget(${i})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          View
+        </button>
+        <button class="roster-edit-btn" onclick="editBudget(${i})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Edit
+        </button>
+        <button class="roster-del-btn" onclick="deleteBudget(${i})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          Delete
+        </button>
+      </div>
+    </div>`).join('');
+}
+
+function viewBudget(i) {
+  const b = _budgets[i];
+  document.getElementById('bv-name').textContent      = b.name;
+  document.getElementById('bv-players').textContent   = b.players;
+  document.getElementById('bv-seasons').textContent   = b.seasons;
+  document.getElementById('bv-events').textContent    = fmt(b.eventsTotal);
+  document.getElementById('bv-head').textContent      = fmt(b.headPay);
+  document.getElementById('bv-asst').textContent      = fmt(b.asstPay);
+  document.getElementById('bv-rentals').textContent   = fmt(b.rentals);
+  document.getElementById('bv-hotel').textContent     = fmt(b.hotelTotal);
+  document.getElementById('bv-gas').textContent       = fmt(b.gas);
+  document.getElementById('bv-uniforms').textContent  = fmt(b.uniforms);
+  document.getElementById('bv-equipment').textContent = fmt(b.equipment);
+  document.getElementById('bv-insurance').textContent = fmt(b.insurance);
+  document.getElementById('bv-ambassadors').textContent = fmt(b.ambassadors);
+  document.getElementById('bv-other1').textContent    = (b.other1Label||'Other 1') + ': ' + fmt(b.other1Amt);
+  document.getElementById('bv-other2').textContent    = (b.other2Label||'Other 2') + ': ' + fmt(b.other2Amt);
+  document.getElementById('bv-other3').textContent    = (b.other3Label||'Other 3') + ': ' + fmt(b.other3Amt);
+  document.getElementById('bv-total').textContent     = fmt(b.totalExpenses);
+  document.getElementById('bv-fee').textContent       = fmt(b.playerFee) + ' / player';
+  document.getElementById('budget-view-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBudgetView() {
+  document.getElementById('budget-view-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function editBudget(i) {
+  const b = _budgets[i];
+  _editingBudgetIdx = i;
+  document.getElementById('b-name').value          = b.name || '';
+  document.getElementById('b-players').value       = b.players || '';
+  document.getElementById('b-seasons').value       = b.seasons || '';
+  document.getElementById('b-events-num').value    = b.eventsNum || '';
+  document.getElementById('b-events-cost').value   = b.eventsCost || '';
+  document.getElementById('b-head-pay').value      = b.headPay || '';
+  document.getElementById('b-asst-pay').value      = b.asstPay || '';
+  document.getElementById('b-rentals').value       = b.rentals || '';
+  document.getElementById('b-gas').value           = b.gas || '';
+  document.getElementById('b-hotel-nights').value  = b.hotelNights || '';
+  document.getElementById('b-hotel-cost').value    = b.hotelCost || '';
+  document.getElementById('b-uniforms').value      = b.uniforms || '';
+  document.getElementById('b-equipment').value     = b.equipment || '';
+  document.getElementById('b-insurance').value     = b.insurance || '';
+  document.getElementById('b-ambassadors').value   = b.ambassadors || 450;
+  document.getElementById('b-other1-label').value  = b.other1Label || '';
+  document.getElementById('b-other1-amt').value    = b.other1Amt || '';
+  document.getElementById('b-other2-label').value  = b.other2Label || '';
+  document.getElementById('b-other2-amt').value    = b.other2Amt || '';
+  document.getElementById('b-other3-label').value  = b.other3Label || '';
+  document.getElementById('b-other3-amt').value    = b.other3Amt || '';
+  calcBudget();
+  document.getElementById('add-budget-txt').textContent = 'Update Budget';
+  document.getElementById('panel-budget').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function deleteBudget(i) {
+  if (!confirm('Delete this budget?')) return;
+  _budgets.splice(i, 1);
+  saveBudgetsLocal();
+  renderBudgetList();
+}
+
+/* ── COST CALCULATOR ── */
+let _otherCount = 0;
+
+function fmt(n) { return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+function val(id) { return parseFloat(document.getElementById(id)?.value) || 0; }
+
+function addOther() {
+  const wrap = document.getElementById('calc-other-wrap');
+  if (!wrap) return;
+  const idx = _otherCount++;
+  const row = document.createElement('div');
+  row.className = 'calc-other-row';
+  row.id = 'calc-other-row-' + idx;
+  row.innerHTML = `
+    <div class="calc-field"><label class="calc-label">Description</label><input class="calc-input" type="text" id="calc-other-desc-${idx}" placeholder="e.g. Field fees" oninput="calcUpdate()"></div>
+    <div class="calc-field"><label class="calc-label">Amount</label><div class="calc-prefix"><input class="calc-input" type="number" id="calc-other-amt-${idx}" placeholder="0" min="0" oninput="calcUpdate()"></div></div>
+    <div style="padding-top:1.4rem"><button class="calc-remove-btn" onclick="removeOther(${idx})" title="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>`;
+  wrap.appendChild(row);
+  calcUpdate();
+}
+
+function removeOther(idx) {
+  document.getElementById('calc-other-row-' + idx)?.remove();
+  calcUpdate();
+}
+
+function calcUpdate() {
+  const tournaments = val('calc-num-events') * val('calc-event-cost');
+  const head        = val('calc-head-pay');
+  const asst        = val('calc-asst-pay');
+  const rentals     = val('calc-rentals');
+  const hotels      = val('calc-hotel-nights') * val('calc-hotel-avg');
+  const gas         = val('calc-gas');
+  const uniforms    = val('calc-uniforms') * val('calc-uniform-cost');
+  const equipment   = val('calc-equipment');
+  const insurance   = val('calc-insurance');
+  const ambassadors = val('calc-ambassadors');
+
+  // Other expenses
+  let otherTotal = 0;
+  let otherRowsHtml = '';
+  document.querySelectorAll('[id^="calc-other-amt-"]').forEach(el => {
+    const idx   = el.id.replace('calc-other-amt-', '');
+    const amt   = parseFloat(el.value) || 0;
+    const desc  = document.getElementById('calc-other-desc-' + idx)?.value.trim() || 'Other';
+    otherTotal += amt;
+    if (amt > 0) {
+      otherRowsHtml += `<div class="calc-total-row"><span class="calc-total-label">${esc(desc)}</span><span class="calc-total-value">${fmt(amt)}</span></div>`;
+    }
+  });
+
+  const total   = tournaments + head + asst + rentals + hotels + gas + uniforms + equipment + insurance + ambassadors + otherTotal;
+  const players = val('calc-players');
+  const perPlayer = players > 0 ? total / players : 0;
+
+  // Update totals
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = fmt(v); };
+  set('ct-tournaments', tournaments);
+  set('ct-head', head);
+  set('ct-asst', asst);
+  set('ct-rentals', rentals);
+  set('ct-hotels', hotels);
+  set('ct-gas', gas);
+  set('ct-uniforms', uniforms);
+  set('ct-equipment', equipment);
+  set('ct-insurance', insurance);
+  set('ct-ambassadors', ambassadors);
+  set('ct-total', total);
+  set('ct-player-fee', perPlayer);
+
+  const otherEl = document.getElementById('ct-other-rows');
+  if (otherEl) otherEl.innerHTML = otherRowsHtml;
+}
+
+function calcReset() {
+  if (!confirm('Reset all calculator fields?')) return;
+  ['calc-players','calc-seasons','calc-num-events','calc-event-cost','calc-head-pay','calc-asst-pay',
+   'calc-rentals','calc-gas','calc-hotel-nights','calc-hotel-avg','calc-uniforms','calc-uniform-cost',
+   'calc-equipment','calc-insurance'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  const ambEl = document.getElementById('calc-ambassadors');
+  if (ambEl) ambEl.value = '450';
+  const wrap = document.getElementById('calc-other-wrap');
+  if (wrap) wrap.innerHTML = '';
+  _otherCount = 0;
+  calcUpdate();
+}
+
+function loadBudgetsLocal() { calcUpdate(); }
+
 loadDashboard();
 </script>
 
@@ -1434,6 +2003,59 @@ loadDashboard();
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+<!-- BUDGET VIEW MODAL -->
+<div class="edit-overlay" id="budget-view-overlay">
+  <div class="edit-modal" style="max-width:600px">
+    <div class="edit-modal-head">
+      <h3 id="bv-name">Budget Details</h3>
+      <button class="edit-modal-close" onclick="closeBudgetView()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="edit-modal-body" style="max-height:70vh;overflow-y:auto">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem .8rem;margin-bottom:1rem">
+        <div style="background:var(--light);border-radius:6px;padding:.6rem .9rem">
+          <div style="font-size:.62rem;color:var(--sub);text-transform:uppercase;letter-spacing:.1em">Paying Players</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy)" id="bv-players">—</div>
+        </div>
+        <div style="background:var(--light);border-radius:6px;padding:.6rem .9rem">
+          <div style="font-size:.62rem;color:var(--sub);text-transform:uppercase;letter-spacing:.1em">Seasons</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy)" id="bv-seasons">—</div>
+        </div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:.84rem">
+        <thead><tr style="background:var(--navy)">
+          <th style="padding:8px 12px;text-align:left;font-family:Oswald,sans-serif;font-size:.7rem;color:#fff;letter-spacing:.1em;text-transform:uppercase">Expense</th>
+          <th style="padding:8px 12px;text-align:right;font-family:Oswald,sans-serif;font-size:.7rem;color:#fff;letter-spacing:.1em;text-transform:uppercase">Amount</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--mid)"><td style="padding:8px 12px">Tournaments / Events</td><td style="padding:8px 12px;text-align:right;font-weight:600" id="bv-events"></td></tr>
+          <tr style="border-bottom:1px solid var(--mid)"><td style="padding:8px 12px">Head Coach Pay</td><td style="padding:8px 12px;text-align:right;font-weight:600" id="bv-head"></td></tr>
+          <tr style="border-bottom:1px solid var(--mid)"><td style="padding:8px 12px">Assistant Coach Pay</td><td style="padding:8px 12px;text-align:right;font-weight:600" id="bv-asst"></td></tr>
+          <tr style="border-bottom:1px solid var(--mid)"><td style="padding:8px 12px">Rentals</td><td style="padding:8px 12px;text-align:right;font-weight:600" id="bv-rentals"></td></tr>
+          <tr style="border-bottom:1px solid var(--mid)"><td style="padding:8px 12px">Hotel Costs</td><td style="padding:8px 12px;text-align:right;font-weight:600" id="bv-hotel"></td></tr>
+          <tr style="border-bottom:1px solid var(--mid)"><td style="padding:8px 12px">Gas</td><td style="padding:8px 12px;text-align:right;font-weight:600" id="bv-gas"></td></tr>
+          <tr style="border-bottom:1px solid var(--mid)"><td style="padding:8px 12px">Coach Uniforms</td><td style="padding:8px 12px;text-align:right;font-weight:600" id="bv-uniforms"></td></tr>
+          <tr style="border-bottom:1px solid var(--mid)"><td style="padding:8px 12px">Equipment</td><td style="padding:8px 12px;text-align:right;font-weight:600" id="bv-equipment"></td></tr>
+          <tr style="border-bottom:1px solid var(--mid)"><td style="padding:8px 12px">Coach Liability Insurance</td><td style="padding:8px 12px;text-align:right;font-weight:600" id="bv-insurance"></td></tr>
+          <tr style="border-bottom:1px solid var(--mid)"><td style="padding:8px 12px">Ambassadors Baseball</td><td style="padding:8px 12px;text-align:right;font-weight:600" id="bv-ambassadors"></td></tr>
+          <tr style="border-bottom:1px solid var(--mid)"><td style="padding:8px 12px" id="bv-other1"></td><td style="padding:8px 12px;text-align:right;font-weight:600"></td></tr>
+          <tr style="border-bottom:1px solid var(--mid)"><td style="padding:8px 12px" id="bv-other2"></td><td style="padding:8px 12px;text-align:right;font-weight:600"></td></tr>
+          <tr style="border-bottom:1px solid var(--mid)"><td style="padding:8px 12px" id="bv-other3"></td><td style="padding:8px 12px;text-align:right;font-weight:600"></td></tr>
+          <tr style="background:var(--navy)"><td style="padding:10px 12px;font-family:Oswald,sans-serif;font-weight:700;color:#fff;letter-spacing:.05em">TOTAL EXPENSES</td><td style="padding:10px 12px;text-align:right;font-family:Oswald,sans-serif;font-size:1.05rem;font-weight:700;color:#f5c518" id="bv-total"></td></tr>
+        </tbody>
+      </table>
+      <div class="budget-player-fee" style="margin-top:1rem">
+        <span class="budget-player-fee-label">Player Fee (Total ÷ Paying Players)</span>
+        <span class="budget-player-fee-value" id="bv-fee"></span>
+      </div>
+    </div>
+    <div class="edit-modal-foot">
+      <button class="edit-cancel-btn" onclick="closeBudgetView()">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- EDIT TRYOUT MODAL -->
 <div class="edit-overlay" id="tryout-edit-overlay">
   <div class="edit-modal">
