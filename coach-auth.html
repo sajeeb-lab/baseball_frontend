@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coach Portal –Ambassadors Baseball</title>
+<title>Coach Portal – Ambassadors Baseball</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
@@ -106,7 +106,11 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
         </div>
         <div class="field-group">
           <label class="field-label">Team Name</label>
-          <input class="field-input" type="text" id="reg-teamname" placeholder="e.g. US Elite 17U National">
+          <input class="field-input" type="text" id="reg-teamname" placeholder="e.g. Ambassadors 17U National">
+        </div>
+        <div class="field-group">
+          <label class="field-label">State</label>
+          <input class="field-input" type="text" id="reg-state" placeholder="e.g. TN" maxlength="2">
         </div>
         <div class="field-group">
           <label class="field-label">Password</label>
@@ -166,6 +170,7 @@ async function handleRegister() {
   const email=document.getElementById('reg-email').value.trim();
   const phone=document.getElementById('reg-phone').value.trim();
   const teamName=document.getElementById('reg-teamname').value.trim();
+  const state=document.getElementById('reg-state').value.trim().toUpperCase();
   const password=document.getElementById('reg-password').value;
   const confirm=document.getElementById('reg-confirm').value;
   if (!firstName||!lastName||!email||!phone||!teamName||!password){ showMsg('reg-msg','Please fill in all fields.','error'); return; }
@@ -173,7 +178,7 @@ async function handleRegister() {
   if (password!==confirm){ showMsg('reg-msg','Passwords do not match.','error'); return; }
   setLoading('reg-btn','reg-btn-text',true);
   try {
-    const res=await fetch(`${API_BASE}/api/coach/register`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({firstName,lastName,email,phone,teamName,password})});
+    const res=await fetch(`${API_BASE}/api/coach/register`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({firstName,lastName,email,phone,teamName,state,password})});
     const data=await res.json();
     if (!res.ok) throw new Error(data.message||'Registration failed');
     showMsg('reg-msg','Account created! Please login.','success');
