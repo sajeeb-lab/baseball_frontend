@@ -1146,7 +1146,7 @@ async function saveTeamDetails(){
     const payload={
       teamName:    document.getElementById('td-teamname').value.trim(),
       state:       document.getElementById('td-state').value.trim().toUpperCase(),
-      location:    document.getElementById('td-location').value.trim(),
+      location:    document.getElementById('td-location')?.value.trim() || '',
       ageGroup:    document.getElementById('td-agegroup').value.trim(),
       teamDetails: document.getElementById('td-details').value.trim(),
     };
