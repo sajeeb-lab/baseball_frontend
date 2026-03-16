@@ -190,6 +190,23 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
 .reg-submit-btn svg { width: 18px; height: 18px; }
 .reg-success { display: none; text-align: center; padding: 2rem; color: #2e7d32; font-size: .95rem; font-weight: 600; }
 
+/* REGISTRATION SUCCESS MODAL */
+.reg-modal-overlay { position: fixed; inset: 0; background: rgba(10,22,40,.6); backdrop-filter: blur(4px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; transition: opacity .25s; }
+.reg-modal-overlay.open { opacity: 1; pointer-events: all; }
+.reg-modal { background: var(--white); border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,.3); width: 100%; max-width: 540px; max-height: 90vh; display: flex; flex-direction: column; transform: translateY(24px) scale(.97); transition: transform .28s cubic-bezier(.4,0,.2,1); overflow: hidden; }
+.reg-modal-overlay.open .reg-modal { transform: translateY(0) scale(1); }
+.reg-modal-header { background: var(--navy); padding: 1.4rem 1.6rem; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.reg-modal-header h2 { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: .08em; margin: 0; }
+.reg-modal-close { background: none; border: none; color: var(--white); font-size: 1.5rem; cursor: pointer; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; transition: opacity .2s; }
+.reg-modal-close:hover { opacity: .7; }
+.reg-modal-body { overflow-y: auto; padding: 1.6rem; flex: 1; }
+.reg-modal-footer { padding: 1.2rem 1.6rem; border-top: 1px solid var(--mid); display: flex; gap: .8rem; flex-shrink: 0; }
+.reg-modal-btn { flex: 1; padding: 11px 16px; border: none; border-radius: 6px; font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .15s; }
+.reg-modal-btn-primary { background: var(--navy); color: var(--white); }
+.reg-modal-btn-primary:hover { background: #162845; }
+.reg-modal-btn-secondary { background: var(--light); color: var(--navy); }
+.reg-modal-btn-secondary:hover { background: var(--mid); }
+
 /* PAYMENT PLAN MODAL */
 .pay-overlay{position:fixed;inset:0;background:rgba(10,22,40,.6);backdrop-filter:blur(4px);z-index:1100;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s}
 .pay-overlay.open{opacity:1;pointer-events:all}
@@ -828,6 +845,34 @@ async function loadTryouts(id) {
   }
 }
 
+/* ── REGISTRATION MODAL FUNCTIONS ── */
+function showRegistrationModal(playerName, content) {
+  const overlay = document.getElementById('reg-modal-overlay');
+  const body = document.getElementById('reg-modal-body');
+  if (!overlay || !body) return;
+  
+  if (content) {
+    body.innerHTML = content;
+  } else {
+    body.innerHTML = `
+      <div style="text-align:center">
+        <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:.8rem">Registration Successful!</div>
+        <div style="font-size:.95rem;color:var(--sub);line-height:1.6">
+          Welcome to the team, <strong>${esc(playerName)}</strong>! Your registration has been submitted successfully. We'll be in touch soon with next steps.
+        </div>
+      </div>`;
+  }
+  
+  overlay.classList.add('open');
+}
+
+function closeRegistrationModal() {
+  const overlay = document.getElementById('reg-modal-overlay');
+  if (overlay) {
+    overlay.classList.remove('open');
+  }
+}
+
 /* ── REGISTRATION FORM ── */
 document.getElementById('reg-submit-btn').addEventListener('click', async function () {
   const name     = document.getElementById('reg-name').value.trim();
@@ -903,14 +948,8 @@ document.getElementById('reg-submit-btn').addEventListener('click', async functi
       // Show payment summary to player (pass paymentId so deposit click updates DB)
       showPlayerPaymentInfo(name, totalFee, depAmt, f, paymentPlan, savedPaymentId);
     } else {
-      // No financials — show simple success
-      document.getElementById('reg-success').style.display = 'block';
-      document.getElementById('reg-success').innerHTML = `
-        <div style="text-align:center;padding:1rem">
-          <div style="font-size:1.4rem;margin-bottom:.5rem">✅</div>
-          <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:.5rem">Registration Successful!</div>
-          <div style="font-size:.9rem;color:var(--sub)">Welcome to the team, <strong>${esc(name)}</strong>! We'll be in touch soon.</div>
-        </div>`;
+      // No financials — show simple success in modal
+      showRegistrationModal(name);
     }
     loadRoster(teamId);
   } catch (err) {
@@ -970,7 +1009,6 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, p
       </div>`).join('');
     html = `
       <div style="text-align:center;margin-bottom:1.2rem">
-        <div style="font-size:1.5rem;margin-bottom:.4rem">✅</div>
         <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy)">Registration Successful!</div>
         <div style="font-size:.84rem;color:var(--sub);margin-top:.3rem">Welcome, <strong>${esc(playerName)}</strong></div>
       </div>
@@ -1008,8 +1046,8 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, p
             <span>Total (including deposit)</span><span>${fmt2(totalFee)}</span>
           </div>
         </div>
-        <button onclick="this.textContent='✓ Plan Accepted!';this.style.background='#16a34a';this.disabled=true" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s">
-          Accept Payment Plan ✓
+        <button onclick="this.textContent='Plan Accepted';this.style.background='#16a34a';this.disabled=true" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s">
+          Accept Payment Plan
         </button>
       </div>`;
   }
@@ -1019,7 +1057,6 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, p
     const remaining = totalFee - depAmt;
     html = `
       <div style="text-align:center;margin-bottom:1.2rem">
-        <div style="font-size:1.5rem;margin-bottom:.4rem">✅</div>
         <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy)">Registration Successful!</div>
         <div style="font-size:.84rem;color:var(--sub);margin-top:.3rem">Welcome, <strong>${esc(playerName)}</strong></div>
       </div>
@@ -1049,7 +1086,7 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, p
         </div>
       </div>
       <button onclick="document.getElementById('reg-success').innerHTML='<div style=text-align:center;padding:1.5rem;color:#16a34a;font-weight:600>Accepted! We will be in touch soon.</div>'" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
-        Accept ✓
+        Accept
       </button>`;
   }
 
@@ -1062,7 +1099,6 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, p
       </div>`).join('');
     html = `
       <div style="text-align:center;margin-bottom:1.2rem">
-        <div style="font-size:1.5rem;margin-bottom:.4rem">✅</div>
         <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy)">Registration Successful!</div>
         <div style="font-size:.84rem;color:var(--sub);margin-top:.3rem">Welcome, <strong>${esc(playerName)}</strong></div>
       </div>
@@ -1074,7 +1110,7 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, p
         </div>
       </div>
       <button onclick="document.getElementById('reg-success').innerHTML='<div style=text-align:center;padding:1.5rem;color:#16a34a;font-weight:600>Plan Accepted! We will be in touch soon.</div>'" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
-        Accept Payment Plan ✓
+        Accept Payment Plan
       </button>`;
   }
 
@@ -1082,7 +1118,6 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, p
   else {
     html = `
       <div style="text-align:center;padding:1.2rem 1rem">
-        <div style="font-size:1.5rem;margin-bottom:.5rem">✅</div>
         <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:.5rem">Registration Successful!</div>
         <div style="font-size:.84rem;color:var(--sub);margin-bottom:1.2rem">Welcome, <strong>${esc(playerName)}</strong>!</div>
         <div style="background:var(--light);border-radius:10px;padding:1.1rem 1.3rem;display:inline-block;min-width:260px">
@@ -1091,7 +1126,7 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, p
           <div style="font-size:.78rem;color:var(--sub);margin-top:.3rem">Due in full by ${esc(fin.payment_deadline||'the deadline')}</div>
         </div>
         <div style="margin-top:1.2rem">
-          <button onclick="this.textContent='✓ Accepted';this.style.background='#16a34a';this.disabled=true" style="background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:12px 32px;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
+          <button onclick="this.textContent='Accepted';this.style.background='#16a34a';this.disabled=true" style="background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:12px 32px;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
             Accept
           </button>
         </div>
@@ -1099,6 +1134,7 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, p
   }
 
   successEl.innerHTML = html;
+  showRegistrationModal(playerName, html);
 }
 
 async function handleDepositClick(btn) {
@@ -1371,5 +1407,21 @@ function showError(msg) {
 
 loadTeam();
 </script>
+  <!-- REGISTRATION SUCCESS MODAL -->
+  <div class="reg-modal-overlay" id="reg-modal-overlay">
+    <div class="reg-modal">
+      <div class="reg-modal-header">
+        <h2>Registration Submitted</h2>
+        <button class="reg-modal-close" onclick="closeRegistrationModal()">&times;</button>
+      </div>
+      <div class="reg-modal-body" id="reg-modal-body">
+        <!-- Content will be inserted here -->
+      </div>
+      <div class="reg-modal-footer">
+        <button class="reg-modal-btn reg-modal-btn-primary" onclick="closeRegistrationModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
