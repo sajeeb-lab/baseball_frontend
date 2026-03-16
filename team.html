@@ -190,6 +190,38 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
 .reg-submit-btn svg { width: 18px; height: 18px; }
 .reg-success { display: none; text-align: center; padding: 2rem; color: #2e7d32; font-size: .95rem; font-weight: 600; }
 
+/* PAYMENT PLAN MODAL */
+.pay-overlay{position:fixed;inset:0;background:rgba(10,22,40,.6);backdrop-filter:blur(4px);z-index:1100;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s}
+.pay-overlay.open{opacity:1;pointer-events:all}
+.pay-modal{background:var(--white);border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.3);width:100%;max-width:560px;max-height:92vh;display:flex;flex-direction:column;transform:translateY(20px) scale(.97);transition:transform .28s cubic-bezier(.4,0,.2,1);overflow:hidden}
+.pay-overlay.open .pay-modal{transform:translateY(0) scale(1)}
+.pay-modal-head{background:var(--navy);padding:1.2rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.pay-modal-head h3{font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.08em}
+.pay-modal-body{overflow-y:auto;padding:1.4rem 1.5rem;flex:1}
+.pay-modal-foot{padding:1rem 1.5rem;border-top:1px solid var(--mid);display:flex;gap:.75rem;flex-shrink:0}
+.pay-step{display:none}
+.pay-step.active{display:block}
+.pay-fee-box{background:linear-gradient(135deg,var(--navy) 0%,#162845 100%);border-radius:8px;padding:1.4rem 1.6rem;text-align:center;margin-bottom:1.2rem}
+.pay-fee-label{font-size:.72rem;color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.pay-fee-amount{font-family:'Oswald',sans-serif;font-size:2.2rem;font-weight:700;color:var(--white)}
+.pay-fee-sub{font-size:.78rem;color:rgba(255,255,255,.5);margin-top:.3rem}
+.pay-info-row{display:flex;align-items:center;justify-content:space-between;padding:.65rem 0;border-bottom:1px solid var(--mid);font-size:.84rem}
+.pay-info-row:last-child{border-bottom:none}
+.pay-info-label{color:var(--sub)}
+.pay-info-value{font-weight:700;color:var(--navy)}
+.pay-plan-row{display:flex;align-items:center;justify-content:space-between;padding:.6rem .9rem;border-radius:6px;background:var(--light);margin-bottom:.4rem;font-size:.84rem}
+.pay-plan-row:last-child{margin-bottom:0}
+.pay-plan-month{color:var(--text)}
+.pay-plan-amt{font-family:'Oswald',sans-serif;font-weight:700;color:var(--navy)}
+.pay-demo-btn{width:100%;background:var(--red);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.pay-demo-btn:hover{background:var(--red2)}
+.pay-demo-btn.navy{background:var(--navy)}.pay-demo-btn.navy:hover{background:#162845}
+.pay-demo-btn:disabled{opacity:.5;cursor:not-allowed}
+.pay-success-icon{width:64px;height:64px;border-radius:50%;background:#f0fdf4;border:2px solid #bbf7d0;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+.pay-success-icon svg{width:32px;height:32px;color:#16a34a}
+.pay-section-label{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sub);margin-bottom:.7rem;display:block}
+.pay-deposit-badge{display:inline-flex;align-items:center;gap:.4rem;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;border-radius:20px;padding:4px 12px;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1rem}
+
 /* TRYOUT REGISTRATION MODAL */
 .tr-overlay { position: fixed; inset: 0; background: rgba(10,22,40,.55); backdrop-filter: blur(4px); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
 .tr-overlay.open { opacity: 1; pointer-events: all; }
@@ -368,6 +400,20 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
   </div>
 
 
+</div>
+
+<!-- PAYMENT PLAN MODAL -->
+<div class="pay-overlay" id="payOverlay">
+  <div class="pay-modal">
+    <div class="pay-modal-head">
+      <h3 id="pay-modal-title">Payment Plan</h3>
+      <button style="background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="closePayModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="pay-modal-body" id="pay-modal-body"></div>
+    <div class="pay-modal-foot" id="pay-modal-foot"></div>
+  </div>
 </div>
 
 <!-- TRYOUT REGISTRATION MODAL -->
@@ -809,35 +855,54 @@ document.getElementById('reg-submit-btn').addEventListener('click', async functi
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Failed to submit');
 
-    // Create payment record if financials are set up
+    // Hide form and button
+    document.getElementById('reg-form').style.display = 'none';
+    this.style.display = 'none';
+
+    // If financials are set up — create payment record and show payment info
     if (_teamFinancials && data.player) {
       const f        = _teamFinancials;
       const today    = new Date();
       const todayStr = today.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+      const totalFee = parseFloat(f.player_fee) || 0;
+      const depAmt   = f.deposit_enabled ? (parseFloat(f.deposit_amount)||250) : 0;
+
+      // Generate payment plan on remaining balance after deposit
       let paymentPlan = [];
-      if (f.monthly_payments && f.payment_deadline && f.player_fee) {
-        paymentPlan = generatePaymentPlan(parseFloat(f.player_fee), f.payment_deadline, today);
+      if (f.monthly_payments && f.payment_deadline && totalFee) {
+        const planBase = f.deposit_enabled ? totalFee - depAmt : totalFee;
+        paymentPlan = generatePaymentPlan(planBase, f.payment_deadline, today);
       }
+
+      // Save payment record to DB
       await fetch(`${API_BASE}/api/coach/player-payments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           playerId:        data.player._id || data.player.id,
           playerName:      name,
-          totalFee:        parseFloat(f.player_fee) || 0,
-          depositAmount:   f.deposit_enabled ? (parseFloat(f.deposit_amount)||250) : 0,
+          totalFee,
+          depositAmount:   depAmt,
           depositEnabled:  f.deposit_enabled,
           paymentPlan,
-          balance:         parseFloat(f.player_fee) || 0,
+          balance:         totalFee,
           registeredDate:  todayStr,
           paymentDeadline: f.payment_deadline || '',
         })
       });
-    }
 
-    document.getElementById('reg-form').style.display = 'none';
-    this.style.display = 'none';
-    document.getElementById('reg-success').style.display = 'block';
+      // Show payment summary to player
+      showPlayerPaymentInfo(name, totalFee, depAmt, f, paymentPlan);
+    } else {
+      // No financials — show simple success
+      document.getElementById('reg-success').style.display = 'block';
+      document.getElementById('reg-success').innerHTML = `
+        <div style="text-align:center;padding:1rem">
+          <div style="font-size:1.4rem;margin-bottom:.5rem">✅</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:.5rem">Registration Successful!</div>
+          <div style="font-size:.9rem;color:var(--sub)">Welcome to the team, <strong>${esc(name)}</strong>! We'll be in touch soon.</div>
+        </div>`;
+    }
     loadRoster(teamId);
   } catch (err) {
     alert('Error: ' + err.message);
@@ -847,7 +912,7 @@ document.getElementById('reg-submit-btn').addEventListener('click', async functi
 });
 
 /* ── GENERATE PAYMENT PLAN ── */
-function generatePaymentPlan(fee, deadlineStr, fromDate) {
+function generatePaymentPlan(amount, deadlineStr, fromDate) {
   const deadline = new Date(deadlineStr);
   if (isNaN(deadline) || deadline <= fromDate) return [];
   const months = [];
@@ -858,12 +923,153 @@ function generatePaymentPlan(fee, deadlineStr, fromDate) {
     cur.setMonth(cur.getMonth() + 1);
   }
   if (!months.length) return [];
-  const perMonth = fee / months.length;
+  const perMonth = amount / months.length;
   return months.map(d => ({
     month:  d.toLocaleDateString('en-US', { month:'long', year:'numeric' }),
     amount: parseFloat(perMonth.toFixed(2)),
     paid:   false,
   }));
+}
+
+/* ── SHOW PLAYER PAYMENT INFO AFTER REGISTRATION ── */
+function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan) {
+  const fmt2 = n => '$' + (parseFloat(n)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const successEl = document.getElementById('reg-success');
+  if (!successEl) return;
+  successEl.style.display = 'block';
+
+  let html = '';
+
+  // ── FLOW 1: Deposit ON + Monthly ON ──
+  if (fin.deposit_enabled && fin.monthly_payments && paymentPlan.length) {
+    const remaining = totalFee - depAmt;
+    const planRows  = paymentPlan.map(p => `
+      <div style="display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--mid);font-size:.84rem">
+        <span style="color:var(--sub)">${esc(p.month)}</span>
+        <span style="font-weight:700;color:var(--navy)">${fmt2(p.amount)}</span>
+      </div>`).join('');
+    html = `
+      <div style="text-align:center;margin-bottom:1.2rem">
+        <div style="font-size:1.5rem;margin-bottom:.4rem">✅</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy)">Registration Successful!</div>
+        <div style="font-size:.84rem;color:var(--sub);margin-top:.3rem">Welcome, <strong>${esc(playerName)}</strong></div>
+      </div>
+      <div style="background:#fffbea;border:1.5px solid #fde68a;border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem">
+        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#92400e;margin-bottom:.6rem">Step 1 — Pay Deposit to Secure Your Spot</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem">
+          <div>
+            <div style="font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:700;color:var(--navy)">${fmt2(depAmt)}</div>
+            <div style="font-size:.75rem;color:var(--sub)">Non-refundable deposit</div>
+          </div>
+          <button id="deposit-btn" onclick="handleDepositClick(this,'${fmt2(depAmt)}')" style="background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:11px 22px;font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;flex-shrink:0">
+            Pay Deposit (Demo)
+          </button>
+        </div>
+      </div>
+      <div style="background:var(--light);border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem">
+        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.6rem">Step 2 — Monthly Payment Plan</div>
+        <div style="font-size:.78rem;color:var(--sub);margin-bottom:.75rem">Remaining balance <strong style="color:var(--navy)">${fmt2(remaining)}</strong> split over <strong style="color:var(--navy)">${paymentPlan.length} month${paymentPlan.length!==1?'s':''}</strong></div>
+        ${planRows}
+        <div style="display:flex;justify-content:space-between;padding:.6rem 0;font-weight:700;font-size:.9rem;border-top:2px solid var(--navy);margin-top:.2rem">
+          <span>Total Fee</span><span>${fmt2(totalFee)}</span>
+        </div>
+      </div>
+      <button onclick="document.getElementById('reg-success').innerHTML='<div style=text-align:center;padding:1.5rem;color:#16a34a;font-weight:600>Plan Accepted! We will be in touch soon.</div>'" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
+        Accept Payment Plan ✓
+      </button>`;
+  }
+
+  // ── FLOW 2: Deposit ON + Monthly OFF ──
+  else if (fin.deposit_enabled && !fin.monthly_payments) {
+    const remaining = totalFee - depAmt;
+    html = `
+      <div style="text-align:center;margin-bottom:1.2rem">
+        <div style="font-size:1.5rem;margin-bottom:.4rem">✅</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy)">Registration Successful!</div>
+        <div style="font-size:.84rem;color:var(--sub);margin-top:.3rem">Welcome, <strong>${esc(playerName)}</strong></div>
+      </div>
+      <div style="background:#fffbea;border:1.5px solid #fde68a;border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem">
+        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#92400e;margin-bottom:.6rem">Step 1 — Pay Deposit Now</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem">
+          <div>
+            <div style="font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:700;color:var(--navy)">${fmt2(depAmt)}</div>
+            <div style="font-size:.75rem;color:var(--sub)">Required to secure your spot</div>
+          </div>
+          <button onclick="handleDepositClick(this,'${fmt2(depAmt)}')" style="background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:11px 22px;font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;flex-shrink:0">
+            Pay Deposit (Demo)
+          </button>
+        </div>
+      </div>
+      <div style="background:var(--light);border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem">
+        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.5rem">Balance Due in Full</div>
+        <div style="display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:.3rem">
+          <span style="color:var(--sub)">Total Fee</span><span style="font-weight:700">${fmt2(totalFee)}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:.3rem">
+          <span style="color:var(--sub)">Deposit</span><span style="font-weight:700;color:#16a34a">− ${fmt2(depAmt)}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:1rem;font-weight:700;border-top:2px solid var(--navy);padding-top:.5rem">
+          <span>Balance Due by ${esc(fin.payment_deadline||'deadline')}</span>
+          <span style="color:var(--red)">${fmt2(remaining)}</span>
+        </div>
+      </div>
+      <button onclick="document.getElementById('reg-success').innerHTML='<div style=text-align:center;padding:1.5rem;color:#16a34a;font-weight:600>Accepted! We will be in touch soon.</div>'" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
+        Accept ✓
+      </button>`;
+  }
+
+  // ── FLOW 3: No Deposit + Monthly ON ──
+  else if (!fin.deposit_enabled && fin.monthly_payments && paymentPlan.length) {
+    const planRows = paymentPlan.map(p => `
+      <div style="display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--mid);font-size:.84rem">
+        <span style="color:var(--sub)">${esc(p.month)}</span>
+        <span style="font-weight:700;color:var(--navy)">${fmt2(p.amount)}</span>
+      </div>`).join('');
+    html = `
+      <div style="text-align:center;margin-bottom:1.2rem">
+        <div style="font-size:1.5rem;margin-bottom:.4rem">✅</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy)">Registration Successful!</div>
+        <div style="font-size:.84rem;color:var(--sub);margin-top:.3rem">Welcome, <strong>${esc(playerName)}</strong></div>
+      </div>
+      <div style="background:var(--light);border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem">
+        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.75rem">Your Monthly Payment Plan</div>
+        ${planRows}
+        <div style="display:flex;justify-content:space-between;padding:.6rem 0;font-weight:700;font-size:.9rem;border-top:2px solid var(--navy);margin-top:.2rem">
+          <span>Total</span><span>${fmt2(totalFee)}</span>
+        </div>
+      </div>
+      <button onclick="document.getElementById('reg-success').innerHTML='<div style=text-align:center;padding:1.5rem;color:#16a34a;font-weight:600>Plan Accepted! We will be in touch soon.</div>'" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
+        Accept Payment Plan ✓
+      </button>`;
+  }
+
+  // ── FLOW 4: Full Pay Only ──
+  else {
+    html = `
+      <div style="text-align:center;padding:1.2rem 1rem">
+        <div style="font-size:1.5rem;margin-bottom:.5rem">✅</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:.5rem">Registration Successful!</div>
+        <div style="font-size:.84rem;color:var(--sub);margin-bottom:1.2rem">Welcome, <strong>${esc(playerName)}</strong>!</div>
+        <div style="background:var(--light);border-radius:10px;padding:1.1rem 1.3rem;display:inline-block;min-width:260px">
+          <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.4rem">Total Fee Due</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:1.7rem;font-weight:700;color:var(--navy)">${fmt2(totalFee)}</div>
+          <div style="font-size:.78rem;color:var(--sub);margin-top:.3rem">Due in full by ${esc(fin.payment_deadline||'the deadline')}</div>
+        </div>
+        <div style="margin-top:1.2rem">
+          <button onclick="this.textContent='✓ Accepted';this.style.background='#16a34a';this.disabled=true" style="background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:12px 32px;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
+            Accept
+          </button>
+        </div>
+      </div>`;
+  }
+
+  successEl.innerHTML = html;
+}
+
+function handleDepositClick(btn, amount) {
+  btn.textContent = '✓ ' + amount + ' Noted';
+  btn.style.background = '#16a34a';
+  btn.disabled = true;
 }
 
 /* ── TRYOUT MODAL ── */
@@ -963,6 +1169,143 @@ async function handleTryoutSubmit() {
         Return
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:17px;height:17px"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>`;
+  }
+}
+
+/* ── SHOW PAYMENT SUMMARY TO PLAYER ── */
+function showPaymentSummary(totalFee, depAmt, f, paymentPlan, playerName) {
+  const fmt2 = n => '$' + (parseFloat(n)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const regBody  = document.getElementById('reg-form');
+  const regBtn   = document.getElementById('reg-submit-btn');
+  const regSucc  = document.getElementById('reg-success');
+  if (regBody)  regBody.style.display  = 'none';
+  if (regBtn)   regBtn.style.display   = 'none';
+  if (regSucc)  regSucc.style.display  = 'none';
+
+  // Build payment summary HTML
+  let depositSection = '';
+  if (f.deposit_enabled && depAmt > 0) {
+    depositSection = `
+      <div style="background:#fffbea;border:1.5px solid #fde68a;border-radius:8px;padding:1.2rem 1.4rem;margin-bottom:1rem">
+        <div style="font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#92400e;margin-bottom:.5rem">Step 1 — Pay Deposit</div>
+        <div style="font-size:.84rem;color:#92400e;margin-bottom:.8rem">A deposit of <strong>${fmt2(depAmt)}</strong> is required to secure your spot.</div>
+        <div style="background:#fff;border-radius:6px;padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between">
+          <span style="font-family:'Oswald',sans-serif;font-size:1.2rem;font-weight:700;color:#92400e">${fmt2(depAmt)}</span>
+          <span style="font-size:.75rem;color:#92400e;font-weight:600">Due Now</span>
+        </div>
+        <div style="margin-top:.6rem;font-size:.75rem;color:#92400e;opacity:.8">⚠ Payment processing coming soon — your coach will be in touch.</div>
+      </div>`;
+  }
+
+  let monthlySection = '';
+  if (f.monthly_payments && paymentPlan.length) {
+    const remaining = totalFee - depAmt;
+    monthlySection = `
+      <div style="background:var(--light);border:1.5px solid var(--mid);border-radius:8px;padding:1.2rem 1.4rem;margin-bottom:1rem">
+        <div style="font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:.3rem">${f.deposit_enabled ? 'Step 2 — ' : ''}Monthly Payment Plan</div>
+        <div style="font-size:.82rem;color:var(--sub);margin-bottom:.8rem">
+          ${f.deposit_enabled ? `Remaining balance of <strong>${fmt2(remaining)}</strong> split across ${paymentPlan.length} months` : `Your fee of <strong>${fmt2(totalFee)}</strong> split across ${paymentPlan.length} months`}
+        </div>
+        ${paymentPlan.map(p => `
+          <div style="display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--mid)">
+            <span style="font-size:.83rem;color:var(--text)">${esc(p.month)}</span>
+            <span style="font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:700;color:var(--navy)">${fmt2(p.amount)}</span>
+          </div>`).join('')}
+        <div style="display:flex;justify-content:space-between;padding:.6rem 0;margin-top:.2rem">
+          <span style="font-size:.83rem;font-weight:700;color:var(--navy)">Final Payment Deadline</span>
+          <span style="font-size:.83rem;font-weight:700;color:var(--red)">${esc(f.payment_deadline||'')}</span>
+        </div>
+      </div>`;
+  }
+
+  let fullPaySection = '';
+  if (!f.monthly_payments && !f.deposit_enabled) {
+    fullPaySection = `
+      <div style="background:var(--light);border:1.5px solid var(--mid);border-radius:8px;padding:1.2rem 1.4rem;margin-bottom:1rem">
+        <div style="font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:.5rem">Full Payment Required</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:.84rem;color:var(--sub)">Total Due by ${esc(f.payment_deadline||'deadline')}</span>
+          <span style="font-family:'Oswald',sans-serif;font-size:1.2rem;font-weight:700;color:var(--navy)">${fmt2(totalFee)}</span>
+        </div>
+      </div>`;
+  }
+
+  const summaryHtml = `
+    <div style="margin-top:1rem">
+      <div style="text-align:center;margin-bottom:1.2rem">
+        <div style="width:52px;height:52px;background:#f0fdf4;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="width:26px;height:26px"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy);text-transform:uppercase">Registration Successful!</div>
+        <div style="font-size:.84rem;color:var(--sub);margin-top:.3rem">Welcome, <strong>${esc(playerName)}</strong>. Here are your payment details:</div>
+      </div>
+      ${depositSection}
+      ${monthlySection}
+      ${fullPaySection}
+      <div style="text-align:center;margin-top:.5rem;font-size:.78rem;color:var(--sub)">Your coach will follow up with payment instructions.</div>
+    </div>`;
+
+  // Insert into registration body
+  const regCard = document.querySelector('.registration-body');
+  if (regCard) regCard.innerHTML = summaryHtml;
+}
+
+/* ── SHOW PAYMENT INFO TO PLAYER ── */
+function showPlayerPaymentInfo(f, totalFee, depAmt, paymentPlan) {
+  const fmt = n => '$' + (parseFloat(n)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  const regForm   = document.getElementById('reg-form');
+  const regBtn    = document.getElementById('reg-submit-btn');
+  const regSuccess= document.getElementById('reg-success');
+  if (regForm)    regForm.style.display    = 'none';
+  if (regBtn)     regBtn.style.display     = 'none';
+
+  let html = `<div style="text-align:left;padding:0">
+    <div style="color:#2e7d32;font-size:1rem;font-weight:700;margin-bottom:1.2rem;text-align:center">
+      ✓ Registration Submitted Successfully!
+    </div>`;
+
+  // Deposit section
+  if (f.deposit_enabled && depAmt > 0) {
+    html += `
+    <div style="background:#fffbea;border:1px solid #fde68a;border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem">
+      <div style="font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#92400e;margin-bottom:.4rem">Deposit Required</div>
+      <div style="font-size:1.3rem;font-weight:700;color:#92400e;font-family:'Oswald',sans-serif">${fmt(depAmt)}</div>
+      <div style="font-size:.8rem;color:#92400e;margin-top:.3rem">Please submit your deposit to secure your spot.</div>
+      <div style="font-size:.78rem;color:#92400e;margin-top:.2rem">Remaining balance after deposit: <strong>${fmt(totalFee - depAmt)}</strong></div>
+    </div>`;
+  }
+
+  // Monthly plan section
+  if (f.monthly_payments && paymentPlan.length) {
+    html += `
+    <div style="background:var(--navy);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem">
+      <div style="font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:.75rem">
+        Monthly Payment Schedule
+        ${depAmt > 0 ? '<span style="font-family:Open Sans,sans-serif;font-size:.68rem;font-weight:400">(deposit deducted)</span>' : ''}
+      </div>
+      ${paymentPlan.map(p => `
+        <div style="display:flex;justify-content:space-between;padding:.45rem 0;border-bottom:1px solid rgba(255,255,255,.07)">
+          <span style="font-size:.83rem;color:rgba(255,255,255,.75)">${esc(p.month)}</span>
+          <span style="font-family:'Oswald',sans-serif;font-weight:700;color:#fff">${fmt(p.amount)}</span>
+        </div>`).join('')}
+      <div style="display:flex;justify-content:space-between;padding:.6rem 0 0;margin-top:.3rem">
+        <span style="font-size:.83rem;color:rgba(255,255,255,.9);font-weight:600">Payment Deadline</span>
+        <span style="font-family:'Oswald',sans-serif;font-weight:700;color:#ffd700">${esc(f.payment_deadline||'')}</span>
+      </div>
+    </div>`;
+  } else if (!f.monthly_payments && f.payment_deadline) {
+    html += `
+    <div style="background:var(--light);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem;border:1px solid var(--mid)">
+      <div style="font-size:.83rem;color:var(--sub)">Full payment of <strong style="color:var(--navy)">${fmt(totalFee)}</strong> is due by <strong style="color:var(--navy)">${esc(f.payment_deadline)}</strong>.</div>
+    </div>`;
+  }
+
+  html += `</div>`;
+
+  if (regSuccess) {
+    regSuccess.innerHTML = html;
+    regSuccess.style.display = 'block';
+    regSuccess.style.textAlign = 'left';
   }
 }
 
