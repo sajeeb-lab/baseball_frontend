@@ -57,8 +57,10 @@ body { font-family: 'Open Sans', sans-serif; background: var(--light); color: va
 .coach-item.active { background: #fef3f5; }
 .coach-item.active::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 3px; background: var(--red); }
 
-.coach-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--light); border: 1px solid var(--mid); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
-.coach-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+/* CHANGED: coach-avatar — square (border-radius: 6px), slightly bigger (48px) */
+.coach-avatar { width: 48px; height: 48px; border-radius: 6px; background: var(--light); border: 1px solid var(--mid); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+/* CHANGED: coach-avatar img — border-radius: 0 to match square container */
+.coach-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
 .coach-avatar svg { width: 20px; height: 20px; color: #aab; }
 .coach-info { flex: 1; min-width: 0; }
 .coach-name { font-family: 'Oswald', sans-serif; font-size: .85rem; font-weight: 600; color: var(--navy); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -73,8 +75,10 @@ body { font-family: 'Open Sans', sans-serif; background: var(--light); color: va
 
 .cdp-hero { background: linear-gradient(135deg, var(--navy) 0%, #162845 100%); padding: 1.5rem; display: flex; align-items: center; gap: 1.1rem; position: relative; overflow: hidden; }
 .cdp-hero::after { content: ''; position: absolute; bottom: -30px; right: -30px; width: 120px; height: 120px; border-radius: 50%; background: rgba(200,16,46,.18); pointer-events: none; }
-.cdp-photo { width: 110px; height: 110px; border-radius: 8px; border: 3px solid rgba(255,255,255,.22); background: #1e3457; flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
-.cdp-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; }
+/* CHANGED: cdp-photo — square (border-radius: 8px kept), bigger (145px) */
+.cdp-photo { width: 145px; height: 145px; border-radius: 8px; border: 3px solid rgba(255,255,255,.22); background: #1e3457; flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
+/* CHANGED: cdp-photo img — object-fit: cover + object-position: center to fill square fully */
+.cdp-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 0; }
 .cdp-photo svg { width: 34px; height: 34px; color: rgba(255,255,255,.4); }
 .cdp-hero-text { flex: 1; min-width: 0; position: relative; z-index: 1; }
 .cdp-name { font-family: 'Oswald', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: .04em; line-height: 1.1; }
@@ -189,23 +193,6 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
 .reg-submit-btn:hover { background: #162845; }
 .reg-submit-btn svg { width: 18px; height: 18px; }
 .reg-success { display: none; text-align: center; padding: 2rem; color: #2e7d32; font-size: .95rem; font-weight: 600; }
-
-/* REGISTRATION SUCCESS MODAL */
-.reg-modal-overlay { position: fixed; inset: 0; background: rgba(10,22,40,.6); backdrop-filter: blur(4px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; transition: opacity .25s; }
-.reg-modal-overlay.open { opacity: 1; pointer-events: all; }
-.reg-modal { background: var(--white); border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,.3); width: 100%; max-width: 540px; max-height: 90vh; display: flex; flex-direction: column; transform: translateY(24px) scale(.97); transition: transform .28s cubic-bezier(.4,0,.2,1); overflow: hidden; }
-.reg-modal-overlay.open .reg-modal { transform: translateY(0) scale(1); }
-.reg-modal-header { background: var(--navy); padding: 1.4rem 1.6rem; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-.reg-modal-header h2 { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: .08em; margin: 0; }
-.reg-modal-close { background: none; border: none; color: var(--white); font-size: 1.5rem; cursor: pointer; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; transition: opacity .2s; }
-.reg-modal-close:hover { opacity: .7; }
-.reg-modal-body { overflow-y: auto; padding: 1.6rem; flex: 1; }
-.reg-modal-footer { padding: 1.2rem 1.6rem; border-top: 1px solid var(--mid); display: flex; gap: .8rem; flex-shrink: 0; }
-.reg-modal-btn { flex: 1; padding: 11px 16px; border: none; border-radius: 6px; font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .15s; }
-.reg-modal-btn-primary { background: var(--navy); color: var(--white); }
-.reg-modal-btn-primary:hover { background: #162845; }
-.reg-modal-btn-secondary { background: var(--light); color: var(--navy); }
-.reg-modal-btn-secondary:hover { background: var(--mid); }
 
 /* PAYMENT PLAN MODAL */
 .pay-overlay{position:fixed;inset:0;background:rgba(10,22,40,.6);backdrop-filter:blur(4px);z-index:1100;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s}
@@ -710,7 +697,7 @@ function renderPage(team) {
 
   const coachListHtml = allCoaches.map((c, i) => `
     <div class="coach-item${i === 0 ? ' active' : ''}" data-index="${i}">
-      <div class="coach-avatar">${c.image ? `<img src="${esc(c.image)}" alt="${esc(c.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">` : avatarSVG}</div>
+      <div class="coach-avatar">${c.image ? `<img src="${esc(c.image)}" alt="${esc(c.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:0">` : avatarSVG}</div>
       <div class="coach-info">
         <div class="coach-name">${esc(c.name)}</div>
         <div class="coach-role">${esc(c.role)}</div>
@@ -845,34 +832,6 @@ async function loadTryouts(id) {
   }
 }
 
-/* ── REGISTRATION MODAL FUNCTIONS ── */
-function showRegistrationModal(playerName, content) {
-  const overlay = document.getElementById('reg-modal-overlay');
-  const body = document.getElementById('reg-modal-body');
-  if (!overlay || !body) return;
-  
-  if (content) {
-    body.innerHTML = content;
-  } else {
-    body.innerHTML = `
-      <div style="text-align:center">
-        <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:.8rem">Registration Successful!</div>
-        <div style="font-size:.95rem;color:var(--sub);line-height:1.6">
-          Welcome to the team, <strong>${esc(playerName)}</strong>! Your registration has been submitted successfully. We'll be in touch soon with next steps.
-        </div>
-      </div>`;
-  }
-  
-  overlay.classList.add('open');
-}
-
-function closeRegistrationModal() {
-  const overlay = document.getElementById('reg-modal-overlay');
-  if (overlay) {
-    overlay.classList.remove('open');
-  }
-}
-
 /* ── REGISTRATION FORM ── */
 document.getElementById('reg-submit-btn').addEventListener('click', async function () {
   const name     = document.getElementById('reg-name').value.trim();
@@ -948,8 +907,14 @@ document.getElementById('reg-submit-btn').addEventListener('click', async functi
       // Show payment summary to player (pass paymentId so deposit click updates DB)
       showPlayerPaymentInfo(name, totalFee, depAmt, f, paymentPlan, savedPaymentId);
     } else {
-      // No financials — show simple success in modal
-      showRegistrationModal(name);
+      // No financials — show simple success
+      document.getElementById('reg-success').style.display = 'block';
+      document.getElementById('reg-success').innerHTML = `
+        <div style="text-align:center;padding:1rem">
+          <div style="font-size:1.4rem;margin-bottom:.5rem">✅</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:.5rem">Registration Successful!</div>
+          <div style="font-size:.9rem;color:var(--sub)">Welcome to the team, <strong>${esc(name)}</strong>! We'll be in touch soon.</div>
+        </div>`;
     }
     loadRoster(teamId);
   } catch (err) {
@@ -988,156 +953,123 @@ function generatePaymentPlan(amount, deadlineStr, fromDate) {
 
 /* ── SHOW PLAYER PAYMENT INFO AFTER REGISTRATION ── */
 function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, paymentId) {
-  // Store on window so deposit button can access
-  window._currentPaymentId  = paymentId;
-  window._currentDepAmt     = depAmt;
-  window._currentTotalFee   = totalFee;
   const fmt2 = n => '$' + (parseFloat(n)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   const successEl = document.getElementById('reg-success');
   if (!successEl) return;
   successEl.style.display = 'block';
+  window._currentPaymentId = paymentId;
 
+  // Shared header
+  const header = `
+    <div style="background:linear-gradient(135deg,var(--navy) 0%,#162845 100%);padding:1.4rem 1.6rem;border-radius:8px 8px 0 0;margin:-1rem -1rem 1.2rem">
+      <div style="display:flex;align-items:center;gap:.75rem">
+        <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" style="width:20px;height:20px"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div style="font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;color:var(--white);letter-spacing:.04em;text-transform:uppercase">Registration Complete</div>
+          <div style="font-size:.78rem;color:rgba(255,255,255,.6);margin-top:.15rem">Welcome to the team, <strong style="color:rgba(255,255,255,.9)">${esc(playerName)}</strong></div>
+        </div>
+      </div>
+    </div>`;
+
+  const stepLabel = s => `<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem">
+    <div style="width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--white);font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${s}</div>
+    <span style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy)">${arguments[1]}</span>
+  </div>`;
+
+  const depositCard = depAmt > 0 ? `
+    <div style="border:1.5px solid #fde68a;border-radius:8px;padding:1rem 1.2rem;margin-bottom:.85rem;background:#fffdf0">
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem">
+        <div style="width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--white);font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+        <span style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#92400e">Deposit — Secure Your Spot</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem">
+        <div>
+          <div style="font-family:'Oswald',sans-serif;font-size:1.4rem;font-weight:700;color:var(--navy)">${fmt2(depAmt)}</div>
+          <div style="font-size:.72rem;color:var(--sub);margin-top:.15rem">Non-refundable · Required to reserve spot</div>
+        </div>
+        <button id="deposit-btn" onclick="handleDepositClick(this)" style="background:var(--navy);color:var(--white);border:none;border-radius:6px;padding:10px 18px;font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;flex-shrink:0;transition:background .15s">
+          Pay Deposit
+        </button>
+      </div>
+    </div>` : '';
+
+  let stepNum = depAmt > 0 ? 2 : 1;
   let html = '';
 
-  // ── FLOW 1: Deposit ON + Monthly ON ──
-  if (fin.deposit_enabled && fin.monthly_payments && paymentPlan.length) {
-    const remaining = totalFee - depAmt;
+  // FLOW 1 & 3: Monthly payments
+  if (fin.monthly_payments && paymentPlan.length) {
+    const remaining = depAmt > 0 ? totalFee - depAmt : totalFee;
     const planRows  = paymentPlan.map(p => `
-      <div style="display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--mid);font-size:.84rem">
-        <span style="color:var(--sub)">${esc(p.month)}</span>
-        <span style="font-weight:700;color:var(--navy)">${fmt2(p.amount)}</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:.45rem 0;border-bottom:1px solid var(--mid)">
+        <span style="font-size:.83rem;color:var(--sub)">${esc(p.month)}</span>
+        <span style="font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:700;color:var(--navy)">${fmt2(p.amount)}</span>
       </div>`).join('');
-    html = `
-      <div style="text-align:center;margin-bottom:1.2rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy)">Registration Successful!</div>
-        <div style="font-size:.84rem;color:var(--sub);margin-top:.3rem">Welcome, <strong>${esc(playerName)}</strong></div>
-      </div>
-
-      <!-- STEP 1: DEPOSIT -->
-      <div style="background:#fffbea;border:1.5px solid #fde68a;border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#92400e;margin-bottom:.6rem">
-          Step 1 — Pay Deposit to Secure Your Spot
+    html = `${header}${depositCard}
+      <div style="border:1.5px solid var(--mid);border-radius:8px;padding:1rem 1.2rem;margin-bottom:.85rem">
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem">
+          <div style="width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--white);font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${stepNum}</div>
+          <span style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy)">Monthly Payment Schedule</span>
         </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
-          <div>
-            <div style="font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:700;color:var(--navy)">${fmt2(depAmt)}</div>
-            <div style="font-size:.75rem;color:var(--sub)">Required deposit — unlocks your payment plan</div>
-          </div>
-          <button id="deposit-btn" onclick="handleDepositClick(this,'',window._currentPaymentId,window._currentDepAmt,window._currentTotalFee)" style="background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:11px 22px;font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;flex-shrink:0;transition:background .15s">
-            Pay Deposit (Demo)
-          </button>
-        </div>
-      </div>
-
-      <!-- STEP 2: MONTHLY PLAN — hidden until deposit clicked -->
-      <div id="monthly-plan-section" style="display:none">
-        <div style="background:var(--light);border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem">
-          <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.4rem">
-            Step 2 — Your Monthly Payment Plan
-          </div>
-          <div style="font-size:.78rem;color:var(--sub);margin-bottom:.75rem;background:var(--white);border-radius:6px;padding:.6rem .8rem;border-left:3px solid var(--red)">
-            Total fee <strong style="color:var(--navy)">${fmt2(totalFee)}</strong> 
-            − deposit <strong style="color:#16a34a">${fmt2(depAmt)}</strong> 
-            = remaining <strong style="color:var(--navy)">${fmt2(remaining)}</strong> 
-            split over <strong style="color:var(--navy)">${paymentPlan.length} month${paymentPlan.length!==1?'s':''}</strong>
-          </div>
-          ${planRows}
-          <div style="display:flex;justify-content:space-between;padding:.6rem 0 0;font-weight:700;font-size:.9rem;border-top:2px solid var(--navy);margin-top:.3rem">
-            <span>Total (including deposit)</span><span>${fmt2(totalFee)}</span>
-          </div>
-        </div>
-        <button onclick="this.textContent='Plan Accepted';this.style.background='#16a34a';this.disabled=true" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s">
-          Accept Payment Plan
-        </button>
-      </div>`;
-  }
-
-  // ── FLOW 2: Deposit ON + Monthly OFF ──
-  else if (fin.deposit_enabled && !fin.monthly_payments) {
-    const remaining = totalFee - depAmt;
-    html = `
-      <div style="text-align:center;margin-bottom:1.2rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy)">Registration Successful!</div>
-        <div style="font-size:.84rem;color:var(--sub);margin-top:.3rem">Welcome, <strong>${esc(playerName)}</strong></div>
-      </div>
-      <div style="background:#fffbea;border:1.5px solid #fde68a;border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#92400e;margin-bottom:.6rem">Step 1 — Pay Deposit Now</div>
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem">
-          <div>
-            <div style="font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:700;color:var(--navy)">${fmt2(depAmt)}</div>
-            <div style="font-size:.75rem;color:var(--sub)">Required to secure your spot</div>
-          </div>
-          <button onclick="handleDepositClick(this,'${fmt2(depAmt)}','${paymentId || ''}',${depAmt},${totalFee})" style="background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:11px 22px;font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;flex-shrink:0">
-            Pay Deposit (Demo)
-          </button>
-        </div>
-      </div>
-      <div style="background:var(--light);border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.5rem">Balance Due in Full</div>
-        <div style="display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:.3rem">
-          <span style="color:var(--sub)">Total Fee</span><span style="font-weight:700">${fmt2(totalFee)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:.3rem">
-          <span style="color:var(--sub)">Deposit</span><span style="font-weight:700;color:#16a34a">− ${fmt2(depAmt)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:1rem;font-weight:700;border-top:2px solid var(--navy);padding-top:.5rem">
-          <span>Balance Due by ${esc(fin.payment_deadline||'deadline')}</span>
-          <span style="color:var(--red)">${fmt2(remaining)}</span>
-        </div>
-      </div>
-      <button onclick="document.getElementById('reg-success').innerHTML='<div style=text-align:center;padding:1.5rem;color:#16a34a;font-weight:600>Accepted! We will be in touch soon.</div>'" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
-        Accept
-      </button>`;
-  }
-
-  // ── FLOW 3: No Deposit + Monthly ON ──
-  else if (!fin.deposit_enabled && fin.monthly_payments && paymentPlan.length) {
-    const planRows = paymentPlan.map(p => `
-      <div style="display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--mid);font-size:.84rem">
-        <span style="color:var(--sub)">${esc(p.month)}</span>
-        <span style="font-weight:700;color:var(--navy)">${fmt2(p.amount)}</span>
-      </div>`).join('');
-    html = `
-      <div style="text-align:center;margin-bottom:1.2rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy)">Registration Successful!</div>
-        <div style="font-size:.84rem;color:var(--sub);margin-top:.3rem">Welcome, <strong>${esc(playerName)}</strong></div>
-      </div>
-      <div style="background:var(--light);border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.75rem">Your Monthly Payment Plan</div>
+        ${depAmt > 0 ? `<div style="font-size:.75rem;color:var(--sub);margin-bottom:.7rem;padding:.5rem .75rem;background:var(--light);border-radius:5px">Remaining balance <strong style="color:var(--navy)">${fmt2(remaining)}</strong> split across <strong style="color:var(--navy)">${paymentPlan.length} month${paymentPlan.length!==1?'s':''}</strong></div>` : ''}
         ${planRows}
-        <div style="display:flex;justify-content:space-between;padding:.6rem 0;font-weight:700;font-size:.9rem;border-top:2px solid var(--navy);margin-top:.2rem">
-          <span>Total</span><span>${fmt2(totalFee)}</span>
+        <div style="display:flex;justify-content:space-between;padding:.5rem 0;font-weight:700;font-size:.88rem;border-top:2px solid var(--navy);margin-top:.3rem">
+          <span>Total${depAmt>0?' (excl. deposit)':''}</span><span>${fmt2(remaining)}</span>
         </div>
       </div>
-      <button onclick="document.getElementById('reg-success').innerHTML='<div style=text-align:center;padding:1.5rem;color:#16a34a;font-weight:600>Plan Accepted! We will be in touch soon.</div>'" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
+      <button onclick="handleAccept(this)" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s">
         Accept Payment Plan
       </button>`;
   }
 
-  // ── FLOW 4: Full Pay Only ──
+  // FLOW 2: Deposit + Full pay
+  else if (fin.deposit_enabled && depAmt > 0) {
+    const remaining = totalFee - depAmt;
+    html = `${header}${depositCard}
+      <div style="border:1.5px solid var(--mid);border-radius:8px;padding:1rem 1.2rem;margin-bottom:.85rem">
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem">
+          <div style="width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--white);font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+          <span style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy)">Remaining Balance</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.3rem 0;border-bottom:1px solid var(--mid)"><span style="color:var(--sub)">Total Fee</span><span style="font-weight:600">${fmt2(totalFee)}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.3rem 0;border-bottom:1px solid var(--mid)"><span style="color:var(--sub)">Deposit Paid</span><span style="font-weight:600;color:#16a34a">− ${fmt2(depAmt)}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.95rem;font-weight:700;padding:.5rem 0">
+          <span>Balance Due by ${esc(fin.payment_deadline||'deadline')}</span>
+          <span style="color:var(--red)">${fmt2(remaining)}</span>
+        </div>
+      </div>
+      <button onclick="handleAccept(this)" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
+        Accept
+      </button>`;
+  }
+
+  // FLOW 4: Full pay only
   else {
-    html = `
-      <div style="text-align:center;padding:1.2rem 1rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:.5rem">Registration Successful!</div>
-        <div style="font-size:.84rem;color:var(--sub);margin-bottom:1.2rem">Welcome, <strong>${esc(playerName)}</strong>!</div>
-        <div style="background:var(--light);border-radius:10px;padding:1.1rem 1.3rem;display:inline-block;min-width:260px">
-          <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.4rem">Total Fee Due</div>
-          <div style="font-family:'Oswald',sans-serif;font-size:1.7rem;font-weight:700;color:var(--navy)">${fmt2(totalFee)}</div>
-          <div style="font-size:.78rem;color:var(--sub);margin-top:.3rem">Due in full by ${esc(fin.payment_deadline||'the deadline')}</div>
-        </div>
-        <div style="margin-top:1.2rem">
-          <button onclick="this.textContent='Accepted';this.style.background='#16a34a';this.disabled=true" style="background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:12px 32px;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
-            Accept
-          </button>
-        </div>
-      </div>`;
+    html = `${header}
+      <div style="border:1.5px solid var(--mid);border-radius:8px;padding:1.2rem 1.4rem;margin-bottom:.85rem;text-align:center">
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.4rem">Total Fee Due</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:2rem;font-weight:700;color:var(--navy)">${fmt2(totalFee)}</div>
+        <div style="font-size:.78rem;color:var(--sub);margin-top:.3rem">Payment due in full by <strong style="color:var(--navy)">${esc(fin.payment_deadline||'the deadline')}</strong></div>
+      </div>
+      <button onclick="handleAccept(this)" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
+        Accept
+      </button>`;
   }
 
   successEl.innerHTML = html;
-  showRegistrationModal(playerName, html);
+  successEl.style.padding = '1rem';
+  successEl.style.color = 'inherit';
+  successEl.style.fontWeight = 'inherit';
 }
 
-async function handleDepositClick(btn) {
+function handleAccept(btn) {
+  btn.textContent = 'Accepted — We will be in touch soon';
+  btn.style.background = '#16a34a';
+  btn.disabled = true;
+}
+
+function handleDepositClick(btn) {function handleDepositClick(btn) {
   btn.textContent = 'Processing…';
   btn.disabled = true;
 
@@ -1407,21 +1339,5 @@ function showError(msg) {
 
 loadTeam();
 </script>
-  <!-- REGISTRATION SUCCESS MODAL -->
-  <div class="reg-modal-overlay" id="reg-modal-overlay">
-    <div class="reg-modal">
-      <div class="reg-modal-header">
-        <h2>Registration Submitted</h2>
-        <button class="reg-modal-close" onclick="closeRegistrationModal()">&times;</button>
-      </div>
-      <div class="reg-modal-body" id="reg-modal-body">
-        <!-- Content will be inserted here -->
-      </div>
-      <div class="reg-modal-footer">
-        <button class="reg-modal-btn reg-modal-btn-primary" onclick="closeRegistrationModal()">Close</button>
-      </div>
-    </div>
-  </div>
-
 </body>
 </html>
