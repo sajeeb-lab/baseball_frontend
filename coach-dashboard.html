@@ -857,6 +857,9 @@ function renderDashboard(coach){
                 <input class="field-input" type="text" id="fin-deadline" placeholder="Select deadline date" oninput="finPreviewUpdate()">
                 <span class="cal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
               </div>
+              <div style="font-size:.72rem;color:var(--sub);margin-top:.4rem;line-height:1.5">
+                <strong>Note:</strong> This is when the final payment must be made. Usually 90 days prior to the start of the season.
+              </div>
             </div>
           </div>
 
@@ -867,7 +870,7 @@ function renderDashboard(coach){
               <div class="fin-toggle selected" id="fin-mode-full" onclick="finSetMode('full')" style="flex-direction:column;align-items:flex-start;gap:.3rem;padding:1rem 1.2rem">
                 <div style="display:flex;align-items:center;gap:.5rem">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;flex-shrink:0"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                  <span style="font-family:'Oswald',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase">Full Payment</span>
+                  <span style="font-family:'Oswald',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase">Full Payment <span style="font-size:.6rem;background:#16a34a;color:#fff;padding:2px 7px;border-radius:10px;vertical-align:middle;font-weight:700;letter-spacing:.06em">RECOMMENDED</span></span>
                 </div>
                 <span style="font-size:.72rem;opacity:.75;font-weight:400;font-family:'Open Sans',sans-serif">Player pays total fee by deadline</span>
               </div>
@@ -902,10 +905,15 @@ function renderDashboard(coach){
 
           <!-- Payment Plan Preview (shown when monthly selected) -->
           <div class="fin-plan-preview" id="fin-plan-preview" style="display:none;margin-top:1rem">
-            <div class="fin-plan-title">
-              Payment Plan Preview
-              <span style="font-family:'Open Sans',sans-serif;font-size:.7rem;opacity:.55;font-weight:400;margin-left:.4rem">(based on registration today)</span>
+            <div class="fin-plan-title" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem">
+              <span>Payment Plan Preview</span>
+              <div style="display:flex;align-items:center;gap:.5rem">
+                <span style="font-family:'Open Sans',sans-serif;font-size:.72rem;opacity:.7;font-weight:400">Simulate registration in:</span>
+                <select id="fin-sim-month" onchange="finPreviewUpdate()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:5px;color:#fff;font-size:.75rem;padding:4px 8px;cursor:pointer;outline:none">
+                </select>
+              </div>
             </div>
+            <div id="fin-deposit-note" style="display:none;background:rgba(255,255,255,.08);border-radius:6px;padding:.6rem .9rem;margin-bottom:.75rem;font-size:.78rem;color:rgba(255,255,255,.8);line-height:1.5"></div>
             <div id="fin-plan-rows"><div class="fin-plan-empty">Fill in fee and deadline to see preview</div></div>
           </div>
 
@@ -2000,7 +2008,10 @@ function finSetMode(mode) {
   document.getElementById('fin-mode-monthly').classList.toggle('selected', mode === 'monthly');
   const preview = document.getElementById('fin-plan-preview');
   if (preview) preview.style.display = _finMonthly ? 'block' : 'none';
-  finPreviewUpdate();
+  if (_finMonthly) {
+    finPopulateSimMonths();
+    finPreviewUpdate();
+  }
 }
 
 function finDepositToggle(enabled) {
@@ -2019,23 +2030,67 @@ function finDepositToggle(enabled) {
 function finToggle() {}
 function finMonthlyToggle(enabled) { finSetMode(enabled ? 'monthly' : 'full'); }
 
+function finPopulateSimMonths() {
+  const sel = document.getElementById('fin-sim-month');
+  if (!sel) return;
+  const months = [];
+  const now = new Date();
+  for (let i = 0; i < 12; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+    months.push({ label: d.toLocaleDateString('en-US', { month:'long', year:'numeric' }), date: d });
+  }
+  const cur = sel.value;
+  sel.innerHTML = months.map((m, i) =>
+    `<option value="${i}"${i===0?' selected':''}>${m.label}${i===0?' (Today)':''}</option>`).join('');
+  sel._monthDates = months.map(m => m.date);
+}
+
 function finPreviewUpdate() {
   if (!_finMonthly) return;
   const fee      = parseFloat(document.getElementById('fin-fee')?.value) || 0;
   const deadline = document.getElementById('fin-deadline')?.value?.trim() || '';
   const rowsEl   = document.getElementById('fin-plan-rows');
+  const noteEl   = document.getElementById('fin-deposit-note');
   if (!fee || !deadline || !rowsEl) return;
 
-  const plan = generatePaymentPlan(fee, deadline, new Date());
+  // Get simulate-from date
+  const sel      = document.getElementById('fin-sim-month');
+  finPopulateSimMonths();
+  const simIdx   = sel ? parseInt(sel.value) || 0 : 0;
+  const fromDate = sel?._monthDates?.[simIdx] || new Date();
+
+  const depAmt   = _finDepositEnabled ? (parseFloat(document.getElementById('fin-deposit-amt')?.value)||250) : 0;
+  const planBase = _finDepositEnabled ? fee - depAmt : fee;
+
+  const plan = generatePaymentPlan(planBase, deadline, fromDate);
+
+  // Show deposit note
+  if (noteEl) {
+    if (_finDepositEnabled && depAmt > 0) {
+      noteEl.style.display = 'block';
+      noteEl.innerHTML = `
+        <strong>Deposit:</strong> $${depAmt.toFixed(2)} due at registration to secure spot<br>
+        <strong>Remaining:</strong> $${planBase.toFixed(2)} split across monthly payments below`;
+    } else {
+      noteEl.style.display = 'none';
+    }
+  }
+
   if (!plan.length) {
-    rowsEl.innerHTML = '<div class="fin-plan-empty">Deadline must be in the future</div>';
+    rowsEl.innerHTML = '<div class="fin-plan-empty">Deadline must be after the registration month</div>';
     return;
   }
+
+  const fmt2 = n => '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   rowsEl.innerHTML = plan.map(p =>
     `<div class="fin-plan-row">
       <span class="fin-plan-month">${p.month}</span>
-      <span class="fin-plan-amount">$${p.amount.toFixed(2)}</span>
-    </div>`).join('');
+      <span class="fin-plan-amount">${fmt2(p.amount)}</span>
+    </div>`).join('') +
+    `<div class="fin-plan-row" style="border-top:1px solid rgba(255,255,255,.2);margin-top:.3rem;padding-top:.5rem">
+      <span class="fin-plan-month" style="color:rgba(255,255,255,.9);font-weight:600">Total${_finDepositEnabled?` (excl. $${depAmt.toFixed(2)} deposit)`:''}</span>
+      <span class="fin-plan-amount" style="color:#ffd700">${fmt2(planBase)}</span>
+    </div>`;
 }
 
 function generatePaymentPlan(fee, deadlineStr, fromDate) {
