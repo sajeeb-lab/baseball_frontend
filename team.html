@@ -874,29 +874,34 @@ document.getElementById('reg-submit-btn').addEventListener('click', async functi
         paymentPlan = generatePaymentPlan(planBase, f.payment_deadline, today);
       }
 
-      // Save payment record to DB (non-blocking)
+      // Save payment record to DB and capture the payment ID
       const playerId = data.player?._id || data.player?.id || '';
+      let savedPaymentId = null;
       if (playerId) {
-        fetch(`${API_BASE}/api/coach/player-payments`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            coachId:         teamId,
-            playerId,
-            playerName:      name,
-            totalFee,
-            depositAmount:   depAmt,
-            depositEnabled:  f.deposit_enabled,
-            paymentPlan,
-            balance:         totalFee,
-            registeredDate:  todayStr,
-            paymentDeadline: f.payment_deadline || '',
-          })
-        }).catch(e => console.error('Payment record error:', e));
+        try {
+          const pmtRes  = await fetch(`${API_BASE}/api/coach/player-payments`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              coachId:         teamId,
+              playerId,
+              playerName:      name,
+              totalFee,
+              depositAmount:   depAmt,
+              depositEnabled:  f.deposit_enabled,
+              paymentPlan,
+              balance:         totalFee,
+              registeredDate:  todayStr,
+              paymentDeadline: f.payment_deadline || '',
+            })
+          });
+          const pmtData = await pmtRes.json();
+          savedPaymentId = pmtData.payment?.id || null;
+        } catch(e) { console.error('Payment record error:', e); }
       }
 
-      // Show payment summary to player
-      showPlayerPaymentInfo(name, totalFee, depAmt, f, paymentPlan);
+      // Show payment summary to player (pass paymentId so deposit click updates DB)
+      showPlayerPaymentInfo(name, totalFee, depAmt, f, paymentPlan, savedPaymentId);
     } else {
       // No financials — show simple success
       document.getElementById('reg-success').style.display = 'block';
@@ -943,7 +948,11 @@ function generatePaymentPlan(amount, deadlineStr, fromDate) {
 }
 
 /* ── SHOW PLAYER PAYMENT INFO AFTER REGISTRATION ── */
-function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan) {
+function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, paymentId) {
+  // Store on window so deposit button can access
+  window._currentPaymentId  = paymentId;
+  window._currentDepAmt     = depAmt;
+  window._currentTotalFee   = totalFee;
   const fmt2 = n => '$' + (parseFloat(n)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   const successEl = document.getElementById('reg-success');
   if (!successEl) return;
@@ -976,7 +985,7 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan) {
             <div style="font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:700;color:var(--navy)">${fmt2(depAmt)}</div>
             <div style="font-size:.75rem;color:var(--sub)">Required deposit — unlocks your payment plan</div>
           </div>
-          <button id="deposit-btn" onclick="handleDepositClick(this)" style="background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:11px 22px;font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;flex-shrink:0;transition:background .15s">
+          <button id="deposit-btn" onclick="handleDepositClick(this,'',window._currentPaymentId,window._currentDepAmt,window._currentTotalFee)" style="background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:11px 22px;font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;flex-shrink:0;transition:background .15s">
             Pay Deposit (Demo)
           </button>
         </div>
@@ -1021,7 +1030,7 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan) {
             <div style="font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:700;color:var(--navy)">${fmt2(depAmt)}</div>
             <div style="font-size:.75rem;color:var(--sub)">Required to secure your spot</div>
           </div>
-          <button onclick="handleDepositClick(this,'${fmt2(depAmt)}')" style="background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:11px 22px;font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;flex-shrink:0">
+          <button onclick="handleDepositClick(this,'${fmt2(depAmt)}','${paymentId || ''}',${depAmt},${totalFee})" style="background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:11px 22px;font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;flex-shrink:0">
             Pay Deposit (Demo)
           </button>
         </div>
@@ -1092,25 +1101,48 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan) {
   successEl.innerHTML = html;
 }
 
-function handleDepositClick(btn) {
-  // Mark deposit button as paid
-  btn.textContent = '✓ Deposit Paid';
-  btn.style.background = '#16a34a';
+async function handleDepositClick(btn) {
+  btn.textContent = 'Processing…';
   btn.disabled = true;
 
-  const fmt2      = n => '$' + (parseFloat(n)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  const depAmt    = window._currentDepAmt    || 0;
-  const totalFee  = window._currentTotalFee  || 0;
-  const fin       = window._currentFin       || {};
-  const plan      = window._currentPaymentPlan || [];
-  const player    = window._currentPlayerName  || 'Player';
-  const remaining = totalFee - depAmt;
+  const paymentId = window._currentPaymentId;
+  const depAmt    = window._currentDepAmt   || 0;
+  const totalFee  = window._currentTotalFee || 0;
+  const today     = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+  const newPaid   = depAmt;
+  const newBalance = totalFee - depAmt;
+  const newStatus  = newBalance <= 0 ? 'Paid' : 'Partial';
 
-  // Show the monthly plan section after deposit
-  const planSection = document.getElementById('monthly-plan-section');
-  if (!planSection) return;
-  planSection.style.display = 'block';
-  planSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  try {
+    if (paymentId) {
+      const res = await fetch(`${API_BASE}/api/coach/player-payments/${paymentId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          depositPaid:     true,
+          depositPaidDate: today,
+          amountPaid:      newPaid,
+          balance:         newBalance,
+          status:          newStatus,
+        })
+      });
+      if (!res.ok) throw new Error('Failed to update');
+    }
+    // Update button UI
+    btn.textContent = '✓ Deposit Paid';
+    btn.style.background = '#16a34a';
+
+    // Show monthly plan section if exists
+    const planSection = document.getElementById('monthly-plan-section');
+    if (planSection) {
+      planSection.style.display = 'block';
+      planSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  } catch(err) {
+    btn.textContent = 'Pay Deposit (Demo)';
+    btn.disabled = false;
+    console.error('Deposit error:', err);
+  }
 }
 
 /* ── TRYOUT MODAL ── */
