@@ -648,6 +648,13 @@ function renderDashboard(coach){
   loadTryouts();
   loadDashRoster();
   loadDashSchedule();
+
+  // Init date pickers after DOM is rendered
+  setTimeout(() => {
+    const dateFormat = { dateFormat: 'F j, Y', allowInput: false };
+    flatpickr('#t-date',  dateFormat);
+    flatpickr('#s-date',  dateFormat);
+  }, 50);
 }
 
 /* ── SAVE PROFILE ── */
@@ -1048,12 +1055,16 @@ async function openEditGame(id) {
   const g = dashSchedData.find(x => x._id === id);
   if (!g) return;
   document.getElementById('eg-id').value    = id;
-  document.getElementById('eg-date').value  = g.date  || '';
   document.getElementById('eg-event').value = g.event || '';
   document.getElementById('eg-city').value  = g.city  || '';
   document.getElementById('eg-state').value = g.state || '';
   document.getElementById('sched-edit-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+  // Init date picker after modal is visible, then set value
+  setTimeout(() => {
+    const fp = flatpickr('#eg-date', { dateFormat: 'F j, Y', allowInput: false });
+    if (g.date) fp.setDate(g.date, false);
+  }, 50);
 }
 
 function closeEditGameModal() {
@@ -1292,12 +1303,5 @@ loadDashboard();
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
-<script>
-// Initialize date pickers
-const dateFormat = { dateFormat: 'F j, Y', allowInput: false };
-flatpickr('#t-date',  dateFormat);
-flatpickr('#s-date',  dateFormat);
-flatpickr('#eg-date', dateFormat);
-</script>
 </body>
 </html>
