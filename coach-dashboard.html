@@ -1893,22 +1893,13 @@ function calcReset() {
 }
 
 /* ── BUDGET SAVE / VIEW / DELETE ── */
-function getBudgets() {
-  const coachId = localStorage.getItem('coach_id') || 'default';
-  try { return JSON.parse(localStorage.getItem('budgets_' + coachId) || '[]'); } catch { return []; }
-}
-function setBudgets(budgets) {
-  const coachId = localStorage.getItem('coach_id') || 'default';
-  localStorage.setItem('budgets_' + coachId, JSON.stringify(budgets));
-}
+let _savedBudgets = [];
 
-function saveBudget() {
-  const players   = val('calc-players');
+async function saveBudget() {
   const total     = parseFloat(document.getElementById('ct-total')?.textContent?.replace(/[$,]/g,'')) || 0;
   const perPlayer = parseFloat(document.getElementById('ct-player-fee')?.textContent?.replace(/[$,]/g,'')) || 0;
   if (total === 0) { alert('Please fill in the calculator before saving.'); return; }
 
-  // Collect all field values
   const others = [];
   document.querySelectorAll('[id^="calc-other-amt-"]').forEach(el => {
     const idx  = el.id.replace('calc-other-amt-','');
@@ -1917,14 +1908,13 @@ function saveBudget() {
     if (amt > 0) others.push({ desc, amt });
   });
 
-  const budget = {
-    id:          Date.now(),
+  const payload = {
     date:        new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }),
-    players:     players,
+    players:     val('calc-players'),
     seasons:     val('calc-seasons'),
-    tournaments: val('calc-num-events') * val('calc-event-cost'),
     numEvents:   val('calc-num-events'),
     eventCost:   val('calc-event-cost'),
+    tournaments: val('calc-num-events') * val('calc-event-cost'),
     headPay:     val('calc-head-pay'),
     asstPay:     val('calc-asst-pay'),
     rentals:     val('calc-rentals'),
@@ -1932,9 +1922,9 @@ function saveBudget() {
     hotelNights: val('calc-hotel-nights'),
     hotelAvg:    val('calc-hotel-avg'),
     hotels:      val('calc-hotel-nights') * val('calc-hotel-avg'),
-    uniforms:    val('calc-uniforms') * val('calc-uniform-cost'),
     numUniforms: val('calc-uniforms'),
     uniformCost: val('calc-uniform-cost'),
+    uniforms:    val('calc-uniforms') * val('calc-uniform-cost'),
     equipment:   val('calc-equipment'),
     insurance:   val('calc-insurance'),
     ambassadors: 450,
@@ -1943,32 +1933,47 @@ function saveBudget() {
     perPlayer,
   };
 
-  const budgets = getBudgets();
-  budgets.unshift(budget);
-  setBudgets(budgets);
-  renderSavedBudgets();
-
   const btn = document.getElementById('save-budget-btn');
   const txt = document.getElementById('save-budget-txt');
-  txt.textContent = 'Saved!';
   btn.disabled = true;
-  setTimeout(() => { txt.textContent = 'Save Budget'; btn.disabled = false; }, 2000);
+  txt.innerHTML = '<span class="btn-spinner"></span>';
+
+  try {
+    const res  = await fetch(`${API_BASE}/api/coach/budgets`, {
+      method: 'POST', headers: authH(), body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to save');
+    txt.textContent = 'Saved!';
+    setTimeout(() => { txt.textContent = 'Save Budget'; btn.disabled = false; }, 2000);
+    await loadBudgetsLocal();
+  } catch(err) {
+    alert('Error: ' + err.message);
+    txt.textContent = 'Save Budget';
+    btn.disabled = false;
+  }
 }
 
-function deleteBudget(id) {
+async function deleteBudget(id) {
   if (!confirm('Delete this saved budget?')) return;
-  const budgets = getBudgets().filter(b => b.id !== id);
-  setBudgets(budgets);
-  renderSavedBudgets();
+  try {
+    const res  = await fetch(`${API_BASE}/api/coach/budgets/${id}`, {
+      method: 'DELETE', headers: authH()
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed');
+    _savedBudgets = _savedBudgets.filter(b => b.id !== id);
+    renderSavedBudgets();
+  } catch(err) { alert('Error: ' + err.message); }
 }
 
 function viewBudget(id) {
-  const b = getBudgets().find(x => x.id === id);
+  const b = _savedBudgets.find(x => x.id === id);
   if (!b) return;
   document.getElementById('bv-modal-title').textContent = 'Budget — ' + b.date;
 
-  let otherRows = b.others?.map(o =>
-    `<tr><td>${esc(o.desc)}</td><td>${fmt(o.amt)}</td></tr>`).join('') || '';
+  const otherRows = (b.others||[]).map(o =>
+    `<tr><td>${esc(o.desc)}</td><td>${fmt(o.amt)}</td></tr>`).join('');
 
   document.getElementById('bv-modal-body').innerHTML = `
     <table class="budget-detail-table">
@@ -1976,19 +1981,19 @@ function viewBudget(id) {
       <tr><td>Paying Players</td><td>${b.players||'—'}</td></tr>
       <tr><td>Seasons</td><td>${b.seasons||'—'}</td></tr>
       <tr><td colspan="2" style="padding:6px 12px;background:var(--light);font-family:'Oswald',sans-serif;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--sub)">Breakdown</td></tr>
-      <tr><td>Tournaments / Events (${b.numEvents||0} × $${b.eventCost||0})</td><td>${fmt(b.tournaments||0)}</td></tr>
-      <tr><td>Head Coach Pay</td><td>${fmt(b.headPay||0)}</td></tr>
-      <tr><td>Assistant Coach Pay</td><td>${fmt(b.asstPay||0)}</td></tr>
+      <tr><td>Tournaments / Events (${b.num_events||0} × $${b.event_cost||0})</td><td>${fmt(b.tournaments||0)}</td></tr>
+      <tr><td>Head Coach Pay</td><td>${fmt(b.head_pay||0)}</td></tr>
+      <tr><td>Assistant Coach Pay</td><td>${fmt(b.asst_pay||0)}</td></tr>
       <tr><td>Rentals</td><td>${fmt(b.rentals||0)}</td></tr>
-      <tr><td>Hotel Costs (${b.hotelNights||0} nights × $${b.hotelAvg||0})</td><td>${fmt(b.hotels||0)}</td></tr>
+      <tr><td>Hotel Costs (${b.hotel_nights||0} nights × $${b.hotel_avg||0})</td><td>${fmt(b.hotels||0)}</td></tr>
       <tr><td>Gas</td><td>${fmt(b.gas||0)}</td></tr>
-      <tr><td>Coach Uniforms (${b.numUniforms||0} × $${b.uniformCost||0})</td><td>${fmt(b.uniforms||0)}</td></tr>
+      <tr><td>Coach Uniforms (${b.num_uniforms||0} × $${b.uniform_cost||0})</td><td>${fmt(b.uniforms||0)}</td></tr>
       <tr><td>Equipment</td><td>${fmt(b.equipment||0)}</td></tr>
       <tr><td>Coach Liability Insurance</td><td>${fmt(b.insurance||0)}</td></tr>
       <tr><td>Ambassadors Baseball</td><td>${fmt(450)}</td></tr>
       ${otherRows}
       <tr class="highlight"><td>Total Expenses</td><td>${fmt(b.total||0)}</td></tr>
-      <tr class="grand"><td>Player Fee (Total ÷ ${b.players||0} Players)</td><td>${fmt(b.perPlayer||0)}</td></tr>
+      <tr class="grand"><td>Player Fee (Total ÷ ${b.players||0} Players)</td><td>${fmt(b.per_player||0)}</td></tr>
     </table>`;
 
   document.getElementById('budget-view-overlay').classList.add('open');
@@ -2003,40 +2008,42 @@ function closeBudgetView() {
 function renderSavedBudgets() {
   const wrap = document.getElementById('saved-budgets-wrap');
   if (!wrap) return;
-  const budgets = getBudgets();
-  if (!budgets.length) {
-    wrap.innerHTML = '<div class="no-tryouts-dash">No budgets saved yet. Fill in the calculator and click Save Budget.</div>';
+  if (!_savedBudgets.length) {
+    wrap.innerHTML = '<div class="no-tryouts-dash" style="grid-column:1/-1">No budgets saved yet. Fill in the calculator and click Save Budget.</div>';
     return;
   }
-  wrap.innerHTML = '<div class="budget-cards-list">' + budgets.map(b => `
+  wrap.innerHTML = _savedBudgets.map(b => `
     <div class="budget-card">
       <div class="budget-card-info">
         <div class="budget-card-date">${esc(b.date)}</div>
         <div class="budget-card-players">${b.players||0} Paying Players</div>
-        <div class="budget-card-total">${fmt(b.total||0)} Total Expenses</div>
-        <div class="budget-card-fee">Player Fee: ${fmt(b.perPlayer||0)} / player</div>
+        <div class="budget-card-total">${fmt(parseFloat(b.total)||0)} Total Expenses</div>
+        <div class="budget-card-fee">Player Fee: ${fmt(parseFloat(b.per_player)||0)} / player</div>
       </div>
       <div class="budget-card-actions">
-        <button class="budget-view-btn" onclick="viewBudget(${b.id})">
+        <button class="budget-view-btn" onclick="viewBudget('${b.id}')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           View
         </button>
-        <button class="budget-del-btn" onclick="deleteBudget(${b.id})">
+        <button class="budget-del-btn" onclick="deleteBudget('${b.id}')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
           Delete
         </button>
       </div>
-    </div>`).join('') + '</div>';
+    </div>`).join('');
 }
 
-function loadBudgetsLocal() {
+async function loadBudgetsLocal() {
   calcUpdate();
-  renderSavedBudgets();
+  try {
+    const res  = await fetch(`${API_BASE}/api/coach/budgets`, { headers: authH() });
+    const data = await res.json();
+    _savedBudgets = data.budgets || [];
+    renderSavedBudgets();
+  } catch(err) {
+    console.error('Failed to load budgets:', err);
+  }
 }
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeBudgetView();
-});
 
 loadDashboard();
 </script>
