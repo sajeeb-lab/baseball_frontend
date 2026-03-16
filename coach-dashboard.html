@@ -30,7 +30,7 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
 .welcome-text h2{font-family:'Oswald',sans-serif;font-size:1.2rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.04em}
 .welcome-text p{color:rgba(255,255,255,.7);font-size:.82rem;margin-top:.25rem}
 .section-tabs{display:flex;gap:.5rem;margin-bottom:1.4rem;flex-wrap:wrap}
-.section-tab{display:inline-flex;align-items:center;gap:.35rem;background:var(--white);border:1.5px solid var(--mid);border-radius:6px;padding:7px 12px;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s;white-space:nowrap}
+.section-tab{display:inline-flex;align-items:center;gap:.35rem;background:var(--white);border:1.5px solid var(--mid);border-radius:6px;padding:6px 10px;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s;white-space:nowrap}
 .section-tab:hover{border-color:var(--navy);color:var(--navy)}
 .section-tab.active{background:var(--navy);border-color:var(--navy);color:var(--white)}
 .section-tab svg{width:13px;height:13px;flex-shrink:0}
@@ -44,7 +44,7 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
 .field-textarea{resize:vertical;min-height:100px;line-height:1.6}
 .form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0 1.4rem}
 .form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 1.4rem}
-.save-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:12px 28px;font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s;margin-top:.4rem}
+.save-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:9px 18px;font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .15s;margin-top:.4rem;white-space:nowrap}
 .save-btn:hover{background:#162845}
 .save-btn:disabled{opacity:.6;cursor:not-allowed}
 .msg{padding:.75rem 1rem;border-radius:6px;font-size:.82rem;margin-bottom:1.1rem;display:none}
@@ -79,7 +79,7 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
 .photo-preview img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .photo-preview svg{width:32px;height:32px;color:#aab}
 .photo-btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.4rem}
-.photo-edit-btn{display:inline-flex;align-items:center;gap:.4rem;padding:7px 14px;border-radius:6px;font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:none;transition:background .15s}
+.photo-edit-btn{display:inline-flex;align-items:center;gap:.4rem;padding:6px 11px;border-radius:6px;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:none;transition:background .15s;white-space:nowrap}
 .photo-edit-btn.edit{background:var(--navy);color:#fff}.photo-edit-btn.edit:hover{background:#162845}
 .photo-edit-btn.delete{background:#fef3f5;color:var(--red);border:1.5px solid #f5c6cb}.photo-edit-btn.delete:hover{background:#fde8ec}
 .photo-upload-right{flex:1;min-width:0}
@@ -187,12 +187,12 @@ input[type="file"].hidden-file{display:none}
 .calc-total-row.grand .calc-total-value{color:#ff6b6b;font-size:1.3rem}
 .calc-other-wrap{display:flex;flex-direction:column;gap:.6rem;margin-top:.5rem}
 .calc-other-row{display:grid;grid-template-columns:1fr 1fr auto;gap:.6rem;align-items:end}
-.calc-add-other-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;border:1.5px dashed var(--mid);border-radius:6px;padding:7px 14px;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s;margin-top:.5rem}
+.calc-add-other-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;border:1.5px dashed var(--mid);border-radius:6px;padding:6px 11px;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s;margin-top:.5rem;white-space:nowrap}
 .calc-add-other-btn:hover{border-color:var(--navy);color:var(--navy)}
 .calc-remove-btn{background:none;border:none;color:var(--red);cursor:pointer;padding:4px;border-radius:4px;display:flex;align-items:center;justify-content:center}
 .calc-remove-btn:hover{background:#fef3f5}
 .calc-remove-btn svg{width:15px;height:15px}
-.calc-reset-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;border:1.5px solid var(--mid);border-radius:6px;padding:8px 18px;font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s;margin-top:1rem}
+.calc-reset-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;border:1.5px solid var(--mid);border-radius:6px;padding:7px 14px;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s;margin-top:1rem;white-space:nowrap}
 .calc-reset-btn:hover{border-color:var(--red);color:var(--red)}
 /* SAVED BUDGET CARDS */
 /* TEAM FINANCIALS */
@@ -289,7 +289,7 @@ input[type="file"].hidden-file{display:none}
 .budget-detail-table td:last-child{font-weight:600;color:var(--navy);text-align:right}
 .budget-detail-table tr.highlight td{background:#f0fdf4;color:#16a34a;font-weight:700;font-size:.95rem}
 .budget-detail-table tr.grand td{background:var(--navy);color:var(--white);font-weight:700;font-size:1rem}
-@media(max-width:700px){.form-grid-2,.form-grid-3{grid-template-columns:1fr}.page-header-inner{flex-direction:column;align-items:flex-start}.section-tabs{gap:.4rem}.section-tab{padding:8px 12px;font-size:.72rem}}
+@media(max-width:700px){.form-grid-2,.form-grid-3{grid-template-columns:1fr}.page-header-inner{flex-direction:column;align-items:flex-start}.section-tabs{gap:.3rem}.section-tab{padding:5px 9px;font-size:.68rem}}
 
 /* BUDGET */
 .budget-section-label{font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--white);background:var(--navy);padding:6px 14px;border-radius:4px;display:block;margin:1.2rem 0 .9rem}
