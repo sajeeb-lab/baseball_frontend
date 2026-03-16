@@ -2532,131 +2532,31 @@ async function deleteBudget(id) {
 function viewBudget(id) {
   const b = _savedBudgets.find(x => x.id === id);
   if (!b) return;
-  document.getElementById('bv-modal-title').textContent = 'Budget Summary — ' + b.date;
+  document.getElementById('bv-modal-title').textContent = 'Budget — ' + b.date;
 
-  // Build other expenses section (only show if they exist)
-  let otherHtml = '';
-  if (b.others && b.others.length > 0) {
-    otherHtml = `<div style="margin-top:1.8rem;padding-top:1.8rem;border-top:2px solid var(--mid)">`;
-    otherHtml += `<div style="font-size:.75rem;color:var(--sub);text-transform:uppercase;font-weight:600;letter-spacing:.08em;margin-bottom:.8rem">Other Expenses</div>`;
-    b.others.forEach(o => {
-      otherHtml += `<div style="display:flex;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--mid)"><span style="color:var(--sub);font-size:.8rem">${esc(o.desc)}</span><span style="font-weight:600;color:var(--navy)">${fmt(o.amt)}</span></div>`;
-    });
-    otherHtml += `</div>`;
-  }
+  const otherRows = (b.others||[]).map(o =>
+    `<tr><td>${esc(o.desc)}</td><td>${fmt(o.amt)}</td></tr>`).join('');
 
-  document.getElementById('bv-body').innerHTML = `
-    <div style="font-size:.9rem;line-height:1.8;color:var(--text)">
-      <!-- HEADER INFO -->
-      <div style="margin-bottom:1.8rem;padding-bottom:1.2rem;border-bottom:2px solid var(--mid)">
-        <div style="display:flex;justify-content:space-between;margin-bottom:.6rem">
-          <span style="color:var(--sub);font-size:.78rem;text-transform:uppercase;font-weight:600;letter-spacing:.08em">A. Team Budget</span>
-          <span style="color:var(--sub);font-size:.78rem;text-transform:uppercase;font-weight:600;letter-spacing:.08em">B. Number of Paying Players</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;gap:2rem">
-          <div style="flex:1"><div style="height:1px;background:var(--sub);opacity:.3"></div></div>
-          <div style="flex:1"><span style="font-weight:700;font-size:.95rem;color:var(--navy)">${b.players||'—'}</span></div>
-        </div>
-      </div>
-
-      <!-- SEASONS SECTION -->
-      <div style="margin-bottom:1.8rem">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.8rem">
-          <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:.9rem;text-transform:uppercase;letter-spacing:.08em;color:var(--navy)"># of Seasons</span>
-          <span style="color:var(--sub);font-size:.78rem">Totals</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;gap:2rem;margin-bottom:1rem">
-          <div style="flex:1"><div style="height:1px;background:var(--sub);opacity:.3"></div></div>
-          <div style="flex:1"><div style="height:1px;background:var(--sub);opacity:.3"></div></div>
-        </div>
-      </div>
-
-      <!-- EVENTS SECTION -->
-      <div style="margin-bottom:1.8rem;padding:.9rem;background:var(--light);border-radius:6px">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:.8rem">
-          <div>
-            <div style="font-size:.75rem;color:var(--sub);text-transform:uppercase;font-weight:600;letter-spacing:.08em;margin-bottom:.4rem">No. of Events</div>
-            <div style="font-weight:700;color:var(--navy);font-size:.95rem">${b.num_events||'—'}</div>
-          </div>
-          <div>
-            <div style="font-size:.75rem;color:var(--sub);text-transform:uppercase;font-weight:600;letter-spacing:.08em;margin-bottom:.4rem">Ave. Cost</div>
-            <div style="font-weight:700;color:var(--navy);font-size:.95rem">$${b.event_cost||'—'}</div>
-          </div>
-        </div>
-        <div style="border-top:1px solid var(--mid);padding-top:.8rem">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <span style="font-size:.8rem;color:var(--sub);text-transform:uppercase;font-weight:600">Total Tournaments/Events</span>
-            <span style="font-weight:700;color:var(--navy);font-size:1rem">${fmt(b.tournaments||0)}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- COACHING COSTS -->
-      <div style="margin-bottom:1.8rem">
-        <div style="font-size:.75rem;color:var(--sub);text-transform:uppercase;font-weight:600;letter-spacing:.08em;margin-bottom:.8rem">Coaching Costs</div>
-        <div style="display:flex;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--mid)">
-          <span style="color:var(--sub);font-size:.8rem">Head Coach Pay</span>
-          <span style="font-weight:600;color:var(--navy)">${fmt(b.head_pay||0)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:.6rem 0">
-          <span style="color:var(--sub);font-size:.8rem">Assistant Coach Pay</span>
-          <span style="font-weight:600;color:var(--navy)">${fmt(b.asst_pay||0)}</span>
-        </div>
-      </div>
-
-      <!-- TRAVEL & ACCOMMODATIONS -->
-      <div style="margin-bottom:1.8rem">
-        <div style="font-size:.75rem;color:var(--sub);text-transform:uppercase;font-weight:600;letter-spacing:.08em;margin-bottom:.8rem">Travel & Accommodations</div>
-        <div style="display:flex;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--mid)">
-          <span style="color:var(--sub);font-size:.8rem">Rentals</span>
-          <span style="font-weight:600;color:var(--navy)">${fmt(b.rentals||0)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--mid)">
-          <span style="color:var(--sub);font-size:.8rem">Nights Hotels (${b.hotel_nights||0} @ $${b.hotel_avg||0})</span>
-          <span style="font-weight:600;color:var(--navy)">${fmt(b.hotels||0)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:.6rem 0">
-          <span style="color:var(--sub);font-size:.8rem">Gas</span>
-          <span style="font-weight:600;color:var(--navy)">${fmt(b.gas||0)}</span>
-        </div>
-      </div>
-
-      <!-- EQUIPMENT & MISC -->
-      <div style="margin-bottom:1.8rem">
-        <div style="font-size:.75rem;color:var(--sub);text-transform:uppercase;font-weight:600;letter-spacing:.08em;margin-bottom:.8rem">Equipment & Misc</div>
-        <div style="display:flex;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--mid)">
-          <span style="color:var(--sub);font-size:.8rem">No. of Coach Uniforms (${b.num_uniforms||0} @ $${b.uniform_cost||0})</span>
-          <span style="font-weight:600;color:var(--navy)">${fmt(b.uniforms||0)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--mid)">
-          <span style="color:var(--sub);font-size:.8rem">Equipment (Balls, Fungo, etc.)</span>
-          <span style="font-weight:600;color:var(--navy)">${fmt(b.equipment||0)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--mid)">
-          <span style="color:var(--sub);font-size:.8rem">Coach Liability Insurance</span>
-          <span style="font-weight:600;color:var(--navy)">${fmt(b.insurance||0)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:.6rem 0">
-          <span style="color:var(--sub);font-size:.8rem">Ambassadors Baseball (fixed)</span>
-          <span style="font-weight:600;color:var(--navy)">${fmt(450)}</span>
-        </div>
-      </div>
-
-      <!-- OTHER EXPENSES (only if exists) -->
-      ${otherHtml}
-
-      <!-- TOTALS SECTION -->
-      <div style="margin-top:2rem;padding:1.2rem;background:linear-gradient(135deg,var(--navy) 0%,#162845 100%);border-radius:8px;color:var(--white)">
-        <div style="display:flex;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:.8rem">
-          <span style="font-size:.85rem">Total Expenses</span>
-          <span style="font-weight:700;font-size:1.1rem">${fmt(b.total||0)}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:.8rem 0">
-          <span style="font-size:.8rem;text-transform:uppercase;letter-spacing:.08em">Player Fee (÷ ${b.players||0} Players)</span>
-          <span style="font-weight:700;font-size:1.2rem;color:#ffd700">${fmt(b.per_player||0)}</span>
-        </div>
-      </div>
-    </div>`;
+  document.getElementById('bv-modal-body').innerHTML = `
+    <table class="budget-detail-table">
+      <tr><td>Date Calculated</td><td>${esc(b.date)}</td></tr>
+      <tr><td>Paying Players</td><td>${b.players||'—'}</td></tr>
+      <tr><td>Seasons</td><td>${b.seasons||'—'}</td></tr>
+      <tr><td colspan="2" style="padding:6px 12px;background:var(--light);font-family:'Oswald',sans-serif;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--sub)">Breakdown</td></tr>
+      <tr><td>Tournaments / Events (${b.num_events||0} × $${b.event_cost||0})</td><td>${fmt(b.tournaments||0)}</td></tr>
+      <tr><td>Head Coach Pay</td><td>${fmt(b.head_pay||0)}</td></tr>
+      <tr><td>Assistant Coach Pay</td><td>${fmt(b.asst_pay||0)}</td></tr>
+      <tr><td>Rentals</td><td>${fmt(b.rentals||0)}</td></tr>
+      <tr><td>Hotel Costs (${b.hotel_nights||0} nights × $${b.hotel_avg||0})</td><td>${fmt(b.hotels||0)}</td></tr>
+      <tr><td>Gas</td><td>${fmt(b.gas||0)}</td></tr>
+      <tr><td>Coach Uniforms (${b.num_uniforms||0} × $${b.uniform_cost||0})</td><td>${fmt(b.uniforms||0)}</td></tr>
+      <tr><td>Equipment</td><td>${fmt(b.equipment||0)}</td></tr>
+      <tr><td>Coach Liability Insurance</td><td>${fmt(b.insurance||0)}</td></tr>
+      <tr><td>Ambassadors Baseball</td><td>${fmt(450)}</td></tr>
+      ${otherRows}
+      <tr class="highlight"><td>Total Expenses</td><td>${fmt(b.total||0)}</td></tr>
+      <tr class="grand"><td>Player Fee (Total ÷ ${b.players||0} Players)</td><td>${fmt(b.per_player||0)}</td></tr>
+    </table>`;
 
   document.getElementById('budget-view-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
