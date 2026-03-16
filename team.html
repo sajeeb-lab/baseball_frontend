@@ -601,13 +601,20 @@ document.querySelectorAll('.schedule-table thead th').forEach(th => {
 });
 
 /* ── MAIN LOAD ── */
+let _teamFinancials = null;
+
 async function loadTeam() {
   if (!teamId) { showError('Missing team information.'); return; }
   try {
-    const res  = await fetch(`${API_BASE}/api/teams/${teamId}`);
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Team not found');
-    renderPage(data.team);
+    const [teamRes, finRes] = await Promise.all([
+      fetch(`${API_BASE}/api/teams/${teamId}`),
+      fetch(`${API_BASE}/api/teams/${teamId}/financials`),
+    ]);
+    const teamData = await teamRes.json();
+    const finData  = await finRes.json();
+    if (!teamRes.ok) throw new Error(teamData.message || 'Team not found');
+    _teamFinancials = finData.financials || null;
+    renderPage(teamData.team);
     loadTryouts(teamId);
     loadRoster(teamId);
   } catch (err) {
@@ -801,6 +808,33 @@ document.getElementById('reg-submit-btn').addEventListener('click', async functi
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Failed to submit');
+
+    // Create payment record if financials are set up
+    if (_teamFinancials && data.player) {
+      const f        = _teamFinancials;
+      const today    = new Date();
+      const todayStr = today.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+      let paymentPlan = [];
+      if (f.monthly_payments && f.payment_deadline && f.player_fee) {
+        paymentPlan = generatePaymentPlan(parseFloat(f.player_fee), f.payment_deadline, today);
+      }
+      await fetch(`${API_BASE}/api/coach/player-payments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          playerId:        data.player._id || data.player.id,
+          playerName:      name,
+          totalFee:        parseFloat(f.player_fee) || 0,
+          depositAmount:   f.deposit_enabled ? (parseFloat(f.deposit_amount)||250) : 0,
+          depositEnabled:  f.deposit_enabled,
+          paymentPlan,
+          balance:         parseFloat(f.player_fee) || 0,
+          registeredDate:  todayStr,
+          paymentDeadline: f.payment_deadline || '',
+        })
+      });
+    }
+
     document.getElementById('reg-form').style.display = 'none';
     this.style.display = 'none';
     document.getElementById('reg-success').style.display = 'block';
@@ -811,6 +845,26 @@ document.getElementById('reg-submit-btn').addEventListener('click', async functi
     this.innerHTML = 'Submit Registration <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>';
   }
 });
+
+/* ── GENERATE PAYMENT PLAN ── */
+function generatePaymentPlan(fee, deadlineStr, fromDate) {
+  const deadline = new Date(deadlineStr);
+  if (isNaN(deadline) || deadline <= fromDate) return [];
+  const months = [];
+  const cur = new Date(fromDate.getFullYear(), fromDate.getMonth(), 1);
+  const end = new Date(deadline.getFullYear(), deadline.getMonth(), 1);
+  while (cur <= end) {
+    months.push(new Date(cur));
+    cur.setMonth(cur.getMonth() + 1);
+  }
+  if (!months.length) return [];
+  const perMonth = fee / months.length;
+  return months.map(d => ({
+    month:  d.toLocaleDateString('en-US', { month:'long', year:'numeric' }),
+    amount: parseFloat(perMonth.toFixed(2)),
+    paid:   false,
+  }));
+}
 
 /* ── TRYOUT MODAL ── */
 const trOverlay = document.getElementById('trOverlay');
