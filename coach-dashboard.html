@@ -614,6 +614,14 @@ function renderDashboard(coach){
             <div class="field-group"><label class="field-label">Location / Field Name</label><input class="field-input" type="text" id="t-location" placeholder="e.g. Westside Sports Complex"></div>
             <div class="field-group"><label class="field-label">Tryout Fee</label><input class="field-input" type="text" id="t-fee" placeholder="e.g. $45 Fee or Free"></div>
           </div>
+          <div class="form-grid-2">
+            <div class="field-group"><label class="field-label">City</label><input class="field-input" type="text" id="t-city" placeholder="e.g. Nashville"></div>
+            <div class="field-group"><label class="field-label">State</label><input class="field-input" type="text" id="t-state" placeholder="e.g. TN" maxlength="2"></div>
+          </div>
+          <div class="form-grid-2">
+            <div class="field-group"><label class="field-label">City</label><input class="field-input" type="text" id="t-city" placeholder="e.g. Nashville"></div>
+            <div class="field-group"><label class="field-label">State</label><input class="field-input" type="text" id="t-state" placeholder="e.g. TN" maxlength="2"></div>
+          </div>
           <button class="save-btn" id="add-tryout-btn" onclick="addTryout()">
             <span id="add-tryout-txt">Add Tryout</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -792,14 +800,16 @@ async function addTryout(){
   const time=document.getElementById('t-time').value.trim();
   const location=document.getElementById('t-location').value.trim();
   const fee=document.getElementById('t-fee').value.trim();
+  const city=document.getElementById('t-city').value.trim();
+  const state=document.getElementById('t-state').value.trim().toUpperCase();
   if(!date||!time||!location){ showMsg('msg-tryout-add','Please fill in date, time and location.','error'); return; }
   if(!fee) { document.getElementById('t-fee').value='Free'; }
   setLoading('add-tryout-btn','add-tryout-txt',true);
   try {
-    const res=await fetch(`${API_BASE}/api/coach/tryouts`,{method:'POST',headers:authH(),body:JSON.stringify({date,time,location,fee})});
+    const res=await fetch(`${API_BASE}/api/coach/tryouts`,{method:'POST',headers:authH(),body:JSON.stringify({date,time,location,fee,city,state})});
     const data=await res.json();
     if(!res.ok) throw new Error(data.message||'Failed');
-    ['t-date','t-time','t-location','t-fee'].forEach(id=>{ document.getElementById(id).value=''; });
+    ['t-date','t-time','t-location','t-fee','t-city','t-state'].forEach(id=>{ document.getElementById(id).value=''; });
     document.getElementById('t-time-start')._flatpickr?.clear();
     document.getElementById('t-time-end')._flatpickr?.clear();
     showMsg('msg-tryout-add','Tryout added!','success');
@@ -819,6 +829,8 @@ function openEditTryout(id) {
   document.getElementById('et-id').value       = id;
   document.getElementById('et-location').value = t.location || '';
   document.getElementById('et-fee').value      = t.fee      || '';
+  document.getElementById('et-city').value     = t.city     || '';
+  document.getElementById('et-state').value    = t.state    || '';
   // Set date picker
   setTimeout(() => {
     const fpDate = document.getElementById('et-date')._flatpickr;
@@ -864,13 +876,15 @@ async function saveEditTryout() {
   const time     = document.getElementById('et-time').value.trim();
   const location = document.getElementById('et-location').value.trim();
   const fee      = document.getElementById('et-fee').value.trim();
+  const city     = document.getElementById('et-city').value.trim();
+  const state    = document.getElementById('et-state').value.trim().toUpperCase();
   if (!date || !time || !location) { alert('Date, time and location are required.'); return; }
   const btn = document.getElementById('et-save-btn');
   btn.textContent = 'Saving…'; btn.disabled = true;
   try {
     const res  = await fetch(`${API_BASE}/api/coach/tryouts/${_editingTryoutId}`, {
       method: 'PUT', headers: authH(),
-      body: JSON.stringify({ date, time, location, fee: fee || 'Free' })
+      body: JSON.stringify({ date, time, location, fee: fee || 'Free', city, state })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Failed');
@@ -1465,6 +1479,14 @@ loadDashboard();
         <div class="field-group" style="grid-column:1/-1">
           <label class="field-label">Tryout Fee</label>
           <input class="field-input" type="text" id="et-fee" placeholder="e.g. $45 Fee or Free">
+        </div>
+        <div class="field-group">
+          <label class="field-label">City</label>
+          <input class="field-input" type="text" id="et-city" placeholder="e.g. Nashville">
+        </div>
+        <div class="field-group">
+          <label class="field-label">State</label>
+          <input class="field-input" type="text" id="et-state" placeholder="e.g. TN" maxlength="2">
         </div>
       </div>
     </div>
