@@ -30,10 +30,10 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
 .welcome-text h2{font-family:'Oswald',sans-serif;font-size:1.2rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.04em}
 .welcome-text p{color:rgba(255,255,255,.7);font-size:.82rem;margin-top:.25rem}
 .section-tabs{display:flex;gap:.5rem;margin-bottom:1.4rem;flex-wrap:wrap}
-.section-tab{display:inline-flex;align-items:center;gap:.45rem;background:var(--white);border:1.5px solid var(--mid);border-radius:6px;padding:9px 18px;font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s}
+.section-tab{display:inline-flex;align-items:center;gap:.35rem;background:var(--white);border:1.5px solid var(--mid);border-radius:6px;padding:7px 12px;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s;white-space:nowrap}
 .section-tab:hover{border-color:var(--navy);color:var(--navy)}
 .section-tab.active{background:var(--navy);border-color:var(--navy);color:var(--white)}
-.section-tab svg{width:15px;height:15px}
+.section-tab svg{width:13px;height:13px;flex-shrink:0}
 .dash-panel{display:none}
 .dash-panel.active{display:block}
 .field-group{display:flex;flex-direction:column;gap:.42rem;margin-bottom:1.1rem}
@@ -2158,9 +2158,61 @@ async function saveFinancials() {
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Failed');
     _finSetup = data.financials;
-    showMsg('msg-financials', 'Financial setup saved!', 'success');
+    finShowLocked();
   } catch(err) { showMsg('msg-financials', err.message, 'error'); }
   finally { setLoading('save-fin-btn', 'save-fin-txt', false, 'Save Financial Setup'); }
+}
+
+function finShowLocked() {
+  const f = _finSetup;
+  if (!f) return;
+  const fmt2 = n => '$' + (parseFloat(n)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const modeLabel    = f.monthly_payments ? 'Monthly Payments' : 'Full Payment';
+  const depositLabel = f.deposit_enabled  ? 'Yes \u2014 ' + fmt2(f.deposit_amount) : 'No';
+
+  const lockedHtml = `
+    <div id="fin-locked-view">
+      <div class="msg success" style="display:block;margin-bottom:1.1rem">Financial setup saved! &#10003;</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.2rem">
+        <div style="background:var(--light);border-radius:8px;padding:.9rem 1.1rem">
+          <div style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.4rem">Player Fee</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:1.4rem;font-weight:700;color:var(--navy)">${fmt2(f.player_fee)}</div>
+        </div>
+        <div style="background:var(--light);border-radius:8px;padding:.9rem 1.1rem">
+          <div style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.4rem">Payment Deadline</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;color:var(--navy)">${esc(f.payment_deadline||'\u2014')}</div>
+        </div>
+        <div style="background:var(--light);border-radius:8px;padding:.9rem 1.1rem">
+          <div style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.4rem">Payment Mode</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;color:var(--navy)">${modeLabel}</div>
+        </div>
+        <div style="background:var(--light);border-radius:8px;padding:.9rem 1.1rem">
+          <div style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.4rem">Deposit</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;color:var(--navy)">${depositLabel}</div>
+        </div>
+      </div>
+      <button onclick="finShowEdit()" style="display:inline-flex;align-items:center;gap:.5rem;background:none;border:1.5px solid var(--mid);border-radius:8px;padding:10px 22px;font-family:'Oswald',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Edit Financial Setup
+      </button>
+    </div>`;
+
+  const cardBody = document.querySelector('#panel-financials .card .card-body');
+  if (cardBody) {
+    const existing = document.getElementById('fin-locked-view');
+    if (existing) existing.remove();
+    Array.from(cardBody.children).forEach(el => { el.style.display = 'none'; });
+    cardBody.insertAdjacentHTML('beforeend', lockedHtml);
+  }
+}
+
+function finShowEdit() {
+  const locked = document.getElementById('fin-locked-view');
+  if (locked) locked.remove();
+  const cardBody = document.querySelector('#panel-financials .card .card-body');
+  if (cardBody) {
+    Array.from(cardBody.children).forEach(el => { el.style.display = ''; });
+  }
 }
 
 async function loadFinancials() {
@@ -2190,6 +2242,7 @@ async function loadFinancials() {
       finDepositToggle(_finDepositEnabled);
       if (f.deposit_amount) document.getElementById('fin-deposit-amt').value = f.deposit_amount;
       finPreviewUpdate();
+      setTimeout(() => finShowLocked(), 120);
     }
     renderARTable();
   } catch(err) { console.error('loadFinancials:', err); }
