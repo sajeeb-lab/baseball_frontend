@@ -408,14 +408,10 @@ function renderDashboard(coach){
             <label class="field-label">Team Name</label>
             <input class="field-input" type="text" id="td-teamname" value="${esc(coach.teamName)}" placeholder="Team Name">
           </div>
-          <div class="form-grid-3">
+          <div class="form-grid-2">
             <div class="field-group">
               <label class="field-label">State</label>
               <input class="field-input" type="text" id="td-state" value="${esc(coach.state||'')}" placeholder="e.g. TN" maxlength="2">
-            </div>
-            <div class="field-group">
-              <label class="field-label">City / Location</label>
-              <input class="field-input" type="text" id="td-location" value="${esc(coach.location||'')}" placeholder="e.g. Nashville">
             </div>
             <div class="field-group">
               <label class="field-label">Age Group</label>
