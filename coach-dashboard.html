@@ -194,6 +194,62 @@ input[type="file"].hidden-file{display:none}
 .calc-remove-btn svg{width:15px;height:15px}
 .calc-reset-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;border:1.5px solid var(--mid);border-radius:6px;padding:8px 18px;font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s;margin-top:1rem}
 .calc-reset-btn:hover{border-color:var(--red);color:var(--red)}
+/* SAVED BUDGET CARDS */
+.budget-card{background:var(--light);border:1.5px solid var(--mid);border-radius:10px;padding:1.1rem 1.3rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;transition:box-shadow .15s}
+.budget-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.budget-card-info{flex:1;min-width:0}
+.budget-card-date{font-size:.7rem;color:var(--sub);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3rem}
+.budget-card-players{font-family:'Oswald',sans-serif;font-size:.82rem;font-weight:600;color:var(--navy);margin-bottom:.2rem}
+.budget-card-total{font-family:'Oswald',sans-serif;font-size:1.15rem;font-weight:700;color:var(--red)}
+.budget-card-fee{font-size:.78rem;color:var(--sub);margin-top:.2rem}
+.budget-card-actions{display:flex;gap:.5rem;flex-shrink:0}
+.budget-view-btn{display:inline-flex;align-items:center;gap:.35rem;background:var(--navy);color:var(--white);border:none;border-radius:6px;padding:7px 14px;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .15s}
+.budget-view-btn:hover{background:#162845}
+.budget-view-btn svg{width:13px;height:13px}
+.budget-del-btn{display:inline-flex;align-items:center;gap:.35rem;background:none;border:1.5px solid #f5c6cb;color:var(--red);border-radius:6px;padding:7px 12px;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .15s}
+.budget-del-btn:hover{background:var(--red);color:var(--white);border-color:var(--red)}
+.budget-del-btn svg{width:13px;height:13px}
+.budget-cards-list{display:flex;flex-direction:column;gap:.75rem}
+/* BUDGET VIEW MODAL */
+.budget-view-overlay{position:fixed;inset:0;background:rgba(10,22,40,.55);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s}
+.budget-view-overlay.open{opacity:1;pointer-events:all}
+.budget-view-modal{background:var(--white);border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.25);width:100%;max-width:600px;max-height:90vh;display:flex;flex-direction:column;transform:translateY(20px) scale(.97);transition:transform .28s cubic-bezier(.4,0,.2,1);overflow:hidden}
+.budget-view-overlay.open .budget-view-modal{transform:translateY(0) scale(1)}
+.budget-view-head{background:var(--navy);padding:1rem 1.4rem;display:flex;align-items:center;justify-content:space-between}
+.budget-view-head h3{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.08em}
+.budget-view-body{overflow-y:auto;padding:1.4rem 1.5rem}
+.budget-detail-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.budget-detail-table tr{border-bottom:1px solid var(--mid)}
+.budget-detail-table tr:last-child{border-bottom:none}
+.budget-detail-table td{padding:9px 12px;vertical-align:middle}
+.budget-detail-table td:first-child{color:var(--sub);font-size:.78rem}
+.budget-detail-table td:last-child{text-align:right;font-weight:600;color:var(--navy)}
+.budget-detail-table tr.highlight td{background:var(--light);font-weight:700}
+.budget-detail-table tr.highlight td:last-child{color:var(--red);font-size:1rem}
+.budget-detail-table tr.grand td{background:linear-gradient(135deg,var(--navy) 0%,#162845 100%);color:var(--white)}
+.budget-detail-table tr.grand td:last-child{color:#ffd700;font-size:1.1rem}
+.budget-card{background:var(--white);border:1.5px solid var(--mid);border-radius:10px;padding:1.2rem 1.3rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;transition:box-shadow .15s,border-color .15s}
+.budget-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.08);border-color:#c8d0dc}
+.budget-card-date{font-family:'Oswald',sans-serif;font-size:.82rem;font-weight:600;color:var(--sub);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem}
+.budget-card-players{font-size:.85rem;color:var(--navy);font-weight:600;margin-bottom:.2rem}
+.budget-card-total{font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:.2rem}
+.budget-card-fee{font-size:.8rem;color:var(--sub)}
+.budget-card-actions{display:flex;flex-direction:column;gap:.5rem;flex-shrink:0}
+.budget-view-btn{display:inline-flex;align-items:center;gap:5px;background:var(--navy);color:var(--white);border:none;border-radius:6px;padding:8px 16px;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .15s;white-space:nowrap}
+.budget-view-btn:hover{background:var(--red)}
+.budget-view-btn svg{width:13px;height:13px}
+.budget-del-btn{display:inline-flex;align-items:center;gap:5px;background:none;border:1.5px solid #f5c6cb;border-radius:6px;padding:6px 14px;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--red);cursor:pointer;transition:all .15s;white-space:nowrap}
+.budget-del-btn:hover{background:var(--red);color:var(--white);border-color:var(--red)}
+.budget-del-btn svg{width:13px;height:13px}
+.budget-cards-list{display:flex;flex-direction:column;gap:.85rem}
+.budget-detail-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.budget-detail-table tr{border-bottom:1px solid var(--mid)}
+.budget-detail-table tr:last-child{border-bottom:none}
+.budget-detail-table td{padding:9px 12px;vertical-align:middle}
+.budget-detail-table td:first-child{color:var(--sub);font-size:.8rem}
+.budget-detail-table td:last-child{font-weight:600;color:var(--navy);text-align:right}
+.budget-detail-table tr.highlight td{background:#f0fdf4;color:#16a34a;font-weight:700;font-size:.95rem}
+.budget-detail-table tr.grand td{background:var(--navy);color:var(--white);font-weight:700;font-size:1rem}
 @media(max-width:700px){.form-grid-2,.form-grid-3{grid-template-columns:1fr}.page-header-inner{flex-direction:column;align-items:flex-start}.section-tabs{gap:.4rem}.section-tab{padding:8px 12px;font-size:.72rem}}
 
 /* BUDGET */
@@ -771,9 +827,7 @@ function renderDashboard(coach){
             <div class="calc-field"><label class="calc-label">Equipment (Balls, Fungo, etc.)</label><div class="calc-prefix"><input class="calc-input" type="number" id="calc-equipment" placeholder="e.g. 400" min="0" oninput="calcUpdate()"></div></div>
             <div class="calc-field"><label class="calc-label">Coach Liability Insurance</label><div class="calc-prefix"><input class="calc-input" type="number" id="calc-insurance" placeholder="e.g. 200" min="0" oninput="calcUpdate()"></div></div>
           </div>
-          <div class="calc-grid" style="margin-top:.85rem">
-            <div class="calc-field"><label class="calc-label">Ambassadors Baseball Fee</label><div class="calc-prefix"><input class="calc-input" type="number" id="calc-ambassadors" value="450" min="0" oninput="calcUpdate()"></div></div>
-          </div>
+
           <hr class="calc-divider">
           <span class="calc-section-title">Other Expenses</span>
           <div class="calc-other-wrap" id="calc-other-wrap"></div>
@@ -792,15 +846,48 @@ function renderDashboard(coach){
             <div class="calc-total-row"><span class="calc-total-label">Coach Uniforms</span><span class="calc-total-value" id="ct-uniforms">$0.00</span></div>
             <div class="calc-total-row"><span class="calc-total-label">Equipment</span><span class="calc-total-value" id="ct-equipment">$0.00</span></div>
             <div class="calc-total-row"><span class="calc-total-label">Coach Liability Insurance</span><span class="calc-total-value" id="ct-insurance">$0.00</span></div>
-            <div class="calc-total-row"><span class="calc-total-label">Ambassadors Baseball</span><span class="calc-total-value" id="ct-ambassadors">$0.00</span></div>
+            <div class="calc-total-row"><span class="calc-total-label">Ambassadors Baseball <span style="font-size:.6rem;opacity:.6;font-family:'Open Sans',sans-serif;font-weight:400">(fixed)</span></span><span class="calc-total-value" id="ct-ambassadors">$450.00</span></div>
             <div id="ct-other-rows"></div>
             <div class="calc-total-row highlight"><span class="calc-total-label">Total Expenses</span><span class="calc-total-value" id="ct-total">$0.00</span></div>
             <div class="calc-total-row grand"><span class="calc-total-label">Player Fee (Total Expenses &divide; Paying Players)</span><span class="calc-total-value" id="ct-player-fee">$0.00</span></div>
           </div>
-          <button class="calc-reset-btn" onclick="calcReset()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-            Reset Calculator
-          </button>
+          <div style="display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap">
+            <button class="save-btn" id="save-budget-btn" onclick="saveBudget()" style="margin-top:0">
+              <span id="save-budget-txt">Save Budget</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button class="calc-reset-btn" onclick="calcReset()" style="margin-top:0">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+              Reset Calculator
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAVED BUDGETS -->
+      <div class="card" style="margin-top:1.4rem">
+        <div class="card-header">Saved Budgets</div>
+        <div class="card-body">
+          <div id="saved-budgets-wrap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem">
+            <div class="no-tryouts-dash" style="grid-column:1/-1">No budgets saved yet. Fill in the calculator and click Save Budget.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BUDGET VIEW MODAL -->
+      <div class="edit-overlay" id="budget-view-overlay">
+        <div class="edit-modal" style="max-width:680px">
+          <div class="edit-modal-head">
+            <h3 id="bv-modal-title">Budget Details</h3>
+            <button class="edit-modal-close" onclick="closeBudgetView()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="edit-modal-body" style="max-height:70vh;overflow-y:auto" id="bv-modal-body">
+          </div>
+          <div class="edit-modal-foot">
+            <button class="edit-cancel-btn" onclick="closeBudgetView()">Close</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1752,7 +1839,7 @@ function calcUpdate() {
   const uniforms    = val('calc-uniforms') * val('calc-uniform-cost');
   const equipment   = val('calc-equipment');
   const insurance   = val('calc-insurance');
-  const ambassadors = val('calc-ambassadors');
+  const ambassadors = 450; // Fixed Ambassadors Baseball fee
 
   // Other expenses
   let otherTotal = 0;
@@ -1798,15 +1885,158 @@ function calcReset() {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
-  const ambEl = document.getElementById('calc-ambassadors');
-  if (ambEl) ambEl.value = '450';
+
   const wrap = document.getElementById('calc-other-wrap');
   if (wrap) wrap.innerHTML = '';
   _otherCount = 0;
   calcUpdate();
 }
 
-function loadBudgetsLocal() { calcUpdate(); }
+/* ── BUDGET SAVE / VIEW / DELETE ── */
+function getBudgets() {
+  const coachId = localStorage.getItem('coach_id') || 'default';
+  try { return JSON.parse(localStorage.getItem('budgets_' + coachId) || '[]'); } catch { return []; }
+}
+function setBudgets(budgets) {
+  const coachId = localStorage.getItem('coach_id') || 'default';
+  localStorage.setItem('budgets_' + coachId, JSON.stringify(budgets));
+}
+
+function saveBudget() {
+  const players   = val('calc-players');
+  const total     = parseFloat(document.getElementById('ct-total')?.textContent?.replace(/[$,]/g,'')) || 0;
+  const perPlayer = parseFloat(document.getElementById('ct-player-fee')?.textContent?.replace(/[$,]/g,'')) || 0;
+  if (total === 0) { alert('Please fill in the calculator before saving.'); return; }
+
+  // Collect all field values
+  const others = [];
+  document.querySelectorAll('[id^="calc-other-amt-"]').forEach(el => {
+    const idx  = el.id.replace('calc-other-amt-','');
+    const amt  = parseFloat(el.value)||0;
+    const desc = document.getElementById('calc-other-desc-'+idx)?.value.trim()||'Other';
+    if (amt > 0) others.push({ desc, amt });
+  });
+
+  const budget = {
+    id:          Date.now(),
+    date:        new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' }),
+    players:     players,
+    seasons:     val('calc-seasons'),
+    tournaments: val('calc-num-events') * val('calc-event-cost'),
+    numEvents:   val('calc-num-events'),
+    eventCost:   val('calc-event-cost'),
+    headPay:     val('calc-head-pay'),
+    asstPay:     val('calc-asst-pay'),
+    rentals:     val('calc-rentals'),
+    gas:         val('calc-gas'),
+    hotelNights: val('calc-hotel-nights'),
+    hotelAvg:    val('calc-hotel-avg'),
+    hotels:      val('calc-hotel-nights') * val('calc-hotel-avg'),
+    uniforms:    val('calc-uniforms') * val('calc-uniform-cost'),
+    numUniforms: val('calc-uniforms'),
+    uniformCost: val('calc-uniform-cost'),
+    equipment:   val('calc-equipment'),
+    insurance:   val('calc-insurance'),
+    ambassadors: 450,
+    others,
+    total,
+    perPlayer,
+  };
+
+  const budgets = getBudgets();
+  budgets.unshift(budget);
+  setBudgets(budgets);
+  renderSavedBudgets();
+
+  const btn = document.getElementById('save-budget-btn');
+  const txt = document.getElementById('save-budget-txt');
+  txt.textContent = 'Saved!';
+  btn.disabled = true;
+  setTimeout(() => { txt.textContent = 'Save Budget'; btn.disabled = false; }, 2000);
+}
+
+function deleteBudget(id) {
+  if (!confirm('Delete this saved budget?')) return;
+  const budgets = getBudgets().filter(b => b.id !== id);
+  setBudgets(budgets);
+  renderSavedBudgets();
+}
+
+function viewBudget(id) {
+  const b = getBudgets().find(x => x.id === id);
+  if (!b) return;
+  document.getElementById('bv-modal-title').textContent = 'Budget — ' + b.date;
+
+  let otherRows = b.others?.map(o =>
+    `<tr><td>${esc(o.desc)}</td><td>${fmt(o.amt)}</td></tr>`).join('') || '';
+
+  document.getElementById('bv-modal-body').innerHTML = `
+    <table class="budget-detail-table">
+      <tr><td>Date Calculated</td><td>${esc(b.date)}</td></tr>
+      <tr><td>Paying Players</td><td>${b.players||'—'}</td></tr>
+      <tr><td>Seasons</td><td>${b.seasons||'—'}</td></tr>
+      <tr><td colspan="2" style="padding:6px 12px;background:var(--light);font-family:'Oswald',sans-serif;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--sub)">Breakdown</td></tr>
+      <tr><td>Tournaments / Events (${b.numEvents||0} × $${b.eventCost||0})</td><td>${fmt(b.tournaments||0)}</td></tr>
+      <tr><td>Head Coach Pay</td><td>${fmt(b.headPay||0)}</td></tr>
+      <tr><td>Assistant Coach Pay</td><td>${fmt(b.asstPay||0)}</td></tr>
+      <tr><td>Rentals</td><td>${fmt(b.rentals||0)}</td></tr>
+      <tr><td>Hotel Costs (${b.hotelNights||0} nights × $${b.hotelAvg||0})</td><td>${fmt(b.hotels||0)}</td></tr>
+      <tr><td>Gas</td><td>${fmt(b.gas||0)}</td></tr>
+      <tr><td>Coach Uniforms (${b.numUniforms||0} × $${b.uniformCost||0})</td><td>${fmt(b.uniforms||0)}</td></tr>
+      <tr><td>Equipment</td><td>${fmt(b.equipment||0)}</td></tr>
+      <tr><td>Coach Liability Insurance</td><td>${fmt(b.insurance||0)}</td></tr>
+      <tr><td>Ambassadors Baseball</td><td>${fmt(450)}</td></tr>
+      ${otherRows}
+      <tr class="highlight"><td>Total Expenses</td><td>${fmt(b.total||0)}</td></tr>
+      <tr class="grand"><td>Player Fee (Total ÷ ${b.players||0} Players)</td><td>${fmt(b.perPlayer||0)}</td></tr>
+    </table>`;
+
+  document.getElementById('budget-view-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBudgetView() {
+  document.getElementById('budget-view-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function renderSavedBudgets() {
+  const wrap = document.getElementById('saved-budgets-wrap');
+  if (!wrap) return;
+  const budgets = getBudgets();
+  if (!budgets.length) {
+    wrap.innerHTML = '<div class="no-tryouts-dash">No budgets saved yet. Fill in the calculator and click Save Budget.</div>';
+    return;
+  }
+  wrap.innerHTML = '<div class="budget-cards-list">' + budgets.map(b => `
+    <div class="budget-card">
+      <div class="budget-card-info">
+        <div class="budget-card-date">${esc(b.date)}</div>
+        <div class="budget-card-players">${b.players||0} Paying Players</div>
+        <div class="budget-card-total">${fmt(b.total||0)} Total Expenses</div>
+        <div class="budget-card-fee">Player Fee: ${fmt(b.perPlayer||0)} / player</div>
+      </div>
+      <div class="budget-card-actions">
+        <button class="budget-view-btn" onclick="viewBudget(${b.id})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          View
+        </button>
+        <button class="budget-del-btn" onclick="deleteBudget(${b.id})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+          Delete
+        </button>
+      </div>
+    </div>`).join('') + '</div>';
+}
+
+function loadBudgetsLocal() {
+  calcUpdate();
+  renderSavedBudgets();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeBudgetView();
+});
 
 loadDashboard();
 </script>
@@ -2012,6 +2242,18 @@ loadDashboard();
       <button class="edit-cancel-btn" onclick="closeEditTryoutModal()">Cancel</button>
       <button class="edit-save-btn" id="et-save-btn" onclick="saveEditTryout()">Save Changes</button>
     </div>
+  </div>
+</div>
+<!-- BUDGET VIEW MODAL -->
+<div class="budget-view-overlay" id="budget-view-overlay">
+  <div class="budget-view-modal">
+    <div class="budget-view-head">
+      <h3 id="bv-modal-title">Budget Details</h3>
+      <button class="edit-modal-close" onclick="closeBudgetView()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="budget-view-body" id="bv-body"></div>
   </div>
 </div>
 </body>
