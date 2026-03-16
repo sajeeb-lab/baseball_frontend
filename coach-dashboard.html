@@ -2133,7 +2133,7 @@ function generatePaymentPlan(fee, deadlineStr, fromDate) {
 async function saveFinancials() {
   const fee      = parseFloat(document.getElementById('fin-fee')?.value) || 0;
   const deadline = document.getElementById('fin-deadline')?.value?.trim() || '';
-  const depAmt   = _finDepositEnabled ? (parseFloat(document.getElementById('fin-deposit-amt')?.value) || 250) : 0;
+  const depAmt   = parseFloat(document.getElementById('fin-deposit-amt')?.value) || 250;
   if (!fee) { showMsg('msg-financials', 'Please enter a player fee amount.', 'error'); return; }
   if (!deadline) { showMsg('msg-financials', 'Please select a payment deadline.', 'error'); return; }
 
