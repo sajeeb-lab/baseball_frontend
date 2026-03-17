@@ -785,7 +785,22 @@ function renderDashboard(coach){
           </div>
           <div class="form-grid-2">
             <div class="field-group"><label class="field-label">Location / Field Name</label><input class="field-input" type="text" id="t-location" placeholder="e.g. Westside Sports Complex"></div>
-            <div class="field-group"><label class="field-label">Tryout Fee</label><input class="field-input" type="text" id="t-fee" placeholder="e.g. $45 Fee or Free"></div>
+            <div class="field-group">
+              <label class="field-label">Tryout Fee</label>
+              <select class="field-select" id="t-fee-type" onchange="toggleAddFeeAmount()">
+                <option value="free">Free</option>
+                <option value="fee">Fee</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="field-group" style="display:none;" id="t-fee-amount-group">
+              <label class="field-label">Amount</label>
+              <div style="position:relative;display:flex;align-items:center;">
+                <span style="position:absolute;left:14px;font-weight:600;color:var(--text);font-size:.88rem;pointer-events:none;">$</span>
+                <input class="field-input" type="number" id="t-fee-amount" placeholder="Enter amount" style="padding-left:28px;">
+              </div>
+            </div>
           </div>
           <div class="form-grid-2">
             <div class="field-group"><label class="field-label">City</label><input class="field-input" type="text" id="t-city" placeholder="e.g. Nashville"></div>
@@ -1211,6 +1226,18 @@ function renderTryoutsList(tryouts){
     </div>`).join('')+'</div>';
 }
 
+/* ── TOGGLE ADD FEE AMOUNT ── */
+function toggleAddFeeAmount() {
+  const feeType = document.getElementById('t-fee-type').value;
+  const feeAmountGroup = document.getElementById('t-fee-amount-group');
+  if (feeType === 'fee') {
+    feeAmountGroup.style.display = 'flex';
+  } else {
+    feeAmountGroup.style.display = 'none';
+    document.getElementById('t-fee-amount').value = '';
+  }
+}
+
 /* ── COMBINE TIME ── */
 function combineTime() {
   const start = document.getElementById('t-time-start').value.trim();
@@ -1227,17 +1254,28 @@ async function addTryout(){
   const date=document.getElementById('t-date').value.trim();
   const time=document.getElementById('t-time').value.trim();
   const location=document.getElementById('t-location').value.trim();
-  const fee=document.getElementById('t-fee').value.trim();
+  const feeType=document.getElementById('t-fee-type').value;
+  const feeAmount=document.getElementById('t-fee-amount').value.trim();
   const city=document.getElementById('t-city').value.trim();
   const state=document.getElementById('t-state').value.trim().toUpperCase();
+  
   if(!date||!time||!location){ showMsg('msg-tryout-add','Please fill in date, time and location.','error'); return; }
-  if(!fee) { document.getElementById('t-fee').value='Free'; }
+  
+  let fee = 'Free';
+  if (feeType === 'fee') {
+    if (!feeAmount) { showMsg('msg-tryout-add','Please enter a fee amount.','error'); return; }
+    fee = `$${feeAmount} Fee`;
+  }
+  
   setLoading('add-tryout-btn','add-tryout-txt',true);
   try {
     const res=await fetch(`${API_BASE}/api/coach/tryouts`,{method:'POST',headers:authH(),body:JSON.stringify({date,time,location,fee,city,state})});
     const data=await res.json();
     if(!res.ok) throw new Error(data.message||'Failed');
-    ['t-date','t-time','t-location','t-fee','t-city','t-state'].forEach(id=>{ document.getElementById(id).value=''; });
+    ['t-date','t-time','t-location','t-city','t-state'].forEach(id=>{ document.getElementById(id).value=''; });
+    document.getElementById('t-fee-type').value = 'free';
+    document.getElementById('t-fee-amount').value = '';
+    document.getElementById('t-fee-amount-group').style.display = 'none';
     document.getElementById('t-time-start')._flatpickr?.clear();
     document.getElementById('t-time-end')._flatpickr?.clear();
     showMsg('msg-tryout-add','Tryout added!','success');
