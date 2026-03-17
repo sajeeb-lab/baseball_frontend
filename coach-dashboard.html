@@ -1658,6 +1658,8 @@ function openEditPlayer(id) {
   document.getElementById('ep-city').value     = p.city     || '';
   document.getElementById('ep-state').value    = p.state    || '';
   document.getElementById('ep-position').value = p.position || '';
+  document.getElementById('ep-email').value    = p.email    || '';
+  document.getElementById('ep-cell').value     = p.cell     || '';
   document.getElementById('edit-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1679,6 +1681,8 @@ async function saveEditPlayer() {
     hw:       document.getElementById('ep-hw').value.trim(),
     city:     document.getElementById('ep-city').value.trim(),
     state:    document.getElementById('ep-state').value.trim(),
+    email:    document.getElementById('ep-email').value.trim(),
+    cell:     document.getElementById('ep-cell').value.trim(),
   };
   if (!payload.name) { alert('Player name is required'); return; }
   const btn = document.getElementById('ep-save-btn');
@@ -3005,6 +3009,14 @@ loadDashboard();
         <div class="field-group">
           <label class="field-label">State</label>
           <input class="field-input" type="text" id="ep-state" placeholder="e.g. TN" maxlength="2">
+        </div>
+        <div class="field-group" style="grid-column:1/-1">
+          <label class="field-label">Email</label>
+          <input class="field-input" type="email" id="ep-email" placeholder="email@example.com">
+        </div>
+        <div class="field-group" style="grid-column:1/-1">
+          <label class="field-label">Cell Phone</label>
+          <input class="field-input" type="tel" id="ep-cell" placeholder="(000) 000-0000">
         </div>
       </div>
     </div>
