@@ -6,6 +6,7 @@
 <title>Team Details – Ambassadors Baseball</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
 <style>
 :root {
   --navy:  #0a1628;
@@ -283,6 +284,18 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
 #tr-dob:valid {
   color: var(--text);
 }
+
+/* Flatpickr styling */
+.flatpickr-calendar { font-family: 'Open Sans', sans-serif; }
+.flatpickr-day.selected, .flatpickr-day.selected:hover { background: var(--navy); border-color: var(--navy); }
+.flatpickr-day:hover { background: var(--light); }
+.flatpickr-months .flatpickr-month { background: var(--navy); color: var(--white); }
+.flatpickr-current-month .flatpickr-monthDropdown-months { background: var(--navy); color: var(--white); }
+.flatpickr-weekday { color: var(--navy); font-weight: 600; }
+.flatpickr-prev-month svg, .flatpickr-next-month svg { fill: var(--white); }
+.flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: var(--red); }
+.flatpickr-input { cursor: pointer !important; }
+
 /* RESPONSIVE */
 @media (max-width: 820px) {
   .coaches-inner { grid-template-columns: 1fr; }
@@ -495,7 +508,7 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
       <div class="tr-grid">
         <div class="tr-field span2"><label class="tr-label">Player Name</label><input class="tr-input" type="text" placeholder="Full Name" id="tr-player-name"></div>
         <div class="tr-field"><label class="tr-label">Age</label><input class="tr-input" type="number" placeholder="e.g. 16" id="tr-age" min="5" max="25"></div>
-        <div class="tr-field"><label class="tr-label">Date of Birth</label><input class="tr-input" type="date" id="tr-dob" onfocus="this.showPicker && this.showPicker()"></div>
+        <div class="tr-field"><label class="tr-label">Date of Birth</label><input class="tr-input flatpickr" type="text" id="tr-dob" placeholder="Select date"></div>
         <div class="tr-field"><label class="tr-label">Height / Weight</label><input class="tr-input" type="text" placeholder="e.g. 6'0 / 185lb" id="tr-hw"></div>
         <div class="tr-field"></div>
         <div class="tr-field">
@@ -1220,29 +1233,13 @@ function openTryoutModal(dateLabel) {
   trOverlay.classList.add('open');
   document.body.style.overflow = 'hidden';
   
-  // Attach date input blocker and calendar opener AFTER modal opens
+  // Initialize Flatpickr on date field AFTER modal opens
   setTimeout(() => {
-    const dobInput = document.getElementById('tr-dob');
-    if (dobInput) {
-      // Open calendar on focus
-      dobInput.addEventListener('focus', function() {
-        if (this.showPicker) this.showPicker();
-      });
-      // Block any keyboard input
-      dobInput.addEventListener('keydown', (e) => {
-        if (e.key !== 'Tab' && e.key !== 'Escape') {
-          e.preventDefault();
-        }
-      });
-      // Block paste
-      dobInput.addEventListener('paste', (e) => {
-        e.preventDefault();
-      });
-      // Force calendar to open on click
-      dobInput.addEventListener('click', function() {
-        if (this.showPicker) this.showPicker();
-      });
-    }
+    flatpickr('#tr-dob', {
+      dateFormat: 'F j, Y',
+      allowInput: false,
+      disableMobile: true
+    });
   }, 50);
 }
 
@@ -1478,4 +1475,5 @@ loadTeam();
   </div>
 
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
 </html>
