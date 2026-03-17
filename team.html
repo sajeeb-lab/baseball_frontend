@@ -508,7 +508,7 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
       <div class="tr-grid">
         <div class="tr-field span2"><label class="tr-label">Player Name</label><input class="tr-input" type="text" placeholder="Full Name" id="tr-player-name"></div>
         <div class="tr-field"><label class="tr-label">Age</label><input class="tr-input" type="number" placeholder="e.g. 16" id="tr-age" min="5" max="25"></div>
-        <div class="tr-field"><label class="tr-label">Date of Birth</label><input class="tr-input flatpickr" type="text" id="tr-dob" placeholder="Select date"></div>
+        <div class="tr-field"><label class="tr-label">Date of Birth</label><input class="tr-input flatpickr" type="text" id="tr-dob" placeholder="dd/mm/yyyy"></div>
         <div class="tr-field"><label class="tr-label">Height / Weight</label><input class="tr-input" type="text" placeholder="e.g. 6'0 / 185lb" id="tr-hw"></div>
         <div class="tr-field"></div>
         <div class="tr-field">
@@ -1236,7 +1236,7 @@ function openTryoutModal(dateLabel) {
   // Initialize Flatpickr on date field AFTER modal opens
   setTimeout(() => {
     flatpickr('#tr-dob', {
-      dateFormat: 'F j, Y',
+      dateFormat: 'd/m/Y',
       allowInput: false,
       disableMobile: true
     });
