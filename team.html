@@ -348,7 +348,7 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
         <table class="schedule-table">
           <thead>
             <tr>
-              <th data-col="0">Date <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
+              <th data-col="0">Date Range <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
               <th data-col="1">Event Name <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
               <th data-col="2">City <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
               <th data-col="3">State <span class="sort-icon"><span class="up"></span><span class="down"></span></span></th>
@@ -643,13 +643,18 @@ function schRender() {
   const visible = schFiltered.slice(start, end);
 
   body.innerHTML = visible.length
-    ? visible.map(r => `
+    ? visible.map(r => {
+        const dateRange = r.startDate === r.endDate 
+          ? esc(r.startDate) 
+          : `${esc(r.startDate)} - ${esc(r.endDate)}`;
+        return `
         <tr>
-          <td>${esc(r.date)}</td>
+          <td>${dateRange}</td>
           <td>${esc(r.event)}</td>
           <td>${esc(r.city)}</td>
           <td>${esc(r.state)}</td>
-        </tr>`).join('')
+        </tr>`;
+      }).join('')
     : `<tr><td colspan="4"><div class="no-schedule-rows">No schedule data available for this team.</div></td></tr>`;
 
   info.textContent = total === 0
@@ -668,7 +673,8 @@ document.getElementById('sch-search').addEventListener('input', function () {
   const q = this.value.trim().toLowerCase();
   schFiltered = q
     ? schSource.filter(r =>
-        r.date.toLowerCase().includes(q)  || r.event.toLowerCase().includes(q) ||
+        (r.startDate + ' ' + r.endDate).toLowerCase().includes(q) || 
+        r.event.toLowerCase().includes(q) ||
         r.city.toLowerCase().includes(q)  || r.state.toLowerCase().includes(q))
     : [...schSource];
   schPage = 0; schRender();
@@ -680,7 +686,7 @@ document.querySelectorAll('.schedule-table thead th').forEach(th => {
     const col  = parseInt(th.dataset.col);
     if (schSortCol === col) schSortDir = schSortDir === 'asc' ? 'desc' : 'asc';
     else { schSortCol = col; schSortDir = 'asc'; }
-    const keys = ['date', 'event', 'city', 'state'];
+    const keys = ['startDate', 'event', 'city', 'state'];
     schSource.sort((a, b) => {
       const av = a[keys[col]].toLowerCase(), bv = b[keys[col]].toLowerCase();
       return schSortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
@@ -816,11 +822,12 @@ async function loadTeamSchedule(coachId) {
     const res  = await fetch(`${API_BASE}/api/teams/${coachId}/schedule`);
     const data = await res.json();
     schSource   = (data.schedule || []).map(g => ({
-      date:  g.date  || '',
-      event: g.event || '',
-      city:  g.city  || '',
-      state: g.state || '',
-      result: g.result || ''
+      startDate: g.startDate || '',
+      endDate:   g.endDate   || '',
+      event:     g.event     || '',
+      city:      g.city      || '',
+      state:     g.state     || '',
+      result:    g.result    || ''
     }));
     schFiltered = [...schSource];
     schRender();
