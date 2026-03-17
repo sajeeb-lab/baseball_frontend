@@ -2751,7 +2751,7 @@ async function saveBudget() {
     uniforms:    val('calc-uniforms') * val('calc-uniform-cost'),
     equipment:   val('calc-equipment'),
     insurance:   val('calc-insurance'),
-    ambassadors: 450,
+    ambassadors: 450 * val('calc-players'),
     others,
     total,
     perPlayer,
@@ -2828,7 +2828,7 @@ function viewBudget(id) {
       <tr><td>Coach Uniforms (${b.num_uniforms||0} × $${b.uniform_cost||0})</td><td>${fmt(b.uniforms||0)}</td></tr>
       <tr><td>Equipment</td><td>${fmt(b.equipment||0)}</td></tr>
       <tr><td>Coach Liability Insurance</td><td>${fmt(b.insurance||0)}</td></tr>
-      <tr><td>Ambassadors Baseball</td><td>${fmt(450)}</td></tr>
+      <tr><td>Ambassadors Baseball</td><td>${fmt(b.ambassadors||0)}</td></tr>
       ${otherRows}
       <tr class="highlight"><td>Total Expenses</td><td>${fmt(b.total||0)}</td></tr>
       <tr class="grand"><td>Player Fee (Total ÷ ${b.players||0} Players)</td><td>${fmt(b.per_player||0)}</td></tr>
@@ -2927,7 +2927,7 @@ async function saveEditBudget() {
     uniforms:    parseInt(document.getElementById('eb-uniforms').value) * parseFloat(document.getElementById('eb-uniform-cost').value) || 0,
     equipment:   parseFloat(document.getElementById('eb-equipment').value) || 0,
     insurance:   parseFloat(document.getElementById('eb-insurance').value) || 0,
-    ambassadors: 450
+    ambassadors: 450 * (parseInt(document.getElementById('eb-players').value) || 0)
   };
   
   // Calculate total and per player
