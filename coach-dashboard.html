@@ -1066,7 +1066,7 @@ function renderDashboard(coach){
             <div class="calc-total-row"><span class="calc-total-label">Coach Uniforms</span><span class="calc-total-value" id="ct-uniforms">$0.00</span></div>
             <div class="calc-total-row"><span class="calc-total-label">Equipment</span><span class="calc-total-value" id="ct-equipment">$0.00</span></div>
             <div class="calc-total-row"><span class="calc-total-label">Coach Liability Insurance</span><span class="calc-total-value" id="ct-insurance">$0.00</span></div>
-            <div class="calc-total-row"><span class="calc-total-label">Ambassadors Baseball <span style="font-size:.6rem;opacity:.6;font-family:'Open Sans',sans-serif;font-weight:400">(fixed)</span></span><span class="calc-total-value" id="ct-ambassadors">$450.00</span></div>
+            <div class="calc-total-row"><span class="calc-total-label">Ambassadors Baseball <span style="font-size:.75rem;opacity:.7;font-weight:400">($450 × Players)</span></span><span class="calc-total-value" id="ct-ambassadors">$0.00</span></div>
             <div id="ct-other-rows"></div>
             <div class="calc-total-row highlight"><span class="calc-total-label">Total Expenses</span><span class="calc-total-value" id="ct-total">$0.00</span></div>
             <div class="calc-total-row grand"><span class="calc-total-label">Player Fee (Total Expenses &divide; Paying Players)</span><span class="calc-total-value" id="ct-player-fee">$0.00</span></div>
@@ -2660,7 +2660,7 @@ function calcUpdate() {
   const uniforms    = val('calc-uniforms') * val('calc-uniform-cost');
   const equipment   = val('calc-equipment');
   const insurance   = val('calc-insurance');
-  const ambassadors = 450; // Fixed Ambassadors Baseball fee
+  const ambassadors = 450 * val('calc-players'); // Ambassadors Baseball fee (per player)
 
   // Other expenses
   let otherTotal = 0;
