@@ -369,6 +369,14 @@ input[type="file"].hidden-file{display:none}
 </div>
 <script>
 'use strict';
+
+// Prevent scroll wheel from changing number inputs
+document.addEventListener('wheel', (e) => {
+  if (e.target.type === 'number') {
+    e.preventDefault();
+  }
+}, { passive: false });
+
 const API_BASE = 'https://backend-baseball-inky.vercel.app';
 
 const token = localStorage.getItem('coach_token');
@@ -2841,6 +2849,19 @@ function closeBudgetView() {
   document.body.style.overflow = '';
 }
 
+function addOtherExpenseField() {
+  const wrap = document.getElementById('eb-other-expenses-wrap');
+  if (!wrap) return;
+  const idx = Date.now(); // Use timestamp as unique ID
+  const newField = document.createElement('div');
+  newField.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:.8rem';
+  newField.innerHTML = `
+    <div class="field-group"><label class="field-label">Description</label><input class="field-input eb-other-desc" data-idx="${idx}" type="text" placeholder="e.g. Travel Permits"></div>
+    <div class="field-group"><label class="field-label">Amount</label><div style="position:relative"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none">$</span><input class="field-input eb-other-amt" type="number" data-idx="${idx}" min="0" style="padding-left:26px"></div></div>
+  `;
+  wrap.appendChild(newField);
+}
+
 let _editingBudgetId = null;
 
 function openEditBudget(id) {
@@ -2894,6 +2915,22 @@ function openEditBudget(id) {
       <div class="field-group"><label class="field-label">Equipment (Balls, Fungo, etc.)</label><div style="position:relative"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none">$</span><input class="field-input" type="number" id="eb-equipment" value="${b.equipment || ''}" min="0" style="padding-left:26px"></div></div>
       <div class="field-group"><label class="field-label">Coach Liability Insurance</label><div style="position:relative"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none">$</span><input class="field-input" type="number" id="eb-insurance" value="${b.insurance || ''}" min="0" style="padding-left:26px"></div></div>
     </div>
+    <hr class="calc-divider">
+    <div style="font-family:'Oswald',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);margin-bottom:.8rem">Other Expenses</div>
+    <div id="eb-other-expenses-wrap">
+      ${(b.others || []).map((o, idx) => `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:.8rem">
+          <div class="field-group"><label class="field-label">Description</label><input class="field-input" type="text" class="eb-other-desc" data-idx="${idx}" value="${esc(o.desc || 'Other')}" placeholder="e.g. Travel Permits"></div>
+          <div class="field-group"><label class="field-label">Amount</label><div style="position:relative"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none">$</span><input class="field-input eb-other-amt" type="number" data-idx="${idx}" value="${o.amt || ''}" min="0" style="padding-left:26px"></div></div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="display:flex;gap:.75rem;margin-top:.8rem">
+      <button class="calc-reset-btn" onclick="addOtherExpenseField()" style="margin-top:0;padding:.5rem .8rem;font-size:.75rem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Other Expense
+      </button>
+    </div>
     <div style="display:flex;gap:.75rem;margin-top:1.4rem;flex-wrap:wrap">
       <button class="save-btn" onclick="saveEditBudget()" style="margin-top:0">
         <span>Save Changes</span>
@@ -2929,10 +2966,22 @@ async function saveEditBudget() {
     ambassadors: 450 * (parseInt(document.getElementById('eb-players').value) || 0)
   };
   
+  // Capture other expenses
+  const others = [];
+  document.querySelectorAll('.eb-other-desc').forEach(el => {
+    const idx = el.getAttribute('data-idx');
+    const desc = el.value.trim() || 'Other';
+    const amtEl = document.querySelector(`.eb-other-amt[data-idx="${idx}"]`);
+    const amt = parseFloat(amtEl?.value) || 0;
+    if (amt > 0) others.push({ desc, amt });
+  });
+  payload.others = others;
+  
   // Calculate total and per player
+  let otherTotal = others.reduce((sum, o) => sum + o.amt, 0);
   payload.total = payload.tournaments + payload.headPay + payload.asstPay + payload.rentals + 
                   payload.gas + payload.hotels + payload.uniforms + payload.equipment + 
-                  payload.insurance + payload.ambassadors;
+                  payload.insurance + payload.ambassadors + otherTotal;
   payload.perPlayer = payload.players > 0 ? payload.total / payload.players : 0;
   
   try {
