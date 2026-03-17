@@ -171,6 +171,9 @@ input[type="file"].hidden-file{display:none}
 .calc-input{border:1.5px solid var(--mid);border-radius:8px;padding:10px 14px;font-size:.88rem;font-family:'Open Sans',sans-serif;color:var(--text);background:var(--white);outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
 .calc-input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(200,16,46,.08)}
 .calc-input[readonly]{background:var(--light);color:var(--navy);font-weight:700;cursor:default}
+/* Hide number input spinner buttons */
+.calc-input::-webkit-outer-spin-button,.calc-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.calc-input[type="number"]{-moz-appearance:textfield}
 .calc-prefix{position:relative}
 .calc-prefix::before{content:'$';position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none}
 .calc-prefix .calc-input{padding-left:24px}
@@ -787,18 +790,11 @@ function renderDashboard(coach){
             <div class="field-group"><label class="field-label">Location / Field Name</label><input class="field-input" type="text" id="t-location" placeholder="e.g. Westside Sports Complex"></div>
             <div class="field-group">
               <label class="field-label">Tryout Fee</label>
-              <select class="field-select" id="t-fee-type" onchange="toggleAddFeeAmount()">
-                <option value="free">Free</option>
-                <option value="fee">Fee</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-grid-2">
-            <div class="field-group" style="display:none;" id="t-fee-amount-group">
-              <label class="field-label">Amount</label>
-              <div style="position:relative;display:flex;align-items:center;">
-                <span style="position:absolute;left:14px;font-weight:600;color:var(--text);font-size:.88rem;pointer-events:none;">$</span>
-                <input class="field-input" type="number" id="t-fee-amount" placeholder="Enter amount" style="padding-left:28px;">
+              <div id="t-fee-container">
+                <select class="field-select" id="t-fee-type" onchange="toggleAddFeeAmount()">
+                  <option value="free">Free</option>
+                  <option value="fee">Fee</option>
+                </select>
               </div>
             </div>
           </div>
@@ -1229,12 +1225,24 @@ function renderTryoutsList(tryouts){
 /* ── TOGGLE ADD FEE AMOUNT ── */
 function toggleAddFeeAmount() {
   const feeType = document.getElementById('t-fee-type').value;
-  const feeAmountGroup = document.getElementById('t-fee-amount-group');
+  const container = document.getElementById('t-fee-container');
+  
   if (feeType === 'fee') {
-    feeAmountGroup.style.display = 'flex';
+    // Replace with amount input
+    container.innerHTML = `
+      <div style="position:relative;display:flex;align-items:center;">
+        <span style="position:absolute;left:14px;font-weight:600;color:var(--text);font-size:.88rem;pointer-events:none;">$</span>
+        <input class="field-input" type="number" id="t-fee-amount" placeholder="Enter amount" style="padding-left:28px;">
+      </div>
+    `;
   } else {
-    feeAmountGroup.style.display = 'none';
-    document.getElementById('t-fee-amount').value = '';
+    // Replace with dropdown
+    container.innerHTML = `
+      <select class="field-select" id="t-fee-type" onchange="toggleAddFeeAmount()">
+        <option value="free">Free</option>
+        <option value="fee">Fee</option>
+      </select>
+    `;
   }
 }
 
@@ -1254,17 +1262,26 @@ async function addTryout(){
   const date=document.getElementById('t-date').value.trim();
   const time=document.getElementById('t-time').value.trim();
   const location=document.getElementById('t-location').value.trim();
-  const feeType=document.getElementById('t-fee-type').value;
-  const feeAmount=document.getElementById('t-fee-amount').value.trim();
   const city=document.getElementById('t-city').value.trim();
   const state=document.getElementById('t-state').value.trim().toUpperCase();
   
   if(!date||!time||!location){ showMsg('msg-tryout-add','Please fill in date, time and location.','error'); return; }
   
+  // Get fee - check if it's the dropdown or the input
   let fee = 'Free';
-  if (feeType === 'fee') {
-    if (!feeAmount) { showMsg('msg-tryout-add','Please enter a fee amount.','error'); return; }
-    fee = `$${feeAmount} Fee`;
+  const feeDropdown = document.getElementById('t-fee-type');
+  const feeAmountInput = document.getElementById('t-fee-amount');
+  
+  if (feeDropdown && feeDropdown.value === 'fee') {
+    if (!feeAmountInput || !feeAmountInput.value.trim()) { 
+      showMsg('msg-tryout-add','Please enter a fee amount.','error'); 
+      return; 
+    }
+    fee = `$${feeAmountInput.value.trim()} Fee`;
+  } else if (feeAmountInput) {
+    // If amount input exists without dropdown, use its value
+    const amount = feeAmountInput.value.trim();
+    if (amount) fee = `$${amount} Fee`;
   }
   
   setLoading('add-tryout-btn','add-tryout-txt',true);
@@ -1273,9 +1290,13 @@ async function addTryout(){
     const data=await res.json();
     if(!res.ok) throw new Error(data.message||'Failed');
     ['t-date','t-time','t-location','t-city','t-state'].forEach(id=>{ document.getElementById(id).value=''; });
-    document.getElementById('t-fee-type').value = 'free';
-    document.getElementById('t-fee-amount').value = '';
-    document.getElementById('t-fee-amount-group').style.display = 'none';
+    // Reset fee field
+    document.getElementById('t-fee-container').innerHTML = `
+      <select class="field-select" id="t-fee-type" onchange="toggleAddFeeAmount()">
+        <option value="free">Free</option>
+        <option value="fee">Fee</option>
+      </select>
+    `;
     document.getElementById('t-time-start')._flatpickr?.clear();
     document.getElementById('t-time-end')._flatpickr?.clear();
     showMsg('msg-tryout-add','Tryout added!','success');
@@ -1306,9 +1327,23 @@ function openEditTryout(id) {
     if (match) feeAmount = match[1];
   }
   
-  document.getElementById('et-fee-type').value = feeType;
-  document.getElementById('et-fee-amount').value = feeAmount;
-  toggleFeeAmount();
+  // Initialize fee container based on type
+  const feeContainer = document.getElementById('et-fee-container');
+  if (feeType === 'fee') {
+    feeContainer.innerHTML = `
+      <div style="position:relative;display:flex;align-items:center;">
+        <span style="position:absolute;left:14px;font-weight:600;color:var(--text);font-size:.88rem;pointer-events:none;">$</span>
+        <input class="field-input" type="number" id="et-fee-amount" placeholder="Enter amount" style="padding-left:28px;" value="${feeAmount}">
+      </div>
+    `;
+  } else {
+    feeContainer.innerHTML = `
+      <select class="field-select" id="et-fee-type" onchange="toggleFeeAmount()">
+        <option value="free">Free</option>
+        <option value="fee">Fee</option>
+      </select>
+    `;
+  }
   
   document.getElementById('et-city').value     = t.city     || '';
   document.getElementById('et-state').value    = t.state    || '';
@@ -1346,12 +1381,24 @@ function combineEditTime() {
 
 function toggleFeeAmount() {
   const feeType = document.getElementById('et-fee-type').value;
-  const feeAmountGroup = document.getElementById('et-fee-amount-group');
+  const container = document.getElementById('et-fee-container');
+  
   if (feeType === 'fee') {
-    feeAmountGroup.style.display = 'flex';
+    // Replace with amount input
+    container.innerHTML = `
+      <div style="position:relative;display:flex;align-items:center;">
+        <span style="position:absolute;left:14px;font-weight:600;color:var(--text);font-size:.88rem;pointer-events:none;">$</span>
+        <input class="field-input" type="number" id="et-fee-amount" placeholder="Enter amount" style="padding-left:28px;">
+      </div>
+    `;
   } else {
-    feeAmountGroup.style.display = 'none';
-    document.getElementById('et-fee-amount').value = '';
+    // Replace with dropdown
+    container.innerHTML = `
+      <select class="field-select" id="et-fee-type" onchange="toggleFeeAmount()">
+        <option value="free">Free</option>
+        <option value="fee">Fee</option>
+      </select>
+    `;
   }
 }
 
@@ -1367,16 +1414,25 @@ async function saveEditTryout() {
   const date     = document.getElementById('et-date').value.trim();
   const time     = document.getElementById('et-time').value.trim();
   const location = document.getElementById('et-location').value.trim();
-  const feeType  = document.getElementById('et-fee-type').value;
-  const feeAmount = document.getElementById('et-fee-amount').value.trim();
   const city     = document.getElementById('et-city').value.trim();
   const state    = document.getElementById('et-state').value.trim().toUpperCase();
   if (!date || !time || !location) { alert('Date, time and location are required.'); return; }
   
+  // Get fee - check if it's the dropdown or the input
   let fee = 'Free';
-  if (feeType === 'fee') {
-    if (!feeAmount) { alert('Please enter a fee amount.'); return; }
-    fee = `$${feeAmount} Fee`;
+  const feeDropdown = document.getElementById('et-fee-type');
+  const feeAmountInput = document.getElementById('et-fee-amount');
+  
+  if (feeDropdown && feeDropdown.value === 'fee') {
+    if (!feeAmountInput || !feeAmountInput.value.trim()) { 
+      alert('Please enter a fee amount.'); 
+      return; 
+    }
+    fee = `$${feeAmountInput.value.trim()} Fee`;
+  } else if (feeAmountInput) {
+    // If amount input exists without dropdown, use its value
+    const amount = feeAmountInput.value.trim();
+    if (amount) fee = `$${amount} Fee`;
   }
   
   const btn = document.getElementById('et-save-btn');
@@ -2959,16 +3015,11 @@ loadDashboard();
         </div>
         <div class="field-group" style="grid-column:1/-1">
           <label class="field-label">Tryout Fee</label>
-          <select class="field-select" id="et-fee-type" onchange="toggleFeeAmount()">
-            <option value="free">Free</option>
-            <option value="fee">Fee</option>
-          </select>
-        </div>
-        <div class="field-group" style="grid-column:1/-1;display:none;" id="et-fee-amount-group">
-          <label class="field-label">Amount</label>
-          <div style="position:relative;display:flex;align-items:center;">
-            <span style="position:absolute;left:14px;font-weight:600;color:var(--text);font-size:.88rem;pointer-events:none;">$</span>
-            <input class="field-input" type="number" id="et-fee-amount" placeholder="Enter amount" style="padding-left:28px;">
+          <div id="et-fee-container">
+            <select class="field-select" id="et-fee-type" onchange="toggleFeeAmount()">
+              <option value="free">Free</option>
+              <option value="fee">Fee</option>
+            </select>
           </div>
         </div>
         <div class="field-group">
