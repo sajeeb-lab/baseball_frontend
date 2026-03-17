@@ -1106,6 +1106,61 @@ function renderDashboard(coach){
           </div>
         </div>
       </div>
+
+      <!-- EDIT BUDGET MODAL -->
+      <div class="edit-overlay" id="edit-budget-overlay">
+        <div class="edit-modal" style="max-width:900px">
+          <div class="edit-modal-head">
+            <h3>Edit Budget</h3>
+            <button class="edit-modal-close" onclick="closeEditBudgetModal()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="edit-modal-body" style="max-height:70vh;overflow-y:auto">
+            <input type="hidden" id="edit-budget-id">
+            <div class="form-grid-2">
+              <div class="field-group"><label class="field-label">Number of Paying Players</label><input class="field-input" type="number" id="eb-players" min="0"></div>
+              <div class="field-group"><label class="field-label"># of Seasons</label><input class="field-input" type="number" id="eb-seasons" min="0"></div>
+            </div>
+            <hr class="calc-divider">
+            <div style="font-family:'Oswald',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);margin-bottom:.8rem">Tournaments / Events</div>
+            <div class="form-grid-2">
+              <div class="field-group"><label class="field-label">Number of Events</label><input class="field-input" type="number" id="eb-num-events" min="0"></div>
+              <div class="field-group"><label class="field-label">Average Cost per Event</label><div style="position:relative"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none">$</span><input class="field-input" type="number" id="eb-event-cost" min="0" style="padding-left:26px"></div></div>
+            </div>
+            <hr class="calc-divider">
+            <div style="font-family:'Oswald',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);margin-bottom:.8rem">Coaching Costs</div>
+            <div class="form-grid-2">
+              <div class="field-group"><label class="field-label">Head Coach Pay</label><div style="position:relative"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none">$</span><input class="field-input" type="number" id="eb-head-pay" min="0" style="padding-left:26px"></div></div>
+              <div class="field-group"><label class="field-label">Assistant Coach Pay</label><div style="position:relative"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none">$</span><input class="field-input" type="number" id="eb-asst-pay" min="0" style="padding-left:26px"></div></div>
+            </div>
+            <hr class="calc-divider">
+            <div style="font-family:'Oswald',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);margin-bottom:.8rem">Travel & Accommodations</div>
+            <div class="form-grid-2">
+              <div class="field-group"><label class="field-label">Rentals</label><div style="position:relative"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none">$</span><input class="field-input" type="number" id="eb-rentals" min="0" style="padding-left:26px"></div></div>
+              <div class="field-group"><label class="field-label">Gas</label><div style="position:relative"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none">$</span><input class="field-input" type="number" id="eb-gas" min="0" style="padding-left:26px"></div></div>
+            </div>
+            <div class="form-grid-2" style="margin-top:.85rem">
+              <div class="field-group"><label class="field-label">Nights of Hotels</label><input class="field-input" type="number" id="eb-hotel-nights" min="0"></div>
+              <div class="field-group"><label class="field-label">Average Hotel Cost per Night</label><div style="position:relative"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none">$</span><input class="field-input" type="number" id="eb-hotel-avg" min="0" style="padding-left:26px"></div></div>
+            </div>
+            <hr class="calc-divider">
+            <div style="font-family:'Oswald',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);margin-bottom:.8rem">Equipment & Misc</div>
+            <div class="form-grid-2">
+              <div class="field-group"><label class="field-label">No. of Coach Uniforms</label><input class="field-input" type="number" id="eb-uniforms" min="0"></div>
+              <div class="field-group"><label class="field-label">Uniform Cost Each</label><div style="position:relative"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none">$</span><input class="field-input" type="number" id="eb-uniform-cost" min="0" style="padding-left:26px"></div></div>
+            </div>
+            <div class="form-grid-2" style="margin-top:.85rem">
+              <div class="field-group"><label class="field-label">Equipment (Balls, Fungo, etc.)</label><div style="position:relative"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none">$</span><input class="field-input" type="number" id="eb-equipment" min="0" style="padding-left:26px"></div></div>
+              <div class="field-group"><label class="field-label">Coach Liability Insurance</label><div style="position:relative"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none">$</span><input class="field-input" type="number" id="eb-insurance" min="0" style="padding-left:26px"></div></div>
+            </div>
+          </div>
+          <div class="edit-modal-foot">
+            <button class="edit-cancel-btn" onclick="closeEditBudgetModal()">Cancel</button>
+            <button class="edit-save-btn" id="save-edit-budget-btn" onclick="saveEditBudget()">Save Changes</button>
+          </div>
+        </div>
+      </div>
     </div>
 
   `;
@@ -2803,6 +2858,89 @@ function closeBudgetView() {
   document.body.style.overflow = '';
 }
 
+let _editingBudgetId = null;
+
+function openEditBudgetModal(id) {
+  const b = _savedBudgets.find(x => x.id === id);
+  if (!b) return;
+  
+  _editingBudgetId = id;
+  document.getElementById('edit-budget-id').value = id;
+  
+  // Populate form fields from budget data
+  document.getElementById('eb-players').value = b.players || '';
+  document.getElementById('eb-seasons').value = b.seasons || '';
+  document.getElementById('eb-num-events').value = b.numEvents || b.num_events || '';
+  document.getElementById('eb-event-cost').value = b.eventCost || b.event_cost || '';
+  document.getElementById('eb-head-pay').value = b.headPay || b.head_pay || '';
+  document.getElementById('eb-asst-pay').value = b.asstPay || b.asst_pay || '';
+  document.getElementById('eb-rentals').value = b.rentals || '';
+  document.getElementById('eb-gas').value = b.gas || '';
+  document.getElementById('eb-hotel-nights').value = b.hotelNights || b.hotel_nights || '';
+  document.getElementById('eb-hotel-avg').value = b.hotelAvg || b.hotel_avg || '';
+  document.getElementById('eb-uniforms').value = b.numUniforms || b.num_uniforms || '';
+  document.getElementById('eb-uniform-cost').value = b.uniformCost || b.uniform_cost || '';
+  document.getElementById('eb-equipment').value = b.equipment || '';
+  document.getElementById('eb-insurance').value = b.insurance || '';
+  
+  document.getElementById('edit-budget-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeEditBudgetModal() {
+  document.getElementById('edit-budget-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  _editingBudgetId = null;
+}
+
+async function saveEditBudget() {
+  if (!_editingBudgetId) return;
+  
+  const payload = {
+    players:     parseInt(document.getElementById('eb-players').value) || 0,
+    seasons:     parseInt(document.getElementById('eb-seasons').value) || 0,
+    numEvents:   parseInt(document.getElementById('eb-num-events').value) || 0,
+    eventCost:   parseFloat(document.getElementById('eb-event-cost').value) || 0,
+    tournaments: parseInt(document.getElementById('eb-num-events').value) * parseFloat(document.getElementById('eb-event-cost').value) || 0,
+    headPay:     parseFloat(document.getElementById('eb-head-pay').value) || 0,
+    asstPay:     parseFloat(document.getElementById('eb-asst-pay').value) || 0,
+    rentals:     parseFloat(document.getElementById('eb-rentals').value) || 0,
+    gas:         parseFloat(document.getElementById('eb-gas').value) || 0,
+    hotelNights: parseInt(document.getElementById('eb-hotel-nights').value) || 0,
+    hotelAvg:    parseFloat(document.getElementById('eb-hotel-avg').value) || 0,
+    hotels:      parseInt(document.getElementById('eb-hotel-nights').value) * parseFloat(document.getElementById('eb-hotel-avg').value) || 0,
+    numUniforms: parseInt(document.getElementById('eb-uniforms').value) || 0,
+    uniformCost: parseFloat(document.getElementById('eb-uniform-cost').value) || 0,
+    uniforms:    parseInt(document.getElementById('eb-uniforms').value) * parseFloat(document.getElementById('eb-uniform-cost').value) || 0,
+    equipment:   parseFloat(document.getElementById('eb-equipment').value) || 0,
+    insurance:   parseFloat(document.getElementById('eb-insurance').value) || 0,
+    ambassadors: 450
+  };
+  
+  // Calculate total and per player
+  payload.total = payload.tournaments + payload.headPay + payload.asstPay + payload.rentals + 
+                  payload.gas + payload.hotels + payload.uniforms + payload.equipment + 
+                  payload.insurance + payload.ambassadors;
+  payload.perPlayer = payload.players > 0 ? payload.total / payload.players : 0;
+  
+  const btn = document.getElementById('save-edit-budget-btn');
+  btn.textContent = 'Saving…'; btn.disabled = true;
+  
+  try {
+    const res = await fetch(`${API_BASE}/api/coach/budgets/${_editingBudgetId}`, {
+      method: 'PUT', headers: authH(), body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to save');
+    closeEditBudgetModal();
+    await loadBudgetsLocal();
+  } catch(err) {
+    alert('Error: ' + err.message);
+  } finally {
+    btn.textContent = 'Save Changes'; btn.disabled = false;
+  }
+}
+
 function renderSavedBudgets() {
   const wrap = document.getElementById('saved-budgets-wrap');
   if (!wrap) return;
@@ -2822,6 +2960,10 @@ function renderSavedBudgets() {
         <button class="budget-view-btn" onclick="viewBudget('${b.id}')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           View
+        </button>
+        <button class="budget-view-btn" onclick="openEditBudgetModal('${b.id}')" style="background:var(--navy);border-color:var(--navy)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Edit
         </button>
         <button class="budget-del-btn" onclick="deleteBudget('${b.id}')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
