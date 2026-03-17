@@ -2075,12 +2075,11 @@ function loadBudgetsLocal() {
 function clearBudgetForm() {
   ['b-name','b-players','b-seasons','b-events-num','b-events-cost','b-events-total',
    'b-head-pay','b-asst-pay','b-rentals','b-gas','b-hotel-nights','b-hotel-cost','b-hotel-total',
-   'b-uniforms','b-equipment','b-insurance','b-other1-label','b-other1-amt',
+   'b-uniforms','b-equipment','b-insurance','b-ambassadors','b-other1-label','b-other1-amt',
    'b-other2-label','b-other2-amt','b-other3-label','b-other3-amt'].forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.value = id === 'b-ambassadors' ? '450' : '';
+    if (el) el.value = '';
   });
-  document.getElementById('b-ambassadors').value = '450';
   calcBudget();
 }
 
