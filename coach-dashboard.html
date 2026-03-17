@@ -42,6 +42,15 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
 .field-input::placeholder,.field-textarea::placeholder{color:#b0bec5}
 .field-input:focus,.field-select:focus,.field-textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(200,16,46,.08)}
 .field-textarea{resize:vertical;min-height:100px;line-height:1.6}
+/* Hide number input spinner buttons */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 .form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0 1.4rem}
 .form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 1.4rem}
 .save-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:11px 22px;font-family:'Oswald',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .15s;margin-top:.4rem;white-space:nowrap}
@@ -1698,6 +1707,13 @@ async function deletePlayer(id) {
 }
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeEditModal(); closeEditGameModal(); closeEditTryoutModal(); closeBudgetView(); closePaymentDetail(); } });
+
+/* Prevent arrow keys from changing number input values */
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'ArrowUp' || e.key === 'ArrowDown') && e.target.type === 'number') {
+    e.preventDefault();
+  }
+});
 
 
 /* ── DASHBOARD SCHEDULE ── */
