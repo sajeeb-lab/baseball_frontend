@@ -272,7 +272,9 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
 
 /* CALENDAR-ONLY DATE INPUT */
 #tr-dob { cursor: pointer; }
-#tr-dob::-webkit-calendar-picker-indicator { cursor: pointer; }
+#tr-dob::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 1; }
+#tr-dob::placeholder { color: transparent; }
+#tr-dob::-webkit-input-placeholder { color: transparent; }
 
 /* RESPONSIVE */
 @media (max-width: 820px) {
@@ -486,7 +488,7 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
       <div class="tr-grid">
         <div class="tr-field span2"><label class="tr-label">Player Name</label><input class="tr-input" type="text" placeholder="Full Name" id="tr-player-name"></div>
         <div class="tr-field"><label class="tr-label">Age</label><input class="tr-input" type="number" placeholder="e.g. 16" id="tr-age" min="5" max="25"></div>
-        <div class="tr-field"><label class="tr-label">Date of Birth</label><input class="tr-input" type="date" id="tr-dob"></div>
+        <div class="tr-field"><label class="tr-label">Date of Birth</label><input class="tr-input" type="date" id="tr-dob" onfocus="this.showPicker && this.showPicker()"></div>
         <div class="tr-field"><label class="tr-label">Height / Weight</label><input class="tr-input" type="text" placeholder="e.g. 6'0 / 185lb" id="tr-hw"></div>
         <div class="tr-field"></div>
         <div class="tr-field">
@@ -1211,18 +1213,30 @@ function openTryoutModal(dateLabel) {
   trOverlay.classList.add('open');
   document.body.style.overflow = 'hidden';
   
-  // Attach date input blocker AFTER modal opens
+  // Attach date input blocker and calendar opener AFTER modal opens
   setTimeout(() => {
     const dobInput = document.getElementById('tr-dob');
     if (dobInput) {
-      dobInput.addEventListener('keydown', (e) => {
-        e.preventDefault(); // Block all keyboard input
+      // Open calendar on focus
+      dobInput.addEventListener('focus', function() {
+        if (this.showPicker) this.showPicker();
       });
+      // Block any keyboard input
+      dobInput.addEventListener('keydown', (e) => {
+        if (e.key !== 'Tab' && e.key !== 'Escape') {
+          e.preventDefault();
+        }
+      });
+      // Block paste
       dobInput.addEventListener('paste', (e) => {
-        e.preventDefault(); // Block paste
+        e.preventDefault();
+      });
+      // Force calendar to open on click
+      dobInput.addEventListener('click', function() {
+        if (this.showPicker) this.showPicker();
       });
     }
-  }, 100);
+  }, 50);
 }
 
 function closeTryoutModal() {
