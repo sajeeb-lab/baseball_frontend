@@ -370,12 +370,13 @@ input[type="file"].hidden-file{display:none}
 <script>
 'use strict';
 
-// Prevent scroll wheel from changing number inputs
+// Prevent number input values from changing on scroll, but allow page scrolling
 document.addEventListener('wheel', (e) => {
   if (e.target.type === 'number') {
-    e.preventDefault();
+    // Blur the input so the scroll goes to the page instead
+    e.target.blur();
   }
-}, { passive: false });
+}, { passive: true });
 
 const API_BASE = 'https://backend-baseball-inky.vercel.app';
 
