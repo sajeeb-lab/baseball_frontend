@@ -2128,51 +2128,6 @@ function renderBudgetList() {
     </div>`).join('');
 }
 
-function viewBudget(i) {
-  const b = _budgets[i];
-  const detail = document.getElementById('budget-inline-detail');
-  if (!detail) return;
-
-  const otherRows = [
-    b.other1Amt ? `<tr><td>${esc(b.other1Label||'Other 1')}</td><td>${fmt(b.other1Amt)}</td></tr>` : '',
-    b.other2Amt ? `<tr><td>${esc(b.other2Label||'Other 2')}</td><td>${fmt(b.other2Amt)}</td></tr>` : '',
-    b.other3Amt ? `<tr><td>${esc(b.other3Label||'Other 3')}</td><td>${fmt(b.other3Amt)}</td></tr>` : '',
-  ].join('');
-
-  detail.style.display = 'block';
-  detail.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
-      <div style="font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.04em">${esc(b.name||'Budget Details')}</div>
-      <button onclick="document.getElementById('budget-inline-detail').style.display='none'" style="background:none;border:1.5px solid var(--mid);border-radius:6px;padding:5px 12px;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sub);cursor:pointer">✕ Close</button>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1rem">
-      <div style="background:var(--light);border-radius:6px;padding:.7rem .9rem">
-        <div style="font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.3rem">Paying Players</div>
-        <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy)">${b.players||'—'}</div>
-      </div>
-      <div style="background:var(--light);border-radius:6px;padding:.7rem .9rem">
-        <div style="font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.3rem">Seasons</div>
-        <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy)">${b.seasons||'—'}</div>
-      </div>
-    </div>
-    <table class="budget-detail-table">
-      <tr><td>Tournaments / Events</td><td>${fmt(b.eventsTotal||0)}</td></tr>
-      <tr><td>Head Coach Pay</td><td>${fmt(b.headPay||0)}</td></tr>
-      <tr><td>Assistant Coach Pay</td><td>${fmt(b.asstPay||0)}</td></tr>
-      <tr><td>Rentals</td><td>${fmt(b.rentals||0)}</td></tr>
-      <tr><td>Hotel Costs</td><td>${fmt(b.hotelTotal||0)}</td></tr>
-      <tr><td>Gas</td><td>${fmt(b.gas||0)}</td></tr>
-      <tr><td>Coach Uniforms</td><td>${fmt(b.uniforms||0)}</td></tr>
-      <tr><td>Equipment</td><td>${fmt(b.equipment||0)}</td></tr>
-      <tr><td>Coach Liability Insurance</td><td>${fmt(b.insurance||0)}</td></tr>
-      <tr><td>Ambassadors Baseball</td><td>${fmt(b.ambassadors||450)}</td></tr>
-      ${otherRows}
-      <tr class="highlight"><td>Total Expenses</td><td>${fmt(b.totalExpenses||0)}</td></tr>
-      <tr class="grand"><td>Player Fee (Total ÷ ${b.players||0} Players)</td><td>${fmt(b.playerFee||0)}</td></tr>
-    </table>`;
-  detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
 function closeBudgetView() {
   document.getElementById('budget-view-overlay')?.classList.remove('open');
   document.body.style.overflow = '';
@@ -2921,7 +2876,7 @@ function openEditBudget(id) {
     <div id="eb-other-expenses-wrap">
       ${(b.others || []).map((o, idx) => `
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:.8rem">
-          <div class="field-group"><label class="field-label">Description</label><input class="field-input" type="text" class="eb-other-desc" data-idx="${idx}" value="${esc(o.desc || 'Other')}" placeholder="e.g. Travel Permits"></div>
+          <div class="field-group"><label class="field-label">Description</label><input class="field-input eb-other-desc" type="text" data-idx="${idx}" value="${esc(o.desc || 'Other')}" placeholder="e.g. Travel Permits"></div>
           <div class="field-group"><label class="field-label">Amount</label><div style="position:relative"><span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:.88rem;pointer-events:none">$</span><input class="field-input eb-other-amt" type="number" data-idx="${idx}" value="${o.amt || ''}" min="0" style="padding-left:26px"></div></div>
         </div>
       `).join('')}
