@@ -1256,7 +1256,22 @@ function openEditTryout(id) {
   _editingTryoutId = id;
   document.getElementById('et-id').value       = id;
   document.getElementById('et-location').value = t.location || '';
-  document.getElementById('et-fee').value      = t.fee      || '';
+  
+  // Parse fee - if it contains a number, set as fee; otherwise free
+  const feeStr = t.fee || '';
+  let feeType = 'free';
+  let feeAmount = '';
+  
+  if (feeStr && feeStr !== 'Free' && feeStr.toLowerCase() !== 'free') {
+    feeType = 'fee';
+    const match = feeStr.match(/\$?(\d+(?:\.\d{2})?)/);
+    if (match) feeAmount = match[1];
+  }
+  
+  document.getElementById('et-fee-type').value = feeType;
+  document.getElementById('et-fee-amount').value = feeAmount;
+  toggleFeeAmount();
+  
   document.getElementById('et-city').value     = t.city     || '';
   document.getElementById('et-state').value    = t.state    || '';
   // Set date picker
@@ -1291,6 +1306,17 @@ function combineEditTime() {
   else               hidden.value = '';
 }
 
+function toggleFeeAmount() {
+  const feeType = document.getElementById('et-fee-type').value;
+  const feeAmountGroup = document.getElementById('et-fee-amount-group');
+  if (feeType === 'fee') {
+    feeAmountGroup.style.display = 'flex';
+  } else {
+    feeAmountGroup.style.display = 'none';
+    document.getElementById('et-fee-amount').value = '';
+  }
+}
+
 function closeEditTryoutModal() {
   document.getElementById('tryout-edit-overlay').classList.remove('open');
   document.body.style.overflow = '';
@@ -1303,16 +1329,24 @@ async function saveEditTryout() {
   const date     = document.getElementById('et-date').value.trim();
   const time     = document.getElementById('et-time').value.trim();
   const location = document.getElementById('et-location').value.trim();
-  const fee      = document.getElementById('et-fee').value.trim();
+  const feeType  = document.getElementById('et-fee-type').value;
+  const feeAmount = document.getElementById('et-fee-amount').value.trim();
   const city     = document.getElementById('et-city').value.trim();
   const state    = document.getElementById('et-state').value.trim().toUpperCase();
   if (!date || !time || !location) { alert('Date, time and location are required.'); return; }
+  
+  let fee = 'Free';
+  if (feeType === 'fee') {
+    if (!feeAmount) { alert('Please enter a fee amount.'); return; }
+    fee = `$${feeAmount} Fee`;
+  }
+  
   const btn = document.getElementById('et-save-btn');
   btn.textContent = 'Saving…'; btn.disabled = true;
   try {
     const res  = await fetch(`${API_BASE}/api/coach/tryouts/${_editingTryoutId}`, {
       method: 'PUT', headers: authH(),
-      body: JSON.stringify({ date, time, location, fee: fee || 'Free', city, state })
+      body: JSON.stringify({ date, time, location, fee, city, state })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Failed');
@@ -2887,7 +2921,17 @@ loadDashboard();
         </div>
         <div class="field-group" style="grid-column:1/-1">
           <label class="field-label">Tryout Fee</label>
-          <input class="field-input" type="text" id="et-fee" placeholder="e.g. $45 Fee or Free">
+          <select class="field-select" id="et-fee-type" onchange="toggleFeeAmount()">
+            <option value="free">Free</option>
+            <option value="fee">Fee</option>
+          </select>
+        </div>
+        <div class="field-group" style="grid-column:1/-1;display:none;" id="et-fee-amount-group">
+          <label class="field-label">Amount</label>
+          <div style="position:relative;display:flex;align-items:center;">
+            <span style="position:absolute;left:14px;font-weight:600;color:var(--text);font-size:.88rem;pointer-events:none;">$</span>
+            <input class="field-input" type="number" id="et-fee-amount" placeholder="Enter amount" style="padding-left:28px;">
+          </div>
         </div>
         <div class="field-group">
           <label class="field-label">City</label>
