@@ -1759,12 +1759,22 @@ function renderDashSchedule(games) {
     return;
   }
   tbody.innerHTML = games.map(g => {
-    const dateRange = g.startDate === g.endDate 
-      ? esc(g.startDate) 
-      : `${esc(g.startDate)} - ${esc(g.endDate)}`;
+    // Display date range if we have both startDate and endDate
+    let dateDisplay = '';
+    if (g.startDate && g.endDate) {
+      dateDisplay = g.startDate === g.endDate 
+        ? esc(g.startDate) 
+        : `${esc(g.startDate)} - ${esc(g.endDate)}`;
+    } else if (g.date) {
+      // Fallback to old date field if new fields aren't available
+      dateDisplay = esc(g.date);
+    } else {
+      dateDisplay = '—';
+    }
+    
     return `
     <tr id="grow-${esc(g._id)}">
-      <td>${dateRange}</td>
+      <td>${dateDisplay}</td>
       <td>${esc(g.event)}</td>
       <td>${esc(g.city||'—')}</td>
       <td>${esc(g.state||'—')}</td>
