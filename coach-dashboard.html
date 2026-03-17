@@ -711,11 +711,11 @@ function renderDashboard(coach){
             <thead>
               <tr>
                 <th>Player</th><th>Jersey</th><th>Grad Year</th>
-                <th>Position</th><th>HT/WT</th><th>City</th><th>State</th><th>Actions</th>
+                <th>Position</th><th>HT/WT</th><th>City</th><th>State</th><th>Email</th><th>Cell</th><th>Actions</th>
               </tr>
             </thead>
             <tbody id="dash-roster-body">
-              <tr><td colspan="8"><div class="empty-roster-dash">Loading roster…</div></td></tr>
+              <tr><td colspan="10"><div class="empty-roster-dash">Loading roster…</div></td></tr>
             </tbody>
           </table>
         </div>
@@ -1612,7 +1612,7 @@ async function loadDashRoster() {
     renderDashRoster(dashRosterData);
   } catch(err) {
     const tbody = document.getElementById('dash-roster-body');
-    if (tbody) tbody.innerHTML = '<tr><td colspan="8"><div class="empty-roster-dash">Failed to load roster.</div></td></tr>';
+    if (tbody) tbody.innerHTML = '<tr><td colspan="10"><div class="empty-roster-dash">Failed to load roster.</div></td></tr>';
   }
 }
 
@@ -1620,7 +1620,7 @@ function renderDashRoster(players) {
   const tbody = document.getElementById('dash-roster-body');
   if (!tbody) return;
   if (!players.length) {
-    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-roster-dash">No players have registered yet.</div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="10"><div class="empty-roster-dash">No players have registered yet.</div></td></tr>';
     return;
   }
   tbody.innerHTML = players.map(p => `
@@ -1632,6 +1632,8 @@ function renderDashRoster(players) {
       <td>${esc(p.hw||'—')}</td>
       <td>${esc(p.city||'—')}</td>
       <td>${esc(p.state||'—')}</td>
+      <td>${p.email ? `<a href="mailto:${esc(p.email)}" style="color:var(--navy);text-decoration:none;font-weight:500">${esc(p.email)}</a>` : '—'}</td>
+      <td>${p.cell ? `<a href="tel:+1${p.cell.replace(/\D/g,'')}" style="color:var(--navy);text-decoration:none;font-weight:500">${esc(p.cell)}</a>` : '—'}</td>
       <td style="white-space:nowrap">
         <button class="roster-edit-btn" onclick="openEditPlayer('${esc(p._id)}')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
