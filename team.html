@@ -271,11 +271,18 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
 .tr-success { text-align: center; padding: 2.5rem 1rem; color: #2e7d32; font-size: .95rem; font-weight: 600; line-height: 1.8; }
 
 /* CALENDAR-ONLY DATE INPUT */
-#tr-dob { cursor: pointer; }
+#tr-dob { 
+  cursor: pointer;
+  color: transparent;
+}
 #tr-dob::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 1; }
 #tr-dob::placeholder { color: transparent; }
 #tr-dob::-webkit-input-placeholder { color: transparent; }
-
+#tr-dob::-moz-placeholder { color: transparent; }
+#tr-dob:-ms-input-placeholder { color: transparent; }
+#tr-dob:valid {
+  color: var(--text);
+}
 /* RESPONSIVE */
 @media (max-width: 820px) {
   .coaches-inner { grid-template-columns: 1fr; }
