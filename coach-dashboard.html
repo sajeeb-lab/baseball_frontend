@@ -1738,6 +1738,12 @@ async function loadDashSchedule() {
     const res  = await fetch(`${API_BASE}/api/coach/schedule`, { headers: authH() });
     const data = await res.json();
     dashSchedData = data.schedule || [];
+    // Sort by startDate (earliest first)
+    dashSchedData.sort((a, b) => {
+      const dateA = new Date(a.startDate);
+      const dateB = new Date(b.startDate);
+      return dateA - dateB;
+    });
     renderDashSchedule(dashSchedData);
   } catch(err) {
     const tbody = document.getElementById('dash-sched-body');
@@ -1752,9 +1758,13 @@ function renderDashSchedule(games) {
     tbody.innerHTML = '<tr><td colspan="5"><div class="no-schedule-dash">No games added yet. Add one above!</div></td></tr>';
     return;
   }
-  tbody.innerHTML = games.map(g => `
+  tbody.innerHTML = games.map(g => {
+    const dateRange = g.startDate === g.endDate 
+      ? esc(g.startDate) 
+      : `${esc(g.startDate)} - ${esc(g.endDate)}`;
+    return `
     <tr id="grow-${esc(g._id)}">
-      <td>${esc(g.date)}</td>
+      <td>${dateRange}</td>
       <td>${esc(g.event)}</td>
       <td>${esc(g.city||'—')}</td>
       <td>${esc(g.state||'—')}</td>
@@ -1768,7 +1778,8 @@ function renderDashSchedule(games) {
           Delete
         </button>
       </td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
 }
 
 
