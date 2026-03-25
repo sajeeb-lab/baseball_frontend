@@ -137,17 +137,44 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
         <p class="switch-link">Already have an account? <a onclick="switchTab('login')">Login here</a></p>
       </div>
 
-      <!-- FORGOT PASSWORD -->
+      <!-- FORGOT PASSWORD – Step 1: Enter email -->
       <div class="auth-panel" id="panel-forgot">
         <div class="msg" id="forgot-msg"></div>
-        <p style="font-size:.82rem;color:var(--sub);margin-bottom:1.1rem;line-height:1.5">Enter your email address and we'll send you a link to reset your password.</p>
-        <div class="field-group">
-          <label class="field-label">Email Address</label>
-          <input class="field-input" type="email" id="forgot-email" placeholder="coach@email.com">
+        <div id="forgot-step1">
+          <p style="font-size:.82rem;color:var(--sub);margin-bottom:1.1rem;line-height:1.5">Enter your registered email and we'll send you a 6-digit verification code.</p>
+          <div class="field-group">
+            <label class="field-label">Email Address</label>
+            <input class="field-input" type="email" id="forgot-email" placeholder="coach@email.com">
+          </div>
+          <button class="submit-btn" id="forgot-btn" onclick="handleForgotPassword()">
+            <span id="forgot-btn-text">Send OTP Code</span>
+          </button>
         </div>
-        <button class="submit-btn" id="forgot-btn" onclick="handleForgotPassword()">
-          <span id="forgot-btn-text">Send Reset Link</span>
-        </button>
+
+        <!-- Step 2: Enter OTP + new password (hidden until step 1 succeeds) -->
+        <div id="forgot-step2" style="display:none">
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:.75rem 1rem;font-size:.82rem;color:#15803d;margin-bottom:1.1rem" id="forgot-sent-notice"></div>
+          <div class="field-group">
+            <label class="field-label">6-Digit Code</label>
+            <input class="field-input" type="text" id="forgot-otp" placeholder="••••••" maxlength="6" inputmode="numeric" style="letter-spacing:.25em;font-size:1.2rem;text-align:center">
+          </div>
+          <div class="field-group">
+            <label class="field-label">New Password</label>
+            <input class="field-input" type="password" id="forgot-newpw" placeholder="Min 8 characters" oninput="updateForgotStrength()">
+            <div style="background:var(--mid);border-radius:2px;height:4px;margin-top:.4rem;overflow:hidden"><div id="forgot-pw-bar" style="height:4px;border-radius:2px;width:0;transition:width .3s,background .3s"></div></div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Confirm Password</label>
+            <input class="field-input" type="password" id="forgot-confirmpw" placeholder="Repeat password">
+          </div>
+          <button class="submit-btn" id="forgot-verify-btn" onclick="handleVerifyOtp()">
+            <span id="forgot-verify-btn-text">Update Password</span>
+          </button>
+          <div style="text-align:center;margin-top:.9rem">
+            <a style="font-size:.77rem;color:var(--sub);cursor:pointer;font-weight:600" onclick="resendOtp()" id="resend-link">Didn't get a code? Resend</a>
+          </div>
+        </div>
+
         <hr class="divider">
         <p class="switch-link">Remember your password? <a onclick="switchTab('login')">Back to Login</a></p>
       </div>
@@ -178,15 +205,61 @@ async function handleForgotPassword() {
     const res  = await fetch(`${API_BASE}/api/coach/forgot-password`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
     const data = await res.json();
     if (!res.ok) throw new Error(data.message||'Request failed');
-    // Show success always (avoids user enumeration)
-    let msg = 'Check your email for a reset link.';
-    // During development the backend returns the link directly — show it for convenience
-    if (data.resetUrl) msg += ` (Dev: <a href="${data.resetUrl}" target="_blank" style="color:var(--red);font-weight:600">Click here to reset</a>)`;
-    document.getElementById('forgot-msg').innerHTML = msg;
-    document.getElementById('forgot-msg').className = 'msg success';
-    document.getElementById('forgot-msg').style.display = 'block';
+    document.getElementById('forgot-step1').style.display = 'none';
+    document.getElementById('forgot-step2').style.display = 'block';
+    document.getElementById('forgot-msg').style.display   = 'none';
+    const notice = document.getElementById('forgot-sent-notice');
+    notice.textContent = 'A 6-digit code was sent to ' + email.replace(/(.{2}).+(@.+)/,'$1***$2') + '. Check your inbox (and spam folder).';
+    if (data.devOtp) notice.textContent += ` [Dev OTP: ${data.devOtp}]`;
+    document.getElementById('forgot-email').dataset.email = email;
   } catch(err){ showMsg('forgot-msg',err.message,'error'); }
-  finally{ setLoading('forgot-btn','forgot-btn-text',false,'Send Reset Link'); }
+  finally{ setLoading('forgot-btn','forgot-btn-text',false,'Send OTP Code'); }
+}
+
+function updateForgotStrength() {
+  const v = document.getElementById('forgot-newpw').value;
+  const bar = document.getElementById('forgot-pw-bar');
+  let s = 0;
+  if (v.length >= 8) s++;
+  if (/[A-Z]/.test(v)) s++;
+  if (/[0-9]/.test(v)) s++;
+  if (/[^A-Za-z0-9]/.test(v)) s++;
+  bar.style.width = (s*25)+'%';
+  bar.style.background = ['','#c8102e','#f59e0b','#3b82f6','#16a34a'][s]||'';
+}
+
+async function handleVerifyOtp() {
+  const email    = document.getElementById('forgot-email').dataset.email;
+  const otp      = document.getElementById('forgot-otp').value.trim();
+  const password = document.getElementById('forgot-newpw').value;
+  const confirm  = document.getElementById('forgot-confirmpw').value;
+  if (!otp||otp.length!==6){ showMsg('forgot-msg','Please enter the 6-digit code.','error'); document.getElementById('forgot-msg').style.display='block'; return; }
+  if (!password||password.length<8){ showMsg('forgot-msg','Password must be at least 8 characters.','error'); document.getElementById('forgot-msg').style.display='block'; return; }
+  if (password!==confirm){ showMsg('forgot-msg','Passwords do not match.','error'); document.getElementById('forgot-msg').style.display='block'; return; }
+  setLoading('forgot-verify-btn','forgot-verify-btn-text',true);
+  try {
+    const res  = await fetch(`${API_BASE}/api/coach/verify-otp-reset`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,otp,password})});
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message||'Verification failed');
+    showMsg('forgot-msg','✅ Password updated! Redirecting to login…','success');
+    document.getElementById('forgot-msg').style.display='block';
+    document.getElementById('forgot-step2').style.display='none';
+    setTimeout(()=>switchTab('login'),2000);
+  } catch(err){ showMsg('forgot-msg',err.message,'error'); document.getElementById('forgot-msg').style.display='block'; }
+  finally{ setLoading('forgot-verify-btn','forgot-verify-btn-text',false,'Update Password'); }
+}
+
+async function resendOtp() {
+  const email = document.getElementById('forgot-email').dataset.email;
+  if (!email) return;
+  document.getElementById('resend-link').textContent='Sending…';
+  try {
+    const res  = await fetch(`${API_BASE}/api/coach/forgot-password`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+    const data = await res.json();
+    const notice = document.getElementById('forgot-sent-notice');
+    notice.textContent = 'A new code was sent!'+(data.devOtp?` [Dev OTP: ${data.devOtp}]`:'');
+  } catch(e){}
+  finally{ document.getElementById('resend-link').textContent="Didn't get a code? Resend"; }
 }
 function showMsg(id,text,type){ const el=document.getElementById(id); el.textContent=text; el.className='msg '+type; }
 function setLoading(btnId,textId,loading,label){
