@@ -42,6 +42,8 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
 .switch-link{text-align:center;font-size:.8rem;color:var(--sub)}
 .switch-link a{color:var(--red);font-weight:600;text-decoration:none;cursor:pointer}
 .switch-link a:hover{text-decoration:underline}
+.forgot-link{font-size:.75rem;color:var(--sub);text-decoration:none;cursor:pointer;font-weight:600}
+.forgot-link:hover{color:var(--red);text-decoration:underline}
 .btn-spinner{width:16px;height:16px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:500px){.form-grid-2{grid-template-columns:1fr}.page-header-inner{flex-direction:column;align-items:flex-start}}
@@ -62,6 +64,7 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
     <div class="auth-tabs">
       <button class="auth-tab active" id="tab-login"    onclick="switchTab('login')">Login</button>
       <button class="auth-tab"        id="tab-register" onclick="switchTab('register')">Register</button>
+      <button class="auth-tab"        id="tab-forgot"   onclick="switchTab('forgot')" style="display:none">Reset</button>
     </div>
     <div class="auth-body">
 
@@ -75,6 +78,9 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
         <div class="field-group">
           <label class="field-label">Password</label>
           <input class="field-input" type="password" id="login-password" placeholder="••••••••">
+        </div>
+        <div style="text-align:right;margin-top:-.5rem;margin-bottom:.9rem">
+          <a class="forgot-link" onclick="switchTab('forgot')">Forgot password?</a>
         </div>
         <button class="submit-btn" id="login-btn" onclick="handleLogin()">
           <span id="login-btn-text">Login to Dashboard</span>
@@ -131,6 +137,21 @@ body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text
         <p class="switch-link">Already have an account? <a onclick="switchTab('login')">Login here</a></p>
       </div>
 
+      <!-- FORGOT PASSWORD -->
+      <div class="auth-panel" id="panel-forgot">
+        <div class="msg" id="forgot-msg"></div>
+        <p style="font-size:.82rem;color:var(--sub);margin-bottom:1.1rem;line-height:1.5">Enter your email address and we'll send you a link to reset your password.</p>
+        <div class="field-group">
+          <label class="field-label">Email Address</label>
+          <input class="field-input" type="email" id="forgot-email" placeholder="coach@email.com">
+        </div>
+        <button class="submit-btn" id="forgot-btn" onclick="handleForgotPassword()">
+          <span id="forgot-btn-text">Send Reset Link</span>
+        </button>
+        <hr class="divider">
+        <p class="switch-link">Remember your password? <a onclick="switchTab('login')">Back to Login</a></p>
+      </div>
+
     </div>
   </div>
 </div>
@@ -142,8 +163,30 @@ if (localStorage.getItem('coach_token')) window.location.href = 'coach-dashboard
 function switchTab(tab) {
   document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+  // Show/hide the reset tab button only when on that panel
+  const forgotTab = document.getElementById('tab-forgot');
+  forgotTab.style.display = tab === 'forgot' ? '' : 'none';
   document.getElementById('tab-'+tab).classList.add('active');
   document.getElementById('panel-'+tab).classList.add('active');
+}
+
+async function handleForgotPassword() {
+  const email = document.getElementById('forgot-email').value.trim();
+  if (!email) { showMsg('forgot-msg','Please enter your email address.','error'); return; }
+  setLoading('forgot-btn','forgot-btn-text',true);
+  try {
+    const res  = await fetch(`${API_BASE}/api/coach/forgot-password`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message||'Request failed');
+    // Show success always (avoids user enumeration)
+    let msg = 'Check your email for a reset link.';
+    // During development the backend returns the link directly — show it for convenience
+    if (data.resetUrl) msg += ` (Dev: <a href="${data.resetUrl}" target="_blank" style="color:var(--red);font-weight:600">Click here to reset</a>)`;
+    document.getElementById('forgot-msg').innerHTML = msg;
+    document.getElementById('forgot-msg').className = 'msg success';
+    document.getElementById('forgot-msg').style.display = 'block';
+  } catch(err){ showMsg('forgot-msg',err.message,'error'); }
+  finally{ setLoading('forgot-btn','forgot-btn-text',false,'Send Reset Link'); }
 }
 function showMsg(id,text,type){ const el=document.getElementById(id); el.textContent=text; el.className='msg '+type; }
 function setLoading(btnId,textId,loading,label){
