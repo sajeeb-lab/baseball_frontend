@@ -189,7 +189,7 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
 .reg-submit-btn { margin-top: 1.4rem; display: flex; align-items: center; justify-content: center; gap: .5rem; width: 100%; background: var(--navy); color: var(--white); border: none; border-radius: 8px; padding: 14px 0; font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .15s; }
 .reg-submit-btn:hover { background: #162845; }
 .reg-submit-btn svg { width: 18px; height: 18px; }
-.reg-success { display: none; text-align: center; padding: 2rem; color: #2e7d32; font-size: .95rem; font-weight: 600; }
+.reg-success { display: none; padding: 1.4rem 0 0; margin-top: 1.4rem; border-top: 2px solid var(--mid); }
 
 /* REGISTRATION SUCCESS MODAL */
 .reg-modal-overlay { position: fixed; inset: 0; background: rgba(10,22,40,.6); backdrop-filter: blur(4px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; transition: opacity .25s; }
@@ -439,7 +439,7 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
           Registration submitted successfully! We'll be in touch soon.
         </div>
         <button class="reg-submit-btn" id="reg-submit-btn">
-          Complete Registration
+          Confirm Your Payment to Register
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
         </button>
       </div>
@@ -898,17 +898,16 @@ function showRegistrationModal(playerName, content) {
     successEl.innerHTML = content;
   } else {
     successEl.innerHTML = `
-      <div style="text-align:center">
-        <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:.8rem">Registration Successful!</div>
-        <div style="font-size:.95rem;color:var(--sub);line-height:1.6">
-          Welcome to the team, <strong>${esc(playerName)}</strong>! Your registration has been submitted successfully. We'll be in touch soon with next steps.
+      <div style="text-align:center;padding:.5rem 0 1rem">
+        <div style="font-size:.92rem;color:var(--sub);line-height:1.6">
+          Your registration for <strong>${esc(playerName)}</strong> has been submitted. We'll be in touch soon with next steps.
         </div>
       </div>`;
   }
   
   successEl.style.display = 'block';
   // Scroll to success message
-  successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  successEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function closeRegistrationModal() {
@@ -944,9 +943,9 @@ document.getElementById('reg-submit-btn').addEventListener('click', async functi
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Failed to submit');
 
-    // Hide form and button
-    document.getElementById('reg-form').style.display = 'none';
-    this.style.display = 'none';
+    // Disable button to show registration is done
+    this.disabled = true;
+    this.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:18px;height:18px"><polyline points="20 6 9 17 4 12"/></svg> Registered';
 
     // Show payment info if financials are set up, otherwise simple success
     if (_teamFinancials) {
@@ -999,7 +998,7 @@ document.getElementById('reg-submit-btn').addEventListener('click', async functi
   } catch (err) {
     alert('Error: ' + err.message);
     this.disabled = false;
-    this.innerHTML = 'Submit Registration <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>';
+    this.innerHTML = 'Confirm Your Payment to Register <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>';
   }
 });
 
@@ -1032,7 +1031,6 @@ function generatePaymentPlan(amount, deadlineStr, fromDate) {
 
 /* ── SHOW PLAYER PAYMENT INFO AFTER REGISTRATION ── */
 function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, paymentId) {
-  // Store on window so deposit button can access
   window._currentPaymentId  = paymentId;
   window._currentDepAmt     = depAmt;
   window._currentTotalFee   = totalFee;
@@ -1047,89 +1045,70 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, p
   if (fin.deposit_enabled && fin.monthly_payments && paymentPlan.length) {
     const remaining = totalFee - depAmt;
     const planRows  = paymentPlan.map(p => `
-      <div style="display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--mid);font-size:.84rem">
-        <span style="color:var(--sub)">${esc(p.month)}</span>
-        <span style="font-weight:700;color:var(--navy)">${fmt2(p.amount)}</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:.55rem .8rem;border-radius:6px;background:var(--white);margin-bottom:.4rem;font-size:.84rem">
+        <span style="color:var(--text)">${esc(p.month)}</span>
+        <span style="font-family:'Oswald',sans-serif;font-weight:700;color:var(--navy)">${fmt2(p.amount)}</span>
       </div>`).join('');
     html = `
-      <div style="text-align:center;margin-bottom:1.2rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy)">Registration Successful!</div>
-        <div style="font-size:.84rem;color:var(--sub);margin-top:.3rem">Welcome, <strong>${esc(playerName)}</strong></div>
+      <!-- DEPOSIT SECTION -->
+      <div style="background:#fffbea;border:1.5px solid #fde68a;border-radius:10px;padding:1.2rem 1.4rem;margin-bottom:1rem">
+        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#92400e;margin-bottom:.8rem;text-align:center">
+          Step 1 — Deposit Required to Secure Your Spot
+        </div>
+        <div style="text-align:center;padding:.4rem 0 .6rem">
+          <div style="font-family:'Oswald',sans-serif;font-size:2.2rem;font-weight:700;color:var(--navy);line-height:1">${fmt2(depAmt)}</div>
+          <div style="font-size:.75rem;color:#92400e;margin-top:.4rem;font-weight:600">Deposit Due Now</div>
+        </div>
+        <div style="font-size:.75rem;color:#92400e;opacity:.85;text-align:center;margin-top:.4rem">⚠ Payment processing coming soon — your coach will be in touch.</div>
       </div>
 
-      <!-- STEP 1: DEPOSIT -->
-      <div style="background:#fffbea;border:1.5px solid #fde68a;border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#92400e;margin-bottom:.6rem">
-          Step 1 — Pay Deposit to Secure Your Spot
+      <!-- MONTHLY PLAN SECTION -->
+      <div style="background:var(--light);border:1.5px solid var(--mid);border-radius:10px;padding:1.2rem 1.4rem;margin-bottom:1rem">
+        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:.5rem;text-align:center">
+          Step 2 — Monthly Payment Plan
         </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
-          <div>
-            <div style="font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:700;color:var(--navy)">${fmt2(depAmt)}</div>
-            <div style="font-size:.75rem;color:var(--sub)">Required deposit — unlocks your payment plan</div>
-          </div>
-          <button id="deposit-btn" onclick="handleDepositClick(this,'',window._currentPaymentId,window._currentDepAmt,window._currentTotalFee)" style="background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:11px 22px;font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;flex-shrink:0;transition:background .15s">
-            Pay Deposit (Demo)
-          </button>
+        <div style="font-size:.78rem;color:var(--sub);margin-bottom:.8rem;background:var(--white);border-radius:6px;padding:.6rem .8rem;border-left:3px solid var(--red)">
+          Total fee <strong style="color:var(--navy)">${fmt2(totalFee)}</strong>
+          − deposit <strong style="color:#16a34a">${fmt2(depAmt)}</strong>
+          = remaining <strong style="color:var(--navy)">${fmt2(remaining)}</strong>
+          split over <strong style="color:var(--navy)">${paymentPlan.length} month${paymentPlan.length!==1?'s':''}</strong>
+        </div>
+        ${planRows}
+        <div style="display:flex;justify-content:space-between;padding:.6rem .8rem 0;font-weight:700;font-size:.88rem;border-top:2px solid var(--navy);margin-top:.4rem">
+          <span>Total (incl. deposit)</span><span>${fmt2(totalFee)}</span>
         </div>
       </div>
-
-      <!-- STEP 2: MONTHLY PLAN — hidden until deposit clicked -->
-      <div id="monthly-plan-section" style="display:none">
-        <div style="background:var(--light);border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem">
-          <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.4rem">
-            Step 2 — Your Monthly Payment Plan
-          </div>
-          <div style="font-size:.78rem;color:var(--sub);margin-bottom:.75rem;background:var(--white);border-radius:6px;padding:.6rem .8rem;border-left:3px solid var(--red)">
-            Total fee <strong style="color:var(--navy)">${fmt2(totalFee)}</strong> 
-            − deposit <strong style="color:#16a34a">${fmt2(depAmt)}</strong> 
-            = remaining <strong style="color:var(--navy)">${fmt2(remaining)}</strong> 
-            split over <strong style="color:var(--navy)">${paymentPlan.length} month${paymentPlan.length!==1?'s':''}</strong>
-          </div>
-          ${planRows}
-          <div style="display:flex;justify-content:space-between;padding:.6rem 0 0;font-weight:700;font-size:.9rem;border-top:2px solid var(--navy);margin-top:.3rem">
-            <span>Total (including deposit)</span><span>${fmt2(totalFee)}</span>
-          </div>
-        </div>
-        <button onclick="this.textContent='Plan Accepted';this.style.background='#16a34a';this.disabled=true" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s">
-          Accept Payment Plan
-        </button>
-      </div>`;
+      <button onclick="this.textContent='Plan Accepted ✓';this.style.background='#16a34a';this.disabled=true" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s">
+        Accept Payment Plan
+      </button>`;
   }
 
   // ── FLOW 2: Deposit ON + Monthly OFF ──
   else if (fin.deposit_enabled && !fin.monthly_payments) {
     const remaining = totalFee - depAmt;
     html = `
-      <div style="text-align:center;margin-bottom:1.2rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy)">Registration Successful!</div>
-        <div style="font-size:.84rem;color:var(--sub);margin-top:.3rem">Welcome, <strong>${esc(playerName)}</strong></div>
-      </div>
-      <div style="background:#fffbea;border:1.5px solid #fde68a;border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#92400e;margin-bottom:.6rem">Step 1 — Pay Deposit Now</div>
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem">
-          <div>
-            <div style="font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:700;color:var(--navy)">${fmt2(depAmt)}</div>
-            <div style="font-size:.75rem;color:var(--sub)">Required to secure your spot</div>
-          </div>
-          <button onclick="handleDepositClick(this,'${fmt2(depAmt)}','${paymentId || ''}',${depAmt},${totalFee})" style="background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:11px 22px;font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;flex-shrink:0">
-            Pay Deposit (Demo)
-          </button>
+      <div style="background:#fffbea;border:1.5px solid #fde68a;border-radius:10px;padding:1.2rem 1.4rem;margin-bottom:1rem">
+        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#92400e;margin-bottom:.8rem;text-align:center">Step 1 — Deposit Required to Secure Your Spot</div>
+        <div style="text-align:center;padding:.4rem 0 .6rem">
+          <div style="font-family:'Oswald',sans-serif;font-size:2.2rem;font-weight:700;color:var(--navy);line-height:1">${fmt2(depAmt)}</div>
+          <div style="font-size:.75rem;color:#92400e;margin-top:.4rem;font-weight:600">Deposit Due Now</div>
         </div>
+        <div style="font-size:.75rem;color:#92400e;opacity:.85;text-align:center;margin-top:.4rem">⚠ Payment processing coming soon — your coach will be in touch.</div>
       </div>
-      <div style="background:var(--light);border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.5rem">Balance Due in Full</div>
-        <div style="display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:.3rem">
-          <span style="color:var(--sub)">Total Fee</span><span style="font-weight:700">${fmt2(totalFee)}</span>
+      <div style="background:var(--light);border:1.5px solid var(--mid);border-radius:10px;padding:1.2rem 1.4rem;margin-bottom:1rem">
+        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.6rem;text-align:center">Balance Due in Full</div>
+        <div style="display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:.35rem;padding:0 .2rem">
+          <span style="color:var(--sub)">Total Fee</span><span style="font-weight:700;color:#16a34a">${fmt2(totalFee)}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:.3rem">
+        <div style="display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:.35rem;padding:0 .2rem">
           <span style="color:var(--sub)">Deposit</span><span style="font-weight:700;color:#16a34a">− ${fmt2(depAmt)}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:1rem;font-weight:700;border-top:2px solid var(--navy);padding-top:.5rem">
-          <span>Balance Due by ${esc(fin.payment_deadline||'deadline')}</span>
+        <div style="border-top:2px solid var(--navy);margin-top:.3rem;padding-top:.5rem;display:flex;justify-content:space-between;font-size:1rem;font-weight:700;padding:0 .2rem;padding-top:.5rem">
+          <span style="color:var(--navy)">Balance Due by ${esc(fin.payment_deadline||'deadline')}</span>
           <span style="color:var(--red)">${fmt2(remaining)}</span>
         </div>
       </div>
-      <button onclick="document.getElementById('reg-success').innerHTML='<div style=text-align:center;padding:1.5rem;color:#16a34a;font-weight:600>Accepted! We will be in touch soon.</div>'" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
+      <button onclick="this.textContent='Accepted ✓';this.style.background='#16a34a';this.disabled=true" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s">
         Accept
       </button>`;
   }
@@ -1137,23 +1116,23 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, p
   // ── FLOW 3: No Deposit + Monthly ON ──
   else if (!fin.deposit_enabled && fin.monthly_payments && paymentPlan.length) {
     const planRows = paymentPlan.map(p => `
-      <div style="display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--mid);font-size:.84rem">
-        <span style="color:var(--sub)">${esc(p.month)}</span>
-        <span style="font-weight:700;color:var(--navy)">${fmt2(p.amount)}</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:.55rem .8rem;border-radius:6px;background:var(--white);margin-bottom:.4rem;font-size:.84rem">
+        <span style="color:var(--text)">${esc(p.month)}</span>
+        <span style="font-family:'Oswald',sans-serif;font-weight:700;color:var(--navy)">${fmt2(p.amount)}</span>
       </div>`).join('');
     html = `
-      <div style="text-align:center;margin-bottom:1.2rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy)">Registration Successful!</div>
-        <div style="font-size:.84rem;color:var(--sub);margin-top:.3rem">Welcome, <strong>${esc(playerName)}</strong></div>
-      </div>
-      <div style="background:var(--light);border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.75rem">Your Monthly Payment Plan</div>
+      <div style="background:var(--light);border:1.5px solid var(--mid);border-radius:10px;padding:1.2rem 1.4rem;margin-bottom:1rem">
+        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:.5rem;text-align:center">Monthly Payment Plan</div>
+        <div style="text-align:center;padding:.3rem 0 .8rem">
+          <div style="font-family:'Oswald',sans-serif;font-size:2rem;font-weight:700;color:var(--navy)">${fmt2(totalFee / paymentPlan.length)}<span style="font-size:.9rem;color:var(--sub);font-weight:400"> /mo</span></div>
+          <div style="font-size:.75rem;color:var(--sub);margin-top:.3rem">${fmt2(totalFee)} total over ${paymentPlan.length} month${paymentPlan.length!==1?'s':''}</div>
+        </div>
         ${planRows}
-        <div style="display:flex;justify-content:space-between;padding:.6rem 0;font-weight:700;font-size:.9rem;border-top:2px solid var(--navy);margin-top:.2rem">
+        <div style="display:flex;justify-content:space-between;padding:.6rem .8rem 0;font-weight:700;font-size:.88rem;border-top:2px solid var(--navy);margin-top:.4rem">
           <span>Total</span><span>${fmt2(totalFee)}</span>
         </div>
       </div>
-      <button onclick="document.getElementById('reg-success').innerHTML='<div style=text-align:center;padding:1.5rem;color:#16a34a;font-weight:600>Plan Accepted! We will be in touch soon.</div>'" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
+      <button onclick="this.textContent='Plan Accepted ✓';this.style.background='#16a34a';this.disabled=true" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s">
         Accept Payment Plan
       </button>`;
   }
@@ -1161,24 +1140,18 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, p
   // ── FLOW 4: Full Pay Only ──
   else {
     html = `
-      <div style="text-align:center;padding:1.2rem 1rem">
-        <div style="font-family:'Oswald',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:.5rem">Registration Successful!</div>
-        <div style="font-size:.84rem;color:var(--sub);margin-bottom:1.2rem">Welcome, <strong>${esc(playerName)}</strong>!</div>
-        <div style="background:var(--light);border-radius:10px;padding:1.1rem 1.3rem;display:inline-block;min-width:260px">
-          <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.4rem">Total Fee Due</div>
-          <div style="font-family:'Oswald',sans-serif;font-size:1.7rem;font-weight:700;color:var(--navy)">${fmt2(totalFee)}</div>
-          <div style="font-size:.78rem;color:var(--sub);margin-top:.3rem">Due in full by ${esc(fin.payment_deadline||'the deadline')}</div>
-        </div>
-        <div style="margin-top:1.2rem">
-          <button onclick="this.textContent='Accepted';this.style.background='#16a34a';this.disabled=true" style="background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:12px 32px;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">
-            Accept
-          </button>
-        </div>
-      </div>`;
+      <div style="background:var(--light);border:1.5px solid var(--mid);border-radius:10px;padding:1.4rem;margin-bottom:1rem;text-align:center">
+        <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.6rem">Full Payment Required</div>
+        <div style="font-family:'Oswald',sans-serif;font-size:2.2rem;font-weight:700;color:var(--navy);line-height:1">${fmt2(totalFee)}</div>
+        <div style="font-size:.78rem;color:var(--sub);margin-top:.4rem">Due in full by ${esc(fin.payment_deadline||'the deadline')}</div>
+      </div>
+      <button onclick="this.textContent='Accepted ✓';this.style.background='#16a34a';this.disabled=true" style="width:100%;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:13px 0;font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s">
+        Accept
+      </button>`;
   }
 
   successEl.innerHTML = html;
-  showRegistrationModal(playerName, html);
+  successEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 async function handleDepositClick(btn) {
