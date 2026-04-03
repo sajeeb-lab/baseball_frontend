@@ -1100,15 +1100,45 @@ async function createRecords() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
+      // Basic info
       name:     v('player-name'),
-      jersey:   v('jersey-1') || '',
-      gradYear: vs('grad-year'),
-      position: vs('pos-1'),
-      hw:       v('hw'),
-      city:     v('addr-city'),
-      state:    v('addr-state'),
-      email:    v('player-email'),
-      cell:     v('player-cell'),
+      // Father info
+      fatherFirstName: v('father-first'),
+      fatherLastName:  v('father-last'),
+      fatherCell:      v('father-cell'),
+      fatherEmail:     v('father-email'),
+      // Mother info
+      motherFirstName: v('mother-first'),
+      motherLastName:  v('mother-last'),
+      motherCell:      v('mother-cell'),
+      motherEmail:     v('mother-email'),
+      // Acknowledgements
+      ackNonRefundable:    gr('ack1'),
+      ackUniform:          gr('ack2'),
+      ackContract:         gr('ack3'),
+      ackInjuryProtection: gr('ack4'),
+      ackDeclineInjury:    gr('ack5'),
+      // Player info
+      dob:       v('player-dob'),
+      cell:      v('player-cell'),
+      email:     v('player-email'),
+      // Address
+      street:    v('addr-street'),
+      city:      v('addr-city'),
+      state:     v('addr-state'),
+      zip:       v('addr-zip'),
+      // Batting & throwing
+      bats:      gr('bats'),
+      throws:    gr('throws'),
+      // Jersey & position
+      jersey:    v('jersey-1'),
+      jersey2:   v('jersey-2'),
+      position:  vs('pos-1'),
+      position2: vs('pos-2'),
+      // Additional details
+      hw:         v('hw'),
+      gradYear:   vs('grad-year'),
+      highSchool: v('high-school'),
     }),
   });
   const pd = await pr.json();
