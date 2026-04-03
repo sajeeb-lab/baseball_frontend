@@ -312,19 +312,35 @@
     border: 1.5px solid var(--mid);
     border-radius: 5px;
   }
-  .fee-box--empty .fee-box-label {
+  /* placeholder state — muted */
+  .fee-box--empty.fee-placeholder .fee-box-label {
     color: var(--sub);
     font-size: .74rem;
   }
-  .fee-box--empty .fee-box-amount {
+  .fee-box--empty.fee-placeholder .fee-box-amount {
     color: var(--sub);
     font-size: .88rem;
     font-weight: 400;
     font-family: 'Open Sans', sans-serif;
   }
-  .fee-box--empty .fee-box-type {
+  .fee-box--empty.fee-placeholder .fee-box-type {
     background: var(--mid);
     color: var(--sub);
+  }
+  /* populated state — normal colours */
+  .fee-box--empty:not(.fee-placeholder) .fee-box-label {
+    color: var(--sub);
+    font-size: .68rem;
+  }
+  .fee-box--empty:not(.fee-placeholder) .fee-box-amount {
+    color: var(--text);
+    font-size: 1.3rem;
+    font-weight: 700;
+    font-family: 'Oswald', sans-serif;
+  }
+  .fee-box--empty:not(.fee-placeholder) .fee-box-type {
+    background: var(--navy);
+    color: var(--white);
   }
 
   /* ── TEAM SEARCH ── */
@@ -633,7 +649,7 @@
       <div id="fee-display" style="margin-bottom:.3rem">
         <div class="field">
           <label>Player Fee Amount</label>
-          <div class="fee-box fee-box--empty" id="fee-box" style="margin-top:.2rem">
+          <div class="fee-box fee-box--empty fee-placeholder" id="fee-box" style="margin-top:.2rem">
             <div>
               <div class="fee-box-label" id="fee-label">Select a team to view</div>
               <div class="fee-box-amount" id="fee-amount" style="font-size:1rem;opacity:.4;font-weight:400;letter-spacing:0">—</div>
@@ -949,8 +965,9 @@ function setFeePlaceholder() {
   const box   = document.getElementById('fee-box');
   const amt   = document.getElementById('fee-amount');
   const badge = document.getElementById('fee-type-badge');
-  box.classList.add('fee-box--empty');
+  box.classList.add('fee-box--empty', 'fee-placeholder');
   document.getElementById('fee-label').textContent = 'Select a team to view';
+  document.getElementById('fee-label').style.display = '';
   amt.textContent   = '—';
   amt.style.cssText = '';
   badge.textContent = '—';
@@ -964,20 +981,23 @@ function renderFee() {
   if (!teamFinancials) { setFeePlaceholder(); return; }
   const { player_fee, deposit_enabled, deposit_amount, monthly_payments } = teamFinancials;
 
-  document.getElementById('fee-box').classList.remove('fee-box--empty');
+  const box = document.getElementById('fee-box');
+  box.classList.remove('fee-placeholder');
   amt.style.cssText   = '';
   badge.style.opacity = '1';
 
+  const lbl = document.getElementById('fee-label');
+
   if (deposit_enabled) {
-    document.getElementById('fee-label').textContent = 'Deposit Due Today';
+    lbl.style.display = 'none';
     amt.textContent   = `$${deposit_amount || 0}`;
     badge.textContent = 'Deposit';
   } else if (!monthly_payments) {
-    document.getElementById('fee-label').textContent = 'Full Payment Due';
+    lbl.style.display = 'none';
     amt.textContent   = `$${player_fee || 0}`;
     badge.textContent = 'Full Payment';
   } else {
-    document.getElementById('fee-label').textContent = 'Monthly Payment Plan';
+    lbl.style.display = 'none';
     amt.textContent   = `$${player_fee || 0}`;
     badge.textContent = 'Monthly';
   }
