@@ -12,7 +12,6 @@
     --navy2: #0d1f3c;
     --red: #c8102e;
     --red2: #a50d25;
-    --gold: #f5c518;
     --white: #ffffff;
     --light: #f4f6f9;
     --mid: #dce3ec;
@@ -28,92 +27,31 @@
     background: var(--light);
     color: var(--text);
     min-height: 100vh;
-  }
-
-  /* ── HEADER ── */
-  .site-header {
-    background: var(--navy);
-    padding: 0 1.5rem;
-    display: flex;
-    align-items: center;
-    height: 60px;
-    border-bottom: 3px solid var(--red);
-  }
-  .site-header .logo {
-    font-family: 'Oswald', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--white);
-    letter-spacing: .1em;
-    text-transform: uppercase;
-  }
-  .site-header .logo span { color: var(--red); }
-
-  /* ── HERO ── */
-  .hero {
-    background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
-    padding: 2.5rem 1.5rem 2rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 30px,
-      rgba(200,16,46,.04) 30px,
-      rgba(200,16,46,.04) 31px
-    );
-  }
-  .hero h1 {
-    font-family: 'Oswald', sans-serif;
-    font-size: clamp(1.6rem, 4vw, 2.6rem);
-    font-weight: 700;
-    color: var(--white);
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    position: relative;
-    margin-bottom: .4rem;
-  }
-  .hero h1 span { color: var(--red); }
-  .hero p {
-    color: rgba(255,255,255,.6);
-    font-size: .9rem;
-    position: relative;
-    max-width: 520px;
-    margin: 0 auto;
+    padding: 2rem 1.2rem 4rem;
   }
 
   /* ── STEP INDICATOR ── */
   .steps-wrap {
-    background: var(--white);
-    border-bottom: 1px solid var(--mid);
-    padding: 1rem 1.5rem;
+    max-width: 640px;
+    margin: 0 auto 2rem;
   }
   .steps {
-    max-width: 680px;
-    margin: 0 auto;
     display: flex;
     align-items: center;
-    gap: 0;
   }
   .step {
     display: flex;
     align-items: center;
-    gap: .5rem;
+    gap: .45rem;
     flex: 1;
     position: relative;
   }
   .step:not(:last-child)::after {
     content: '';
     position: absolute;
-    left: calc(50% + 16px);
-    right: calc(-50% + 16px);
-    top: 14px;
+    left: calc(50% + 14px);
+    right: calc(-50% + 14px);
+    top: 13px;
     height: 2px;
     background: var(--mid);
     z-index: 0;
@@ -121,13 +59,13 @@
   }
   .step.completed:not(:last-child)::after { background: var(--red); }
   .step-num {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     background: var(--mid);
     color: var(--sub);
     font-family: 'Oswald', sans-serif;
-    font-size: .8rem;
+    font-size: .78rem;
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -137,10 +75,10 @@
     flex-shrink: 0;
     transition: background .3s, color .3s;
   }
-  .step.active .step-num { background: var(--red); color: var(--white); }
+  .step.active .step-num  { background: var(--red);  color: var(--white); }
   .step.completed .step-num { background: var(--navy); color: var(--white); }
   .step-label {
-    font-size: .7rem;
+    font-size: .68rem;
     font-family: 'Oswald', sans-serif;
     letter-spacing: .05em;
     text-transform: uppercase;
@@ -148,66 +86,95 @@
     white-space: nowrap;
     transition: color .3s;
   }
-  .step.active .step-label { color: var(--red); }
+  .step.active .step-label   { color: var(--red); }
   .step.completed .step-label { color: var(--navy); }
 
-  /* ── MAIN WRAPPER ── */
-  .main { max-width: 680px; margin: 0 auto; padding: 2rem 1.2rem 4rem; }
+  /* ── MAIN ── */
+  .main { max-width: 640px; margin: 0 auto; }
 
-  /* ── SECTION CARD ── */
-  .card {
-    background: var(--white);
-    border-radius: 8px;
-    box-shadow: 0 2px 16px rgba(0,0,0,.07);
+  /* ── PROGRESS ── */
+  .progress-bar {
+    height: 3px;
+    background: var(--mid);
+    border-radius: 2px;
     overflow: hidden;
     margin-bottom: 1.5rem;
   }
-  .card-head {
-    background: var(--navy);
-    padding: 1rem 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: .75rem;
-  }
-  .card-head .icon {
-    width: 32px;
-    height: 32px;
+  .progress-fill {
+    height: 100%;
     background: var(--red);
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    font-size: 1rem;
+    border-radius: 2px;
+    transition: width .4s ease;
   }
-  .card-head h2 {
+
+  /* ── CARD ── */
+  .card {
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 14px rgba(0,0,0,.07);
+    padding: 1.6rem 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+
+  /* ── SECTION HEADING ── */
+  .section-heading {
     font-family: 'Oswald', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--white);
-    letter-spacing: .07em;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--navy);
     text-transform: uppercase;
+    letter-spacing: .07em;
+    padding-bottom: .55rem;
+    border-bottom: 2px solid var(--red);
+    margin-bottom: 1.3rem;
   }
-  .card-body { padding: 1.5rem; }
+
+  /* ── SUB DIVIDER ── */
+  .sub-divider {
+    font-family: 'Oswald', sans-serif;
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--sub);
+    padding-bottom: .6rem;
+    border-bottom: 1px solid var(--mid);
+    margin: 1.4rem 0 1.1rem;
+  }
+
+  /* ── MANDATORY BADGE ── */
+  .mandatory-badge {
+    display: inline-block;
+    background: #fff0f2;
+    color: var(--red);
+    border: 1px solid #ffc0c8;
+    border-radius: 3px;
+    font-size: .6rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 1px 6px;
+    margin-left: .45rem;
+    vertical-align: middle;
+  }
 
   /* ── FIELD ── */
-  .field { margin-bottom: 1.2rem; }
+  .field { margin-bottom: 1.05rem; }
   .field:last-child { margin-bottom: 0; }
   .field label {
     display: block;
-    font-size: .8rem;
-    font-weight: 600;
+    font-size: .74rem;
+    font-weight: 700;
     color: var(--sub);
-    letter-spacing: .04em;
+    letter-spacing: .05em;
     text-transform: uppercase;
-    margin-bottom: .4rem;
+    margin-bottom: .36rem;
   }
   .field label .req { color: var(--req); margin-left: 2px; }
   .field input,
-  .field select,
-  .field textarea {
+  .field select {
     width: 100%;
-    padding: 11px 14px;
+    padding: 10px 13px;
     border: 1.5px solid var(--mid);
     border-radius: 5px;
     font-family: 'Open Sans', sans-serif;
@@ -223,83 +190,33 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%235a6a7a' d='M8 11L2 5h12z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
-    background-size: 14px;
-    padding-right: 36px;
+    background-size: 13px;
+    padding-right: 34px;
   }
   .field input:focus,
-  .field select:focus,
-  .field textarea:focus {
+  .field select:focus {
     border-color: var(--navy);
     background: var(--white);
-    box-shadow: 0 0 0 3px rgba(10,22,40,.08);
+    box-shadow: 0 0 0 3px rgba(10,22,40,.07);
   }
-  .field input.error,
-  .field select.error { border-color: var(--red); }
   .field .hint {
-    font-size: .75rem;
+    font-size: .72rem;
     color: var(--sub);
-    margin-top: .3rem;
+    margin-top: .28rem;
   }
 
-  /* ── SECTION DIVIDER ── */
-  .section-label {
-    font-family: 'Oswald', sans-serif;
-    font-size: .75rem;
-    font-weight: 600;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--red);
-    padding: .5rem 0 .75rem;
-    border-bottom: 1px solid var(--mid);
-    margin-bottom: 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-  }
-  .section-label::before {
-    content: '';
-    width: 4px;
-    height: 14px;
-    background: var(--red);
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-
-  /* ── MANDATORY BADGE (father section) ── */
-  .mandatory-badge {
-    display: inline-block;
-    background: #fff3f5;
-    color: var(--red);
-    border: 1px solid #ffc0c8;
-    border-radius: 3px;
-    font-size: .68rem;
-    font-weight: 700;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    padding: 2px 7px;
-    margin-left: .5rem;
-    vertical-align: middle;
-  }
-
-  /* ── RADIO GROUPS ── */
-  .radio-group {
-    display: flex;
-    gap: .75rem;
-    flex-wrap: wrap;
-  }
-  .radio-item {
-    flex: 0 0 auto;
-  }
+  /* ── RADIO ── */
+  .radio-group { display: flex; gap: .6rem; flex-wrap: wrap; }
   .radio-item input[type="radio"] { display: none; }
   .radio-item label {
     display: flex;
     align-items: center;
-    gap: .4rem;
-    padding: 9px 18px;
+    gap: .36rem;
+    padding: 8px 16px;
     border: 1.5px solid var(--mid);
     border-radius: 5px;
     cursor: pointer;
-    font-size: .85rem;
+    font-size: .84rem;
     font-weight: 600;
     color: var(--sub);
     background: var(--light);
@@ -309,8 +226,8 @@
   }
   .radio-item label::before {
     content: '';
-    width: 14px;
-    height: 14px;
+    width: 13px;
+    height: 13px;
     border-radius: 50%;
     border: 2px solid var(--mid);
     flex-shrink: 0;
@@ -326,73 +243,67 @@
     background: var(--red);
   }
 
-  /* ── ACKNOWLEDGEMENT BLOCK ── */
+  /* ── ACK BLOCK ── */
   .ack-block {
     background: var(--light);
     border: 1.5px solid var(--mid);
     border-radius: 6px;
-    padding: 1rem 1.2rem;
-    margin-bottom: 1rem;
+    padding: .85rem 1rem;
+    margin-bottom: .8rem;
   }
   .ack-block:last-child { margin-bottom: 0; }
   .ack-text {
-    font-size: .85rem;
+    font-size: .86rem;
     color: var(--text);
-    margin-bottom: .75rem;
+    margin-bottom: .6rem;
     line-height: 1.55;
   }
   .ack-text a { color: var(--red); text-decoration: none; }
   .ack-text a:hover { text-decoration: underline; }
 
-  /* ── FEE DISPLAY ── */
+  /* ── FEE BOX ── */
   .fee-box {
     background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
     border-radius: 6px;
-    padding: 1rem 1.2rem;
+    padding: .85rem 1.1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    margin-bottom: 1.2rem;
   }
   .fee-box-label {
     font-family: 'Oswald', sans-serif;
-    font-size: .75rem;
+    font-size: .68rem;
     font-weight: 500;
-    color: rgba(255,255,255,.55);
+    color: rgba(255,255,255,.5);
     letter-spacing: .1em;
     text-transform: uppercase;
-    margin-bottom: .15rem;
+    margin-bottom: .1rem;
   }
   .fee-box-amount {
     font-family: 'Oswald', sans-serif;
-    font-size: 1.7rem;
+    font-size: 1.6rem;
     font-weight: 700;
     color: var(--white);
-    letter-spacing: .02em;
   }
   .fee-box-type {
     background: var(--red);
     color: var(--white);
     font-family: 'Oswald', sans-serif;
-    font-size: .72rem;
+    font-size: .66rem;
     font-weight: 600;
     letter-spacing: .1em;
     text-transform: uppercase;
-    padding: 4px 12px;
+    padding: 3px 10px;
     border-radius: 20px;
     white-space: nowrap;
   }
 
   /* ── TEAM SEARCH ── */
-  .search-wrap {
-    display: flex;
-    gap: 0;
-    margin-bottom: 1rem;
-  }
+  .search-wrap { display: flex; }
   .search-wrap input {
     flex: 1;
-    padding: 11px 14px;
+    padding: 10px 13px;
     border: 1.5px solid var(--mid);
     border-right: none;
     border-radius: 5px 0 0 5px;
@@ -405,13 +316,13 @@
   }
   .search-wrap input:focus { border-color: var(--navy); background: var(--white); }
   .search-btn {
-    padding: 11px 20px;
+    padding: 10px 18px;
     background: var(--red);
     border: none;
     border-radius: 0 5px 5px 0;
     cursor: pointer;
     font-family: 'Oswald', sans-serif;
-    font-size: .8rem;
+    font-size: .78rem;
     font-weight: 600;
     color: var(--white);
     letter-spacing: .1em;
@@ -422,52 +333,52 @@
   .search-btn:hover { background: var(--red2); }
   .search-results {
     border: 1.5px solid var(--mid);
-    border-radius: 5px;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
     overflow: hidden;
     display: none;
+    background: var(--white);
   }
   .search-result-item {
-    padding: 10px 14px;
+    padding: 9px 13px;
     cursor: pointer;
     border-bottom: 1px solid var(--mid);
     transition: background .15s;
-    font-size: .88rem;
+    font-size: .87rem;
   }
   .search-result-item:last-child { border-bottom: none; }
   .search-result-item:hover { background: var(--light); }
   .search-result-item strong { display: block; color: var(--text); }
-  .search-result-item span { font-size: .78rem; color: var(--sub); }
+  .search-result-item span { font-size: .76rem; color: var(--sub); }
   .selected-team-badge {
     display: none;
     background: #edf6ff;
     border: 1.5px solid #b3d9ff;
     border-radius: 5px;
-    padding: .75rem 1rem;
+    padding: .6rem .9rem;
     font-size: .85rem;
     color: var(--navy);
     align-items: center;
     justify-content: space-between;
     gap: .5rem;
   }
-  .selected-team-badge strong { font-weight: 700; }
   .selected-team-badge button {
     background: none;
     border: none;
     color: var(--sub);
     cursor: pointer;
-    font-size: .78rem;
+    font-size: .76rem;
     text-decoration: underline;
     padding: 0;
     font-family: 'Open Sans', sans-serif;
-    white-space: nowrap;
   }
 
   /* ── BUTTONS ── */
   .btn {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: .5rem;
+    width: 100%;
     padding: 13px 28px;
     border: none;
     border-radius: 5px;
@@ -478,134 +389,88 @@
     letter-spacing: .1em;
     text-transform: uppercase;
     transition: background .2s, transform .15s, opacity .2s;
-    text-decoration: none;
   }
   .btn:active { transform: scale(.98); }
-  .btn-primary {
-    background: var(--red);
-    color: var(--white);
-    width: 100%;
-  }
+  .btn-primary { background: var(--red);  color: var(--white); }
   .btn-primary:hover { background: var(--red2); }
-  .btn-navy {
-    background: var(--navy);
-    color: var(--white);
-    width: 100%;
-  }
+  .btn-navy    { background: var(--navy); color: var(--white); }
   .btn-navy:hover { background: var(--navy2); }
   .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
 
-  /* ── NOTICE STRIP ── */
-  .notice {
-    background: #fffbe6;
-    border: 1px solid #ffe58f;
-    border-radius: 5px;
-    padding: .75rem 1rem;
-    font-size: .82rem;
-    color: #7a5c00;
-    margin-bottom: 1.2rem;
-    display: flex;
-    gap: .5rem;
-    align-items: flex-start;
-  }
-  .notice svg { flex-shrink: 0; margin-top: 1px; }
-
-  /* ── ERROR MSG ── */
+  /* ── ERROR ── */
   .err-msg {
     background: #fff5f5;
     border: 1px solid #ffc0c0;
     color: var(--red);
     border-radius: 5px;
-    padding: .7rem 1rem;
+    padding: .65rem .9rem;
     font-size: .82rem;
-    margin-bottom: 1rem;
+    margin-bottom: .9rem;
     display: none;
   }
 
-  /* ── SUCCESS SCREEN ── */
+  /* ── REQ NOTE ── */
+  .req-note {
+    font-size: .73rem;
+    color: var(--sub);
+    margin-bottom: 1.1rem;
+  }
+  .req-note .req { color: var(--req); font-weight: 700; }
+
+  /* ── NOTICE ── */
+  .notice {
+    background: #fffbe6;
+    border: 1px solid #ffe58f;
+    border-radius: 5px;
+    padding: .65rem .9rem;
+    font-size: .81rem;
+    color: #7a5c00;
+    margin-bottom: 1.1rem;
+  }
+
+  /* ── SUMMARY ── */
+  .summary-block {
+    background: var(--light);
+    border-radius: 6px;
+    padding: .85rem 1rem;
+    margin-bottom: 1.1rem;
+    font-size: .86rem;
+    line-height: 2;
+  }
+
+  /* ── SUCCESS ── */
   .success-screen {
     display: none;
     text-align: center;
     padding: 3rem 1.5rem;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 14px rgba(0,0,0,.07);
   }
-  .success-icon {
-    width: 72px;
-    height: 72px;
-    background: var(--navy);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-    font-size: 2rem;
-  }
+  .success-icon { font-size: 3rem; display: block; margin-bottom: 1rem; }
   .success-screen h2 {
     font-family: 'Oswald', sans-serif;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--navy);
     text-transform: uppercase;
     letter-spacing: .06em;
     margin-bottom: .5rem;
   }
-  .success-screen p { color: var(--sub); font-size: .9rem; line-height: 1.6; }
-
-  /* ── LOADING SPINNER ── */
-  .spinner {
-    width: 18px;
-    height: 18px;
-    border: 2px solid rgba(255,255,255,.3);
-    border-top-color: var(--white);
-    border-radius: 50%;
-    animation: spin .6s linear infinite;
-    display: none;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .success-screen p { color: var(--sub); font-size: .88rem; line-height: 1.65; }
 
   /* ── PAGE VISIBILITY ── */
   .page { display: none; }
   .page.active { display: block; }
 
-  /* ── PROGRESS BAR ── */
-  .progress-bar {
-    height: 3px;
-    background: var(--mid);
-    border-radius: 2px;
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-  }
-  .progress-fill {
-    height: 100%;
-    background: var(--red);
-    border-radius: 2px;
-    transition: width .4s ease;
-  }
-
-  /* ── REQUIRED NOTE ── */
-  .req-note {
-    font-size: .75rem;
-    color: var(--sub);
-    margin-bottom: 1.2rem;
-  }
-  .req-note span { color: var(--req); font-weight: 700; }
-
-  @media (max-width: 500px) {
-    .steps { gap: .25rem; }
+  @media (max-width: 480px) {
+    body { padding: 1.2rem .8rem 3rem; }
+    .card { padding: 1.2rem 1rem; }
     .step-label { display: none; }
-    .card-body { padding: 1.1rem; }
   }
 </style>
 </head>
 <body>
-
-<header class="site-header">
-  <div class="logo">Ambassadors <span>Baseball</span></div>
-</header>
-
-<div class="hero">
-  <h1>Player <span>Registration</span></h1>
-  <p>Please complete the registration to secure your roster spot.</p>
-</div>
 
 <div class="steps-wrap">
   <div class="steps">
@@ -626,35 +491,83 @@
 
 <div class="main">
 
-  <!-- ════════════ PAGE 1: BASIC INFO ════════════ -->
+  <!-- ══ PAGE 1 ══ -->
   <div class="page active" id="page-1">
-
     <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
 
-    <!-- Team Search -->
+    <!-- Basic Info -->
     <div class="card">
-      <div class="card-head">
-        <div class="icon">🔍</div>
-        <h2>Select Your Team</h2>
-      </div>
-      <div class="card-body">
-        <div class="field">
-          <label>Team Name <span class="req">★</span></label>
-          <div class="search-wrap">
-            <input type="text" id="team-search-input" placeholder="Type team name to search…" autocomplete="off">
-            <button class="search-btn" onclick="searchTeams()">Search</button>
-          </div>
-          <div class="search-results" id="search-results"></div>
-          <div class="selected-team-badge" id="selected-team-badge">
-            <span>✔ &nbsp;<strong id="selected-team-name"></strong></span>
-            <button onclick="clearTeam()">Change team</button>
-          </div>
-        </div>
+      <div class="section-heading">Section 1 — Basic Info</div>
+      <p class="req-note"><span class="req">★</span> Required field</p>
 
-        <!-- Fee Display (shown after team selected) -->
-        <div id="fee-display" style="display:none">
-          <div class="section-label">Player Fee</div>
-          <div class="fee-box" id="fee-box">
+      <div class="field">
+        <label>Player Name <span class="req">★</span></label>
+        <input type="text" id="player-name" placeholder="Full name of the player">
+      </div>
+
+      <div class="sub-divider">Mother's Information</div>
+
+      <div class="field">
+        <label>Mother First Name</label>
+        <input type="text" id="mother-first" placeholder="First name">
+      </div>
+      <div class="field">
+        <label>Mother Last Name</label>
+        <input type="text" id="mother-last" placeholder="Last name">
+      </div>
+      <div class="field">
+        <label>Mother Cell</label>
+        <input type="tel" id="mother-cell" placeholder="(555) 000-0000">
+      </div>
+      <div class="field">
+        <label>Mother Email</label>
+        <input type="email" id="mother-email" placeholder="email@example.com">
+      </div>
+
+      <div class="sub-divider">
+        Father's Information <span class="mandatory-badge">Required</span>
+      </div>
+
+      <div class="field">
+        <label>Father First Name <span class="req">★</span></label>
+        <input type="text" id="father-first" placeholder="First name">
+      </div>
+      <div class="field">
+        <label>Father Last Name <span class="req">★</span></label>
+        <input type="text" id="father-last" placeholder="Last name">
+      </div>
+      <div class="field">
+        <label>Father Cell <span class="req">★</span></label>
+        <input type="tel" id="father-cell" placeholder="(555) 000-0000">
+      </div>
+      <div class="field">
+        <label>Father Email <span class="req">★</span></label>
+        <input type="email" id="father-email" placeholder="email@example.com">
+      </div>
+    </div>
+
+    <!-- Acknowledgements -->
+    <div class="card">
+      <div class="section-heading">Acknowledgements</div>
+
+      <div class="field">
+        <label>Team Name <span class="req">★</span></label>
+        <div class="search-wrap">
+          <input type="text" id="team-search-input" placeholder="Type team name to search…" autocomplete="off">
+          <button class="search-btn" onclick="searchTeams()">Search</button>
+        </div>
+        <div class="search-results" id="search-results"></div>
+        <div class="selected-team-badge" id="selected-team-badge">
+          <span>✔ &nbsp;<strong id="selected-team-name"></strong></span>
+          <button onclick="clearTeam()">Change</button>
+        </div>
+      </div>
+
+      <!-- Fee (shown after team selected, when applicable) -->
+      <div id="fee-display" style="display:none">
+        <div class="field">
+          <label>Player Fee Amount</label>
+          <div class="fee-box">
             <div>
               <div class="fee-box-label" id="fee-label">Amount Due</div>
               <div class="fee-box-amount" id="fee-amount">—</div>
@@ -663,408 +576,263 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Basic Info -->
-    <div class="card">
-      <div class="card-head">
-        <div class="icon">👤</div>
-        <h2>Basic Info</h2>
+      <div class="ack-block">
+        <div class="ack-text">I understand that player fees are <strong>non-refundable.</strong></div>
+        <div class="radio-group">
+          <div class="radio-item"><input type="radio" name="ack1" id="ack1-yes" value="yes"><label for="ack1-yes">Yes</label></div>
+          <div class="radio-item"><input type="radio" name="ack1" id="ack1-no"  value="no"><label  for="ack1-no">No</label></div>
+        </div>
       </div>
-      <div class="card-body">
-        <p class="req-note"><span>★</span> indicates a required field</p>
 
-        <div class="field">
-          <label>Player Name <span class="req">★</span></label>
-          <input type="text" id="player-name" placeholder="Full name of the player">
+      <div class="ack-block">
+        <div class="ack-text">I understand that the Ambassadors Baseball <strong>uniform package is NOT included</strong> in player fees and that I must purchase it separately.</div>
+        <div class="radio-group">
+          <div class="radio-item"><input type="radio" name="ack2" id="ack2-yes" value="yes"><label for="ack2-yes">Yes</label></div>
+          <div class="radio-item"><input type="radio" name="ack2" id="ack2-no"  value="no"><label  for="ack2-no">No</label></div>
         </div>
-
-        <div class="section-label">Mother's Information</div>
-
-        <div class="field">
-          <label>Mother First Name</label>
-          <input type="text" id="mother-first" placeholder="First name">
-        </div>
-        <div class="field">
-          <label>Mother Last Name</label>
-          <input type="text" id="mother-last" placeholder="Last name">
-        </div>
-        <div class="field">
-          <label>Mother Cell</label>
-          <input type="tel" id="mother-cell" placeholder="(555) 000-0000">
-        </div>
-        <div class="field">
-          <label>Mother Email</label>
-          <input type="email" id="mother-email" placeholder="email@example.com">
-        </div>
-
-        <div class="section-label">
-          Father's Information <span class="mandatory-badge">Required</span>
-        </div>
-
-        <div class="field">
-          <label>Father First Name <span class="req">★</span></label>
-          <input type="text" id="father-first" placeholder="First name">
-        </div>
-        <div class="field">
-          <label>Father Last Name <span class="req">★</span></label>
-          <input type="text" id="father-last" placeholder="Last name">
-        </div>
-        <div class="field">
-          <label>Father Cell <span class="req">★</span></label>
-          <input type="tel" id="father-cell" placeholder="(555) 000-0000">
-        </div>
-        <div class="field">
-          <label>Father Email <span class="req">★</span></label>
-          <input type="email" id="father-email" placeholder="email@example.com">
-        </div>
-
       </div>
-    </div>
 
-    <!-- Acknowledgements -->
-    <div class="card">
-      <div class="card-head">
-        <div class="icon">📋</div>
-        <h2>Acknowledgements</h2>
+      <div class="ack-block">
+        <div class="ack-text">I understand and agree to the <strong>Player, Parent, Coach Contract</strong> (<a href="#" target="_blank">see here</a>).</div>
+        <div class="radio-group">
+          <div class="radio-item"><input type="radio" name="ack3" id="ack3-yes" value="yes"><label for="ack3-yes">Yes</label></div>
+          <div class="radio-item"><input type="radio" name="ack3" id="ack3-no"  value="no"><label  for="ack3-no">No</label></div>
+        </div>
       </div>
-      <div class="card-body">
-        <p class="req-note">All acknowledgements below are <span>★ required</span> to proceed.</p>
 
-        <div class="ack-block">
-          <div class="ack-text">I understand that player fees are <strong>non-refundable.</strong></div>
-          <div class="field" style="margin-bottom:0">
-            <div class="radio-group">
-              <div class="radio-item">
-                <input type="radio" name="ack1" id="ack1-yes" value="yes">
-                <label for="ack1-yes">Yes</label>
-              </div>
-              <div class="radio-item">
-                <input type="radio" name="ack1" id="ack1-no" value="no">
-                <label for="ack1-no">No</label>
-              </div>
-            </div>
-          </div>
+      <div class="sub-divider">Injury Protection Plan</div>
+
+      <div class="ack-block">
+        <div class="ack-text">I would like to add <strong>Injury Protection</strong> (<a href="#" target="_blank">see here</a>).</div>
+        <div class="radio-group">
+          <div class="radio-item"><input type="radio" name="ack4" id="ack4-yes" value="yes"><label for="ack4-yes">Yes</label></div>
+          <div class="radio-item"><input type="radio" name="ack4" id="ack4-no"  value="no"><label  for="ack4-no">No</label></div>
         </div>
+      </div>
 
-        <div class="ack-block">
-          <div class="ack-text">I understand that the Ambassadors Baseball <strong>uniform package is NOT included</strong> in player fees and that I must purchase it separately.</div>
-          <div class="field" style="margin-bottom:0">
-            <div class="radio-group">
-              <div class="radio-item">
-                <input type="radio" name="ack2" id="ack2-yes" value="yes">
-                <label for="ack2-yes">Yes</label>
-              </div>
-              <div class="radio-item">
-                <input type="radio" name="ack2" id="ack2-no" value="no">
-                <label for="ack2-no">No</label>
-              </div>
-            </div>
-          </div>
+      <div class="ack-block">
+        <div class="ack-text">I decline the Injury Protection Plan.</div>
+        <div class="radio-group">
+          <div class="radio-item"><input type="radio" name="ack5" id="ack5-yes" value="yes"><label for="ack5-yes">Yes</label></div>
+          <div class="radio-item"><input type="radio" name="ack5" id="ack5-no"  value="no"><label  for="ack5-no">No</label></div>
         </div>
-
-        <div class="ack-block">
-          <div class="ack-text">I understand and agree to the <strong>Player, Parent, Coach Contract</strong> (<a href="#" target="_blank">see here</a>).</div>
-          <div class="field" style="margin-bottom:0">
-            <div class="radio-group">
-              <div class="radio-item">
-                <input type="radio" name="ack3" id="ack3-yes" value="yes">
-                <label for="ack3-yes">Yes</label>
-              </div>
-              <div class="radio-item">
-                <input type="radio" name="ack3" id="ack3-no" value="no">
-                <label for="ack3-no">No</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-label">Injury Protection Plan</div>
-
-        <div class="ack-block">
-          <div class="ack-text">I would like to add <strong>Injury Protection</strong> (<a href="#" target="_blank">see here</a>).</div>
-          <div class="field" style="margin-bottom:0">
-            <div class="radio-group">
-              <div class="radio-item">
-                <input type="radio" name="ack4" id="ack4-yes" value="yes">
-                <label for="ack4-yes">Yes</label>
-              </div>
-              <div class="radio-item">
-                <input type="radio" name="ack4" id="ack4-no" value="no">
-                <label for="ack4-no">No</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="ack-block">
-          <div class="ack-text">I decline the Injury Protection Plan.</div>
-          <div class="field" style="margin-bottom:0">
-            <div class="radio-group">
-              <div class="radio-item">
-                <input type="radio" name="ack5" id="ack5-yes" value="yes">
-                <label for="ack5-yes">Yes</label>
-              </div>
-              <div class="radio-item">
-                <input type="radio" name="ack5" id="ack5-no" value="no">
-                <label for="ack5-no">No</label>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
 
     <div class="err-msg" id="err-1"></div>
-    <button class="btn btn-primary" onclick="goToPage2()">
-      Continue &nbsp;→
-    </button>
+    <button class="btn btn-primary" onclick="goToPage2()">Continue</button>
+  </div>
 
-  </div><!-- /page-1 -->
 
-  <!-- ════════════ PAGE 2: PLAYER INFO ════════════ -->
+  <!-- ══ PAGE 2 ══ -->
   <div class="page" id="page-2">
-
     <div class="progress-bar"><div class="progress-fill" style="width:66%"></div></div>
 
     <div class="card">
-      <div class="card-head">
-        <div class="icon">⚾</div>
-        <h2>Player Info</h2>
+      <div class="section-heading">Player Info</div>
+      <p class="req-note"><span class="req">★</span> Required field</p>
+
+      <div class="field">
+        <label>Player DOB <span class="req">★</span></label>
+        <input type="date" id="player-dob">
       </div>
-      <div class="card-body">
-        <p class="req-note"><span>★</span> indicates a required field</p>
+      <div class="field">
+        <label>Player Cell</label>
+        <input type="tel" id="player-cell" placeholder="(555) 000-0000">
+      </div>
+      <div class="field">
+        <label>Player Email</label>
+        <input type="email" id="player-email" placeholder="email@example.com">
+      </div>
 
-        <div class="field">
-          <label>Player Date of Birth <span class="req">★</span></label>
-          <input type="date" id="player-dob">
+      <div class="sub-divider">Home Address</div>
+
+      <div class="field">
+        <label>Street <span class="req">★</span></label>
+        <input type="text" id="addr-street" placeholder="123 Main Street">
+      </div>
+      <div class="field">
+        <label>City <span class="req">★</span></label>
+        <input type="text" id="addr-city" placeholder="City">
+      </div>
+      <div class="field">
+        <label>State <span class="req">★</span></label>
+        <input type="text" id="addr-state" placeholder="e.g. TX" maxlength="2" style="text-transform:uppercase">
+      </div>
+      <div class="field">
+        <label>Zip <span class="req">★</span></label>
+        <input type="text" id="addr-zip" placeholder="00000" maxlength="10">
+      </div>
+
+      <div class="sub-divider">Batting &amp; Throwing</div>
+
+      <div class="field">
+        <label>Bats <span class="req">★</span></label>
+        <div class="radio-group">
+          <div class="radio-item"><input type="radio" name="bats" id="bats-right" value="Right"><label for="bats-right">Right</label></div>
+          <div class="radio-item"><input type="radio" name="bats" id="bats-left"  value="Left"><label  for="bats-left">Left</label></div>
         </div>
-
-        <div class="field">
-          <label>Player Cell</label>
-          <input type="tel" id="player-cell" placeholder="(555) 000-0000">
+      </div>
+      <div class="field">
+        <label>Throws <span class="req">★</span></label>
+        <div class="radio-group">
+          <div class="radio-item"><input type="radio" name="throws" id="throws-right" value="Right"><label for="throws-right">Right</label></div>
+          <div class="radio-item"><input type="radio" name="throws" id="throws-left"  value="Left"><label  for="throws-left">Left</label></div>
         </div>
+      </div>
 
-        <div class="field">
-          <label>Player Email</label>
-          <input type="email" id="player-email" placeholder="email@example.com">
-        </div>
+      <div class="sub-divider">Jersey &amp; Position</div>
 
-        <div class="section-label">Home Address <span class="req" style="font-size:.65rem;margin-left:.25rem">★ Required</span></div>
+      <div class="field">
+        <label>Preferred Jersey Number — First Choice</label>
+        <input type="number" id="jersey-1" placeholder="e.g. 12" min="0" max="99">
+      </div>
+      <div class="field">
+        <label>Preferred Jersey Number — Second Choice</label>
+        <input type="number" id="jersey-2" placeholder="e.g. 24" min="0" max="99">
+      </div>
+      <div class="field">
+        <label>First Position <span class="req">★</span></label>
+        <select id="pos-1">
+          <option value="">Select position…</option>
+          <option value="OF">OF</option>
+          <option value="CINF">CINF</option>
+          <option value="MIF">MIF</option>
+          <option value="C">C</option>
+          <option value="RHP">RHP</option>
+          <option value="LHP">LHP</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Second Position</label>
+        <select id="pos-2">
+          <option value="">Select position…</option>
+          <option value="OF">OF</option>
+          <option value="CINF">CINF</option>
+          <option value="MIF">MIF</option>
+          <option value="C">C</option>
+          <option value="RHP">RHP</option>
+          <option value="LHP">LHP</option>
+        </select>
+      </div>
 
-        <div class="field">
-          <label>Street <span class="req">★</span></label>
-          <input type="text" id="addr-street" placeholder="123 Main Street">
-        </div>
+      <div class="sub-divider">Additional Details</div>
 
-        <div class="field">
-          <label>City <span class="req">★</span></label>
-          <input type="text" id="addr-city" placeholder="City">
-        </div>
-
-        <div class="field">
-          <label>State <span class="req">★</span></label>
-          <input type="text" id="addr-state" placeholder="State" maxlength="2" style="text-transform:uppercase">
-        </div>
-
-        <div class="field">
-          <label>Zip Code <span class="req">★</span></label>
-          <input type="text" id="addr-zip" placeholder="00000" maxlength="10">
-        </div>
-
-        <div class="section-label">Batting &amp; Throwing</div>
-
-        <div class="field">
-          <label>Bats <span class="req">★</span></label>
-          <div class="radio-group">
-            <div class="radio-item">
-              <input type="radio" name="bats" id="bats-right" value="Right">
-              <label for="bats-right">Right</label>
-            </div>
-            <div class="radio-item">
-              <input type="radio" name="bats" id="bats-left" value="Left">
-              <label for="bats-left">Left</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Throws <span class="req">★</span></label>
-          <div class="radio-group">
-            <div class="radio-item">
-              <input type="radio" name="throws" id="throws-right" value="Right">
-              <label for="throws-right">Right</label>
-            </div>
-            <div class="radio-item">
-              <input type="radio" name="throws" id="throws-left" value="Left">
-              <label for="throws-left">Left</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-label">Jersey &amp; Position</div>
-
-        <div class="field">
-          <label>Preferred Jersey Number — 1st Choice</label>
-          <input type="number" id="jersey-1" placeholder="e.g. 12" min="0" max="99">
-        </div>
-
-        <div class="field">
-          <label>Preferred Jersey Number — 2nd Choice</label>
-          <input type="number" id="jersey-2" placeholder="e.g. 24" min="0" max="99">
-        </div>
-
-        <div class="field">
-          <label>First Position <span class="req">★</span></label>
-          <select id="pos-1">
-            <option value="">Select position…</option>
-            <option value="OF">OF — Outfield</option>
-            <option value="CINF">CINF — Corner Infield</option>
-            <option value="MIF">MIF — Middle Infield</option>
-            <option value="C">C — Catcher</option>
-            <option value="RHP">RHP — Right-Handed Pitcher</option>
-            <option value="LHP">LHP — Left-Handed Pitcher</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Second Position</label>
-          <select id="pos-2">
-            <option value="">Select position…</option>
-            <option value="OF">OF — Outfield</option>
-            <option value="CINF">CINF — Corner Infield</option>
-            <option value="MIF">MIF — Middle Infield</option>
-            <option value="C">C — Catcher</option>
-            <option value="RHP">RHP — Right-Handed Pitcher</option>
-            <option value="LHP">LHP — Left-Handed Pitcher</option>
-          </select>
-        </div>
-
-        <div class="section-label">Additional Details</div>
-
-        <div class="field">
-          <label>Height / Weight</label>
-          <input type="text" id="hw" placeholder="e.g. 5-10/180">
-          <div class="hint">Use format: feet-inches/lbs &nbsp; (e.g. 5-10/180)</div>
-        </div>
-
-        <div class="field">
-          <label>Graduation Year <span class="req">★</span></label>
-          <select id="grad-year">
-            <option value="">Select year…</option>
-            <option value="2026">2026</option>
-            <option value="2027">2027</option>
-            <option value="2028">2028</option>
-            <option value="2029">2029</option>
-            <option value="2030">2030</option>
-            <option value="2031">2031</option>
-            <option value="2032">2032</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>High School (current or will attend) <span class="req">★</span></label>
-          <input type="text" id="high-school" placeholder="School name">
-        </div>
-
+      <div class="field">
+        <label>Ht/Wt</label>
+        <input type="text" id="hw" placeholder="e.g. 5-10/180">
+        <div class="hint">Format: feet-inches/lbs &nbsp;(e.g. 5-10/180)</div>
+      </div>
+      <div class="field">
+        <label>Grad Year <span class="req">★</span></label>
+        <select id="grad-year">
+          <option value="">Select year…</option>
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+          <option value="2028">2028</option>
+          <option value="2029">2029</option>
+          <option value="2030">2030</option>
+          <option value="2031">2031</option>
+          <option value="2032">2032</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>High School (current or will attend) <span class="req">★</span></label>
+        <input type="text" id="high-school" placeholder="School name">
       </div>
     </div>
 
     <div class="err-msg" id="err-2"></div>
-    <button class="btn btn-primary" onclick="goToPage3()">
-      Continue to Payment &nbsp;→
-    </button>
+    <button class="btn btn-primary" onclick="goToPage3()">Continue to Payment</button>
+  </div>
 
-  </div><!-- /page-2 -->
 
-  <!-- ════════════ PAGE 3: PAYMENT ════════════ -->
+  <!-- ══ PAGE 3 ══ -->
   <div class="page" id="page-3">
-
     <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
 
     <div class="card" id="payment-card">
-      <div class="card-head">
-        <div class="icon">💳</div>
-        <h2>Payment</h2>
+      <div class="section-heading">Payment</div>
+      <div class="notice">Review your details before completing payment. Your spot is secured once payment is received.</div>
+
+      <div class="sub-divider">Registration Summary</div>
+      <div class="summary-block">
+        <div><strong>Team:</strong> <span id="sum-team">—</span></div>
+        <div><strong>Player:</strong> <span id="sum-player">—</span></div>
+        <div id="sum-fee-row"><strong>Amount:</strong> <span id="sum-fee">—</span></div>
       </div>
-      <div class="card-body">
 
-        <div class="notice">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#b88a00" stroke-width="1.5"/><path d="M8 5v4M8 11v.5" stroke="#b88a00" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <span>Review your registration details before completing payment. Your spot is secured once payment is received.</span>
-        </div>
-
-        <!-- Summary -->
-        <div class="section-label">Registration Summary</div>
-        <div style="background:var(--light);border-radius:6px;padding:1rem 1.2rem;margin-bottom:1.2rem;font-size:.85rem;line-height:2">
-          <div><strong>Team:</strong> <span id="sum-team">—</span></div>
-          <div><strong>Player:</strong> <span id="sum-player">—</span></div>
-          <div id="sum-fee-row"><strong>Amount:</strong> <span id="sum-fee">—</span></div>
-        </div>
-
-        <div id="payment-action">
-          <!-- Filled by JS depending on payment type -->
-        </div>
-
-        <div class="err-msg" id="err-3"></div>
-
-      </div>
+      <div id="payment-action"></div>
+      <div class="err-msg" id="err-3"></div>
     </div>
 
-    <!-- Success -->
     <div class="success-screen" id="success-screen">
-      <div class="success-icon">✅</div>
+      <span class="success-icon">✅</span>
       <h2>Registration Complete!</h2>
-      <p>Thank you for registering. Your information has been submitted successfully.<br>You will receive a confirmation email shortly.</p>
+      <p>Thank you — your information has been submitted successfully.<br>You will receive a confirmation email shortly.</p>
     </div>
-
-  </div><!-- /page-3 -->
+  </div>
 
 </div><!-- /main -->
 
 <script>
-// ── CONFIG ────────────────────────────────────────────────────────────────
 const API_BASE = 'https://backend-baseball-inky.vercel.app';
 
-// ── STATE ─────────────────────────────────────────────────────────────────
-let selectedTeam    = null;   // { _id, teamName, state, location, ageGroup }
-let teamFinancials  = null;   // { player_fee, deposit_enabled, deposit_amount, monthly_payments, … }
-let createdPlayerId = null;
-let createdPaymentId= null;
-let currentPage     = 1;
+let selectedTeam     = null;
+let teamFinancials   = null;
+let createdPlayerId  = null;
+let createdPaymentId = null;
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+const v  = id => document.getElementById(id).value.trim();
+const vs = id => document.getElementById(id).value;
+const gr = name => { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : ''; };
+
+function showErr(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.style.display = 'block';
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function hideErr(id) { document.getElementById(id).style.display = 'none'; }
+
+function setPage(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(`page-${n}`).classList.add('active');
+  for (let i = 1; i <= 3; i++) {
+    const d = document.getElementById(`step-dot-${i}`);
+    d.classList.remove('active', 'completed');
+    if (i < n) d.classList.add('completed');
+    else if (i === n) d.classList.add('active');
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
 // ── TEAM SEARCH ───────────────────────────────────────────────────────────
 let allTeams = [];
-
-async function loadAllTeams() {
+(async () => {
   try {
     const r = await fetch(`${API_BASE}/api/teams`);
     const d = await r.json();
     allTeams = d.teams || [];
-  } catch(e) {
-    console.warn('Could not preload teams', e);
-  }
-}
-loadAllTeams();
+  } catch(e) {}
+})();
 
 function searchTeams() {
-  const q = document.getElementById('team-search-input').value.trim().toLowerCase();
-  const resultsEl = document.getElementById('search-results');
-  if (!q) { resultsEl.style.display = 'none'; return; }
+  const q  = document.getElementById('team-search-input').value.trim().toLowerCase();
+  const el = document.getElementById('search-results');
+  if (!q) { el.style.display = 'none'; return; }
 
   const matches = allTeams.filter(t => t.teamName.toLowerCase().includes(q));
-  if (!matches.length) {
-    resultsEl.innerHTML = '<div class="search-result-item"><span>No teams found for that name.</span></div>';
-    resultsEl.style.display = 'block';
-    return;
-  }
-  resultsEl.innerHTML = matches.map(t => `
-    <div class="search-result-item" onclick="selectTeam('${t._id}')">
-      <strong>${t.teamName}</strong>
-      <span>${[t.location, t.state, t.ageGroup].filter(Boolean).join(' · ')}</span>
-    </div>`).join('');
-  resultsEl.style.display = 'block';
+  el.innerHTML = matches.length
+    ? matches.map(t => `
+        <div class="search-result-item" onclick="selectTeam('${t._id}')">
+          <strong>${t.teamName}</strong>
+          <span>${[t.location, t.state, t.ageGroup].filter(Boolean).join(' · ')}</span>
+        </div>`).join('')
+    : '<div class="search-result-item"><span>No teams found.</span></div>';
+  el.style.display = 'block';
 }
 
 document.getElementById('team-search-input').addEventListener('keydown', e => {
@@ -1076,37 +844,32 @@ async function selectTeam(id) {
   document.getElementById('search-results').style.display = 'none';
   document.getElementById('selected-team-name').textContent = selectedTeam.teamName;
   document.getElementById('selected-team-badge').style.display = 'flex';
-  document.getElementById('team-search-input').style.display = 'none';
-  document.querySelector('.search-btn').style.display = 'none';
+  document.getElementById('team-search-input').parentElement.style.display = 'none';
 
-  // Fetch financials
   try {
     const r = await fetch(`${API_BASE}/api/teams/${id}/financials`);
     const d = await r.json();
     teamFinancials = d.financials;
-    renderFeeDisplay();
-  } catch(e) {
-    teamFinancials = null;
-  }
+    renderFee();
+  } catch(e) { teamFinancials = null; }
 }
 
-function renderFeeDisplay() {
+function renderFee() {
   const fd = document.getElementById('fee-display');
   if (!teamFinancials) { fd.style.display = 'none'; return; }
-
   const { player_fee, deposit_enabled, deposit_amount, monthly_payments } = teamFinancials;
-  fd.style.display = 'block';
 
   if (deposit_enabled) {
-    document.getElementById('fee-label').textContent = 'Deposit Due Today';
+    document.getElementById('fee-label').textContent  = 'Deposit Due Today';
     document.getElementById('fee-amount').textContent = `$${deposit_amount || 0}`;
     document.getElementById('fee-type-badge').textContent = 'Deposit';
+    fd.style.display = 'block';
   } else if (!monthly_payments) {
-    document.getElementById('fee-label').textContent = 'Full Payment Due';
+    document.getElementById('fee-label').textContent  = 'Full Payment Due';
     document.getElementById('fee-amount').textContent = `$${player_fee || 0}`;
     document.getElementById('fee-type-badge').textContent = 'Full Payment';
+    fd.style.display = 'block';
   } else {
-    // monthly only – show nothing
     fd.style.display = 'none';
   }
 }
@@ -1115,284 +878,132 @@ function clearTeam() {
   selectedTeam = null;
   teamFinancials = null;
   document.getElementById('selected-team-badge').style.display = 'none';
-  document.getElementById('team-search-input').style.display = '';
-  document.querySelector('.search-btn').style.display = '';
+  document.getElementById('team-search-input').parentElement.style.display = 'flex';
   document.getElementById('team-search-input').value = '';
   document.getElementById('fee-display').style.display = 'none';
 }
 
-// ── PAGE NAVIGATION ───────────────────────────────────────────────────────
-function setPage(n) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(`page-${n}`).classList.add('active');
-  currentPage = n;
-  // Step dots
-  for (let i = 1; i <= 3; i++) {
-    const dot = document.getElementById(`step-dot-${i}`);
-    dot.classList.remove('active', 'completed');
-    if (i < n) dot.classList.add('completed');
-    else if (i === n) dot.classList.add('active');
-  }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function showErr(id, msg) {
-  const el = document.getElementById(id);
-  el.textContent = msg;
-  el.style.display = 'block';
-  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-function hideErr(id) { document.getElementById(id).style.display = 'none'; }
-
-function getRadio(name) {
-  const el = document.querySelector(`input[name="${name}"]:checked`);
-  return el ? el.value : '';
-}
-
+// ── NAVIGATION ────────────────────────────────────────────────────────────
 function goToPage2() {
   hideErr('err-1');
-
-  if (!selectedTeam) return showErr('err-1', 'Please search for and select your team before continuing.');
-  if (!v('player-name')) return showErr('err-1', 'Player Name is required.');
+  if (!v('player-name'))  return showErr('err-1', 'Player Name is required.');
   if (!v('father-first')) return showErr('err-1', 'Father First Name is required.');
-  if (!v('father-last')) return showErr('err-1', 'Father Last Name is required.');
-  if (!v('father-cell')) return showErr('err-1', 'Father Cell is required.');
+  if (!v('father-last'))  return showErr('err-1', 'Father Last Name is required.');
+  if (!v('father-cell'))  return showErr('err-1', 'Father Cell is required.');
   if (!v('father-email')) return showErr('err-1', 'Father Email is required.');
-
-  const acks = ['ack1','ack2','ack3','ack4','ack5'];
-  for (const a of acks) {
-    if (!getRadio(a)) return showErr('err-1', 'Please answer all acknowledgement questions before continuing.');
+  if (!selectedTeam)      return showErr('err-1', 'Please search and select your team.');
+  for (const a of ['ack1','ack2','ack3','ack4','ack5']) {
+    if (!gr(a)) return showErr('err-1', 'Please answer all acknowledgement questions.');
   }
-
   setPage(2);
 }
 
 function goToPage3() {
   hideErr('err-2');
-
-  if (!v('player-dob')) return showErr('err-2', 'Player Date of Birth is required.');
-  if (!v('addr-street')) return showErr('err-2', 'Street address is required.');
-  if (!v('addr-city')) return showErr('err-2', 'City is required.');
-  if (!v('addr-state')) return showErr('err-2', 'State is required.');
-  if (!v('addr-zip')) return showErr('err-2', 'Zip Code is required.');
-  if (!getRadio('bats')) return showErr('err-2', 'Please select Bats (Right or Left).');
-  if (!getRadio('throws')) return showErr('err-2', 'Please select Throws (Right or Left).');
-  if (!vs('pos-1')) return showErr('err-2', 'First Position is required.');
-  if (!vs('grad-year')) return showErr('err-2', 'Graduation Year is required.');
-  if (!v('high-school')) return showErr('err-2', 'High School is required.');
-
+  if (!v('player-dob'))    return showErr('err-2', 'Player DOB is required.');
+  if (!v('addr-street'))   return showErr('err-2', 'Street address is required.');
+  if (!v('addr-city'))     return showErr('err-2', 'City is required.');
+  if (!v('addr-state'))    return showErr('err-2', 'State is required.');
+  if (!v('addr-zip'))      return showErr('err-2', 'Zip is required.');
+  if (!gr('bats'))         return showErr('err-2', 'Please select Bats (Right or Left).');
+  if (!gr('throws'))       return showErr('err-2', 'Please select Throws (Right or Left).');
+  if (!vs('pos-1'))        return showErr('err-2', 'First Position is required.');
+  if (!vs('grad-year'))    return showErr('err-2', 'Grad Year is required.');
+  if (!v('high-school'))   return showErr('err-2', 'High School is required.');
   buildPaymentPage();
   setPage(3);
 }
 
-function v(id) { return document.getElementById(id).value.trim(); }
-function vs(id) { return document.getElementById(id).value; }
-
-// ── BUILD PAYMENT PAGE ────────────────────────────────────────────────────
+// ── PAYMENT PAGE ──────────────────────────────────────────────────────────
 function buildPaymentPage() {
   document.getElementById('sum-team').textContent   = selectedTeam?.teamName || '—';
-  document.getElementById('sum-player').textContent = v('player-name') || '—';
-
-  const actionEl = document.getElementById('payment-action');
+  document.getElementById('sum-player').textContent = v('player-name');
+  const el = document.getElementById('payment-action');
 
   if (!teamFinancials) {
     document.getElementById('sum-fee-row').style.display = 'none';
-    actionEl.innerHTML = `<button class="btn btn-navy" onclick="submitRegistration('none')">Complete Registration</button>`;
+    el.innerHTML = `<button class="btn btn-navy" onclick="doSubmit()">Complete Registration</button>`;
     return;
   }
 
   const { player_fee, deposit_enabled, deposit_amount, monthly_payments } = teamFinancials;
 
   if (deposit_enabled) {
-    document.getElementById('sum-fee').textContent = `$${deposit_amount} deposit (full fee: $${player_fee})`;
-    actionEl.innerHTML = `<button class="btn btn-primary" onclick="submitAndPay('deposit')">Pay $${deposit_amount} Deposit &nbsp;→</button>`;
+    document.getElementById('sum-fee').textContent = `$${deposit_amount} deposit (total fee: $${player_fee})`;
+    el.innerHTML = `<button class="btn btn-primary" onclick="doSubmitAndPay('deposit')">Pay $${deposit_amount} Deposit</button>`;
   } else if (!monthly_payments) {
     document.getElementById('sum-fee').textContent = `$${player_fee}`;
-    actionEl.innerHTML = `<button class="btn btn-primary" onclick="submitAndPay('full')">Pay $${player_fee} Now &nbsp;→</button>`;
+    el.innerHTML = `<button class="btn btn-primary" onclick="doSubmitAndPay('full')">Pay $${player_fee} Now</button>`;
   } else {
-    // monthly only – no payment redirect
     document.getElementById('sum-fee-row').style.display = 'none';
-    actionEl.innerHTML = `<button class="btn btn-navy" onclick="submitRegistration('none')">Complete Registration</button>`;
+    el.innerHTML = `<button class="btn btn-navy" onclick="doSubmit()">Complete Registration</button>`;
   }
 }
 
-// ── SUBMIT ────────────────────────────────────────────────────────────────
-async function submitRegistration(paymentType) {
-  hideErr('err-3');
-  const btn = document.querySelector('#payment-action button');
-  btn.disabled = true;
-  btn.textContent = 'Submitting…';
+// ── API ───────────────────────────────────────────────────────────────────
+async function createRecords() {
+  const pr = await fetch(`${API_BASE}/api/teams/${selectedTeam._id}/roster`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name:     v('player-name'),
+      jersey:   v('jersey-1') || '',
+      gradYear: vs('grad-year'),
+      position: vs('pos-1'),
+      hw:       v('hw'),
+      city:     v('addr-city'),
+      state:    v('addr-state'),
+      email:    v('player-email'),
+      cell:     v('player-cell'),
+    }),
+  });
+  const pd = await pr.json();
+  if (!pr.ok) throw new Error(pd.message || 'Failed to save player.');
+  createdPlayerId = pd.player?._id;
 
-  try {
-    // 1. Create player on roster
-    const playerBody = {
-      name:      v('player-name'),
-      jersey:    v('jersey-1') || '',
-      gradYear:  vs('grad-year'),
-      position:  vs('pos-1'),
-      hw:        v('hw'),
-      city:      v('addr-city'),
-      state:     v('addr-state'),
-      email:     v('player-email'),
-      cell:      v('player-cell'),
-    };
+  const fee = teamFinancials?.player_fee || 0;
+  const dep = teamFinancials?.deposit_amount || 0;
 
-    const pr = await fetch(`${API_BASE}/api/teams/${selectedTeam._id}/roster`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(playerBody),
-    });
-    const pd = await pr.json();
-    if (!pr.ok) throw new Error(pd.message || 'Failed to create player record');
-    createdPlayerId = pd.player?._id;
-
-    // 2. Create payment record
-    const fee     = teamFinancials?.player_fee     || 0;
-    const deposit = teamFinancials?.deposit_amount || 0;
-
-    const pymBody = {
+  const pymr = await fetch(`${API_BASE}/api/coach/player-payments`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
       coachId:         selectedTeam._id,
       playerId:        createdPlayerId,
       playerName:      v('player-name'),
       totalFee:        fee,
-      depositAmount:   deposit,
+      depositAmount:   dep,
       balance:         fee,
       registeredDate:  new Date().toISOString().split('T')[0],
       paymentDeadline: teamFinancials?.payment_deadline || '',
-    };
-
-    const pymr = await fetch(`${API_BASE}/api/coach/player-payments`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(pymBody),
-    });
-    const pymd = await pymr.json();
-    if (!pymr.ok) throw new Error(pymd.message || 'Failed to create payment record');
-    createdPaymentId = pymd.payment?._id;
-
-    return createdPaymentId;
-
-  } catch (err) {
-    btn.disabled = false;
-    btn.textContent = 'Try Again';
-    showErr('err-3', err.message || 'Something went wrong. Please try again.');
-    return null;
-  }
+    }),
+  });
+  const pymd = await pymr.json();
+  if (!pymr.ok) throw new Error(pymd.message || 'Failed to create payment record.');
+  createdPaymentId = pymd.payment?._id;
+  return createdPaymentId;
 }
 
-async function submitAndPay(paymentType) {
-  const paymentId = await submitRegistration(paymentType);
-  if (!paymentId) return;
-
-  // 3. Create Stripe checkout session
-  try {
-    const origin = window.location.href;
-    const cr = await fetch(`${API_BASE}/api/checkout`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        coachId:         selectedTeam._id,
-        paymentType,
-        playerPaymentId: paymentId,
-        successUrl:      origin + (origin.includes('?') ? '&' : '?') + 'payment=success',
-        cancelUrl:       origin + (origin.includes('?') ? '&' : '?') + 'payment=cancelled',
-      }),
-    });
-    const cd = await cr.json();
-    if (!cr.ok) throw new Error(cd.message || 'Failed to create checkout session');
-    window.location.href = cd.url;
-  } catch(err) {
-    document.getElementById('err-3').textContent = err.message;
-    document.getElementById('err-3').style.display = 'block';
-    const btn = document.querySelector('#payment-action button');
-    btn.disabled = false;
-    btn.textContent = 'Try Again';
-  }
-}
-
-// Handle no-payment flow (monthly only)
-document.querySelectorAll('#payment-action').forEach(() => {});
-// Wrap no-payment submit
-window.submitRegistration = async function(type) {
-  const paymentId = await _submitRegistration(type);
-  if (!paymentId) return;
-  // Show success
-  document.getElementById('payment-card').style.display = 'none';
-  document.getElementById('success-screen').style.display = 'block';
-};
-
-// internal
-async function _submitRegistration(paymentType) {
-  hideErr('err-3');
+async function doSubmit() {
   const btn = document.querySelector('#payment-action button');
-  btn.disabled = true;
-  btn.textContent = 'Submitting…';
-
+  btn.disabled = true; btn.textContent = 'Submitting…';
+  hideErr('err-3');
   try {
-    const playerBody = {
-      name:      v('player-name'),
-      jersey:    v('jersey-1') || '',
-      gradYear:  vs('grad-year'),
-      position:  vs('pos-1'),
-      hw:        v('hw'),
-      city:      v('addr-city'),
-      state:     v('addr-state'),
-      email:     v('player-email'),
-      cell:      v('player-cell'),
-    };
-
-    const pr = await fetch(`${API_BASE}/api/teams/${selectedTeam._id}/roster`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(playerBody),
-    });
-    const pd = await pr.json();
-    if (!pr.ok) throw new Error(pd.message || 'Failed to create player record');
-    createdPlayerId = pd.player?._id;
-
-    const fee     = teamFinancials?.player_fee     || 0;
-    const deposit = teamFinancials?.deposit_amount || 0;
-
-    const pymBody = {
-      coachId:         selectedTeam._id,
-      playerId:        createdPlayerId,
-      playerName:      v('player-name'),
-      totalFee:        fee,
-      depositAmount:   deposit,
-      balance:         fee,
-      registeredDate:  new Date().toISOString().split('T')[0],
-      paymentDeadline: teamFinancials?.payment_deadline || '',
-    };
-
-    const pymr = await fetch(`${API_BASE}/api/coach/player-payments`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(pymBody),
-    });
-    const pymd = await pymr.json();
-    if (!pymr.ok) throw new Error(pymd.message || 'Failed to create payment record');
-    createdPaymentId = pymd.payment?._id;
-
-    return createdPaymentId;
-
+    await createRecords();
+    document.getElementById('payment-card').style.display = 'none';
+    document.getElementById('success-screen').style.display = 'block';
   } catch(err) {
-    const btn = document.querySelector('#payment-action button');
-    if (btn) { btn.disabled = false; btn.textContent = 'Try Again'; }
-    showErr('err-3', err.message || 'Something went wrong. Please try again.');
-    return null;
+    showErr('err-3', err.message);
+    btn.disabled = false; btn.textContent = 'Complete Registration';
   }
 }
 
-// Re-wire submitAndPay to use _submitRegistration
-window.submitAndPay = async function(paymentType) {
-  hideErr('err-3');
+async function doSubmitAndPay(paymentType) {
   const btn = document.querySelector('#payment-action button');
-  if (btn) { btn.disabled = true; btn.textContent = 'Processing…'; }
-
-  const paymentId = await _submitRegistration(paymentType);
-  if (!paymentId) return;
-
+  btn.disabled = true; btn.textContent = 'Processing…';
+  hideErr('err-3');
   try {
+    const paymentId = await createRecords();
     const origin = window.location.href.split('?')[0];
     const cr = await fetch(`${API_BASE}/api/checkout`, {
       method: 'POST',
@@ -1406,19 +1017,19 @@ window.submitAndPay = async function(paymentType) {
       }),
     });
     const cd = await cr.json();
-    if (!cr.ok) throw new Error(cd.message || 'Failed to create checkout session');
+    if (!cr.ok) throw new Error(cd.message || 'Checkout failed.');
     window.location.href = cd.url;
   } catch(err) {
     showErr('err-3', err.message);
     const b = document.querySelector('#payment-action button');
     if (b) { b.disabled = false; b.textContent = 'Try Again'; }
   }
-};
+}
 
-// ── HANDLE PAYMENT RETURN ─────────────────────────────────────────────────
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('payment') === 'success') {
+// ── STRIPE RETURN ─────────────────────────────────────────────────────────
+(() => {
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('payment') === 'success') {
     setPage(3);
     document.getElementById('payment-card').style.display = 'none';
     document.getElementById('success-screen').style.display = 'block';
