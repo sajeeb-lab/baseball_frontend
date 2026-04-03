@@ -704,11 +704,11 @@
         <input type="date" id="player-dob">
       </div>
       <div class="field">
-        <label>Player Cell</label>
+        <label>Player Cell <span class="req">★</span></label>
         <input type="tel" id="player-cell" placeholder="(555) 000-0000">
       </div>
       <div class="field">
-        <label>Player Email</label>
+        <label>Player Email <span class="req">★</span></label>
         <input type="email" id="player-email" placeholder="email@example.com">
       </div>
 
@@ -751,11 +751,11 @@
       <div class="sub-divider">Jersey &amp; Position</div>
 
       <div class="field">
-        <label>Preferred Jersey Number — First Choice</label>
+        <label>Preferred Jersey Number — First Choice <span class="req">★</span></label>
         <input type="number" id="jersey-1" placeholder="e.g. 12" min="0" max="99">
       </div>
       <div class="field">
-        <label>Preferred Jersey Number — Second Choice</label>
+        <label>Preferred Jersey Number — Second Choice <span class="req">★</span></label>
         <input type="number" id="jersey-2" placeholder="e.g. 24" min="0" max="99">
       </div>
       <div class="field">
@@ -771,7 +771,7 @@
         </select>
       </div>
       <div class="field">
-        <label>Second Position</label>
+        <label>Second Position <span class="req">★</span></label>
         <select id="pos-2">
           <option value="">Select position…</option>
           <option value="OF">OF</option>
@@ -786,7 +786,7 @@
       <div class="sub-divider">Additional Details</div>
 
       <div class="field">
-        <label>Ht/Wt</label>
+        <label>Ht/Wt <span class="req">★</span></label>
         <input type="text" id="hw" placeholder="e.g. 5-10/180">
         <div class="hint">Format: feet-inches/lbs &nbsp;(e.g. 5-10/180)</div>
       </div>
@@ -1030,15 +1030,15 @@ function goToPage3() {
   clearErrors(page);
   let invalid = false;
 
-  const reqText   = ['player-dob','addr-street','addr-city','addr-state','addr-zip','high-school'];
-  const reqSelect = ['pos-1','grad-year'];
+  const reqText   = ['player-dob','player-cell','player-email','addr-street','addr-city','addr-state','addr-zip','jersey-1','jersey-2','hw','high-school'];
+  const reqSelect = ['pos-1','pos-2','grad-year'];
   reqText.forEach(id => { if (!v(id)) { markError(id); invalid = true; } });
   reqSelect.forEach(id => { if (!vs(id)) { markError(id); invalid = true; } });
   ['bats','throws'].forEach(name => {
     const inputs = document.querySelectorAll(`input[name="${name}"]`);
     const field  = inputs[0]?.closest('.field');
     if (!gr(name)) {
-      if (field) field.classList.add('has-error');
+      if (field) { field.classList.add('has-error'); }
       invalid = true;
     }
   });
