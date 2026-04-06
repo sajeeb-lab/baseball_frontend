@@ -798,7 +798,7 @@ function renderPage(team) {
       </div>
       <div style="padding: 16px 20px; border-top: 1px solid var(--mid, #e5e7eb); text-align: center;">
         <button
-          onclick="window.location.href='player-registration.html?team=' + (teamName || '').replace(/[\s\/]+/g, '-')"
+          onclick="window.location.href='player-registration.html?team=' + encodeURIComponent('${team.teamName || ''}').replace(/%20/g, '-').replace(/%2F/g, '-')"
           style="
             background: #1a3fc4;
             color: #fff;
