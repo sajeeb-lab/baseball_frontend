@@ -621,7 +621,7 @@
     margin: 0;
     padding: 0;
     flex: 1;
-    justify-content: flex-start;  /* links start right after logo gap */
+    justify-content: flex-end;  /* links pushed to right, closer to Coach Login */
   }
   .navbar-links a {
     font-family: 'Open Sans', sans-serif;
@@ -1054,10 +1054,13 @@ let allTeams = [];
     const d = await r.json();
     allTeams = d.teams || [];
 
-    // Read team from URL hash e.g. domain.com/#testing-the-team
+    // Read team from ?team= query param (set by team.html) OR URL hash fallback
+    const params  = new URLSearchParams(window.location.search);
+    const qParam  = params.get('team');
     const rawHash = window.location.hash.slice(1);
-    if (rawHash) {
-      const slug = decodeURIComponent(rawHash);
+    const slug    = qParam ? decodeURIComponent(qParam) : (rawHash ? decodeURIComponent(rawHash) : '');
+
+    if (slug) {
       const normalize = str => str.replace(/[-\s\/]+/g, '').toLowerCase();
       const match = allTeams.find(t => normalize(t.teamName) === normalize(slug));
       if (match) {
@@ -1074,37 +1077,6 @@ let allTeams = [];
     console.error('Team load error:', e);
   }
 })();
-
-function searchTeams() {
-  const q  = document.getElementById('team-search-input').value.trim().toLowerCase();
-  const el = document.getElementById('search-results');
-  if (!q) { el.style.display = 'none'; return; }
-
-  const matches = allTeams.filter(t => t.teamName.toLowerCase().includes(q));
-  el.innerHTML = matches.length
-    ? matches.map(t => `
-        <div class="search-result-item" onclick="selectTeam('${t._id}')">
-          <strong>${t.teamName}</strong>
-          <span>${[t.location, t.state, t.ageGroup].filter(Boolean).join(' · ')}</span>
-        </div>`).join('')
-    : '<div class="search-result-item"><span>No teams found.</span></div>';
-  el.style.display = 'block';
-}
-
-document.getElementById('team-search-input').addEventListener('input', () => {
-  searchTeams();
-});
-
-document.getElementById('team-search-input').addEventListener('keydown', e => {
-  if (e.key === 'Escape') document.getElementById('search-results').style.display = 'none';
-});
-
-document.addEventListener('click', e => {
-  const wrap = document.getElementById('team-search-input')?.closest('.search-wrap');
-  if (wrap && !wrap.contains(e.target)) {
-    document.getElementById('search-results').style.display = 'none';
-  }
-});
 
 async function selectTeam(id) {
   selectedTeam = allTeams.find(t => t._id === id);
@@ -1186,7 +1158,7 @@ function goToPage2() {
     if (!v(id)) { markError(id); invalid = true; }
   });
   if (!selectedTeam) {
-    document.getElementById('team-search-input').closest('.field')?.classList.add('has-error');
+    document.getElementById('selected-team-badge')?.classList.add('has-error');
     invalid = true;
   }
   if (invalid) {
