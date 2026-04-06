@@ -915,15 +915,11 @@ let allTeams = [];
 
     // Auto-select team if ?team=<teamName> is in the URL
     const urlParams = new URLSearchParams(window.location.search);
-    const presetTeamId = urlParams.get('id');
-    const presetTeamSlug = urlParams.get('team');
-    if (presetTeamId || presetTeamSlug) {
-      // Normalize: strip all dashes & spaces, lowercase — so "Tri-City-Hawks",
-      // "Tri City Hawks", and "Tri-City Hawks" all match the same team
+    // Auto-select team if team name is in the URL hash e.g. #testing-the-team
+    const presetTeamSlug = window.location.hash.slice(1);
+    if (presetTeamSlug) {
       const normalize = str => str.replace(/[-\s\/]+/g, '').toLowerCase();
-      const match = presetTeamId
-        ? allTeams.find(t => t._id === presetTeamId)
-        : allTeams.find(t => normalize(t.teamName) === normalize(presetTeamSlug));
+      const match = allTeams.find(t => normalize(t.teamName) === normalize(presetTeamSlug));
       if (match) {
         await selectTeam(match._id);
       }
