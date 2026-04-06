@@ -798,9 +798,9 @@ function renderPage(team) {
       </div>
       <div style="padding: 16px 20px; border-top: 1px solid var(--mid, #e5e7eb); text-align: center;">
         <button
-          onclick="window.location.href='player-registration.html?team=' + encodeURIComponent(teamName || '')"
+          onclick="window.location.href='player-registration.html?team=' + (teamName || '').replace(/[\s\/]+/g, '-')"
           style="
-            background: var(--red, #c8102e);
+            background: #1a3fc4;
             color: #fff;
             border: none;
             border-radius: 8px;
@@ -815,10 +815,10 @@ function renderPage(team) {
             width: 100%;
             max-width: 380px;
           "
-          onmouseover="this.style.background='#a30d24'"
-          onmouseout="this.style.background='var(--red, #c8102e)'"
+          onmouseover="this.style.background='#1535a8'"
+          onmouseout="this.style.background='#1a3fc4'"
         >
-          ✉ Accept Roster Invitation
+          Accept Roster Invitation
         </button>
       </div>
     </div>
