@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navbar Widget – Ambassadors Baseball</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: #fff;
+      border-bottom: 3px solid #1a3fc4;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+    .navbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .navbar-logo img {
+      height: 56px;
+      width: auto;
+      display: block;
+    }
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: .15rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar-links a {
+      font-family: 'Open Sans', sans-serif;
+      font-size: .82rem;
+      font-weight: 600;
+      color: #1a1a2e;
+      text-decoration: none;
+      padding: .45rem .65rem;
+      border-radius: 4px;
+      transition: color .15s, background .15s;
+      white-space: nowrap;
+    }
+    .navbar-links a:hover { color: #1a3fc4; background: #f0f4ff; }
+    .navbar-login {
+      background: #0a1628;
+      color: #fff !important;
+      padding: .55rem 1.3rem !important;
+      border-radius: 50px !important;
+      font-weight: 700 !important;
+      font-size: .85rem !important;
+      transition: background .15s !important;
+    }
+    .navbar-login:hover { background: #1a3fc4 !important; color: #fff !important; }
+
+    @media (max-width: 900px) {
+      .navbar-links { display: none; }
+      .navbar-inner { padding: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a class="navbar-logo" href="https://ambassadorsbaseball.com">
+      <img
+        src="src/logo.webp"
+        alt="Ambassadors Baseball"
+        onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'font-family:Oswald,sans-serif;font-size:1.1rem;font-weight:700;color:#c8102e;letter-spacing:.05em;text-transform:uppercase\'>AMBASSADORS<br><span style=\'color:#1a3fc4;font-size:.75rem\'>BASEBALL</span></span>'"
+      >
+    </a>
+    <ul class="navbar-links">
+      <li><a href="https://ambassadorsbaseball.com">Home</a></li>
+      <li><a href="https://ambassadorsbaseball.com/about">About</a></li>
+      <li><a href="https://ambassadorsbaseball.com/mission">Mission</a></li>
+      <li><a href="https://ambassadorsbaseball.com/teams-tryouts">Teams &amp; Tryouts</a></li>
+      <li><a href="https://ambassadorsbaseball.com/commitments">Commitments</a></li>
+      <li><a href="https://ambassadorsbaseball.com/opportunities">Opportunities</a></li>
+      <li><a href="https://ambassadorsbaseball.com/faq">FAQ</a></li>
+      <li><a href="https://ambassadorsbaseball.com/contact">Contact</a></li>
+      <li><a href="https://ambassadorsbaseball.com/coach-login" class="navbar-login">Coach Login</a></li>
+    </ul>
+  </div>
+</nav>
+
+</body>
+</html>
