@@ -912,6 +912,18 @@ let allTeams = [];
     const r = await fetch(`${API_BASE}/api/teams`);
     const d = await r.json();
     allTeams = d.teams || [];
+
+    // Auto-select team if ?team=<teamName> is in the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const presetTeamName = urlParams.get('team');
+    if (presetTeamName) {
+      const match = allTeams.find(
+        t => t.teamName.toLowerCase() === presetTeamName.toLowerCase()
+      );
+      if (match) {
+        await selectTeam(match._id);
+      }
+    }
   } catch(e) {}
 })();
 
