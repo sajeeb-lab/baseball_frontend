@@ -913,21 +913,22 @@ let allTeams = [];
     const d = await r.json();
     allTeams = d.teams || [];
 
-    // Auto-select team from URL hash e.g. #testing-the-team
-    const rawHash = window.location.hash.slice(1);
-    if (rawHash) {
-      const presetTeamSlug = decodeURIComponent(rawHash);
+    // Auto-select team if ?team=<teamName> is in the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const presetTeamId = urlParams.get('id');
+    const presetTeamSlug = urlParams.get('team');
+    if (presetTeamId || presetTeamSlug) {
+      // Normalize: strip all dashes & spaces, lowercase — so "Tri-City-Hawks",
+      // "Tri City Hawks", and "Tri-City Hawks" all match the same team
       const normalize = str => str.replace(/[-\s\/]+/g, '').toLowerCase();
-      const match = allTeams.find(t => normalize(t.teamName) === normalize(presetTeamSlug));
+      const match = presetTeamId
+        ? allTeams.find(t => t._id === presetTeamId)
+        : allTeams.find(t => normalize(t.teamName) === normalize(presetTeamSlug));
       if (match) {
         await selectTeam(match._id);
-      } else {
-        console.warn('No team matched hash:', presetTeamSlug, '| Available:', allTeams.map(t => t.teamName));
       }
     }
-  } catch(e) {
-    console.error('Team load error:', e);
-  }
+  } catch(e) {}
 })();
 
 function searchTeams() {
