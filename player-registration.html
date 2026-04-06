@@ -28,7 +28,7 @@
     color: var(--text);
     min-height: 100vh;
     padding: 2rem 1.2rem 4rem;
-    padding-top: 90px;
+    padding-top: 128px;
   }
 
   /* ── STEP INDICATOR ── */
@@ -313,6 +313,7 @@
     border: 1.5px solid var(--mid);
     border-radius: 5px;
   }
+  /* placeholder state — muted */
   .fee-box--empty.fee-placeholder .fee-box-label {
     color: var(--sub);
     font-size: .74rem;
@@ -327,6 +328,7 @@
     background: var(--mid);
     color: var(--sub);
   }
+  /* populated state — normal colours */
   .fee-box--empty:not(.fee-placeholder) .fee-box-label {
     color: var(--sub);
     font-size: .68rem;
@@ -343,6 +345,7 @@
   }
 
   /* ── TEAM SEARCH ── */
+  /* search removed */
   .search-wrap-unused {
     flex: 1;
     padding: 10px 13px;
@@ -542,11 +545,12 @@
   .page.active { display: block; }
 
   @media (max-width: 480px) {
-    body { padding: 1.2rem .8rem 3rem; padding-top: 90px; }
+    body { padding: 1.2rem .8rem 3rem; padding-top: 98px; }
     .card { padding: 1.2rem 1rem; }
     .step-label { display: none; }
   }
 
+  
 </style>
 </head>
 <body>
@@ -559,32 +563,31 @@
     .then(html => {
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, 'text/html');
-
-      // Inject navbar styles
-      const styles = doc.querySelectorAll('style, link[rel="stylesheet"]');
-      styles.forEach(s => {
-        if (!document.head.querySelector(`[data-navbar-style]`)) {
-          const clone = s.cloneNode(true);
-          clone.setAttribute('data-navbar-style', '');
-          document.head.appendChild(clone);
-        }
+      // Inject navbar styles (only once)
+      doc.querySelectorAll('style, link[rel="stylesheet"]').forEach(s => {
+        const clone = s.cloneNode(true);
+        clone.setAttribute('data-navbar-injected', '');
+        document.head.appendChild(clone);
       });
-
       // Inject navbar markup
       const nav = doc.querySelector('nav.navbar');
       if (nav) document.getElementById('navbar-placeholder').replaceWith(nav);
     })
     .catch(() => {
-      // Fallback inline navbar if fetch fails (e.g. opened as local file)
-      document.getElementById('navbar-placeholder').innerHTML = `
-        <nav style="position:fixed;top:0;left:0;right:0;z-index:1000;background:#fff;border-bottom:3px solid #1a3fc4;box-shadow:0 2px 8px rgba(0,0,0,.08);">
-          <div style="max-width:1200px;margin:0 auto;padding:0 2rem;height:72px;display:flex;align-items:center;gap:1rem;">
-            <a href="https://ambassadorsbaseball.com">
-              <img src="src/logo.webp" alt="Ambassadors Baseball" height="56"
-                onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=\'font-family:Oswald,sans-serif;font-size:1.1rem;font-weight:700;color:#c8102e\'>AMBASSADORS BASEBALL</span>')">
+      // Minimal inline fallback
+      document.getElementById('navbar-placeholder').innerHTML = \`
+        <nav style="position:fixed;top:0;left:0;right:0;z-index:1000;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);">
+          <div style="max-width:1280px;margin:0 auto;padding:0 2.5rem;height:110px;display:flex;align-items:center;justify-content:space-between;gap:2rem;">
+            <a href="https://ambassadorsbaseball.com" style="text-decoration:none;flex-shrink:0;">
+              <img src="src/logo.webp" alt="Ambassadors Baseball" height="90"
+                onerror="this.outerHTML='<span style=\'font-family:Oswald,sans-serif;font-size:1.3rem;font-weight:700;color:#c8102e\'>AMBASSADORS BASEBALL</span>'">
+            </a>
+            <a href="https://ambassadorsbaseball.com/coach-login"
+               style="background:#1a3fc4;color:#fff;font-family:Open Sans,sans-serif;font-weight:700;font-size:.88rem;text-decoration:none;padding:.65rem 1.6rem;border-radius:50px;white-space:nowrap;flex-shrink:0;">
+              Coach Login
             </a>
           </div>
-        </nav>`;
+        </nav>\`;
     });
 </script>
 
@@ -617,6 +620,7 @@
     <div class="card">
       <div class="section-heading">Section 1 — Basic Info</div>
 
+
       <div class="field">
         <label>Player Name <span class="req">★</span></label>
         <input type="text" id="player-name" placeholder="Full name of the player">
@@ -641,7 +645,9 @@
         <input type="email" id="mother-email" placeholder="email@example.com">
       </div>
 
-      <div class="sub-divider">Father's Information</div>
+      <div class="sub-divider">
+        Father's Information
+      </div>
 
       <div class="field">
         <label>Father First Name <span class="req">★</span></label>
@@ -742,6 +748,7 @@
 
     <div class="card">
       <div class="section-heading">Player Info</div>
+
 
       <div class="field">
         <label>Player DOB <span class="req">★</span></label>
@@ -977,6 +984,14 @@ function searchTeams() {
     : '<div class="search-result-item"><span>No teams found.</span></div>';
   el.style.display = 'block';
 }
+
+document.getElementById('team-search-input').addEventListener('input', () => {
+  searchTeams();
+});
+
+document.getElementById('team-search-input').addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('search-results').style.display = 'none';
+});
 
 document.addEventListener('click', e => {
   const wrap = document.getElementById('team-search-input')?.closest('.search-wrap');
