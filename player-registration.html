@@ -551,45 +551,140 @@
   }
 
   
+
+  /* ── NAVBAR ── */
+  .navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0,0,0,.10);
+  }
+  .navbar-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  .navbar-logo {
+    flex-shrink: 0;
+    text-decoration: none;
+    display: block;
+  }
+  .navbar-logo img {
+    height: 90px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+  }
+  .navbar-logo-fallback {
+    display: inline-flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .navbar-logo-fallback .logo-top {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #c8102e;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .navbar-logo-fallback .logo-bottom {
+    font-family: 'Oswald', sans-serif;
+    font-size: .85rem;
+    font-weight: 600;
+    color: #1a3fc4;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  .navbar-logo-fallback .logo-tag {
+    font-family: Georgia, serif;
+    font-size: .62rem;
+    font-style: italic;
+    color: #c8102e;
+  }
+  .navbar-links {
+    display: flex;
+    align-items: center;
+    gap: .05rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    justify-content: center;
+  }
+  .navbar-links a {
+    font-family: 'Open Sans', sans-serif;
+    font-size: .83rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    text-decoration: none;
+    padding: .4rem .6rem;
+    border-radius: 4px;
+    transition: color .15s, background .15s;
+    white-space: nowrap;
+  }
+  .navbar-links a:hover {
+    color: #1a3fc4;
+    background: #f0f4ff;
+  }
+  .navbar-cta {
+    flex-shrink: 0;
+    display: inline-block;
+    background: #1a3fc4;
+    color: #fff !important;
+    font-family: 'Open Sans', sans-serif;
+    font-size: .88rem;
+    font-weight: 700;
+    text-decoration: none;
+    padding: .65rem 1.6rem;
+    border-radius: 50px;
+    white-space: nowrap;
+    transition: background .2s;
+  }
+  .navbar-cta:hover { background: #0d2a99; }
+  @media (max-width: 960px) {
+    .navbar-links { display: none; }
+    .navbar-inner { padding: 0 1.2rem; gap: 1rem; }
+  }
+  @media (max-width: 480px) {
+    .navbar-inner { height: 80px; }
+    .navbar-logo img { height: 62px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- ══ NAVBAR — loaded from navbar.html widget ══ -->
-<div id="navbar-placeholder"></div>
-<script>
-  fetch('navbar.html')
-    .then(r => r.text())
-    .then(html => {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      // Inject navbar styles (only once)
-      doc.querySelectorAll('style, link[rel="stylesheet"]').forEach(s => {
-        const clone = s.cloneNode(true);
-        clone.setAttribute('data-navbar-injected', '');
-        document.head.appendChild(clone);
-      });
-      // Inject navbar markup
-      const nav = doc.querySelector('nav.navbar');
-      if (nav) document.getElementById('navbar-placeholder').replaceWith(nav);
-    })
-    .catch(() => {
-      // Minimal inline fallback
-      document.getElementById('navbar-placeholder').innerHTML = \`
-        <nav style="position:fixed;top:0;left:0;right:0;z-index:1000;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);">
-          <div style="max-width:1280px;margin:0 auto;padding:0 2.5rem;height:110px;display:flex;align-items:center;justify-content:space-between;gap:2rem;">
-            <a href="https://ambassadorsbaseball.com" style="text-decoration:none;flex-shrink:0;">
-              <img src="src/logo.webp" alt="Ambassadors Baseball" height="90"
-                onerror="this.outerHTML='<span style=\'font-family:Oswald,sans-serif;font-size:1.3rem;font-weight:700;color:#c8102e\'>AMBASSADORS BASEBALL</span>'">
-            </a>
-            <a href="https://ambassadorsbaseball.com/coach-login"
-               style="background:#1a3fc4;color:#fff;font-family:Open Sans,sans-serif;font-weight:700;font-size:.88rem;text-decoration:none;padding:.65rem 1.6rem;border-radius:50px;white-space:nowrap;flex-shrink:0;">
-              Coach Login
-            </a>
-          </div>
-        </nav>\`;
-    });
-</script>
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a class="navbar-logo" href="https://ambassadorsbaseball.com">
+      <img
+        src="src/logo.webp"
+        alt="Ambassadors Baseball"
+        onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'navbar-logo-fallback\'><span class=\'logo-top\'>Ambassadors</span><span class=\'logo-bottom\'>Baseball</span><span class=\'logo-tag\'>Let Your Light Shine</span></span>';"
+      >
+    </a>
+    <ul class="navbar-links">
+      <li><a href="https://ambassadorsbaseball.com">Home</a></li>
+      <li><a href="https://ambassadorsbaseball.com/about">About</a></li>
+      <li><a href="https://ambassadorsbaseball.com/mission">Mission</a></li>
+      <li><a href="https://ambassadorsbaseball.com/teams-tryouts">Teams &amp; Tryouts</a></li>
+      <li><a href="https://ambassadorsbaseball.com/commitments">Commitments</a></li>
+      <li><a href="https://ambassadorsbaseball.com/opportunities">Opportunities</a></li>
+      <li><a href="https://ambassadorsbaseball.com/faq">FAQ</a></li>
+      <li><a href="https://ambassadorsbaseball.com/contact">Contact</a></li>
+    </ul>
+    <a href="https://ambassadorsbaseball.com/coach-login" class="navbar-cta">Coach Login</a>
+  </div>
+</nav>
+
+
 
 <div class="steps-wrap">
   <div class="steps">
