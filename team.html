@@ -796,6 +796,31 @@ function renderPage(team) {
           <tbody id="roster-body">${rosterBody}</tbody>
         </table>
       </div>
+      <div style="padding: 16px 20px; border-top: 1px solid var(--mid, #e5e7eb); text-align: center;">
+        <button
+          onclick="window.location.href='player-registration.html?team=' + encodeURIComponent(teamName || '')"
+          style="
+            background: var(--red, #c8102e);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 13px 28px;
+            font-family: 'Oswald', sans-serif;
+            font-size: .95rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background .15s;
+            width: 100%;
+            max-width: 380px;
+          "
+          onmouseover="this.style.background='#a30d24'"
+          onmouseout="this.style.background='var(--red, #c8102e)'"
+        >
+          ✉ Accept Roster Invitation
+        </button>
+      </div>
     </div>
   `;
 
