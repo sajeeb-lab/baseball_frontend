@@ -913,18 +913,21 @@ let allTeams = [];
     const d = await r.json();
     allTeams = d.teams || [];
 
-    // Auto-select team if ?team=<teamName> is in the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    // Auto-select team if team name is in the URL hash e.g. #testing-the-team
-    const presetTeamSlug = window.location.hash.slice(1);
-    if (presetTeamSlug) {
+    // Auto-select team from URL hash e.g. #testing-the-team
+    const rawHash = window.location.hash.slice(1);
+    if (rawHash) {
+      const presetTeamSlug = decodeURIComponent(rawHash);
       const normalize = str => str.replace(/[-\s\/]+/g, '').toLowerCase();
       const match = allTeams.find(t => normalize(t.teamName) === normalize(presetTeamSlug));
       if (match) {
         await selectTeam(match._id);
+      } else {
+        console.warn('No team matched hash:', presetTeamSlug, '| Available:', allTeams.map(t => t.teamName));
       }
     }
-  } catch(e) {}
+  } catch(e) {
+    console.error('Team load error:', e);
+  }
 })();
 
 function searchTeams() {
