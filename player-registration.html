@@ -28,165 +28,6 @@
     color: var(--text);
     min-height: 100vh;
     padding: 2rem 1.2rem 4rem;
-    padding-top: 160px;
-  }
-
-  /* ── NAVBAR ── */
-  .navbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 1000;
-    background: #ffffff;
-    box-shadow: 2px 2px 2px 0 #707070;
-    border-bottom: 2px solid #0042ab;
-  }
-
-  .navbar-inner {
-    max-width: 100%;
-    margin: 0;
-    padding: 10px 5px;
-    display: flex;
-    align-items: stretch;
-  }
-
-  /* 83.9% column: logo + nav links */
-  .navbar-nav-col {
-    width: 83.9%;
-    padding: 10px 5px;
-    display: flex;
-    align-items: center;
-    min-width: 0;
-  }
-
-  .navbar-nav-inner {
-    width: 100%;
-    padding: 8px 40px 8px 120px;
-    background: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 16px;
-  }
-
-  /* ── LOGO ── */
-  .navbar-logo {
-    flex-shrink: 0;
-    text-decoration: none;
-    display: block;
-    margin-right: 8px;
-  }
-  .navbar-logo img {
-    width: 250px;
-    height: auto;
-    display: block;
-    object-fit: contain;
-  }
-  .navbar-logo-fallback {
-    display: inline-flex;
-    flex-direction: column;
-    line-height: 1.15;
-  }
-  .navbar-logo-fallback .logo-top {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #0042ab;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-  }
-  .navbar-logo-fallback .logo-bottom {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: .85rem;
-    font-weight: 600;
-    color: #0042ab;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-  }
-
-  /* ── NAV LINKS ── */
-  .navbar-links {
-    display: flex;
-    align-items: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    flex: 1;
-    justify-content: flex-end;
-  }
-  .navbar-links li {
-    margin-left: 2px;
-  }
-  .navbar-links a {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: #000000;
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 0;
-    display: block;
-    text-transform: capitalize;
-    letter-spacing: 0;
-    line-height: 1.3em;
-    white-space: nowrap;
-    transition: background .15s, color .15s;
-  }
-  .navbar-links a:hover {
-    background: #0042ab;
-    color: #ffffff;
-  }
-
-  /* 16.1% column: Coach Login */
-  .navbar-cta-col {
-    width: 16.1%;
-    padding: 10px 100px 10px 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  /* ── COACH LOGIN BUTTON ── */
-  .navbar-cta {
-    display: inline-block;
-    background: #0042ab;
-    color: #ffffff !important;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    text-decoration: none;
-    padding: 15px 10px;
-    border-radius: 50px;
-    border: 2px solid #ffffff;
-    white-space: nowrap;
-    text-transform: none;
-    letter-spacing: 0;
-    transition: background .2s;
-    width: 100%;
-    text-align: center;
-  }
-  .navbar-cta:hover { background: #003090; }
-
-  /* Mobile hamburger icon */
-  .navbar-mobile-toggle {
-    display: none;
-    cursor: pointer;
-    padding: .45rem .375rem;
-    border-radius: 5px;
-    color: #0042ab;
-    font-size: 16px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-  }
-
-  @media (max-width: 480px) {
-    body { padding: 1.2rem .8rem 3rem; padding-top: 80px; }
-    .navbar-nav-inner { padding-left: 10px; padding-right: 10px; margin-top: -27px; }
-    .navbar-links { display: none; }
-    .navbar-mobile-toggle { display: block; }
-    .navbar-cta-col { padding: 10px 5px; width: auto; }
   }
 
   /* ── STEP INDICATOR ── */
@@ -619,6 +460,7 @@
   .page.active { display: block; }
 
   @media (max-width: 480px) {
+    body { padding: 1.2rem .8rem 3rem; }
     .card { padding: 1.2rem 1rem; }
     .step-label { display: none; }
   }
@@ -642,43 +484,6 @@
   </style>
 </head>
 <body>
-
-<!-- ══ NAVBAR ══ -->
-<nav class="navbar">
-  <div class="navbar-inner">
-
-    <!-- 83.9% column: logo + nav links -->
-    <div class="navbar-nav-col">
-      <div class="navbar-nav-inner">
-        <a class="navbar-logo" href="https://ambassadorsbaseballus.com/home">
-          <img
-            src="src/logo.webp"
-            alt="Ambassadors Baseball"
-            onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'navbar-logo-fallback\'><span class=\'logo-top\'>Ambassadors</span><span class=\'logo-bottom\'>Baseball</span></span>';"
-          >
-        </a>
-        <ul class="navbar-links">
-          <li><a href="https://ambassadorsbaseballus.com/home">Home</a></li>
-          <li><a href="https://ambassadorsbaseballus.com/about-us">About</a></li>
-          <li><a href="https://ambassadorsbaseballus.com/Our-Mission">Mission</a></li>
-          <li><a href="https://ambassadorsbaseballus.com/teams">Teams &amp; Tryouts</a></li>
-          <li><a href="https://ambassadorsbaseballus.com/commitments">Commitments</a></li>
-          <li><a href="https://ambassadorsbaseballus.com/opportunities">Opportunities</a></li>
-          <li><a href="https://ambassadorsbaseballus.com/faq">FAQ</a></li>
-          <li><a href="https://ambassadorsbaseballus.com/contact-us">Contact</a></li>
-        </ul>
-        <!-- Mobile hamburger (shown only on ≤480px) -->
-        <span class="navbar-mobile-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">&#9776;</span>
-      </div>
-    </div>
-
-    <!-- 16.1% column: Coach Login button -->
-    <div class="navbar-cta-col">
-      <a href="https://ambassadorsbaseballus.com/coach-login" class="navbar-cta">Coach Login</a>
-    </div>
-
-  </div>
-</nav>
 
 
 <div class="steps-wrap">
@@ -1024,29 +829,6 @@ function setPage(n) {
     if (c) { c.classList.toggle('completed', i < n); }
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// ── MOBILE MENU TOGGLE ────────────────────────────────────────────────────
-function toggleMobileMenu() {
-  const links = document.querySelector('.navbar-links');
-  if (!links) return;
-  const isVisible = links.style.display === 'flex';
-  links.style.display = isVisible ? 'none' : 'flex';
-  if (!isVisible) {
-    links.style.flexDirection = 'column';
-    links.style.position = 'fixed';
-    links.style.top = '0';
-    links.style.left = '0';
-    links.style.width = '100%';
-    links.style.height = '100vh';
-    links.style.background = '#ffffff';
-    links.style.zIndex = '999';
-    links.style.padding = '1rem';
-    links.style.overflowY = 'scroll';
-    links.style.paddingBottom = '8rem';
-  } else {
-    links.style.cssText = '';
-  }
 }
 
 // ── TEAM LOAD ─────────────────────────────────────────────────────────────
