@@ -380,19 +380,7 @@ document.addEventListener('wheel', (e) => {
 
 const API_BASE = 'https://backend-baseball-inky.vercel.app';
 
-// ── ADMIN IMPERSONATION (Option 3) ──
-const _params     = new URLSearchParams(window.location.search);
-const _urlToken   = _params.get('adminToken');
-const _urlCoachId = _params.get('adminCoachId');
-if (_urlToken) {
-  sessionStorage.setItem('admin_impersonation_token',    _urlToken);
-  sessionStorage.setItem('admin_impersonation_coach_id', _urlCoachId);
-  window.history.replaceState({}, '', 'coach-dashboard.html');
-}
-const isAdminView = !!sessionStorage.getItem('admin_impersonation_token');
-const token = isAdminView
-  ? sessionStorage.getItem('admin_impersonation_token')
-  : localStorage.getItem('coach_token');
+const token = localStorage.getItem('coach_token');
 if (!token) window.location.href = 'coach-auth.html';
 
 const authH = () => ({ 'Content-Type':'application/json', 'Authorization':`Bearer ${token}` });
@@ -408,17 +396,7 @@ function setLoading(btnId,textId,loading,label){
   document.getElementById(textId).innerHTML=loading?'<span class="btn-spinner"></span>':label;
   btn.disabled=loading;
 }
-function handleLogout(){
-  if (isAdminView) {
-    sessionStorage.removeItem('admin_impersonation_token');
-    sessionStorage.removeItem('admin_impersonation_coach_id');
-    window.close();
-  } else {
-    localStorage.removeItem('coach_token');
-    localStorage.removeItem('coach_id');
-    window.location.href='coach-auth.html';
-  }
-}
+function handleLogout(){ localStorage.removeItem('coach_token'); localStorage.removeItem('coach_id'); window.location.href='coach-auth.html'; }
 let _pollInterval = null;
 let _activePanel  = 'profile';
 
