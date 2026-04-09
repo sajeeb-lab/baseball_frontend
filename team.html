@@ -790,7 +790,7 @@ function renderPage(team) {
           <thead>
             <tr>
               <th>Player</th><th>Jersey</th><th>Grad Year</th>
-              <th>Position</th><th>HT/WT</th><th>Email</th><th>Cell</th>
+              <th>Position</th><th>HT/WT</th><th>City</th><th>State</th>
             </tr>
           </thead>
           <tbody id="roster-body">${rosterBody}</tbody>
@@ -1544,9 +1544,6 @@ async function loadRoster(id) {
       return;
     }
     tbody.innerHTML = players.map(p => {
-      const emailVal = p.email || '';
-      const cellVal  = p.cell  || '';
-      const cellHref = cellVal.replace(/\D/g, '');
       return `
       <tr>
         <td>
@@ -1561,8 +1558,8 @@ async function loadRoster(id) {
         <td>${esc(p.gradYear || '—')}</td>
         <td>${esc(p.position || '—')}</td>
         <td>${esc(p.hw || '—')}</td>
-        <td>${emailVal ? `<a href="mailto:${esc(emailVal)}" style="color:var(--navy);text-decoration:none">${esc(emailVal)}</a>` : '—'}</td>
-        <td>${cellVal ? `<a href="tel:+1${cellHref}" style="color:var(--navy);text-decoration:none">${esc(cellVal)}</a>` : '—'}</td>
+        <td>${esc(p.city || '—')}</td>
+        <td>${esc(p.state || '—')}</td>
       </tr>`;
     }).join('');
   } catch (err) {
