@@ -702,6 +702,7 @@ document.querySelectorAll('.schedule-table thead th').forEach(th => {
 
 /* ── MAIN LOAD ── */
 let _teamFinancials = null;
+let _registerEnabled = true;
 
 async function loadTeam() {
   if (!teamId) { showError('Missing team information.'); return; }
@@ -714,6 +715,7 @@ async function loadTeam() {
     const finData  = await finRes.json();
     if (!teamRes.ok) throw new Error(teamData.message || 'Team not found');
     _teamFinancials = finData.financials || null;
+    _registerEnabled = teamData.team.registerEnabled !== false;
     renderPage(teamData.team);
     renderPaymentPreview();
     loadTryouts(teamId);
@@ -909,7 +911,7 @@ async function loadTryouts(id) {
           </svg>
           ${esc([t.city, t.state].filter(Boolean).join(', '))}
         </div>` : ''}
-        <button class="tryout-register-btn" onclick="openTryoutModal('${esc(t.date)}')">Register for Tryout</button>
+        ${_registerEnabled ? `<button class="tryout-register-btn" onclick="openTryoutModal('${esc(t.date)}')">Register for Tryout</button>` : ''}
       </div>`).join('');
   } catch (err) {
     grid.innerHTML = `<div class="no-tryouts">No upcoming tryouts scheduled. Check back soon!</div>`;
