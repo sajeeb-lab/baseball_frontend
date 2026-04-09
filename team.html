@@ -799,7 +799,7 @@ function renderPage(team) {
         </table>
       </div>
       <div style="padding: 16px 20px; border-top: 1px solid var(--mid, #e5e7eb); text-align: center;">
-        <button
+        ${_registerEnabled ? `<button
           onclick="window.location.href='https://frontend.sajeeb.workers.dev/' + ('${team.teamName || ''}').replace(/ /g, '%20')"
           style="
             background: #1a3fc4;
@@ -821,7 +821,7 @@ function renderPage(team) {
           onmouseout="this.style.background='#1a3fc4'"
         >
           Accept Roster Invitation
-        </button>
+        </button>` : ''}
       </div>
     </div>
   `;
@@ -911,7 +911,7 @@ async function loadTryouts(id) {
           </svg>
           ${esc([t.city, t.state].filter(Boolean).join(', '))}
         </div>` : ''}
-        ${_registerEnabled ? `<button class="tryout-register-btn" onclick="openTryoutModal('${esc(t.date)}')">Register for Tryout</button>` : ''}
+        <button class="tryout-register-btn" onclick="openTryoutModal('${esc(t.date)}')">Register for Tryout</button>
       </div>`).join('');
   } catch (err) {
     grid.innerHTML = `<div class="no-tryouts">No upcoming tryouts scheduled. Check back soon!</div>`;
