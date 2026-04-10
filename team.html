@@ -383,6 +383,17 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
     </div>
   </div>
 
+  <!-- INLINE TRYOUT REGISTRATION (shown when Register is clicked) -->
+  <div id="tryout-inline-section" style="display:none; margin-bottom:1.4rem;">
+    <div style="background:var(--white);border-radius:6px;box-shadow:0 2px 12px rgba(0,0,0,.07);overflow:hidden;">
+      <div id="tryout-inline-header" style="background:var(--red);padding:11px 20px;font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:600;color:#fff;letter-spacing:.12em;text-transform:uppercase;text-align:center;">
+        Register for Tryout
+      </div>
+      <div id="tryout-inline-body" style="padding:0;"></div>
+      <div id="tryout-inline-foot" style="padding:1rem 1.5rem;border-top:1px solid var(--mid);background:var(--white);"></div>
+    </div>
+  </div>
+
   <!-- ACCEPT INVITATION / REGISTRATION -->
   <div style="margin-bottom:1.4rem;display:none;">
     <div class="registration-card">
@@ -1352,24 +1363,39 @@ const _originalModalBody = document.getElementById('tr-modal-body').innerHTML;
 const _originalModalFoot = document.getElementById('tr-modal-foot').innerHTML;
 
 function openTryoutModal(dateLabel) {
-  document.getElementById('tr-modal-sub').textContent = dateLabel || 'Complete the form below to reserve your spot';
-  // Fully reset body and footer back to original form
-  document.getElementById('tr-modal-body').innerHTML = _originalModalBody;
-  document.getElementById('tr-modal-foot').innerHTML = _originalModalFoot;
-  document.getElementById('tr-modal-foot').style.display = 'block';
+  const inlineSection = document.getElementById('tryout-inline-section');
+  const inlineHeader  = document.getElementById('tryout-inline-header');
+  const inlineBody    = document.getElementById('tryout-inline-body');
+  const inlineFoot    = document.getElementById('tryout-inline-foot');
+
+  // Update header with the selected tryout date
+  inlineHeader.textContent = dateLabel
+    ? 'Register for Tryout — ' + dateLabel
+    : 'Register for Tryout';
+
+  // Reset the form body and footer (same content as original modal)
+  inlineBody.innerHTML = _originalModalBody;
+  inlineFoot.innerHTML = _originalModalFoot;
+
   // Re-attach submit listener since innerHTML was replaced
   document.getElementById('tr-submit-btn').addEventListener('click', handleTryoutSubmit);
-  trOverlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-  
-  // Initialize Flatpickr on date field AFTER modal opens
+
+  // Show the section
+  inlineSection.style.display = 'block';
+
+  // Smooth scroll to it
+  setTimeout(() => {
+    inlineSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 30);
+
+  // Initialize Flatpickr on date field after render
   setTimeout(() => {
     flatpickr('#tr-dob', {
       dateFormat: 'd/m/Y',
       allowInput: false,
       disableMobile: true
     });
-  }, 50);
+  }, 80);
 }
 
 function closeTryoutModal() {
