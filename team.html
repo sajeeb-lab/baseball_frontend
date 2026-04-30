@@ -1342,7 +1342,7 @@ async function startStripeCheckout(btn, paymentType) {
         coachId,
         paymentType,
         playerPaymentId: paymentId,
-        successUrl: window.location.origin + window.location.pathname + '?payment=success&pid=' + paymentId,
+        successUrl: window.location.origin + window.location.pathname + '?payment=success',
         cancelUrl:  window.location.origin + window.location.pathname + '?payment=cancelled',
       }),
     });
@@ -1375,15 +1375,6 @@ function showPlayerPaymentInfo(playerName, totalFee, depAmt, fin, paymentPlan, p
   const urlParams = new URLSearchParams(window.location.search);
   const paymentStatus = urlParams.get('payment');
   if (paymentStatus === 'success') {
-    // Send payment notification email via backend
-    const pid = urlParams.get('pid');
-    if (pid) {
-      fetch(`${API_BASE}/api/send-payment-notification`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ playerPaymentId: pid }),
-      }).catch(err => console.warn('Payment notification email failed:', err));
-    }
     html += `<div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:8px;padding:.9rem 1.2rem;margin-bottom:1rem;text-align:center;font-size:.88rem;color:#166534;font-weight:600">
       ✅ Payment submitted — you'll receive a confirmation shortly.
     </div>`;
@@ -1807,6 +1798,7 @@ function showError(msg) {
 }
 
 loadTeam();
+
 </script>
   <!-- REGISTRATION SUCCESS MODAL -->
   <div class="reg-modal-overlay" id="reg-modal-overlay">
