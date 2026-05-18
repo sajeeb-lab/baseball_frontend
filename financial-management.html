@@ -1586,16 +1586,20 @@
         const state = {
             teams: [],
         };
-        let currentView = 'org';
+        // ── View mode ─────────────────────────────────────────────────
+        // _isCoachView = true  → opened from coach-dashboard (?coachId=XXX)
+        //                        shows team view only, no org overview, no payments section
+        // _isCoachView = false → opened by admin (no coachId param)
+        //                        full page: org overview + team view + payments section
+        const _urlCoachId  = new URLSearchParams(window.location.search).get('coachId');
+        const _isCoachView = !!_urlCoachId;
+        let currentView = _urlCoachId || 'org';
         const paginationState = {
             team:    {},                          // keyed by coachId: { page, perPage }
-            balance: { page: 1, perPage: 20 },    // org-view outstanding balances
+            balance: { page: 1, perPage: 20 },
         };
 
         // ── Initialize App ──
-        // Called after successful login (or on page load with a valid stored
-        // token). Loads the teams list first so the dropdown is populated
-        // before the first render; renderContent then fetches view-specific data.
         async function initApp() {
             try {
                 const { teams } = await fetchTeams();
@@ -1603,17 +1607,23 @@
             } catch (err) {
                 console.error('Failed to load teams:', err);
                 state.teams = [];
-                // We still render the page — the org view banner will surface
-                // any API failure for the metrics call below.
+            }
+            if (_urlCoachId && state.teams.length > 0) {
+                const match = state.teams.find(t => String(t.id) === String(_urlCoachId));
+                currentView = match ? String(match.id) : (state.teams[0] ? String(state.teams[0].id) : 'org');
+            } else if (!_urlCoachId && state.teams.length === 0) {
+                currentView = 'org';
             }
             renderNavigation();
             await renderContent();
         }
 
-        // ── Render Navigation (Org button + Team dropdown + Logout) ──
+        // ── Render Navigation ──
+        // Admin → Organization Overview button + team dropdown + Logout
+        // Coach → team dropdown + Logout only
         function renderNavigation() {
             const navControls = document.getElementById('navControls');
-            const isTeamView = currentView !== 'org';
+            const isTeamView    = currentView !== 'org';
             const selectedTeamId = isTeamView ? String(currentView) : '';
 
             const teamsHtml = state.teams.length === 0
@@ -1624,10 +1634,13 @@
                     </option>
                 `).join('');
 
-            let html = `
+            const orgBtn = _isCoachView ? '' : `
                 <button class="nav-btn ${currentView === 'org' ? 'active' : ''}" onclick="switchView('org')">
                     Organization Overview
-                </button>
+                </button>`;
+
+            navControls.innerHTML = `
+                ${orgBtn}
                 <div class="team-select-wrap">
                     <select class="team-select ${isTeamView ? 'active' : ''}" onchange="onTeamSelectChange(this.value)">
                         <option value="">Select Team...</option>
@@ -1636,16 +1649,14 @@
                 </div>
                 <button class="logout-btn" onclick="logout()" title="Sign out">Logout</button>
             `;
-
-            navControls.innerHTML = html;
         }
 
         function onTeamSelectChange(value) {
             if (value === '') {
-                switchView('org');
-            } else {
-                switchView(value);  // ObjectId string, no parsing
+                if (!_isCoachView) switchView('org');
+                return;
             }
+            switchView(value);
         }
 
         // ── Switch View ──
@@ -1657,18 +1668,25 @@
         }
 
         // ── Render Content ──
+        // Admin sees org view (when currentView === 'org') or team view.
+        // Coach always sees team view; if somehow currentView is 'org',
+        // fall back to the first available team.
         async function renderContent() {
             const wrapper = document.getElementById('contentWrapper');
-            if (currentView === 'org') {
+            if (currentView === 'org' && !_isCoachView) {
                 wrapper.innerHTML = await renderOrganizationDashboard();
                 renderTeamRankings();
                 renderBalanceTable();
-            } else {
-                wrapper.innerHTML = await renderCoachDashboard(currentView);
-                renderTeamPlayerTable(currentView);
-                renderCoachPayoutsSection(currentView);
-                bindChartHover();
+                return;
             }
+            if (currentView === 'org' && _isCoachView && state.teams.length > 0) {
+                currentView = String(state.teams[0].id);
+                renderNavigation();
+            }
+            wrapper.innerHTML = await renderCoachDashboard(currentView);
+            renderTeamPlayerTable(currentView);
+            if (!_isCoachView) renderCoachPayoutsSection(currentView);
+            bindChartHover();
         }
 
         // ── HTML escape for any user-controlled text we drop into innerHTML ──
@@ -1940,7 +1958,8 @@
                         ` : ''}
                     </div>
 
-                    <!-- Payments from Ambassadors Baseball -->
+                    <!-- Payments from Ambassadors Baseball — admin only -->
+                    ${!_isCoachView ? `
                     <div class="section-card" id="payoutsSection-${coachId}">
                         <div class="section-card-header">
                             <h2>Payments from Ambassadors Baseball</h2>
@@ -1972,6 +1991,7 @@
                             </div>
                         </div>
                     </div>
+                    ` : ''}
 
                     <!-- Accounts in Red — only rendered when deadline has passed -->
                     ${team.deadlinePassed ? `
