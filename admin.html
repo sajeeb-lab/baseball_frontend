@@ -54,29 +54,6 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
 
 /* ── SHELL ── */
 #app { display: none; min-height: 100vh; }
-.topbar {
-  background: var(--navy); padding: 0 28px; height: 58px;
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,.25);
-}
-.topbar-brand { font-family: 'Oswald', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--white); letter-spacing: .1em; }
-.topbar-brand span { color: var(--red); }
-.topbar-right { display: flex; align-items: center; gap: 14px; }
-.admin-badge { background: var(--red); color: var(--white); font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
-.logout-btn {
-  background: rgba(255,255,255,.1); color: rgba(255,255,255,.8); border: 1px solid rgba(255,255,255,.15);
-  border-radius: 6px; padding: 6px 14px; font-size: .82rem; font-weight: 600; cursor: pointer;
-  font-family: 'Source Sans 3', sans-serif; transition: background .15s;
-}
-.logout-btn:hover { background: rgba(255,255,255,.18); color: var(--white); }
-
-.fin-dashboard-btn {
-  background: #c8102e; color: var(--white); border: none;
-  border-radius: 6px; padding: 7px 16px; font-size: .82rem; font-weight: 700; cursor: pointer;
-  font-family: 'Source Sans 3', sans-serif; letter-spacing: .03em; transition: background .15s;
-  display: inline-flex; align-items: center; gap: .35rem;
-}
-.fin-dashboard-btn:hover { background: #a50d25; }
 
 .content { padding: 28px; max-width: 1400px; margin: 0 auto; }
 
@@ -244,21 +221,6 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
 </style>
 </head>
 <body>
-<div id="navbar-root"></div>
-<script>
-  fetch('navbar.html')
-    .then(r => r.text())
-    .then(html => {
-      const root = document.getElementById('navbar-root');
-      root.innerHTML = html;
-      // innerHTML doesn't execute scripts — re-run them manually
-      root.querySelectorAll('script').forEach(function(oldScript) {
-        const newScript = document.createElement('script');
-        newScript.textContent = oldScript.textContent;
-        document.head.appendChild(newScript);
-      });
-    });
-</script>
 
 <!-- LOGIN -->
 <div id="login-screen">
@@ -276,16 +238,6 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
 
 <!-- APP -->
 <div id="app">
-  <div class="topbar">
-    <div class="topbar-brand">AMBASSADORS <span>BASEBALL</span></div>
-    <div class="topbar-right">
-      <button class="fin-dashboard-btn" onclick="openFinancialDashboard()">
-        💰 Financial Dashboard
-      </button>
-      <span class="admin-badge">Admin</span>
-      <button class="logout-btn" onclick="doLogout()">Sign Out</button>
-    </div>
-  </div>
 
   <div class="content">
     <!-- Stats -->
