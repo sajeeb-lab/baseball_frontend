@@ -1,302 +1,271 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ambassadors Baseball – Find Teams</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!--
+  AMBASSADORS BASEBALL — SHARED NAVBAR COMPONENT
+  ================================================
+  HOW TO USE IN ANY PAGE:
+
+  1. Add Space Grotesk to your <head> fonts if not already:
+     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  2. Place this right after <body>:
+     <div id="navbar-root"></div>
+     <script>
+       fetch('navbar.html')
+         .then(r => r.text())
+         .then(html => { document.getElementById('navbar-root').innerHTML = html; });
+     </script>
+-->
+
+<!-- ── NAVBAR STYLES ── -->
 <style>
-:root {
-  --navy:#0a1628; --navy2:#0d1f3c; --red:#c8102e; --red2:#a50d25;
-  --gold:#f5c518; --white:#ffffff; --light:#f4f6f9; --mid:#dce3ec;
-  --text:#1a1a2e; --sub:#5a6a7a; --blue:#1e56c8;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text);min-height:100vh}
-
-.hero{background:linear-gradient(135deg,#1a3fc4 0%,#1535a8 100%);padding:3rem 2rem 2.8rem;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")}
-.hero h1{font-family:'Oswald',sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;color:var(--white);letter-spacing:.05em;text-transform:uppercase;margin-bottom:.5rem;position:relative}
-.hero h1 span{color:var(--red)}
-.hero p{color:rgba(255,255,255,.65);font-size:.92rem;margin-bottom:1.8rem;position:relative}
-.search-wrap{position:relative;max-width:520px;margin:0 auto;display:flex}
-.search-wrap input{flex:1;padding:14px 18px;border:2px solid rgba(255,255,255,.15);border-right:none;border-radius:4px 0 0 4px;background:rgba(255,255,255,.08);color:var(--white);font-family:'Open Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s,background .2s}
-.search-wrap input::placeholder{color:rgba(255,255,255,.4)}
-.search-wrap input:focus{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.12)}
-.search-btn{padding:14px 22px;background:var(--red);border:none;border-radius:0 4px 4px 0;cursor:pointer;font-family:'Oswald',sans-serif;font-size:.82rem;font-weight:600;color:var(--white);letter-spacing:.1em;text-transform:uppercase;transition:background .2s;white-space:nowrap}
-.search-btn:hover{background:var(--red2)}
-
-.main{max-width:1100px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
-.section-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.6rem}
-.section-header h2{font-family:'Oswald',sans-serif;font-size:1.4rem;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
-.section-header .bar{flex:1;height:2px;background:linear-gradient(to right,var(--red),transparent)}
-.section-header .hint{font-size:.78rem;color:var(--sub);letter-spacing:.04em;white-space:nowrap}
-
-.map-card{background:var(--white);border-radius:6px;box-shadow:0 2px 16px rgba(0,0,0,.08);padding:1.8rem 1.5rem 1.2rem;margin-bottom:2rem;border-top:4px solid var(--red)}
-.map-hint{text-align:center;color:var(--sub);font-size:.78rem;letter-spacing:.05em;margin-bottom:1rem;text-transform:uppercase}
-#map-svg-container{width:100%}
-#map-svg-container svg{width:100%;height:auto;display:block}
-.state-path{fill:#111111;stroke:#ffffff;stroke-width:.8px;stroke-linejoin:round;cursor:pointer;transition:fill .15s ease}
-.state-path:hover{fill:var(--blue)}
-.state-path.active{fill:var(--blue)}
-#map-loading{text-align:center;padding:4rem 2rem;color:var(--sub);font-size:.9rem;letter-spacing:.05em}
-
-#map-tooltip{position:fixed;background:var(--navy);color:var(--white);font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:500;letter-spacing:.08em;padding:6px 14px;pointer-events:none;opacity:0;transition:opacity .1s;z-index:9999;white-space:nowrap;border-radius:3px;transform:translate(-50%,-145%);text-transform:uppercase}
-#map-tooltip::after{content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);border:6px solid transparent;border-bottom:none;border-top-color:var(--navy)}
-#map-tooltip.show{opacity:1}
-
-#results-section{display:block;animation:fadeUp .25s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-
-.results-header{background:var(--navy);color:var(--white);padding:16px 22px;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.results-header h3{font-family:'Oswald',sans-serif;font-size:1.2rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.results-meta{font-size:.75rem;color:rgba(255,255,255,.5);margin-top:2px}
-.clear-filter-btn{background:rgba(255,255,255,.15);border:none;color:var(--white);padding:6px 14px;border-radius:4px;cursor:pointer;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;transition:background .2s;display:none;white-space:nowrap;flex-shrink:0}
-.clear-filter-btn.visible{display:block}
-.clear-filter-btn:hover{background:var(--red2)}
-
-.teams-grid{background:var(--white);border:1px solid var(--mid);border-top:none;border-radius:0 0 6px 6px;padding:1.5rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;min-height:80px}
-.team-card{background:var(--light);border-radius:10px;padding:20px 22px 18px;border:1px solid #e8ecf2;box-shadow:0 1px 5px rgba(0,0,0,.04);text-decoration:none;display:block;color:inherit;transition:box-shadow .2s,transform .18s,border-color .18s}
-.team-card:hover{box-shadow:0 6px 22px rgba(0,0,0,.1);transform:translateY(-2px);border-color:#c8d0dc}
-.tc-name{font-size:1rem;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:4px}
-.tc-state{font-size:.84rem;color:var(--sub)}
-
-.skeleton{background:linear-gradient(90deg,#eee 25%,#f5f5f5 50%,#eee 75%);background-size:200% 100%;animation:shimmer 1.2s infinite;border-radius:10px;height:80px}
-@keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
-.empty-state{grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--sub);font-size:.92rem}
-.empty-state strong{display:block;font-size:1rem;color:var(--navy);margin-bottom:.4rem}
-.error-state{grid-column:1/-1;background:#fff5f5;border:1px solid #ffc0c0;border-radius:8px;padding:2rem;text-align:center;color:var(--red);font-size:.9rem}
-.error-state strong{display:block;margin-bottom:.4rem}
-
-@media(max-width:720px){
-  .teams-grid{grid-template-columns:1fr}
-  .main{padding:1.5rem 1rem 3rem}
-  .hero{padding:2rem 1rem 2rem}
-  .search-wrap{max-width:100%}
-  .section-header .hint{display:none}
-  .map-card{padding:1rem .75rem .8rem}
-  .results-header{padding:12px 16px;flex-wrap:wrap}
-  .teams-grid{padding:1rem}
-}
-
+  .navbar {
+    position: relative;
+    background: #ffffff;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.12);
+    border-bottom: 1.5px solid #0042ab;
+  }
+  .navbar-inner {
+    width: 100%;
+    padding: 10px 5px;
+    display: flex;
+    align-items: stretch;
+  }
+  .navbar-nav-col {
+    width: 83.9%;
+    padding: 10px 5px;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+  .navbar-nav-inner {
+    width: 100%;
+    padding: 8px 40px 8px 120px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .navbar-logo {
+    flex-shrink: 0;
+    text-decoration: none;
+    display: block;
+    margin-right: 16px;
+  }
+  .navbar-logo img {
+    width: 250px !important;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+  .navbar-logo-fallback {
+    display: inline-flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .navbar-logo-fallback .logo-top {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: #c8102e;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .navbar-logo-fallback .logo-bottom {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: .9rem;
+    font-weight: 700;
+    color: #0042ab;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+  }
+  .navbar-logo-fallback .logo-tag {
+    font-family: Georgia, serif;
+    font-size: .62rem;
+    font-style: italic;
+    color: #c8102e;
+  }
+  .navbar-links {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    justify-content: flex-end;
+  }
+  .navbar-links li { margin-left: 2px; }
+  .navbar-links a {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #000000;
+    text-decoration: none;
+    padding: 8px 10px;
+    border-radius: 0;
+    display: block;
+    text-transform: capitalize;
+    letter-spacing: 0;
+    line-height: 1.3em;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    transition: background .15s, color .15s;
+  }
+  .navbar-links a:hover { background: #0042ab; color: #ffffff; }
+  .navbar-cta-col {
+    width: 140px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .navbar-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 140px;
+    height: 60px;
+    background: #0042ab;
+    color: #ffffff !important;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,66,171,.35);
+    white-space: nowrap;
+    line-height: 1.3;
+    text-transform: none;
+    letter-spacing: 0;
+    transition: background .2s;
+    flex-shrink: 0;
+  }
+  .navbar-cta:hover { background: #003090; }
+  .navbar-hamburger {
+    display: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: .4rem .5rem;
+    color: #0042ab;
+    font-size: 22px;
+    line-height: 1;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .navbar-mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    background: #ffffff;
+    z-index: 9999;
+    overflow-y: auto;
+    padding: 1rem 1rem 8rem;
+    flex-direction: column;
+  }
+  .navbar-mobile-menu.open { display: flex; }
+  .navbar-mobile-close {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #0042ab;
+    cursor: pointer;
+    padding: .3rem .5rem;
+    margin-bottom: .5rem;
+    line-height: 1;
+  }
+  .navbar-mobile-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
+  .navbar-mobile-links li { margin-bottom: 2px; }
+  .navbar-mobile-links a {
+    display: block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+    text-decoration: none;
+    padding: 8px 16px;
+    line-height: 1.3em;
+    text-transform: capitalize;
+    transition: background .15s, color .15s;
+  }
+  .navbar-mobile-links a:hover { background: #0042ab; color: #fff; }
+  @media (max-width: 1280px) {
+    .navbar-cta-col { display: none; }
+  }
+  @media (max-width: 480px) {
+    .navbar-inner     { padding: 0; height: 200px; align-items: center; position: relative; }
+    .navbar-nav-col   { width: 100%; padding: 0; flex: 1; min-width: 0; }
+    .navbar-nav-inner { padding: 0 50px 0 0; align-items: center; justify-content: center; position: relative; }
+    .navbar-logo      { margin-right: 0; }
+    .navbar-logo img  { width: 320px !important; height: auto !important; max-width: 80vw; }
+    .navbar-links     { display: none; }
+    .navbar-hamburger { display: flex; align-items: center; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 26px; }
+  }
 </style>
-</head>
-<body>
-<div id="navbar-root"></div>
-<script>
-  fetch('navbar.html')
-    .then(r => r.text())
-    .then(html => {
-      const root = document.getElementById('navbar-root');
-      root.innerHTML = html;
-      // innerHTML doesn't execute scripts — re-run them manually
-      root.querySelectorAll('script').forEach(function(oldScript) {
-        const newScript = document.createElement('script');
-        newScript.textContent = oldScript.textContent;
-        document.head.appendChild(newScript);
-      });
-    });
-</script>
 
-<div class="hero">
-  <h1>Find <span>Ambassadors</span> Teams</h1>
-  <p>Click any state on the map — or search by state name below</p>
-  <div class="search-wrap">
-    <input type="text" id="search-input" placeholder="Search by state name or abbreviation…" autocomplete="off">
-    <button class="search-btn" onclick="doSearch()">Search</button>
-  </div>
-</div>
-
-<div class="main">
-  <div class="section-header">
-    <h2>Select a State</h2>
-    <div class="bar"></div>
-    <span class="hint">Click any state to filter teams</span>
-  </div>
-  <div class="map-card">
-    <p class="map-hint">Click a state on the map to filter teams</p>
-    <div id="map-svg-container"><div id="map-loading">Loading map…</div></div>
-  </div>
-
-  <div id="results-section">
-    <div class="results-header">
-      <div>
-        <h3 id="results-title">All Teams</h3>
-        <div class="results-meta" id="results-meta">Loading teams…</div>
+<!-- ── NAVBAR HTML ── -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="navbar-nav-col">
+      <div class="navbar-nav-inner">
+        <a class="navbar-logo" href="https://ambassadorsbaseballus.com/home">
+          <img
+            src="src/logo.webp"
+            alt="Ambassadors Baseball"
+            onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'navbar-logo-fallback\'><span class=\'logo-top\'>Ambassadors</span><span class=\'logo-bottom\'>Baseball</span><span class=\'logo-tag\'>Let Your Light Shine</span></span>';"
+          >
+        </a>
+        <ul class="navbar-links">
+          <li><a href="https://ambassadorsbaseballus.com/home">Home</a></li>
+          <li><a href="https://ambassadorsbaseballus.com/about-us">About</a></li>
+          <li><a href="https://ambassadorsbaseballus.com/Our-Mission">Mission</a></li>
+          <li><a href="https://team.ambassadorsbaseballus.com/">Teams &amp; Tryouts</a></li>
+          <li><a href="https://ambassadorsbaseballus.com/commitments">Commitments</a></li>
+          <li><a href="https://ambassadorsbaseballus.com/opportunities">Opportunities</a></li>
+          <li><a href="https://ambassadorsbaseballus.com/faq">FAQ</a></li>
+          <li><a href="https://ambassadorsbaseballus.com/contact-us">Contact</a></li>
+        </ul>
+        <button class="navbar-hamburger" aria-label="Open menu" onclick="openMobileMenu()">&#9776;</button>
       </div>
-      <button class="clear-filter-btn" id="clear-filter-btn" onclick="clearFilter()">Clear Filter</button>
     </div>
-    <div class="teams-grid" id="teams-grid">
-      <div class="skeleton"></div><div class="skeleton"></div>
-      <div class="skeleton"></div><div class="skeleton"></div>
-      <div class="skeleton"></div><div class="skeleton"></div>
+    <div class="navbar-cta-col">
+      <a href="https://team.ambassadorsbaseballus.com/coach-dashboard.html" class="navbar-cta">Coach Login</a>
     </div>
   </div>
+</nav>
+
+<!-- Mobile overlay -->
+<div class="navbar-mobile-menu" id="mobileMenu">
+  <button class="navbar-mobile-close" onclick="closeMobileMenu()" aria-label="Close menu">&#10005;</button>
+  <ul class="navbar-mobile-links">
+    <li><a href="https://ambassadorsbaseballus.com/home"          onclick="closeMobileMenu()">Home</a></li>
+    <li><a href="https://ambassadorsbaseballus.com/about-us"      onclick="closeMobileMenu()">About</a></li>
+    <li><a href="https://ambassadorsbaseballus.com/Our-Mission"   onclick="closeMobileMenu()">Mission</a></li>
+    <li><a href="https://team.ambassadorsbaseballus.com/"         onclick="closeMobileMenu()">Teams &amp; Tryouts</a></li>
+    <li><a href="https://ambassadorsbaseballus.com/commitments"   onclick="closeMobileMenu()">Commitments</a></li>
+    <li><a href="https://ambassadorsbaseballus.com/opportunities" onclick="closeMobileMenu()">Opportunities</a></li>
+    <li><a href="https://ambassadorsbaseballus.com/faq"           onclick="closeMobileMenu()">FAQ</a></li>
+    <li><a href="https://ambassadorsbaseballus.com/contact-us"    onclick="closeMobileMenu()">Contact</a></li>
+  </ul>
 </div>
 
-<div id="map-tooltip" role="tooltip"></div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<!-- ── NAVBAR JS ── -->
 <script>
-'use strict';
-
-const API_BASE = 'https://backend-baseball-inky.vercel.app';
-
-const STATE_NAMES = {
-  "01":"Alabama","02":"Alaska","04":"Arizona","05":"Arkansas","06":"California",
-  "08":"Colorado","09":"Connecticut","10":"Delaware","12":"Florida","13":"Georgia",
-  "15":"Hawaii","16":"Idaho","17":"Illinois","18":"Indiana","19":"Iowa",
-  "20":"Kansas","21":"Kentucky","22":"Louisiana","23":"Maine","24":"Maryland",
-  "25":"Massachusetts","26":"Michigan","27":"Minnesota","28":"Mississippi",
-  "29":"Missouri","30":"Montana","31":"Nebraska","32":"Nevada","33":"New Hampshire",
-  "34":"New Jersey","35":"New Mexico","36":"New York","37":"North Carolina",
-  "38":"North Dakota","39":"Ohio","40":"Oklahoma","41":"Oregon","42":"Pennsylvania",
-  "44":"Rhode Island","45":"South Carolina","46":"South Dakota","47":"Tennessee",
-  "48":"Texas","49":"Utah","50":"Vermont","51":"Virginia","53":"Washington",
-  "54":"West Virginia","55":"Wisconsin","56":"Wyoming"
-};
-const STATE_ABBR = {
-  "01":"AL","02":"AK","04":"AZ","05":"AR","06":"CA","08":"CO","09":"CT",
-  "10":"DE","12":"FL","13":"GA","15":"HI","16":"ID","17":"IL","18":"IN",
-  "19":"IA","20":"KS","21":"KY","22":"LA","23":"ME","24":"MD","25":"MA",
-  "26":"MI","27":"MN","28":"MS","29":"MO","30":"MT","31":"NE","32":"NV",
-  "33":"NH","34":"NJ","35":"NM","36":"NY","37":"NC","38":"ND","39":"OH",
-  "40":"OK","41":"OR","42":"PA","44":"RI","45":"SC","46":"SD","47":"TN",
-  "48":"TX","49":"UT","50":"VT","51":"VA","53":"WA","54":"WV","55":"WI","56":"WY"
-};
-const ABBR_TO_NAME = {};
-Object.entries(STATE_ABBR).forEach(([id,abbr]) => { ABBR_TO_NAME[abbr] = STATE_NAMES[id]; });
-const ALL_STATES = Object.entries(STATE_NAMES).map(([id,name]) => ({ id, name, abbr: STATE_ABBR[id] }));
-
-function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-let svgRef     = null;
-let allTeams   = [];
-let activeFilter = null;
-const mapTooltip = document.getElementById('map-tooltip');
-
-// ── RENDER TEAMS ──────────────────────────────────────────────
-function renderTeams(teams, titleText, metaText) {
-  const grid  = document.getElementById('teams-grid');
-  const title = document.getElementById('results-title');
-  const meta  = document.getElementById('results-meta');
-  title.textContent = titleText;
-  meta.textContent  = metaText;
-
-  if (!teams.length) {
-    grid.innerHTML = `<div class="empty-state"><strong>No teams found</strong>There are currently no teams listed for this selection.</div>`;
-    return;
+  function openMobileMenu() {
+    document.getElementById('mobileMenu').classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
-  grid.innerHTML = '';
-  teams.forEach(team => {
-    const fullState = ABBR_TO_NAME[team.state] || team.state || '';
-    const card      = document.createElement('a');
-    card.className  = 'team-card';
-    // Clean URL: /Team-Name (spaces → hyphens)
-    card.href       = '/' + encodeURIComponent(team.teamName.trim().replace(/\s+/g, '-'));
-    card.innerHTML  = `
-      <div class="tc-name">${esc(team.teamName)}</div>
-      ${team.state ? `<div class="tc-state">${esc(fullState)}</div>` : ''}`;
-    grid.appendChild(card);
+  function closeMobileMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeMobileMenu();
   });
-}
-
-// ── LOAD ALL TEAMS ────────────────────────────────────────────
-async function loadAllTeams() {
-  try {
-    const res  = await fetch(`${API_BASE}/api/teams`);
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Failed to load teams');
-    allTeams = data.teams || [];
-    renderTeams(allTeams, 'All Teams', `${allTeams.length} team${allTeams.length !== 1 ? 's' : ''} across all states`);
-  } catch(err) {
-    document.getElementById('teams-grid').innerHTML =
-      `<div class="error-state"><strong>Failed to load teams</strong>${esc(err.message)}</div>`;
-    document.getElementById('results-meta').textContent = '';
-  }
-}
-
-// ── FILTER BY STATE ───────────────────────────────────────────
-function filterByState(abbr, name) {
-  activeFilter = abbr;
-  document.getElementById('clear-filter-btn').classList.add('visible');
-  const filtered = allTeams.filter(t => t.state === abbr);
-  renderTeams(
-    filtered,
-    `Teams in ${name} (${abbr})`,
-    filtered.length ? `${filtered.length} team${filtered.length !== 1 ? 's' : ''} found` : 'No teams found'
-  );
-  setTimeout(() => document.getElementById('results-section').scrollIntoView({ behavior:'smooth', block:'start' }), 50);
-}
-
-// ── CLEAR FILTER ──────────────────────────────────────────────
-function clearFilter() {
-  activeFilter = null;
-  document.getElementById('clear-filter-btn').classList.remove('visible');
-  document.getElementById('search-input').value = '';
-  if (svgRef) svgRef.selectAll('.state-path').classed('active', false);
-  renderTeams(allTeams, 'All Teams', `${allTeams.length} team${allTeams.length !== 1 ? 's' : ''} across all states`);
-}
-
-// ── SEARCH ────────────────────────────────────────────────────
-function doSearch() {
-  const q = document.getElementById('search-input').value.trim().toLowerCase();
-  if (!q) return;
-  let match = ALL_STATES.find(s => s.name.toLowerCase() === q || s.abbr.toLowerCase() === q);
-  if (!match) match = ALL_STATES.find(s => s.name.toLowerCase().startsWith(q) || s.abbr.toLowerCase().startsWith(q));
-  if (match) {
-    if (svgRef) svgRef.selectAll('.state-path').classed('active', d => STATE_ABBR[d.id.toString().padStart(2,'0')] === match.abbr);
-    filterByState(match.abbr, match.name);
-  }
-}
-document.getElementById('search-input').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
-
-// ── MAP ───────────────────────────────────────────────────────
-async function initMap() {
-  try {
-    const us = await d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json');
-    document.getElementById('map-loading')?.remove();
-    const W = 960, H = 580;
-    const svg = d3.select('#map-svg-container').append('svg').attr('viewBox',`0 0 ${W} ${H}`).attr('aria-label','Interactive USA map');
-    svgRef = svg;
-    const projection = d3.geoAlbersUsa().scale(1280).translate([W/2,H/2]);
-    const pathGen    = d3.geoPath().projection(projection);
-    const states     = topojson.feature(us, us.objects.states);
-    svg.selectAll('.state-path').data(states.features).join('path')
-      .attr('class','state-path').attr('d',pathGen)
-      .attr('aria-label', d => STATE_NAMES[d.id.toString().padStart(2,'0')] || '')
-      .on('mouseenter', function(event, d) {
-        const id = d.id.toString().padStart(2,'0');
-        if (!STATE_ABBR[id]) return;
-        mapTooltip.textContent = `${STATE_ABBR[id]} — ${STATE_NAMES[id]}`;
-        mapTooltip.classList.add('show');
-      })
-      .on('mousemove', function(event) {
-        mapTooltip.style.left = event.clientX + 'px';
-        mapTooltip.style.top  = event.clientY + 'px';
-      })
-      .on('mouseleave', () => mapTooltip.classList.remove('show'))
-      .on('click', function(event, d) {
-        const id   = d.id.toString().padStart(2,'0');
-        const abbr = STATE_ABBR[id];
-        const name = STATE_NAMES[id];
-        if (!abbr) return;
-        if (activeFilter === abbr) { clearFilter(); return; }
-        svg.selectAll('.state-path').classed('active', false);
-        d3.select(this).classed('active', true);
-        document.getElementById('search-input').value = name;
-        filterByState(abbr, name);
-      });
-  } catch(err) {
-    const el = document.getElementById('map-loading');
-    if (el) { el.textContent = 'Failed to load map.'; el.style.color = 'var(--red)'; }
-  }
-}
-
-loadAllTeams();
-initMap();
 </script>
-</body>
-</html>
