@@ -70,6 +70,14 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
 }
 .logout-btn:hover { background: rgba(255,255,255,.18); color: var(--white); }
 
+.fin-dashboard-btn {
+  background: #c8102e; color: var(--white); border: none;
+  border-radius: 6px; padding: 7px 16px; font-size: .82rem; font-weight: 700; cursor: pointer;
+  font-family: 'Source Sans 3', sans-serif; letter-spacing: .03em; transition: background .15s;
+  display: inline-flex; align-items: center; gap: .35rem;
+}
+.fin-dashboard-btn:hover { background: #a50d25; }
+
 .content { padding: 28px; max-width: 1400px; margin: 0 auto; }
 
 /* ── STATS ROW ── */
@@ -271,6 +279,9 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
   <div class="topbar">
     <div class="topbar-brand">AMBASSADORS <span>BASEBALL</span></div>
     <div class="topbar-right">
+      <button class="fin-dashboard-btn" onclick="openFinancialDashboard()">
+        💰 Financial Dashboard
+      </button>
       <span class="admin-badge">Admin</span>
       <button class="logout-btn" onclick="doLogout()">Sign Out</button>
     </div>
@@ -370,6 +381,14 @@ function doLogout() {
   adminToken = '';
   document.getElementById('app').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
+}
+
+// Opens the financial management dashboard in a new tab.
+// Copies the current admin token into the key the financial page reads
+// so the admin doesn't have to log in a second time.
+function openFinancialDashboard() {
+  localStorage.setItem('adminToken', adminToken);
+  window.open('financial-management.html', '_blank');
 }
 
 function adminH() { return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }; }
