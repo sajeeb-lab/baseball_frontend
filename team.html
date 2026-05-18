@@ -1001,7 +1001,12 @@ async function loadTryouts(id) {
     const res  = await fetch(`${API_BASE}/api/teams/${id}/tryouts`);
     const data = await res.json();
     if (!res.ok) throw new Error(data.message);
-    const tryouts = data.tryouts || [];
+    const tryouts = (data.tryouts || []).sort((a, b) => {
+      const da = new Date(a.date);
+      const db = new Date(b.date);
+      if (!isNaN(da) && !isNaN(db)) return da - db;
+      return String(a.date).localeCompare(String(b.date));
+    });
     if (!tryouts.length) {
       grid.innerHTML = `<div class="no-tryouts">No upcoming tryouts scheduled. Check back soon!</div>`;
       return;
@@ -1798,7 +1803,6 @@ function showError(msg) {
 }
 
 loadTeam();
-
 </script>
   <!-- REGISTRATION SUCCESS MODAL -->
   <div class="reg-modal-overlay" id="reg-modal-overlay">
