@@ -373,7 +373,7 @@ function doLogout() {
 // so the admin doesn't have to log in a second time.
 function openFinancialDashboard() {
   try { localStorage.setItem('adminToken', adminToken); } catch(e) {}
-  window.open('financial-management.html', '_blank');
+  window.location.href = 'financial-management.html';
 }
 
 function adminH() { return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }; }
