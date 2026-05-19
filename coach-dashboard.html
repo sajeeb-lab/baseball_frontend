@@ -389,10 +389,21 @@ input[type="file"].hidden-file{display:none}
       <h1 id="dash-title">Coach Dashboard</h1>
       <p id="dash-sub">Loading…</p>
     </div>
-    <button class="logout-btn" onclick="handleLogout()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      Logout
-    </button>
+    <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;">
+      <button onclick="openTeamFinancials()" style="
+        display:inline-flex;align-items:center;gap:.4rem;
+        background:#c8102e;color:#fff;border:none;border-radius:4px;
+        padding:9px 16px;font-family:'Oswald',sans-serif;font-size:.75rem;
+        font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
+        transition:background .2s;
+      " onmouseover="this.style.background='#a50d25'" onmouseout="this.style.background='#c8102e'">
+        💰 Team Financials
+      </button>
+      <button class="logout-btn" onclick="handleLogout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </button>
+    </div>
   </div>
 </div>
 <div class="main" id="dash-main">
@@ -428,6 +439,24 @@ if (!token) window.location.href = 'coach-auth.html';
 
 const authH = () => ({ 'Content-Type':'application/json', 'Authorization':`Bearer ${token}` });
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// Opens the Financial Dashboard pre-selected to this coach's team.
+// Passes the admin token (if admin is viewing) so no second login is needed.
+function openTeamFinancials() {
+  const coachId = isAdminView
+    ? sessionStorage.getItem('admin_impersonation_coach_id')
+    : localStorage.getItem('coach_id');
+  if (isAdminView) {
+    // Admin already has a valid admin token — copy it over so the financial
+    // page finds it without showing the login screen.
+    localStorage.setItem('adminToken', token);
+    localStorage.setItem('admin_token', token);
+  }
+  const url = coachId
+    ? 'financial-management.html?coachId=' + encodeURIComponent(coachId)
+    : 'financial-management.html';
+  window.open(url, '_blank');
+}
 
 function showMsg(id,text,type){
   const el=document.getElementById(id); if(!el) return;
@@ -565,10 +594,6 @@ function renderDashboard(coach){
       <button class="section-tab" id="tab-calculator" onclick="switchPanel('calculator')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg>
         Budget Calculator
-      </button>
-      <button class="section-tab" id="tab-fin-dashboard" onclick="window.location.href='coach-financial.html'" style="background:var(--red);border-color:var(--red);color:#fff;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        Financial Dashboard
       </button>
 
     </div>
