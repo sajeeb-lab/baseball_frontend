@@ -409,7 +409,7 @@ document.addEventListener('wheel', (e) => {
   }
 }, { passive: true });
 
-const API_BASE = 'https://backend-baseball-inky.vercel.app';
+const API_BASE = 'https://team.ambassadorsbaseballus.com';
 
 // ── ADMIN IMPERSONATION (Option 3) ──
 const _params     = new URLSearchParams(window.location.search);
@@ -428,24 +428,6 @@ if (!token) window.location.href = 'coach-auth.html';
 
 const authH = () => ({ 'Content-Type':'application/json', 'Authorization':`Bearer ${token}` });
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-// Opens the Financial Dashboard pre-selected to this coach's team.
-// Passes the admin token (if admin is viewing) so no second login is needed.
-function openTeamFinancials() {
-  const coachId = isAdminView
-    ? sessionStorage.getItem('admin_impersonation_coach_id')
-    : localStorage.getItem('coach_id');
-  if (isAdminView) {
-    // Admin already has a valid admin token — copy it over so the financial
-    // page finds it without showing the login screen.
-    localStorage.setItem('adminToken', token);
-    localStorage.setItem('admin_token', token);
-  }
-  const url = coachId
-    ? 'financial-management.html?coachId=' + encodeURIComponent(coachId)
-    : 'financial-management.html';
-  window.open(url, '_blank');
-}
 
 function showMsg(id,text,type){
   const el=document.getElementById(id); if(!el) return;
@@ -584,9 +566,8 @@ function renderDashboard(coach){
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg>
         Budget Calculator
       </button>
-      <button class="section-tab" id="tab-fin-dashboard" onclick="openTeamFinancials()"
-        style="background:#c8102e;border-color:#c8102e;color:#fff;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/><polyline points="18 15 21 18 18 21"/></svg>
+      <button class="section-tab" id="tab-fin-dashboard" onclick="window.location.href='coach-financial.html'" style="background:var(--red);border-color:var(--red);color:#fff;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         Financial Dashboard
       </button>
 
