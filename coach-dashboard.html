@@ -351,14 +351,14 @@ input[type="file"].hidden-file{display:none}
 .budget-list-actions{display:flex;gap:.4rem;flex-shrink:0}
 
 /* ── COACH FINANCIAL DASHBOARD ── */
-.cfd-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.9rem;margin-bottom:1.6rem}
-.cfd-metric{background:var(--white);border-radius:8px;padding:1.1rem 1.2rem;border:1.5px solid var(--mid);display:flex;gap:.8rem;align-items:flex-start;transition:all .18s}
-.cfd-metric:hover{border-color:var(--navy);box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.cfd-metrics{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-bottom:1.8rem}
+.cfd-metric{background:var(--white);border-radius:8px;padding:1.2rem 1.3rem;box-shadow:0 2px 12px rgba(0,0,0,.07);border:1px solid var(--mid);display:flex;gap:.9rem;align-items:flex-start;transition:all .2s}
+.cfd-metric:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
 .cfd-metric.budget{background:linear-gradient(135deg,var(--navy) 0%,#162845 100%);border-color:var(--navy);position:relative;overflow:hidden}
 .cfd-metric.budget::after{content:'';position:absolute;right:-30px;bottom:-30px;width:110px;height:110px;border-radius:50%;background:rgba(200,16,46,.15);pointer-events:none}
 .cfd-metric.alert{background:linear-gradient(135deg,#fef3f5 0%,#fde8ec 100%);border-color:#f5c6cb}
-.cfd-metric.chart-full{grid-column:span 2}
-.cfd-micon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;background:rgba(10,22,40,.07);position:relative;z-index:1}
+.cfd-metric.chart-full{grid-column:span 2;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.cfd-micon{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;background:rgba(10,22,40,.08);position:relative;z-index:1}
 .budget .cfd-micon{background:rgba(255,255,255,.15)}
 .cfd-micon.ic{background:rgba(59,130,246,.12)}
 .cfd-micon.col{background:rgba(22,163,74,.12)}
@@ -366,13 +366,13 @@ input[type="file"].hidden-file{display:none}
 .cfd-micon.ok{background:rgba(22,163,74,.12)}
 .cfd-micon.red{background:rgba(200,16,46,.12)}
 .cfd-micon.dl{background:rgba(180,83,9,.12)}
-.cfd-mbody{display:flex;flex-direction:column;gap:.2rem;flex:1;position:relative;z-index:1;min-width:0}
-.cfd-mlabel{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub)}
-.budget .cfd-mlabel{color:rgba(255,255,255,.65)}
-.cfd-mval{font-family:'Oswald',sans-serif;font-size:1.55rem;font-weight:700;color:var(--navy);line-height:1.1}
+.cfd-mbody{display:flex;flex-direction:column;gap:.25rem;flex:1;position:relative;z-index:1;min-width:0}
+.cfd-mlabel{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub)}
+.budget .cfd-mlabel{color:rgba(255,255,255,.7)}
+.cfd-mval{font-family:'Oswald',sans-serif;font-size:1.7rem;font-weight:700;color:var(--navy);line-height:1.1}
 .budget .cfd-mval{color:#fff}
-.cfd-msub{font-size:.74rem;color:var(--sub)}
-.budget .cfd-msub{color:rgba(255,255,255,.65)}
+.cfd-msub{font-size:.78rem;color:var(--sub)}
+.budget .cfd-msub{color:rgba(255,255,255,.7)}
 .cfd-pie-wrap{width:180px;height:180px;margin:.4rem auto;position:relative}
 .cfd-seg{cursor:pointer;pointer-events:stroke;transition:filter .15s}
 .cfd-seg:hover{filter:brightness(1.15)}
@@ -384,10 +384,10 @@ input[type="file"].hidden-file{display:none}
 .cfd-legend{display:flex;justify-content:center;gap:1.2rem;margin-top:.4rem;flex-wrap:wrap}
 .cfd-leg-item{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--text)}
 .cfd-leg-dot{width:10px;height:10px;border-radius:50%}
-.cfd-section{background:var(--white);border-radius:8px;border:1.5px solid var(--mid);overflow:hidden;margin-bottom:1.2rem}
-.cfd-section-head{background:var(--red);padding:10px 18px;display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
-.cfd-section-head h3{font-family:'Oswald',sans-serif;font-size:.88rem;font-weight:700;color:#fff;letter-spacing:.12em;text-transform:uppercase}
-.cfd-section-body{padding:1.2rem 1.3rem}
+.cfd-section{background:var(--white);border-radius:8px;border:1px solid var(--mid);overflow:hidden;margin-bottom:1.4rem;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.cfd-section-head{background:var(--red);padding:12px 22px;display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
+.cfd-section-head h3{font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;color:#fff;letter-spacing:.12em;text-transform:uppercase}
+.cfd-section-body{padding:1.4rem 1.5rem}
 .cfd-tbl{width:100%;border-collapse:collapse;font-size:.84rem}
 .cfd-tbl thead tr{background:var(--navy)}
 .cfd-tbl th{padding:9px 13px;text-align:left;font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:700;color:#fff;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
@@ -413,8 +413,9 @@ input[type="file"].hidden-file{display:none}
 .cfd-pbtn:hover:not(:disabled){border-color:var(--navy);color:var(--navy)}
 .cfd-pbtn.cur{border-color:var(--red);color:var(--red);cursor:default}
 .cfd-pbtn:disabled{color:var(--mid);cursor:not-allowed}
-@media(max-width:900px){.cfd-metric.chart-full{grid-column:span 1}}
-@media(max-width:600px){.cfd-metrics{grid-template-columns:1fr}}
+@media(max-width:1100px){.cfd-metric.chart-full{grid-column:span 1}}
+@media(max-width:700px){.cfd-metrics{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}}
+@media(max-width:480px){.cfd-metrics{grid-template-columns:1fr}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
 <style>
@@ -3452,7 +3453,7 @@ async function cfdApiFetch(path) {
   }
 }
 
-const cfdMoney = n => '$' + (Number(n)||0).toLocaleString('en-US', { maximumFractionDigits: 0 });
+const cfdMoney = n => '$' + (Number(n)||0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const cfdDate  = s => { if (!s) return '—'; const d = new Date(s); return isNaN(d) ? '—' : d.toLocaleDateString(); };
 const cfdEsc   = s => String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
@@ -3530,8 +3531,8 @@ function cfdBuildHTML(t) {
         <div class="cfd-mbody"><span class="cfd-mlabel">Collection Deadline</span><span class="cfd-mval">${dlDate}</span>${dlNote?`<span class="cfd-msub">${cfdEsc(dlNote)}</span>`:''}</div>
       </div>
       ${hasBudget ? `
-      <div class="cfd-metric chart-full">
-        <div class="cfd-mbody" style="gap:.5rem">
+      <div class="cfd-metric chart-full" style="flex-direction:column;align-items:stretch">
+        <div class="cfd-mbody" style="gap:.6rem">
           <span class="cfd-mlabel">Budget Progress</span>
           <div class="cfd-pie-wrap">
             <svg viewBox="0 0 200 200">
