@@ -235,7 +235,7 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
 
 
 /* ── VIEW TOGGLE ── */
-.view-toggle-bar { background:var(--white); border-bottom:2px solid var(--mid); padding:0 28px; display:flex; align-items:center; }
+.view-toggle-bar { display:flex; align-items:center; border-bottom:2px solid var(--mid); margin:-28px -28px 24px -28px; padding:0 28px; background:var(--white); }
 .view-toggle-btn { display:inline-flex; align-items:center; gap:6px; padding:15px 20px; border:none; border-bottom:3px solid transparent; background:transparent; font-family:'Oswald',sans-serif; font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); cursor:pointer; transition:all .18s; white-space:nowrap; margin-bottom:-2px; }
 .view-toggle-btn svg { transition:opacity .18s; opacity:.55; }
 .view-toggle-btn:hover { color:var(--navy); }
@@ -370,19 +370,19 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
     </div>
   </div>
 
-  <!-- ── VIEW TOGGLE BAR ── -->
-  <div class="view-toggle-bar">
-    <button class="view-toggle-btn active" id="vt-coaches" onclick="switchAdminView('coaches')">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-      All Coaches
-    </button>
-    <button class="view-toggle-btn" id="vt-financial" onclick="switchAdminView('financial')">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-      Financial Dashboard
-    </button>
-  </div>
-
   <div class="content">
+    <!-- ── VIEW TOGGLE BAR ── -->
+    <div class="view-toggle-bar">
+      <button class="view-toggle-btn active" id="vt-coaches" onclick="switchAdminView('coaches')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        All Coaches
+      </button>
+      <button class="view-toggle-btn" id="vt-financial" onclick="switchAdminView('financial')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Financial Dashboard
+      </button>
+    </div>
+
     <!-- ── COACHES SECTION (default) ── -->
     <div id="coaches-section">
 
@@ -416,7 +416,6 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
 
     <!-- Coaches table -->
     <div class="section-head">
-      <div class="section-title">All Coaches</div>
       <div class="search-wrap">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" placeholder="Search by name, team, state…" oninput="filterCoaches(this.value)">
@@ -428,11 +427,8 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
     </div>
     </div><!-- /#coaches-section -->
 
-  </div><!-- /.content -->
-
-  <!-- ── FINANCIAL SECTION — full width ── -->
-  <div id="fin-section" style="display:none;">
-    <div style="max-width:1400px;margin:0 auto;padding:24px 28px 40px;">
+    <!-- ── FINANCIAL SECTION ── -->
+    <div id="fin-section" style="display:none;">
       <div class="fin-subheader">
         <div class="fin-subheader-inner">
           <button class="fin-nav-btn active" id="fin-org-btn" onclick="finSwitchView('org')">Organization Overview</button>
@@ -446,8 +442,9 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
       <div id="fin-content-wrapper">
         <div style="text-align:center;padding:3rem;color:var(--muted);">Loading financial data…</div>
       </div>
-    </div>
-  </div><!-- /#fin-section -->
+    </div><!-- /#fin-section -->
+
+  </div><!-- /.content -->
 
 </div><!-- /#app -->
 
