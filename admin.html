@@ -1001,8 +1001,10 @@ async function finRenderOrgDashboard() {
   let m = null, err = null;
   try { m = await finApiFetch('/api/admin/fin/organization-overview'); }
   catch(e) { err = e.message||'Failed to load'; m = { activeTeams:0,averagePlayerFee:0,totalCollected:0,outstanding:0,payingPlayers:0,totalPlayers:0,organizationProfit:0 }; }
-  const pyVal = m.totalPlayers>0 ? `${m.payingPlayers} / ${m.totalPlayers}` : `${m.payingPlayers}`;
-  const pySub = m.totalPlayers>0 ? 'paying / total budgeted' : 'no budget roster set';
+  const notFullyPaid = m.notFullyPaid ?? 0;
+  const totalReg     = m.totalRegistered ?? 0;
+  const pyVal = totalReg > 0 ? `${notFullyPaid} / ${totalReg}` : `${notFullyPaid}`;
+  const pySub = totalReg > 0 ? 'not fully paid / total registered' : 'no registered players';
   return `
     ${err?`<div class="fin-error"><span>⚠️ ${esc(err)}</span><button class="fin-retry" onclick="finRenderContent()">Retry</button></div>`:''}
     <div class="fin-metrics-grid">
@@ -1011,7 +1013,7 @@ async function finRenderOrgDashboard() {
       <div class="fin-metric-card"><div class="fin-metric-icon c-players">👤</div><div class="fin-metric-body"><span class="fin-metric-label">Paying Players</span><span class="fin-metric-value">${pyVal}</span><span class="fin-metric-sub">${pySub}</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-collected">📈</div><div class="fin-metric-body"><span class="fin-metric-label">Total Collected</span><span class="fin-metric-value">${finFmtMoney(m.totalCollected)}</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-balance">⚠️</div><div class="fin-metric-body"><span class="fin-metric-label">Balance Outstanding</span><span class="fin-metric-value">${finFmtMoney(m.outstanding)}</span></div></div>
-      <div class="fin-metric-card"><div class="fin-metric-icon c-profit">💰</div><div class="fin-metric-body"><span class="fin-metric-label">Organization Profit</span><span class="fin-metric-value">${finFmtMoney(m.organizationProfit)}</span><span class="fin-metric-sub">across active teams</span></div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon c-profit">💰</div><div class="fin-metric-body"><span class="fin-metric-label">Expected Organization Profit</span><span class="fin-metric-value">${finFmtMoney(m.organizationProfit)}</span><span class="fin-metric-sub">total registered × $450</span></div></div>
     </div>
     <div class="fin-section-card">
       <div class="fin-section-head">
