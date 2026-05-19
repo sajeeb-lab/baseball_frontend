@@ -12,13 +12,13 @@
 body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--text);min-height:100vh}
 .page-header{background:linear-gradient(135deg,#1a3fc4 0%,#1535a8 100%);padding:2rem 2rem 1.6rem;position:relative;overflow:hidden}
 .page-header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")}
-.page-header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;position:relative}
+.page-header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;position:relative}
 .header-left h1{font-family:'Oswald',sans-serif;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;color:var(--white);letter-spacing:.04em;text-transform:uppercase}
 .header-left p{color:rgba(255,255,255,.7);font-size:.8rem;margin-top:.25rem}
 .logout-btn{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.15);color:var(--white);border:none;font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border-radius:4px;cursor:pointer;transition:background .2s}
 .logout-btn:hover{background:rgba(200,16,46,.5)}
 .logout-btn svg{width:15px;height:15px}
-.main{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.main{max-width:1400px;margin:0 auto;padding:2rem 1.5rem 4rem}
 .card{background:var(--white);border-radius:6px;box-shadow:0 2px 12px rgba(0,0,0,.07);overflow:hidden;margin-bottom:1.4rem}
 .card-header{background:var(--red);padding:11px 20px;font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:600;color:var(--white);letter-spacing:.12em;text-transform:uppercase;text-align:center}
 .card-body{padding:1.4rem 1.6rem 1.6rem}
@@ -351,7 +351,7 @@ input[type="file"].hidden-file{display:none}
 .budget-list-actions{display:flex;gap:.4rem;flex-shrink:0}
 
 /* ── COACH FINANCIAL DASHBOARD ── */
-.cfd-metrics{display:flex!important;flex-wrap:wrap!important;justify-content:center!important;gap:1rem!important;max-width:1060px;margin:0 auto 1.4rem}
+.cfd-metrics{display:flex!important;flex-wrap:wrap!important;justify-content:center!important;gap:1rem!important;max-width:1350px;margin:0 auto 1.4rem}
 .cfd-metrics .cfd-metric{flex:0 0 calc(33.333% - 0.75rem)!important;min-width:220px!important;max-width:calc(33.333% - 0.75rem)}
 .cfd-metric{background:var(--white);border-radius:8px;padding:1.2rem 1.3rem;box-shadow:0 2px 12px rgba(0,0,0,.07);border:1px solid var(--mid);display:flex;gap:.9rem;align-items:flex-start;transition:all .2s}
 .cfd-metric:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
@@ -385,7 +385,7 @@ input[type="file"].hidden-file{display:none}
 .cfd-legend{display:flex;justify-content:center;gap:1.2rem;margin-top:.4rem;flex-wrap:wrap}
 .cfd-leg-item{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--text)}
 .cfd-leg-dot{width:10px;height:10px;border-radius:50%}
-.cfd-section{background:var(--white);border-radius:8px;border:1px solid var(--mid);overflow:hidden;margin-bottom:1.4rem;box-shadow:0 2px 10px rgba(0,0,0,.06);max-width:1050px;margin-left:auto;margin-right:auto}
+.cfd-section{background:var(--white);border-radius:8px;border:1px solid var(--mid);overflow:hidden;margin-bottom:1.4rem;box-shadow:0 2px 10px rgba(0,0,0,.06);max-width:1350px;margin-left:auto;margin-right:auto}
 .cfd-section-head{background:var(--red);padding:12px 22px;display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
 .cfd-section-head h3{font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;color:#fff;letter-spacing:.12em;text-transform:uppercase}
 .cfd-section-body{padding:1.4rem 1.5rem}
@@ -3498,7 +3498,7 @@ function cfdBuildHTML(t) {
   const pAmt = hasBudget ? Math.max(0, t.budget - t.totalCollected - t.balanceRemaining) : 0;
 
   return `
-    <div class="cfd-metrics" style="display:flex!important;flex-wrap:wrap!important;justify-content:center!important;gap:1rem;max-width:1060px;margin:0 auto 1.4rem">
+    <div class="cfd-metrics" style="display:flex!important;flex-wrap:wrap!important;justify-content:center!important;gap:1rem;max-width:1350px;margin:0 auto 1.4rem">
       <div class="cfd-metric budget">
         <div class="cfd-micon">📄</div>
         <div class="cfd-mbody"><span class="cfd-mlabel">Team Budget</span><span class="cfd-mval">${cfdMoney(t.budget)}</span>${t.budget===0?'<span class="cfd-msub">No budget set</span>':''}</div>
