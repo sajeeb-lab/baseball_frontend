@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Dashboard — Ambassadors Baseball</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --navy: #0a1628; --navy2: #162845;
+            --red: #c8102e; --red2: #a50d25;
+            --white: #ffffff; --light: #f4f6f9; --mid: #dce3ec;
+            --text: #1a1a2e; --sub: #5a6a7a;
+            --color-collected: #16a34a; --color-balance: #c8102e;
+            --color-warning: #b45309; --color-success: #16a34a; --color-alert: #c8102e;
+            --shadow-md: 0 2px 12px rgba(0,0,0,.07);
+            --shadow-lg: 0 10px 28px rgba(0,0,0,.12);
+        }
+        body { font-family: 'Open Sans', sans-serif; background: var(--light); min-height: 100vh; color: var(--text); }
+
+        /* ── TOPBAR ── */
+        .topbar {
+            background: var(--navy); padding: 0 28px; height: 58px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,.25);
+        }
+        .topbar-brand { font-family: 'Oswald', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--white); letter-spacing: .1em; text-transform: uppercase; }
+        .topbar-brand span { color: var(--red); }
+        .topbar-right { display: flex; align-items: center; gap: 12px; }
+        .topbar-btn {
+            background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+            color: rgba(255,255,255,.9); padding: 7px 14px; border-radius: 6px; cursor: pointer;
+            font-family: 'Oswald', sans-serif; font-size: .75rem; font-weight: 600;
+            letter-spacing: .08em; text-transform: uppercase; transition: background .15s;
+        }
+        .topbar-btn:hover { background: rgba(255,255,255,.2); }
+
+        /* ── PAGE HEADER ── */
+        .page-header { background: linear-gradient(135deg,#1a3fc4 0%,#1535a8 100%); padding: 2rem 2rem 1.6rem; position: relative; overflow: hidden; }
+        .page-header::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E"); }
+        .page-header-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+        .page-header h1 { font-family: 'Oswald', sans-serif; font-size: clamp(1.4rem,3vw,2rem); font-weight: 700; color: var(--white); letter-spacing: .04em; text-transform: uppercase; }
+        .page-header p  { color: rgba(255,255,255,.7); font-size: .85rem; margin-top: .3rem; }
+
+        /* ── MAIN ── */
+        .main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+        /* ── METRICS ── */
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .metric-card { background: var(--white); border-radius: 8px; padding: 1.25rem 1.4rem; box-shadow: var(--shadow-md); border: 1px solid var(--mid); display: flex; gap: 1rem; transition: all .2s; align-items: flex-start; }
+        .metric-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+        .metric-card.budget-card { background: linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%); color: var(--white); border-color: var(--navy); position: relative; overflow: hidden; }
+        .metric-card.budget-card::after { content:''; position:absolute; right:-40px; bottom:-40px; width:140px; height:140px; border-radius:50%; background:rgba(200,16,46,.18); pointer-events:none; }
+        .metric-card.alert-card { background: linear-gradient(135deg,#fef3f5 0%,#fde8ec 100%); border-color: #f5c6cb; }
+        .metric-card.chart-card { grid-column: span 2; }
+        .metric-icon { width:46px; height:46px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:rgba(10,22,40,.08); font-size:1.3rem; position:relative; z-index:1; }
+        .budget-card .metric-icon { background:rgba(255,255,255,.15); }
+        .metric-icon.players   { background:rgba(59,130,246,.12); }
+        .metric-icon.collected { background:rgba(22,163,74,.12); }
+        .metric-icon.balance   { background:rgba(200,16,46,.12); }
+        .metric-icon.good      { background:rgba(22,163,74,.12); }
+        .metric-icon.alert     { background:rgba(200,16,46,.12); }
+        .metric-icon.deadline  { background:rgba(180,83,9,.12); }
+        .metric-content { display:flex; flex-direction:column; gap:.3rem; flex:1; position:relative; z-index:1; min-width:0; }
+        .metric-content.full { gap:.75rem; }
+        .metric-label { font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--sub); }
+        .budget-card .metric-label { color:rgba(255,255,255,.7); }
+        .metric-value { font-family:'Oswald',sans-serif; font-size:1.7rem; font-weight:700; color:var(--navy); line-height:1.1; }
+        .budget-card .metric-value { color:var(--white); }
+        .metric-subtext { font-size:.78rem; color:var(--sub); }
+        .budget-card .metric-subtext { color:rgba(255,255,255,.7); }
+
+        /* ── PIE CHART ── */
+        .pie-chart { width:200px; height:200px; margin:.5rem auto; position:relative; }
+        .chart-segment { cursor:pointer; pointer-events:stroke; transition:filter .15s ease; }
+        .chart-segment:hover { filter:brightness(1.15); }
+        .chart-tooltip { position:absolute; background:var(--navy); color:var(--white); padding:8px 12px; border-radius:6px; box-shadow:0 4px 14px rgba(0,0,0,.25); pointer-events:none; opacity:0; transition:opacity .12s ease; z-index:10; white-space:nowrap; min-width:140px; }
+        .chart-tooltip.show { opacity:1; }
+        .chart-tooltip .tt-label  { display:block; font-family:'Oswald',sans-serif; font-size:.65rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.65); margin-bottom:2px; }
+        .chart-tooltip .tt-amount { font-family:'Oswald',sans-serif; font-size:1.05rem; font-weight:700; }
+        .chart-tooltip .tt-percent{ color:rgba(255,255,255,.7); font-size:.78rem; margin-left:.35rem; }
+        .chart-legend { display:flex; justify-content:center; gap:1.5rem; margin-top:.5rem; flex-wrap:wrap; }
+        .legend-item  { display:flex; align-items:center; gap:.5rem; font-size:.82rem; }
+        .legend-dot   { width:12px; height:12px; border-radius:50%; }
+        .legend-dot.collected { background:var(--color-collected); }
+        .legend-dot.balance   { background:var(--color-balance); }
+        .legend-dot.pending   { background:var(--color-warning); }
+
+        /* ── SECTION CARD ── */
+        .section-card { background:var(--white); border-radius:8px; box-shadow:var(--shadow-md); border:1px solid var(--mid); margin-bottom:1.5rem; overflow:hidden; }
+        .section-card-header { background:var(--red); padding:12px 22px; display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
+        .section-card-header h2 { font-family:'Oswald',sans-serif; font-size:.95rem; font-weight:600; color:var(--white); letter-spacing:.12em; text-transform:uppercase; }
+        .section-card-body { padding:1.4rem 1.5rem; }
+        .controls { display:flex; gap:.75rem; align-items:center; flex-wrap:wrap; }
+        .controls-light .search-box { background:rgba(255,255,255,.15); border-color:rgba(255,255,255,.25); color:var(--white); }
+        .controls-light .search-box input { color:var(--white); }
+        .controls-light .search-box input::placeholder { color:rgba(255,255,255,.7); }
+        .controls-light .filter-select { background:rgba(255,255,255,.15); border-color:rgba(255,255,255,.25); color:var(--white); }
+        .search-box { display:flex; align-items:center; gap:.5rem; background:var(--white); border:1.5px solid var(--mid); border-radius:6px; padding:6px 14px; }
+        .search-box:focus-within { border-color:var(--navy); }
+        .search-box input { border:none; background:none; outline:none; font-family:'Open Sans',sans-serif; font-size:.85rem; width:200px; color:inherit; }
+        .filter-select { padding:7px 14px; border:1.5px solid var(--mid); border-radius:6px; background:var(--white); font-family:'Open Sans',sans-serif; font-size:.82rem; cursor:pointer; outline:none; color:var(--text); }
+
+        /* ── TABLE ── */
+        .table-wrap { overflow-x:auto; }
+        .player-table { width:100%; border-collapse:collapse; font-size:.86rem; }
+        .player-table thead tr { background:var(--navy); }
+        .player-table th { padding:11px 14px; text-align:left; font-family:'Oswald',sans-serif; font-size:.72rem; font-weight:600; color:var(--white); letter-spacing:.1em; text-transform:uppercase; white-space:nowrap; }
+        .player-table td { padding:12px 14px; border-bottom:1px solid var(--mid); font-size:.86rem; vertical-align:middle; }
+        .player-table tbody tr:last-child td { border-bottom:none; }
+        .player-table tbody tr:hover { background:var(--light); }
+        .player-table .paid    { color:var(--color-collected); font-weight:700; font-family:'Oswald',sans-serif; }
+        .player-table .balance { color:var(--color-balance);   font-weight:700; font-family:'Oswald',sans-serif; }
+        .player-name { font-weight:600; color:var(--navy); }
+        .status-badge { display:inline-flex; align-items:center; padding:4px 10px; border-radius:20px; font-family:'Oswald',sans-serif; font-size:.68rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; border:1px solid transparent; }
+        .status-badge.paid    { background:#f0fdf4; color:#15803d; border-color:#bbf7d0; }
+        .status-badge.partial { background:#fffbea; color:#92400e; border-color:#fde68a; }
+        .status-badge.unpaid  { background:#fef3f5; color:var(--red); border-color:#f5c6cb; }
+
+        /* ── PAGINATION ── */
+        .pagination { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.85rem 1rem; border-top:1px solid var(--mid); background:var(--white); flex-wrap:wrap; margin-top:-1px; }
+        .pagination-info { font-size:.82rem; color:var(--sub); }
+        .pagination-controls { display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; }
+        .per-page-select { position:relative; display:inline-flex; align-items:center; }
+        .per-page-select select { appearance:none; -webkit-appearance:none; padding:5px 28px 5px 12px; border:1.5px solid var(--mid); border-radius:6px; background:var(--white); font-family:'Open Sans',sans-serif; font-size:.82rem; font-weight:600; color:var(--text); cursor:pointer; outline:none; }
+        .per-page-select select:hover { border-color:var(--navy); }
+        .per-page-select::after { content:'▼'; position:absolute; right:10px; top:50%; transform:translateY(-50%); font-size:.55rem; color:var(--sub); pointer-events:none; }
+        .page-btn { display:inline-flex; align-items:center; justify-content:center; min-width:34px; height:32px; padding:0 10px; border:1.5px solid var(--mid); border-radius:6px; background:var(--white); font-family:'Open Sans',sans-serif; font-size:.82rem; font-weight:600; color:var(--text); cursor:pointer; transition:all .15s; }
+        .page-btn:hover:not(:disabled) { border-color:var(--navy); color:var(--navy); }
+        .page-btn.current { border-color:var(--red); color:var(--red); cursor:default; }
+        .page-btn:disabled { color:var(--mid); cursor:not-allowed; background:var(--light); }
+
+        /* ── ERROR / LOADING ── */
+        .error-banner { background:#fef3f5; border:1.5px solid #f5c6cb; border-radius:8px; padding:.85rem 1.1rem; margin-bottom:1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; color:var(--red); font-size:.86rem; flex-wrap:wrap; }
+        .retry-btn { background:var(--red); color:var(--white); border:none; padding:6px 14px; border-radius:6px; font-family:'Oswald',sans-serif; font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; }
+        .retry-btn:hover { background:var(--red2); }
+        .loading-wrap { text-align:center; padding:4rem 2rem; color:var(--sub); }
+        .spinner { width:36px; height:36px; border:3px solid var(--mid); border-top-color:var(--red); border-radius:50%; animation:spin .7s linear infinite; margin:0 auto 1rem; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+
+        /* ── RESPONSIVE ── */
+        @media(max-width:1200px) { .metric-card.chart-card { grid-column:span 1; } }
+        @media(max-width:768px) {
+            .topbar { padding:0 16px; }
+            .main { padding:1.25rem 1rem 2rem; }
+            .page-header { padding:1.5rem 1rem 1.2rem; }
+            .metrics-grid { grid-template-columns:1fr; }
+            .controls { width:100%; flex-direction:column; align-items:stretch; }
+            .search-box, .search-box input, .filter-select { width:100%; }
+            .section-card-body { padding:1.1rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-brand">AMBASSADORS <span>BASEBALL</span></div>
+    <div class="topbar-right">
+        <button class="topbar-btn" onclick="window.location.href='coach-dashboard.html'">← Back to Dashboard</button>
+    </div>
+</div>
+
+<div id="pageContent">
+    <div class="loading-wrap"><div class="spinner"></div>Loading financial data…</div>
+</div>
+
+<script>
+'use strict';
+
+const API_BASE = 'https://backend-baseball-inky.vercel.app';
+
+// ── AUTH — same pattern as coach-dashboard.html ───────────────────
+const isAdminView = !!sessionStorage.getItem('admin_impersonation_token');
+const token = isAdminView
+    ? sessionStorage.getItem('admin_impersonation_token')
+    : localStorage.getItem('coach_token');
+
+if (!token) { window.location.replace('coach-auth.html'); }
+
+async function apiFetch(path) {
+    const res = await fetch(`${API_BASE}${path}`, {
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+    });
+    if (res.status === 401) {
+        localStorage.removeItem('coach_token');
+        window.location.replace('coach-auth.html');
+        throw new Error('Session expired');
+    }
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.message || `Request failed (${res.status})`);
+    }
+    return res.json();
+}
+
+const pagination = { page: 1, perPage: 20 };
+
+function esc(s) {
+    return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+const fmtMoney = n => '$' + (Number(n) || 0).toLocaleString('en-US', { maximumFractionDigits: 0 });
+function fmtDate(s) { if (!s) return '—'; const d = new Date(s); return isNaN(d) ? '—' : d.toLocaleDateString(); }
+
+// ── BOOT ──────────────────────────────────────────────────────────
+(async () => {
+    let team = null, errMsg = null;
+    try { team = await apiFetch('/api/coach/fin/overview'); }
+    catch (err) { errMsg = err.message || 'Failed to load financial data'; }
+
+    if (errMsg) {
+        document.getElementById('pageContent').innerHTML = `
+            <div style="max-width:1100px;margin:2rem auto;padding:0 1.5rem;">
+                <div class="error-banner"><span>⚠️ ${esc(errMsg)}</span><button class="retry-btn" onclick="location.reload()">Retry</button></div>
+            </div>`;
+        return;
+    }
+    renderPage(team);
+    renderPlayerTable();
+})();
+
+function renderPage(team) {
+    const pct        = team.budget > 0 ? Math.min(100, (team.totalCollected / team.budget * 100)).toFixed(1) : '0.0';
+    let deadlineDate = '—', deadlineUrgency = null;
+    if (team.paymentDeadline) {
+        const dl = new Date(team.paymentDeadline);
+        if (!isNaN(dl)) {
+            deadlineDate = dl.toLocaleDateString();
+            const today = new Date(); today.setHours(0,0,0,0);
+            const dlMid = new Date(dl); dlMid.setHours(0,0,0,0);
+            const days  = Math.round((dlMid - today) / 86400000);
+            deadlineUrgency = days > 0 ? `${days} day${days===1?'':'s'} to deadline`
+                            : days === 0 ? 'Deadline today'
+                            : `${Math.abs(days)} day${Math.abs(days)===1?'':'s'} overdue`;
+        }
+    }
+    const hasBudget     = team.budget > 0;
+    const budgetGap     = hasBudget ? Math.max(0, team.budget - team.totalCollected) : null;
+    const budgetReached = hasBudget && budgetGap === 0;
+    const CIRC = 503;
+    const arcOf        = $ => hasBudget ? ($ / team.budget) * CIRC : 0;
+    const collectedArc = Math.min(arcOf(team.totalCollected), CIRC);
+    const owedArc      = Math.min(arcOf(team.balanceRemaining), CIRC - collectedArc);
+    const pendingArc   = Math.max(0, CIRC - collectedArc - owedArc);
+    const pendingAmt   = hasBudget ? Math.max(0, team.budget - team.totalCollected - team.balanceRemaining) : 0;
+
+    document.getElementById('pageContent').innerHTML = `
+        <header class="page-header">
+            <div class="page-header-inner">
+                <h1>${esc(team.name)}</h1>
+                <p>Financial Dashboard</p>
+            </div>
+        </header>
+        <div class="main">
+            <div class="metrics-grid">
+                <div class="metric-card budget-card">
+                    <div class="metric-icon">📄</div>
+                    <div class="metric-content">
+                        <span class="metric-label">Team Budget</span>
+                        <span class="metric-value">${fmtMoney(team.budget)}</span>
+                        ${team.budget===0?'<span class="metric-subtext">No budget set</span>':''}
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon players">👥</div>
+                    <div class="metric-content">
+                        <span class="metric-label">Players Registered &amp; Paid</span>
+                        <span class="metric-value">${team.goodStanding} / ${team.totalRegistered}</span>
+                        ${team.budgetedPlayers>0?`<span class="metric-subtext">Need ${team.budgetedPlayers} to meet budget</span>`:'<span class="metric-subtext">of registered players</span>'}
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon collected">💵</div>
+                    <div class="metric-content">
+                        <span class="metric-label">Total Revenue Collected</span>
+                        <span class="metric-value">${fmtMoney(team.totalCollected)}</span>
+                        ${team.budget>0?`<span class="metric-subtext">${pct}% of budget</span>`:''}
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon balance">📈</div>
+                    <div class="metric-content">
+                        <span class="metric-label">Balance to Meet Budget</span>
+                        <span class="metric-value">${hasBudget?fmtMoney(budgetGap):'—'}</span>
+                        <span class="metric-subtext">${!hasBudget?'No budget set':budgetReached?'✓ Budget reached':deadlineUrgency||'remaining to collect'}</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon good">✅</div>
+                    <div class="metric-content">
+                        <span class="metric-label">Good Standing</span>
+                        <span class="metric-value">${team.goodStanding}</span>
+                        <span class="metric-subtext">Current accounts</span>
+                    </div>
+                </div>
+                <div class="metric-card alert-card">
+                    <div class="metric-icon alert">⚠️</div>
+                    <div class="metric-content">
+                        <span class="metric-label">Accounts in Red</span>
+                        <span class="metric-value">${team.deadlinePassed?team.accountsInRed:'—'}</span>
+                        ${!team.paymentDeadline?'<span class="metric-subtext">No deadline set</span>':!team.deadlinePassed?'<span class="metric-subtext">Deadline not passed yet</span>':team.accountsInRed>0?'<span class="metric-subtext">Players with overdue balance</span>':'<span class="metric-subtext">✓ All accounts paid</span>'}
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon balance">💳</div>
+                    <div class="metric-content">
+                        <span class="metric-label">Outstanding Balance from Paying Players</span>
+                        <span class="metric-value">${fmtMoney(team.balanceRemaining)}</span>
+                        <span class="metric-subtext">across registered players</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon deadline">📅</div>
+                    <div class="metric-content">
+                        <span class="metric-label">Collection Deadline</span>
+                        <span class="metric-value">${deadlineDate}</span>
+                        ${!team.paymentDeadline?'<span class="metric-subtext">No deadline set</span>':''}
+                    </div>
+                </div>
+                ${hasBudget?`
+                <div class="metric-card chart-card">
+                    <div class="metric-content full">
+                        <span class="metric-label">Budget Progress</span>
+                        <div class="pie-chart">
+                            <svg viewBox="0 0 200 200">
+                                <circle cx="100" cy="100" r="80" fill="none" stroke="var(--mid)" stroke-width="40"/>
+                                <circle class="chart-segment" cx="100" cy="100" r="80" fill="none" stroke="var(--color-collected)" stroke-width="40" stroke-dasharray="${collectedArc} ${CIRC}" transform="rotate(-90 100 100)" data-name="Collected" data-amount="${team.totalCollected}" data-percent="${(team.totalCollected/team.budget*100).toFixed(1)}"/>
+                                <circle class="chart-segment" cx="100" cy="100" r="80" fill="none" stroke="var(--color-balance)" stroke-width="40" stroke-dasharray="${owedArc} ${CIRC}" stroke-dashoffset="${-collectedArc}" transform="rotate(-90 100 100)" data-name="Owed by players" data-amount="${team.balanceRemaining}" data-percent="${(team.balanceRemaining/team.budget*100).toFixed(1)}"/>
+                                <circle class="chart-segment" cx="100" cy="100" r="80" fill="none" stroke="var(--color-warning)" stroke-width="40" stroke-dasharray="${pendingArc} ${CIRC}" stroke-dashoffset="${-(collectedArc+owedArc)}" transform="rotate(-90 100 100)" data-name="Pending to budget" data-amount="${pendingAmt}" data-percent="${(pendingAmt/team.budget*100).toFixed(1)}"/>
+                                <text x="100" y="95" text-anchor="middle" font-size="26" font-weight="700" font-family="Oswald" fill="var(--navy)">${pct}%</text>
+                                <text x="100" y="118" text-anchor="middle" font-size="11" font-family="Oswald" letter-spacing="2" fill="var(--sub)">COLLECTED</text>
+                            </svg>
+                            <div class="chart-tooltip" id="chartTooltip">
+                                <span class="tt-label"></span><span class="tt-amount"></span><span class="tt-percent"></span>
+                            </div>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item"><span class="legend-dot collected"></span><span>Collected: ${fmtMoney(team.totalCollected)}</span></div>
+                            <div class="legend-item"><span class="legend-dot balance"></span><span>Owed by players: ${fmtMoney(team.balanceRemaining)}</span></div>
+                            <div class="legend-item"><span class="legend-dot pending"></span><span>Pending to budget: ${fmtMoney(pendingAmt)}</span></div>
+                        </div>
+                    </div>
+                </div>`:''}
+            </div>
+
+            <!-- Player Accounts -->
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2>Player Financial Accounts</h2>
+                    <div class="controls controls-light">
+                        <div class="search-box">
+                            <span>🔍</span>
+                            <input type="text" placeholder="Search players…" id="playerSearch" oninput="onFilterChange()"/>
+                        </div>
+                        <select class="filter-select" id="playerFilter" onchange="onFilterChange()">
+                            <option value="all">All Players</option>
+                            <option value="paid">Paid in Full</option>
+                            <option value="partial">Partial Payment</option>
+                            <option value="unpaid">Unpaid</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="section-card-body" style="padding-bottom:0;">
+                    <div class="table-wrap">
+                        <table class="player-table">
+                            <thead><tr><th>Player Name</th><th>Total Fee</th><th>Paid Amount</th><th>Balance Due</th><th>Last Payment</th><th>Status</th></tr></thead>
+                            <tbody id="playerTableBody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--sub);">Loading…</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="pagination" id="playerPagination"></div>
+            </div>
+        </div>`;
+
+    bindChartHover();
+}
+
+async function renderPlayerTable() {
+    const searchEl = document.getElementById('playerSearch');
+    const filterEl = document.getElementById('playerFilter');
+    const search   = searchEl ? searchEl.value.trim() : '';
+    const status   = filterEl ? filterEl.value : 'all';
+    const tbody    = document.getElementById('playerTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--sub);">Loading…</td></tr>`;
+    const qs = new URLSearchParams({ page: pagination.page, perPage: pagination.perPage });
+    if (search) qs.set('search', search);
+    if (status && status !== 'all') qs.set('status', status);
+    let result;
+    try { result = await apiFetch(`/api/coach/fin/players?${qs}`); }
+    catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--red);">${esc(err.message||'Failed to load players')}</td></tr>`;
+        document.getElementById('playerPagination').innerHTML = '';
+        return;
+    }
+    const { players, total } = result;
+    const totalPages = Math.max(1, Math.ceil(total / pagination.perPage));
+    if (pagination.page > totalPages && totalPages > 0) { pagination.page = totalPages; return renderPlayerTable(); }
+    tbody.innerHTML = players.length === 0
+        ? `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--sub);">No players match your filters.</td></tr>`
+        : players.map(p=>`
+            <tr>
+                <td class="player-name">${esc(p.name)}</td>
+                <td>${fmtMoney(p.totalFee)}</td>
+                <td class="paid">${fmtMoney(p.paidAmount)}</td>
+                <td class="balance">${fmtMoney(p.balance)}</td>
+                <td>${fmtDate(p.lastPayment)}</td>
+                <td><span class="status-badge ${p.status}">${p.status==='paid'?'Paid':p.status==='partial'?'Partial':'Unpaid'}</span></td>
+            </tr>`).join('');
+    renderPagination(totalPages, total);
+}
+
+function renderPagination(totalPages, totalItems) {
+    const el = document.getElementById('playerPagination');
+    if (!el) return;
+    el.innerHTML = `
+        <div class="pagination-info">Page ${pagination.page} of ${totalPages} &middot; ${totalItems} total</div>
+        <div class="pagination-controls">
+            <div class="per-page-select">
+                <select onchange="pagination.perPage=parseInt(this.value,10);pagination.page=1;renderPlayerTable()">
+                    <option value="20" ${pagination.perPage===20?'selected':''}>20</option>
+                    <option value="50" ${pagination.perPage===50?'selected':''}>50</option>
+                    <option value="100" ${pagination.perPage===100?'selected':''}>100</option>
+                </select>
+            </div>
+            <button class="page-btn" ${pagination.page<=1?'disabled':''} onclick="pagination.page--;renderPlayerTable()">Prev</button>
+            <button class="page-btn current">${pagination.page}</button>
+            <button class="page-btn" ${pagination.page>=totalPages?'disabled':''} onclick="pagination.page++;renderPlayerTable()">Next</button>
+        </div>`;
+}
+
+let _filterTimer = null;
+function onFilterChange() {
+    pagination.page = 1;
+    clearTimeout(_filterTimer);
+    _filterTimer = setTimeout(() => renderPlayerTable(), 250);
+}
+
+function bindChartHover() {
+    const tooltip = document.getElementById('chartTooltip');
+    if (!tooltip) return;
+    const ttLabel = tooltip.querySelector('.tt-label'), ttAmount = tooltip.querySelector('.tt-amount'), ttPercent = tooltip.querySelector('.tt-percent');
+    const host    = tooltip.parentElement;
+    document.querySelectorAll('.chart-segment').forEach(seg => {
+        seg.addEventListener('mouseenter', () => {
+            ttLabel.textContent = seg.dataset.name; ttAmount.textContent = fmtMoney(seg.dataset.amount); ttPercent.textContent = `· ${seg.dataset.percent}% of budget`; tooltip.classList.add('show');
+        });
+        seg.addEventListener('mousemove', e => {
+            const rect = host.getBoundingClientRect();
+            let x = e.clientX - rect.left + 14, y = e.clientY - rect.top + 14;
+            if (x + tooltip.offsetWidth > rect.width)  x = e.clientX - rect.left - tooltip.offsetWidth  - 14;
+            if (y + tooltip.offsetHeight > rect.height) y = e.clientY - rect.top - tooltip.offsetHeight - 14;
+            tooltip.style.left = `${Math.max(0,x)}px`; tooltip.style.top = `${Math.max(0,y)}px`;
+        });
+        seg.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
+    });
+}
+</script>
+</body>
+</html>
