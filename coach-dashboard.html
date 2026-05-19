@@ -351,13 +351,13 @@ input[type="file"].hidden-file{display:none}
 .budget-list-actions{display:flex;gap:.4rem;flex-shrink:0}
 
 /* ── COACH FINANCIAL DASHBOARD ── */
-.cfd-metrics{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1rem;margin-bottom:1.8rem}
+.cfd-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1rem;max-width:1050px;margin-left:auto;margin-right:auto}
 .cfd-metric{background:var(--white);border-radius:8px;padding:1.2rem 1.3rem;box-shadow:0 2px 12px rgba(0,0,0,.07);border:1px solid var(--mid);display:flex;gap:.9rem;align-items:flex-start;transition:all .2s}
 .cfd-metric:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
 .cfd-metric.budget{background:linear-gradient(135deg,var(--navy) 0%,#162845 100%);border-color:var(--navy);position:relative;overflow:hidden}
 .cfd-metric.budget::after{content:'';position:absolute;right:-30px;bottom:-30px;width:110px;height:110px;border-radius:50%;background:rgba(200,16,46,.15);pointer-events:none}
 .cfd-metric.alert{background:linear-gradient(135deg,#fef3f5 0%,#fde8ec 100%);border-color:#f5c6cb}
-.cfd-metric.chart-full{grid-column:span 2;background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.cfd-chart-standalone{max-width:600px;margin:0 auto 1.8rem;background:var(--white);border-radius:8px;padding:1.4rem 1.5rem;box-shadow:0 2px 12px rgba(0,0,0,.07);border:1px solid var(--mid)}
 .cfd-micon{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;background:rgba(10,22,40,.08);position:relative;z-index:1}
 .budget .cfd-micon{background:rgba(255,255,255,.15)}
 .cfd-micon.ic{background:rgba(59,130,246,.12)}
@@ -384,7 +384,7 @@ input[type="file"].hidden-file{display:none}
 .cfd-legend{display:flex;justify-content:center;gap:1.2rem;margin-top:.4rem;flex-wrap:wrap}
 .cfd-leg-item{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--text)}
 .cfd-leg-dot{width:10px;height:10px;border-radius:50%}
-.cfd-section{background:var(--white);border-radius:8px;border:1px solid var(--mid);overflow:hidden;margin-bottom:1.4rem;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.cfd-section{background:var(--white);border-radius:8px;border:1px solid var(--mid);overflow:hidden;margin-bottom:1.4rem;box-shadow:0 2px 10px rgba(0,0,0,.06);max-width:1050px;margin-left:auto;margin-right:auto}
 .cfd-section-head{background:var(--red);padding:12px 22px;display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
 .cfd-section-head h3{font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;color:#fff;letter-spacing:.12em;text-transform:uppercase}
 .cfd-section-body{padding:1.4rem 1.5rem}
@@ -409,7 +409,7 @@ input[type="file"].hidden-file{display:none}
 .cfd-pag{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.7rem .9rem;border-top:1px solid var(--mid);flex-wrap:wrap}
 .cfd-pag-info{font-size:.78rem;color:var(--sub)}
 .cfd-pag-btns{display:flex;align-items:center;gap:.5rem}
-#cfd-content{max-width:1400px}
+#cfd-content{max-width:1400px;padding:0 .5rem}
 .cfd-pbtn{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:28px;padding:0 8px;border:1.5px solid var(--mid);border-radius:5px;background:var(--white);font-size:.78rem;font-weight:600;color:var(--text);cursor:pointer;transition:all .12s}
 .cfd-pbtn:hover:not(:disabled){border-color:var(--navy);color:var(--navy)}
 .cfd-pbtn.cur{border-color:var(--red);color:var(--red);cursor:default}
@@ -3531,29 +3531,28 @@ function cfdBuildHTML(t) {
         <div class="cfd-micon dl">📅</div>
         <div class="cfd-mbody"><span class="cfd-mlabel">Collection Deadline</span><span class="cfd-mval">${dlDate}</span>${dlNote?`<span class="cfd-msub">${cfdEsc(dlNote)}</span>`:''}</div>
       </div>
-      ${hasBudget ? `
-      <div class="cfd-metric chart-full" style="flex-direction:column;align-items:stretch">
-        <div class="cfd-mbody" style="gap:.6rem">
-          <span class="cfd-mlabel">Budget Progress</span>
-          <div class="cfd-pie-wrap">
-            <svg viewBox="0 0 200 200">
-              <circle cx="100" cy="100" r="80" fill="none" stroke="#dde2ea" stroke-width="36"/>
-              <circle class="cfd-seg" cx="100" cy="100" r="80" fill="none" stroke="#16a34a" stroke-width="36" stroke-dasharray="${cArc} ${CIRC}" transform="rotate(-90 100 100)" data-name="Collected" data-amount="${t.totalCollected}" data-pct="${(t.totalCollected/t.budget*100).toFixed(1)}"/>
-              <circle class="cfd-seg" cx="100" cy="100" r="80" fill="none" stroke="#c8102e" stroke-width="36" stroke-dasharray="${oArc} ${CIRC}" stroke-dashoffset="${-cArc}" transform="rotate(-90 100 100)" data-name="Owed by players" data-amount="${t.balanceRemaining}" data-pct="${(t.balanceRemaining/t.budget*100).toFixed(1)}"/>
-              <circle class="cfd-seg" cx="100" cy="100" r="80" fill="none" stroke="#b45309" stroke-width="36" stroke-dasharray="${pArc} ${CIRC}" stroke-dashoffset="${-(cArc+oArc)}" transform="rotate(-90 100 100)" data-name="Pending to budget" data-amount="${pAmt}" data-pct="${(pAmt/t.budget*100).toFixed(1)}"/>
-              <text x="100" y="95"  text-anchor="middle" font-size="26" font-weight="700" font-family="Oswald" fill="#0d1f38">${pct}%</text>
-              <text x="100" y="116" text-anchor="middle" font-size="10" font-family="Oswald" letter-spacing="2" fill="#7a8499">COLLECTED</text>
-            </svg>
-            <div class="cfd-pie-tt" id="cfd-pie-tt"><span class="ptt-lbl"></span><span class="ptt-amt"></span><span class="ptt-pct"></span></div>
-          </div>
-          <div class="cfd-legend">
-            <div class="cfd-leg-item"><span class="cfd-leg-dot" style="background:#16a34a"></span><span>Collected: ${cfdMoney(t.totalCollected)}</span></div>
-            <div class="cfd-leg-item"><span class="cfd-leg-dot" style="background:#c8102e"></span><span>Owed: ${cfdMoney(t.balanceRemaining)}</span></div>
-            <div class="cfd-leg-item"><span class="cfd-leg-dot" style="background:#b45309"></span><span>Pending: ${cfdMoney(pAmt)}</span></div>
-          </div>
-        </div>
-      </div>` : ''}
     </div>
+
+    ${hasBudget ? `
+    <div class="cfd-chart-standalone">
+      <span class="cfd-mlabel" style="display:block;margin-bottom:.8rem">Budget Progress</span>
+      <div class="cfd-pie-wrap">
+        <svg viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="80" fill="none" stroke="#dde2ea" stroke-width="36"/>
+          <circle class="cfd-seg" cx="100" cy="100" r="80" fill="none" stroke="#16a34a" stroke-width="36" stroke-dasharray="${cArc} ${CIRC}" transform="rotate(-90 100 100)" data-name="Collected" data-amount="${t.totalCollected}" data-pct="${(t.totalCollected/t.budget*100).toFixed(1)}"/>
+          <circle class="cfd-seg" cx="100" cy="100" r="80" fill="none" stroke="#c8102e" stroke-width="36" stroke-dasharray="${oArc} ${CIRC}" stroke-dashoffset="${-cArc}" transform="rotate(-90 100 100)" data-name="Owed by players" data-amount="${t.balanceRemaining}" data-pct="${(t.balanceRemaining/t.budget*100).toFixed(1)}"/>
+          <circle class="cfd-seg" cx="100" cy="100" r="80" fill="none" stroke="#b45309" stroke-width="36" stroke-dasharray="${pArc} ${CIRC}" stroke-dashoffset="${-(cArc+oArc)}" transform="rotate(-90 100 100)" data-name="Pending to budget" data-amount="${pAmt}" data-pct="${(pAmt/t.budget*100).toFixed(1)}"/>
+          <text x="100" y="95"  text-anchor="middle" font-size="26" font-weight="700" font-family="Oswald" fill="#0d1f38">${pct}%</text>
+          <text x="100" y="116" text-anchor="middle" font-size="10" font-family="Oswald" letter-spacing="2" fill="#7a8499">COLLECTED</text>
+        </svg>
+        <div class="cfd-pie-tt" id="cfd-pie-tt"><span class="ptt-lbl"></span><span class="ptt-amt"></span><span class="ptt-pct"></span></div>
+      </div>
+      <div class="cfd-legend">
+        <div class="cfd-leg-item"><span class="cfd-leg-dot" style="background:#16a34a"></span><span>Collected: ${cfdMoney(t.totalCollected)}</span></div>
+        <div class="cfd-leg-item"><span class="cfd-leg-dot" style="background:#c8102e"></span><span>Owed: ${cfdMoney(t.balanceRemaining)}</span></div>
+        <div class="cfd-leg-item"><span class="cfd-leg-dot" style="background:#b45309"></span><span>Pending: ${cfdMoney(pAmt)}</span></div>
+      </div>
+    </div>` : ''}
 
     <div class="cfd-section">
       <div class="cfd-section-head">
