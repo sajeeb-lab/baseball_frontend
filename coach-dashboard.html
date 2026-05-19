@@ -389,21 +389,10 @@ input[type="file"].hidden-file{display:none}
       <h1 id="dash-title">Coach Dashboard</h1>
       <p id="dash-sub">Loading…</p>
     </div>
-    <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;">
-      <button onclick="openTeamFinancials()" style="
-        display:inline-flex;align-items:center;gap:.4rem;
-        background:#c8102e;color:#fff;border:none;border-radius:4px;
-        padding:9px 16px;font-family:'Oswald',sans-serif;font-size:.75rem;
-        font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
-        transition:background .2s;
-      " onmouseover="this.style.background='#a50d25'" onmouseout="this.style.background='#c8102e'">
-        💰 Team Financials
-      </button>
-      <button class="logout-btn" onclick="handleLogout()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        Logout
-      </button>
-    </div>
+    <button class="logout-btn" onclick="handleLogout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
   </div>
 </div>
 <div class="main" id="dash-main">
@@ -439,24 +428,6 @@ if (!token) window.location.href = 'coach-auth.html';
 
 const authH = () => ({ 'Content-Type':'application/json', 'Authorization':`Bearer ${token}` });
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-// Opens the Financial Dashboard pre-selected to this coach's team.
-// Passes the admin token (if admin is viewing) so no second login is needed.
-function openTeamFinancials() {
-  const coachId = isAdminView
-    ? sessionStorage.getItem('admin_impersonation_coach_id')
-    : localStorage.getItem('coach_id');
-  if (isAdminView) {
-    // Admin already has a valid admin token — copy it over so the financial
-    // page finds it without showing the login screen.
-    localStorage.setItem('adminToken', token);
-    localStorage.setItem('admin_token', token);
-  }
-  const url = coachId
-    ? 'financial-management.html?coachId=' + encodeURIComponent(coachId)
-    : 'financial-management.html';
-  window.open(url, '_blank');
-}
 
 function showMsg(id,text,type){
   const el=document.getElementById(id); if(!el) return;
@@ -496,6 +467,7 @@ function switchPanel(name){
   if (name === 'tryreg')   loadTryoutRegs();
   if (name === 'financials') loadFinancials();
   if (name === 'budget')   loadBudgetsLocal();
+  if (name === 'findashboard') cfdLoad();
 
   // Clear old poll, start new one for live tabs
   clearInterval(_pollInterval);
@@ -594,6 +566,10 @@ function renderDashboard(coach){
       <button class="section-tab" id="tab-calculator" onclick="switchPanel('calculator')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg>
         Budget Calculator
+      </button>
+      <button class="section-tab" id="tab-findashboard" onclick="switchPanel('findashboard')" style="background:var(--red);border-color:var(--red);color:#fff;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Financial Dashboard
       </button>
 
     </div>
@@ -3377,7 +3353,227 @@ loadDashboard();
     </div>
   </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+
+    <!-- FINANCIAL DASHBOARD PANEL -->
+    <div class="dash-panel" id="panel-findashboard">
+      <div id="cfd-content">
+        <div style="text-align:center;padding:3rem;color:var(--sub);">Loading financial data…</div>
+      </div>
+    </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js">
+
+// ════════════════════════════════════════════════════════
+//  COACH FINANCIAL DASHBOARD
+//  Uses existing: API_BASE, token, authH()
+// ════════════════════════════════════════════════════════
+
+let _cfdLoaded = false;
+let _cfdPag = { page: 1, perPage: 20 };
+
+async function cfdApiFetch(path) {
+  const res = await fetch(`${API_BASE}${path}`, { headers: authH() });
+  if (!res.ok) { const b = await res.json().catch(()=>({})); throw new Error(b.message || `Error ${res.status}`); }
+  return res.json();
+}
+
+const cfdMoney = n => '$' + (Number(n)||0).toLocaleString('en-US', { maximumFractionDigits: 0 });
+const cfdDate  = s => { if (!s) return '—'; const d = new Date(s); return isNaN(d) ? '—' : d.toLocaleDateString(); };
+const cfdEsc   = s => String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+async function cfdLoad() {
+  if (_cfdLoaded) return;
+  _cfdLoaded = true;
+  const wrapper = document.getElementById('cfd-content');
+  if (!wrapper) return;
+  let team = null, err = null;
+  try { team = await cfdApiFetch('/api/coach/fin/overview'); }
+  catch(e) {
+    wrapper.innerHTML = `<div style="background:#fef3f5;border:1.5px solid #f5c6cb;border-radius:8px;padding:.8rem 1rem;color:var(--red);font-size:.86rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+      <span>⚠️ ${cfdEsc(e.message||'Failed to load')}</span>
+      <button onclick="_cfdLoaded=false;cfdLoad()" style="background:var(--red);color:#fff;border:none;padding:5px 12px;border-radius:5px;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;">Retry</button>
+    </div>`;
+    return;
+  }
+  wrapper.innerHTML = cfdBuildHTML(team);
+  cfdBindChart();
+  cfdLoadPlayers();
+}
+
+function cfdBuildHTML(t) {
+  const pct = t.budget > 0 ? Math.min(100, (t.totalCollected / t.budget * 100)).toFixed(1) : '0.0';
+  let dlDate = '—', dlNote = '';
+  if (t.paymentDeadline) {
+    const dl = new Date(t.paymentDeadline);
+    if (!isNaN(dl)) {
+      dlDate = dl.toLocaleDateString();
+      const today = new Date(); today.setHours(0,0,0,0);
+      const dlm = new Date(dl); dlm.setHours(0,0,0,0);
+      const days = Math.round((dlm - today) / 86400000);
+      dlNote = days > 0 ? `${days} day${days===1?'':'s'} remaining` : days === 0 ? 'Due today' : `${Math.abs(days)} day${Math.abs(days)===1?'':'s'} overdue`;
+    }
+  }
+  const hasBudget = t.budget > 0;
+  const gap = hasBudget ? Math.max(0, t.budget - t.totalCollected) : null;
+  const CIRC = 503;
+  const arcOf = $ => hasBudget ? ($ / t.budget) * CIRC : 0;
+  const cArc = Math.min(arcOf(t.totalCollected), CIRC);
+  const oArc = Math.min(arcOf(t.balanceRemaining), CIRC - cArc);
+  const pArc = Math.max(0, CIRC - cArc - oArc);
+  const pAmt = hasBudget ? Math.max(0, t.budget - t.totalCollected - t.balanceRemaining) : 0;
+
+  return `
+    <div class="cfd-metrics">
+      <div class="cfd-metric budget">
+        <div class="cfd-micon">📄</div>
+        <div class="cfd-mbody"><span class="cfd-mlabel">Team Budget</span><span class="cfd-mval">${cfdMoney(t.budget)}</span>${t.budget===0?'<span class="cfd-msub">No budget set</span>':''}</div>
+      </div>
+      <div class="cfd-metric">
+        <div class="cfd-micon ic">👥</div>
+        <div class="cfd-mbody"><span class="cfd-mlabel">Players Registered &amp; Paid</span><span class="cfd-mval">${t.goodStanding} / ${t.totalRegistered}</span><span class="cfd-msub">fully paid / total registered</span></div>
+      </div>
+      <div class="cfd-metric">
+        <div class="cfd-micon col">💵</div>
+        <div class="cfd-mbody"><span class="cfd-mlabel">Total Revenue Collected</span><span class="cfd-mval">${cfdMoney(t.totalCollected)}</span>${hasBudget?`<span class="cfd-msub">${pct}% of budget</span>`:''}</div>
+      </div>
+      <div class="cfd-metric">
+        <div class="cfd-micon bal">📈</div>
+        <div class="cfd-mbody"><span class="cfd-mlabel">Balance to Meet Budget</span><span class="cfd-mval">${hasBudget ? cfdMoney(gap) : '—'}</span><span class="cfd-msub">${!hasBudget?'No budget set':gap===0?'✓ Budget reached':dlNote||'remaining'}</span></div>
+      </div>
+      <div class="cfd-metric">
+        <div class="cfd-micon ok">✅</div>
+        <div class="cfd-mbody"><span class="cfd-mlabel">Good Standing</span><span class="cfd-mval">${t.goodStanding}</span><span class="cfd-msub">Fully paid players</span></div>
+      </div>
+      <div class="cfd-metric alert">
+        <div class="cfd-micon red">⚠️</div>
+        <div class="cfd-mbody"><span class="cfd-mlabel">Accounts in Red</span><span class="cfd-mval">${t.deadlinePassed ? t.accountsInRed : '—'}</span>${!t.paymentDeadline?'<span class="cfd-msub">No deadline set</span>':!t.deadlinePassed?'<span class="cfd-msub">Deadline not passed yet</span>':t.accountsInRed>0?'<span class="cfd-msub">Players with overdue balance</span>':'<span class="cfd-msub">✓ All accounts paid</span>'}</div>
+      </div>
+      <div class="cfd-metric">
+        <div class="cfd-micon bal">💳</div>
+        <div class="cfd-mbody"><span class="cfd-mlabel">Outstanding Balance</span><span class="cfd-mval">${cfdMoney(t.balanceRemaining)}</span><span class="cfd-msub">across registered players</span></div>
+      </div>
+      <div class="cfd-metric">
+        <div class="cfd-micon dl">📅</div>
+        <div class="cfd-mbody"><span class="cfd-mlabel">Collection Deadline</span><span class="cfd-mval">${dlDate}</span>${dlNote?`<span class="cfd-msub">${cfdEsc(dlNote)}</span>`:''}</div>
+      </div>
+      ${hasBudget ? `
+      <div class="cfd-metric chart-full">
+        <div class="cfd-mbody" style="gap:.5rem">
+          <span class="cfd-mlabel">Budget Progress</span>
+          <div class="cfd-pie-wrap">
+            <svg viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="80" fill="none" stroke="#dde2ea" stroke-width="36"/>
+              <circle class="cfd-seg" cx="100" cy="100" r="80" fill="none" stroke="#16a34a" stroke-width="36" stroke-dasharray="${cArc} ${CIRC}" transform="rotate(-90 100 100)" data-name="Collected" data-amount="${t.totalCollected}" data-pct="${(t.totalCollected/t.budget*100).toFixed(1)}"/>
+              <circle class="cfd-seg" cx="100" cy="100" r="80" fill="none" stroke="#c8102e" stroke-width="36" stroke-dasharray="${oArc} ${CIRC}" stroke-dashoffset="${-cArc}" transform="rotate(-90 100 100)" data-name="Owed by players" data-amount="${t.balanceRemaining}" data-pct="${(t.balanceRemaining/t.budget*100).toFixed(1)}"/>
+              <circle class="cfd-seg" cx="100" cy="100" r="80" fill="none" stroke="#b45309" stroke-width="36" stroke-dasharray="${pArc} ${CIRC}" stroke-dashoffset="${-(cArc+oArc)}" transform="rotate(-90 100 100)" data-name="Pending to budget" data-amount="${pAmt}" data-pct="${(pAmt/t.budget*100).toFixed(1)}"/>
+              <text x="100" y="95"  text-anchor="middle" font-size="26" font-weight="700" font-family="Oswald" fill="#0d1f38">${pct}%</text>
+              <text x="100" y="116" text-anchor="middle" font-size="10" font-family="Oswald" letter-spacing="2" fill="#7a8499">COLLECTED</text>
+            </svg>
+            <div class="cfd-pie-tt" id="cfd-pie-tt"><span class="ptt-lbl"></span><span class="ptt-amt"></span><span class="ptt-pct"></span></div>
+          </div>
+          <div class="cfd-legend">
+            <div class="cfd-leg-item"><span class="cfd-leg-dot" style="background:#16a34a"></span><span>Collected: ${cfdMoney(t.totalCollected)}</span></div>
+            <div class="cfd-leg-item"><span class="cfd-leg-dot" style="background:#c8102e"></span><span>Owed: ${cfdMoney(t.balanceRemaining)}</span></div>
+            <div class="cfd-leg-item"><span class="cfd-leg-dot" style="background:#b45309"></span><span>Pending: ${cfdMoney(pAmt)}</span></div>
+          </div>
+        </div>
+      </div>` : ''}
+    </div>
+
+    <div class="cfd-section">
+      <div class="cfd-section-head">
+        <h3>Player Financial Accounts</h3>
+        <div class="cfd-controls">
+          <div class="cfd-search"><span>🔍</span><input type="text" placeholder="Search players…" id="cfd-search" oninput="cfdOnFilter()"/></div>
+          <select class="cfd-filter" id="cfd-filter" onchange="cfdOnFilter()">
+            <option value="all">All Players</option>
+            <option value="paid">Paid in Full</option>
+            <option value="partial">Partial</option>
+          </select>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="cfd-tbl">
+          <thead><tr><th>Player Name</th><th>Total Fee</th><th>Paid Amount</th><th>Balance Due</th><th>Last Payment</th><th>Status</th></tr></thead>
+          <tbody id="cfd-tbody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--sub);">Loading…</td></tr></tbody>
+        </table>
+      </div>
+      <div class="cfd-pag" id="cfd-pag"></div>
+    </div>`;
+}
+
+async function cfdLoadPlayers() {
+  const searchEl = document.getElementById('cfd-search');
+  const filterEl = document.getElementById('cfd-filter');
+  const search = searchEl ? searchEl.value.trim() : '';
+  const status = filterEl ? filterEl.value : 'all';
+  const tbody  = document.getElementById('cfd-tbody');
+  const pag    = document.getElementById('cfd-pag');
+  if (!tbody) return;
+  tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--sub);">Loading…</td></tr>`;
+  const qs = new URLSearchParams({ page: _cfdPag.page, perPage: _cfdPag.perPage });
+  if (search) qs.set('search', search);
+  if (status && status !== 'all') qs.set('status', status);
+  let result;
+  try { result = await cfdApiFetch(`/api/coach/fin/players?${qs}`); }
+  catch(e) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--red);">${cfdEsc(e.message||'Failed')}</td></tr>`;
+    if (pag) pag.innerHTML = '';
+    return;
+  }
+  const { players, total } = result;
+  const totalPages = Math.max(1, Math.ceil(total / _cfdPag.perPage));
+  if (_cfdPag.page > totalPages) { _cfdPag.page = totalPages; return cfdLoadPlayers(); }
+  tbody.innerHTML = players.length === 0
+    ? `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--sub);">No players match your filters.</td></tr>`
+    : players.map(p => `
+        <tr>
+          <td class="t-name">${cfdEsc(p.name)}</td>
+          <td>${cfdMoney(p.totalFee)}</td>
+          <td class="t-paid">${cfdMoney(p.paidAmount)}</td>
+          <td class="t-bal">${cfdMoney(p.balance)}</td>
+          <td>${cfdDate(p.lastPayment)}</td>
+          <td><span class="cfd-sbadge ${p.status}">${p.status==='paid'?'Paid':p.status==='partial'?'Partial':'Unpaid'}</span></td>
+        </tr>`).join('');
+  if (pag) {
+    pag._pg = np => { _cfdPag.page = np; cfdLoadPlayers(); };
+    pag.innerHTML = `
+      <div class="cfd-pag-info">Page ${_cfdPag.page} of ${totalPages} &middot; ${total} total</div>
+      <div class="cfd-pag-btns">
+        <button class="cfd-pbtn" ${_cfdPag.page<=1?'disabled':''} onclick="this.closest('.cfd-pag')._pg(${_cfdPag.page-1})">Prev</button>
+        <button class="cfd-pbtn cur">${_cfdPag.page}</button>
+        <button class="cfd-pbtn" ${_cfdPag.page>=totalPages?'disabled':''} onclick="this.closest('.cfd-pag')._pg(${_cfdPag.page+1})">Next</button>
+      </div>`;
+  }
+}
+
+let _cfdFilterTimer = null;
+function cfdOnFilter() {
+  _cfdPag.page = 1;
+  clearTimeout(_cfdFilterTimer);
+  _cfdFilterTimer = setTimeout(cfdLoadPlayers, 250);
+}
+
+function cfdBindChart() {
+  const tt = document.getElementById('cfd-pie-tt');
+  if (!tt) return;
+  const lbl = tt.querySelector('.ptt-lbl'), amt = tt.querySelector('.ptt-amt'), pct = tt.querySelector('.ptt-pct');
+  const host = tt.parentElement;
+  document.querySelectorAll('#cfd-content .cfd-seg').forEach(seg => {
+    seg.addEventListener('mouseenter', () => {
+      lbl.textContent = seg.dataset.name; amt.textContent = cfdMoney(seg.dataset.amount); pct.textContent = `· ${seg.dataset.pct}% of budget`; tt.classList.add('show');
+    });
+    seg.addEventListener('mousemove', e => {
+      const r = host.getBoundingClientRect();
+      let x = e.clientX - r.left + 12, y = e.clientY - r.top + 12;
+      if (x + tt.offsetWidth  > r.width)  x = e.clientX - r.left - tt.offsetWidth  - 12;
+      if (y + tt.offsetHeight > r.height) y = e.clientY - r.top  - tt.offsetHeight - 12;
+      tt.style.left = `${Math.max(0,x)}px`; tt.style.top = `${Math.max(0,y)}px`;
+    });
+    seg.addEventListener('mouseleave', () => tt.classList.remove('show'));
+  });
+}
+</script>
 <!-- BUDGET VIEW MODAL -->
 <div class="edit-overlay" id="budget-view-overlay">
   <div class="edit-modal" style="max-width:600px">
