@@ -367,18 +367,19 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
     </div>
   </div>
 
+  <!-- ── VIEW TOGGLE BAR (full width, below topbar) ── -->
+  <div class="view-toggle-bar">
+    <button class="view-toggle-btn active" id="vt-coaches" onclick="switchAdminView('coaches')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      All Coaches
+    </button>
+    <button class="view-toggle-btn" id="vt-financial" onclick="switchAdminView('financial')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Financial Dashboard
+    </button>
+  </div>
+
   <div class="content">
-
-    <!-- ── VIEW TOGGLE ── -->
-    <div class="view-toggle">
-      <button class="view-toggle-btn active" id="vt-coaches" onclick="switchAdminView('coaches')">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:5px"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>All Coaches
-      </button>
-      <button class="view-toggle-btn" id="vt-financial" onclick="switchAdminView('financial')">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:5px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Financial Dashboard
-      </button>
-    </div>
-
     <!-- ── COACHES SECTION (default) ── -->
     <div id="coaches-section">
 
@@ -424,26 +425,27 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
     </div>
     </div><!-- /#coaches-section -->
 
-    <!-- ── FINANCIAL SECTION (hidden by default) ── -->
-    <div id="fin-section" style="display:none;">
-      <!-- Blue sub-header: org overview button + team dropdown -->
-      <div class="fin-subheader">
-        <div class="fin-subheader-inner">
-          <button class="fin-nav-btn active" id="fin-org-btn" onclick="finSwitchView('org')">Organization Overview</button>
-          <div class="fin-team-wrap">
-            <select class="fin-team-select" id="fin-team-select" onchange="finOnTeamChange(this.value)">
-              <option value="">Select Team…</option>
-            </select>
-          </div>
+  </div><!-- /.content -->
+
+  <!-- ── FINANCIAL SECTION (hidden by default, full width) ── -->
+  <div id="fin-section" style="display:none;">
+    <div class="fin-subheader">
+      <div class="fin-subheader-inner">
+        <button class="fin-nav-btn active" id="fin-org-btn" onclick="finSwitchView('org')">Organization Overview</button>
+        <div class="fin-team-wrap">
+          <select class="fin-team-select" id="fin-team-select" onchange="finOnTeamChange(this.value)">
+            <option value="">Select Team…</option>
+          </select>
         </div>
       </div>
-      <!-- Financial content rendered here -->
+    </div>
+    <div style="max-width:1400px;margin:0 auto;padding:24px 28px 40px;">
       <div id="fin-content-wrapper">
         <div style="text-align:center;padding:3rem;color:var(--muted);">Loading financial data…</div>
       </div>
-    </div><!-- /#fin-section -->
+    </div>
+  </div><!-- /#fin-section -->
 
-  </div><!-- /.content -->
 </div><!-- /#app -->
 
 <!-- COACH DETAIL MODAL -->
@@ -1089,27 +1091,6 @@ async function finRenderTeamDashboard(coachId) {
     </div>
     <div class="fin-section-card">
       <div class="fin-section-head">
-        <h2>Player Financial Accounts</h2>
-        <div class="fin-controls">
-          <div class="fin-search"><span>🔍</span><input type="text" placeholder="Search players…" id="fin-player-search-${coachId}" oninput="finOnPlayerFilter('${coachId}')"/></div>
-          <select class="fin-filter" id="fin-player-filter-${coachId}" onchange="finOnPlayerFilter('${coachId}')">
-            <option value="all">All Players</option><option value="paid">Paid in Full</option><option value="partial">Partial</option><option value="unpaid">Unpaid</option>
-          </select>
-        </div>
-      </div>
-      <div class="fin-section-body" style="padding-bottom:0;">
-        <div style="overflow-x:auto;">
-          <table class="fin-tbl">
-            <thead><tr><th>Player Name</th><th>Total Fee</th><th>Paid Amount</th><th>Balance Due</th><th>Last Payment</th><th>Status</th></tr></thead>
-            <tbody id="fin-player-tbody-${coachId}"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading…</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="fin-pagination" id="fin-player-pag-${coachId}"></div>
-    </div>
-
-    <div class="fin-section-card">
-      <div class="fin-section-head">
         <h2>Payments from Ambassadors Baseball</h2>
         <button class="fin-nav-btn" onclick="finTogglePayoutForm('${coachId}')">+ Add Payment</button>
       </div>
@@ -1127,165 +1108,25 @@ async function finRenderTeamDashboard(coachId) {
         </div>
         <div id="fin-payout-body-${coachId}"><div style="text-align:center;padding:1.5rem;color:var(--muted);">Loading…</div></div>
       </div>
-    </div>`;
-}
-
-// ── PAYOUTS ───────────────────────────────────────────
-async function finRenderPayouts(coachId) {
-  const body = document.getElementById(`fin-payout-body-${coachId}`);
-  if (!body) return;
-  let data;
-  try { data = await finApiFetch(`/api/admin/fin/teams/${coachId}/payouts`); }
-  catch(e) { body.innerHTML=`<div style="text-align:center;padding:1.5rem;color:var(--red);">${esc(e.message||'Failed to load')}</div>`; return; }
-  const { totalOwedToCoach, totalPaidToCoach, balanceToBePaid, payouts } = data;
-  body.innerHTML = `
-    <div style="display:flex;gap:2rem;flex-wrap:wrap;background:var(--light);border-radius:8px;padding:1rem 1.3rem;margin-bottom:1.2rem;border:1px solid var(--mid);">
-      <div><div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Total Owed to Coach</div><div style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;color:#16a34a;">${finFmtMoney(totalOwedToCoach)}</div></div>
-      <div><div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Total Paid to Coach</div><div style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;color:#16a34a;">${finFmtMoney(totalPaidToCoach)}</div></div>
-      <div><div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Balance to be Paid</div><div style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;color:${balanceToBePaid>0?'#c8102e':'#16a34a'};">${finFmtMoney(Math.abs(balanceToBePaid))}${balanceToBePaid<0?' (over-paid)':''}</div></div>
     </div>
-    ${payouts.length===0
-      ? `<p style="text-align:center;padding:.75rem 0;color:var(--muted);font-size:.85rem;">No payments recorded yet.</p>`
-      : `<div style="overflow-x:auto;"><table class="fin-tbl"><thead><tr><th>Date Paid</th><th>Amount</th><th>Notes</th></tr></thead><tbody>${payouts.map(p=>`<tr><td>${finFmtDate(p.date)}</td><td class="f-paid">${finFmtMoney(p.amount)}</td><td>${esc(p.notes)}</td></tr>`).join('')}</tbody></table></div>`}`;
-}
 
-function finTogglePayoutForm(coachId) {
-  const f = document.getElementById(`fin-payout-form-${coachId}`);
-  if (f) f.style.display = f.style.display === 'none' ? '' : 'none';
-}
-
-async function finSubmitPayout(coachId) {
-  const date = document.getElementById(`fin-payout-date-${coachId}`).value;
-  const amount = document.getElementById(`fin-payout-amount-${coachId}`).value;
-  const notes = document.getElementById(`fin-payout-notes-${coachId}`).value;
-  if (!date || !amount) { showToast('Please fill in date and amount', 'red'); return; }
-  const btn = document.getElementById(`fin-payout-submit-${coachId}`);
-  btn.disabled=true; btn.textContent='Saving…';
-  try {
-    await finApiFetch(`/api/admin/fin/teams/${coachId}/payouts`, { method:'POST', body: JSON.stringify({ date, amount: parseFloat(amount), notes }) });
-    document.getElementById(`fin-payout-date-${coachId}`).value='';
-    document.getElementById(`fin-payout-amount-${coachId}`).value='';
-    document.getElementById(`fin-payout-notes-${coachId}`).value='';
-    document.getElementById(`fin-payout-form-${coachId}`).style.display='none';
-    await finRenderPayouts(coachId);
-    showToast('Payment saved', 'green');
-  } catch(e) { showToast(e.message||'Failed to save', 'red'); }
-  finally { btn.disabled=false; btn.textContent='Submit Payment'; }
-}
-
-// ── CHART HOVER ───────────────────────────────────────
-function finBindChartHover() {
-  const tt = document.getElementById('fin-chart-tt');
-  if (!tt) return;
-  const lbl=tt.querySelector('.ftt-lbl'), amt=tt.querySelector('.ftt-amt'), pct=tt.querySelector('.ftt-pct');
-  const host=tt.parentElement;
-  document.querySelectorAll('.fin-seg').forEach(seg => {
-    seg.addEventListener('mouseenter', () => { lbl.textContent=seg.dataset.name; amt.textContent=finFmtMoney(seg.dataset.amount); pct.textContent=`· ${seg.dataset.percent}% of budget`; tt.classList.add('show'); });
-    seg.addEventListener('mousemove', e => {
-      const r=host.getBoundingClientRect(); let x=e.clientX-r.left+14, y=e.clientY-r.top+14;
-      if(x+tt.offsetWidth>r.width)  x=e.clientX-r.left-tt.offsetWidth-14;
-      if(y+tt.offsetHeight>r.height) y=e.clientY-r.top-tt.offsetHeight-14;
-      tt.style.left=`${Math.max(0,x)}px`; tt.style.top=`${Math.max(0,y)}px`;
-    });
-    seg.addEventListener('mouseleave', () => tt.classList.remove('show'));
-  });
-}
-
-// ── RANKINGS ─────────────────────────────────────────
-let _finRankSort = 'budget';
-function finOnRankingsSortChange(v) { _finRankSort=v; finRenderRankings(); }
-async function finRenderRankings() {
-  const host = document.getElementById('fin-rankings-host');
-  if (!host) return;
-  host.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--muted);">Loading…</div>`;
-  let ranks;
-  try { const r=await finApiFetch(`/api/admin/fin/team-rankings?sortBy=${_finRankSort}`); ranks=r.rankings||[]; }
-  catch(e) { host.innerHTML=`<div class="fin-error"><span>⚠️ ${esc(e.message||'Failed')}</span><button class="fin-retry" onclick="finRenderRankings()">Retry</button></div>`; return; }
-  if (ranks.length===0) { host.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--muted);">No active teams to rank.</div>`; return; }
-  host.innerHTML=`<div class="fin-ranking-list">${ranks.map((t,i)=>`
-    <div class="fin-ranking-card">
-      <div class="fin-rank-num">${i+1}</div>
-      <div class="fin-team-info"><h3>${esc(t.name)}</h3><p>Coach: ${esc(t.coach)}</p></div>
-      <div class="fin-team-stats">
-        <div class="fin-stat"><span class="fin-stat-lbl">Budget</span><span class="fin-stat-val">${finFmtMoney(t.budget)}</span></div>
-        <div class="fin-stat"><span class="fin-stat-lbl">Collected</span><span class="fin-stat-val">${finFmtMoney(t.collected)}</span></div>
-        <div class="fin-stat"><span class="fin-stat-lbl">% Done</span><span class="fin-stat-val">${t.percentCollected}%</span></div>
-        <div class="fin-stat"><span class="fin-stat-lbl">Balance</span><span class="fin-stat-val">${finFmtMoney(t.balance)}</span></div>
+    <div class="fin-section-card">
+      <div class="fin-section-head">
+        <h2>Player Financial Accounts</h2>
+        <div class="fin-controls">
+          <div class="fin-search"><span>🔍</span><input type="text" placeholder="Search players…" id="fin-player-search-${coachId}" oninput="finOnPlayerFilter('${coachId}')"/></div>
+          <select class="fin-filter" id="fin-player-filter-${coachId}" onchange="finOnPlayerFilter('${coachId}')">
+            <option value="all">All Players</option><option value="paid">Paid in Full</option><option value="partial">Partial</option>
+          </select>
+        </div>
       </div>
-      ${t.completed?'<span class="fin-completed-badge">✓ Done</span>':''}
-    </div>`).join('')}</div>`;
-}
-
-// ── OUTSTANDING BALANCES ──────────────────────────────
-async function finRenderBalanceTable() {
-  const p=_finPag.balance, tbody=document.getElementById('fin-balance-tbody'), pag=document.getElementById('fin-balance-pag');
-  if (!tbody) return;
-  tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading…</td></tr>`;
-  let result;
-  try { result = await finApiFetch(`/api/admin/fin/outstanding-balances?page=${p.page}&perPage=${p.perPage}`); }
-  catch(e) { tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--red);">${esc(e.message||'Failed')}</td></tr>`; if(pag)pag.innerHTML=''; return; }
-  const {players,total}=result, totalPages=Math.max(1,Math.ceil(total/p.perPage));
-  if(p.page>totalPages&&totalPages>0){p.page=totalPages;return finRenderBalanceTable();}
-  tbody.innerHTML=players.length===0?`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">No outstanding balances 🎉</td></tr>`:
-    players.map(r=>`<tr><td class="f-name">${esc(r.name)}</td><td>${esc(r.team)}</td><td>${finFmtMoney(r.totalFee)}</td><td class="f-paid">${finFmtMoney(r.paidAmount)}</td><td class="f-balance">${finFmtMoney(r.balance)}</td><td><span class="fin-status ${r.status}">${r.status==='partial'?'Partial':'Unpaid'}</span></td></tr>`).join('');
-  if(pag) finRenderPagination(pag,p,totalPages,total,np=>{p.page=np;finRenderBalanceTable();},np=>{p.perPage=np;p.page=1;finRenderBalanceTable();});
-}
-
-// ── PLAYER TABLE ──────────────────────────────────────
-async function finRenderPlayerTable(coachId) {
-  const ps=_finPag.team[coachId]||(_finPag.team[coachId]={page:1,perPage:20});
-  const searchEl=document.getElementById(`fin-player-search-${coachId}`), filterEl=document.getElementById(`fin-player-filter-${coachId}`);
-  const search=searchEl?searchEl.value.trim():'', status=filterEl?filterEl.value:'all';
-  const tbody=document.getElementById(`fin-player-tbody-${coachId}`), pag=document.getElementById(`fin-player-pag-${coachId}`);
-  if(!tbody) return;
-  tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading…</td></tr>`;
-  const qs=new URLSearchParams({page:ps.page,perPage:ps.perPage});
-  if(search) qs.set('search',search);
-  if(status&&status!=='all') qs.set('status',status);
-  let result;
-  try { result=await finApiFetch(`/api/admin/fin/teams/${coachId}/players?${qs}`); }
-  catch(e){ tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--red);">${esc(e.message||'Failed')}</td></tr>`; if(pag)pag.innerHTML=''; return; }
-  const {players,total}=result, totalPages=Math.max(1,Math.ceil(total/ps.perPage));
-  if(ps.page>totalPages&&totalPages>0){ps.page=totalPages;return finRenderPlayerTable(coachId);}
-  tbody.innerHTML=players.length===0?`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">No players match filters.</td></tr>`:
-    players.map(p=>`<tr><td class="f-name">${esc(p.name)}</td><td>${finFmtMoney(p.totalFee)}</td><td class="f-paid">${finFmtMoney(p.paidAmount)}</td><td class="f-balance">${finFmtMoney(p.balance)}</td><td>${finFmtDate(p.lastPayment)}</td><td><span class="fin-status ${p.status}">${p.status==='paid'?'Paid':p.status==='partial'?'Partial':'Unpaid'}</span></td></tr>`).join('');
-  if(pag) finRenderPagination(pag,ps,totalPages,total,np=>{ps.page=np;finRenderPlayerTable(coachId);},np=>{ps.perPage=np;ps.page=1;finRenderPlayerTable(coachId);});
-  finRenderPayouts(coachId);
-}
-
-let _finPlayerFilterTimer=null;
-function finOnPlayerFilter(coachId) {
-  const ps=_finPag.team[coachId]||(_finPag.team[coachId]={page:1,perPage:20}); ps.page=1;
-  clearTimeout(_finPlayerFilterTimer); _finPlayerFilterTimer=setTimeout(()=>finRenderPlayerTable(coachId),250);
-}
-
-// ── PAGINATION ────────────────────────────────────────
-function finRenderPagination(el,state,totalPages,totalItems,onPage,onPerPage) {
-  el._fp=onPage; el._fpp=onPerPage;
-  el.innerHTML=`
-    <div class="fin-pagination-info">Page ${state.page} of ${totalPages} &middot; ${totalItems} total</div>
-    <div class="fin-pagination-controls">
-      <select class="fin-per-page" onchange="(function(c,v){c._fpp(parseInt(v,10));})(this.closest('.fin-pagination'),this.value)">
-        <option value="20" ${state.perPage===20?'selected':''}>20</option>
-        <option value="50" ${state.perPage===50?'selected':''}>50</option>
-        <option value="100" ${state.perPage===100?'selected':''}>100</option>
-      </select>
-      <button class="fin-page-btn" ${state.page<=1?'disabled':''} onclick="(function(c){c._fp(${state.page-1});})(this.closest('.fin-pagination'))">Prev</button>
-      <button class="fin-page-btn current">${state.page}</button>
-      <button class="fin-page-btn" ${state.page>=totalPages?'disabled':''} onclick="(function(c){c._fp(${state.page+1});})(this.closest('.fin-pagination'))">Next</button>
-    </div>`;
-}
-
-// ── INIT ──
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-document.getElementById('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-
-// Auto-login if token exists
-if (adminToken) {
-  fetch(`${API_BASE}/api/admin/coaches`, { headers: adminH() }).then(r => {
-    if (r.ok) showApp(); else doLogout();
-  }).catch(() => doLogout());
-} 
-</script>
-</body>
-</html>
+      <div class="fin-section-body" style="padding-bottom:0;">
+        <div style="overflow-x:auto;">
+          <table class="fin-tbl">
+            <thead><tr><th>Player Name</th><th>Total Fee</th><th>Paid Amount</th><th>Balance Due</th><th>Last Payment</th><th>Status</th></tr></thead>
+            <tbody id="fin-player-tbody-${coachId}"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="fin-pagination" id="fin-player-pag-${coachId}"></div>
+    </div>
