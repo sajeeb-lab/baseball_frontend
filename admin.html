@@ -233,6 +233,113 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
   .content { padding: 16px; }
 }
 
+
+/* ── VIEW TOGGLE ── */
+.view-toggle { display:flex; gap:0; margin-bottom:24px; background:var(--white); border:1.5px solid var(--mid); border-radius:10px; padding:4px; width:fit-content; }
+.view-toggle-btn { padding:8px 22px; border:none; background:transparent; font-family:'Oswald',sans-serif; font-size:.82rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); border-radius:7px; cursor:pointer; transition:all .15s; white-space:nowrap; }
+.view-toggle-btn.active { background:var(--navy); color:var(--white); box-shadow:0 2px 8px rgba(10,22,40,.18); }
+.view-toggle-btn:hover:not(.active) { color:var(--navy); }
+
+/* ── FINANCIAL SUB-HEADER ── */
+.fin-subheader { background:linear-gradient(135deg,#1a3fc4 0%,#1535a8 100%); padding:1.4rem 28px; position:relative; overflow:hidden; margin:-28px -28px 24px -28px; }
+.fin-subheader::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E"); }
+.fin-subheader-inner { display:flex; align-items:center; gap:.75rem; position:relative; flex-wrap:wrap; }
+.fin-nav-btn { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); color:rgba(255,255,255,.9); padding:8px 18px; border-radius:6px; cursor:pointer; font-family:'Oswald',sans-serif; font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; transition:all .15s; white-space:nowrap; }
+.fin-nav-btn:hover { background:rgba(255,255,255,.2); color:var(--white); }
+.fin-nav-btn.active { background:var(--red); border-color:var(--red); color:var(--white); box-shadow:0 2px 8px rgba(200,16,46,.4); }
+.fin-team-wrap { position:relative; display:inline-flex; align-items:center; }
+.fin-team-select { appearance:none; -webkit-appearance:none; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); color:var(--white); padding:8px 36px 8px 16px; border-radius:6px; cursor:pointer; font-family:'Oswald',sans-serif; font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; outline:none; min-width:200px; transition:all .15s; }
+.fin-team-select:hover { background:rgba(255,255,255,.18); }
+.fin-team-select.active { background:var(--red); border-color:var(--red); }
+.fin-team-select option { background:#0d1f38; color:var(--white); font-family:'Source Sans 3',sans-serif; text-transform:none; letter-spacing:0; }
+.fin-team-wrap::after { content:'▼'; position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:.6rem; color:rgba(255,255,255,.7); pointer-events:none; }
+
+/* ── FINANCIAL CONTENT ── */
+.fin-metrics-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:1rem; margin-bottom:1.8rem; }
+.fin-metric-card { background:var(--white); border-radius:8px; padding:1.2rem 1.3rem; box-shadow:0 2px 12px rgba(0,0,0,.07); border:1px solid var(--mid); display:flex; gap:.9rem; align-items:flex-start; transition:all .2s; }
+.fin-metric-card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.1); }
+.fin-metric-card.budget-card { background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%); color:var(--white); border-color:var(--navy); position:relative; overflow:hidden; }
+.fin-metric-card.budget-card::after { content:''; position:absolute; right:-40px; bottom:-40px; width:130px; height:130px; border-radius:50%; background:rgba(200,16,46,.15); pointer-events:none; }
+.fin-metric-card.alert-card { background:linear-gradient(135deg,#fef3f5 0%,#fde8ec 100%); border-color:#f5c6cb; }
+.fin-metric-card.chart-card { grid-column:span 2; }
+.fin-metric-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1.2rem; position:relative; z-index:1; background:rgba(10,22,40,.07); }
+.budget-card .fin-metric-icon { background:rgba(255,255,255,.15); }
+.fin-metric-icon.c-players  { background:rgba(59,130,246,.12); }
+.fin-metric-icon.c-collected{ background:rgba(22,163,74,.12); }
+.fin-metric-icon.c-balance  { background:rgba(200,16,46,.12); }
+.fin-metric-icon.c-good     { background:rgba(22,163,74,.12); }
+.fin-metric-icon.c-alert    { background:rgba(200,16,46,.12); }
+.fin-metric-icon.c-deadline { background:rgba(180,83,9,.12); }
+.fin-metric-icon.c-teams    { background:rgba(124,58,237,.12); }
+.fin-metric-icon.c-profit   { background:rgba(245,197,24,.18); }
+.fin-metric-body { display:flex; flex-direction:column; gap:.25rem; flex:1; position:relative; z-index:1; min-width:0; }
+.fin-metric-label { font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+.budget-card .fin-metric-label { color:rgba(255,255,255,.7); }
+.fin-metric-value { font-family:'Oswald',sans-serif; font-size:1.65rem; font-weight:700; color:var(--navy); line-height:1.1; }
+.budget-card .fin-metric-value { color:var(--white); }
+.fin-metric-sub { font-size:.76rem; color:var(--muted); }
+.budget-card .fin-metric-sub { color:rgba(255,255,255,.65); }
+.fin-section-card { background:var(--white); border-radius:10px; border:1px solid var(--mid); margin-bottom:1.4rem; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,.06); }
+.fin-section-head { background:var(--red); padding:11px 20px; display:flex; justify-content:space-between; align-items:center; gap:.75rem; flex-wrap:wrap; }
+.fin-section-head h2 { font-family:'Oswald',sans-serif; font-size:.9rem; font-weight:700; color:var(--white); letter-spacing:.12em; text-transform:uppercase; }
+.fin-section-body { padding:1.3rem 1.4rem; }
+.fin-controls { display:flex; gap:.6rem; align-items:center; flex-wrap:wrap; }
+.fin-controls .fin-search { display:flex; align-items:center; gap:.5rem; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.25); border-radius:6px; padding:5px 12px; }
+.fin-controls .fin-search input { border:none; background:none; outline:none; color:var(--white); font-family:'Source Sans 3',sans-serif; font-size:.84rem; width:180px; }
+.fin-controls .fin-search input::placeholder { color:rgba(255,255,255,.6); }
+.fin-filter { padding:6px 12px; border:1px solid rgba(255,255,255,.25); border-radius:6px; background:rgba(255,255,255,.15); font-family:'Source Sans 3',sans-serif; font-size:.82rem; color:var(--white); cursor:pointer; outline:none; }
+.fin-tbl { width:100%; border-collapse:collapse; font-size:.85rem; }
+.fin-tbl thead tr { background:var(--navy); }
+.fin-tbl th { padding:10px 14px; text-align:left; font-family:'Oswald',sans-serif; font-size:.7rem; font-weight:700; color:var(--white); letter-spacing:.1em; text-transform:uppercase; white-space:nowrap; }
+.fin-tbl td { padding:11px 14px; border-bottom:1px solid var(--mid); vertical-align:middle; font-size:.85rem; }
+.fin-tbl tbody tr:last-child td { border-bottom:none; }
+.fin-tbl tbody tr:hover { background:var(--light); }
+.fin-tbl .f-paid    { color:#16a34a; font-weight:700; font-family:'Oswald',sans-serif; }
+.fin-tbl .f-balance { color:var(--red); font-weight:700; font-family:'Oswald',sans-serif; }
+.fin-tbl .f-name    { font-weight:700; color:var(--navy); }
+.fin-status { display:inline-flex; align-items:center; padding:3px 9px; border-radius:20px; font-family:'Oswald',sans-serif; font-size:.66rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; border:1px solid transparent; }
+.fin-status.paid    { background:#f0fdf4; color:#15803d; border-color:#bbf7d0; }
+.fin-status.partial { background:#fffbea; color:#92400e; border-color:#fde68a; }
+.fin-status.unpaid  { background:#fef3f5; color:var(--red); border-color:#f5c6cb; }
+.fin-ranking-list { display:flex; flex-direction:column; gap:.75rem; }
+.fin-ranking-card { display:flex; align-items:center; gap:1.2rem; padding:1rem 1.2rem; background:var(--light); border-radius:8px; border:1.5px solid var(--mid); transition:all .2s; position:relative; flex-wrap:wrap; }
+.fin-ranking-card:hover { transform:translateX(4px); box-shadow:0 2px 12px rgba(0,0,0,.08); border-color:var(--navy); }
+.fin-rank-num { width:44px; height:44px; background:var(--navy); color:var(--white); border-radius:8px; display:flex; align-items:center; justify-content:center; font-family:'Oswald',sans-serif; font-size:1.3rem; font-weight:700; flex-shrink:0; }
+.fin-ranking-card:first-child .fin-rank-num { background:var(--red); }
+.fin-team-info { flex:1; min-width:160px; }
+.fin-team-info h3 { font-family:'Oswald',sans-serif; font-size:1rem; font-weight:700; color:var(--navy); letter-spacing:.03em; text-transform:uppercase; }
+.fin-team-info p { font-size:.78rem; color:var(--muted); margin-top:2px; }
+.fin-team-stats { display:flex; gap:1.5rem; flex-wrap:wrap; }
+.fin-stat { display:flex; flex-direction:column; gap:.15rem; }
+.fin-stat-lbl { font-size:.62rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+.fin-stat-val { font-family:'Oswald',sans-serif; font-size:.95rem; font-weight:700; color:var(--navy); }
+.fin-completed-badge { position:absolute; top:10px; right:10px; background:#16a34a; color:var(--white); padding:3px 9px; border-radius:4px; font-family:'Oswald',sans-serif; font-size:.62rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; }
+.fin-pagination { display:flex; align-items:center; justify-content:space-between; gap:.75rem; padding:.75rem 1rem; border-top:1px solid var(--mid); flex-wrap:wrap; }
+.fin-pagination-info { font-size:.8rem; color:var(--muted); }
+.fin-pagination-controls { display:flex; align-items:center; gap:.6rem; }
+.fin-page-btn { display:inline-flex; align-items:center; justify-content:center; min-width:32px; height:30px; padding:0 8px; border:1.5px solid var(--mid); border-radius:6px; background:var(--white); font-family:'Source Sans 3',sans-serif; font-size:.8rem; font-weight:600; color:var(--text); cursor:pointer; transition:all .15s; }
+.fin-page-btn:hover:not(:disabled) { border-color:var(--navy); color:var(--navy); }
+.fin-page-btn.current { border-color:var(--red); color:var(--red); cursor:default; }
+.fin-page-btn:disabled { color:var(--mid); cursor:not-allowed; background:var(--light); }
+.fin-per-page { appearance:none; -webkit-appearance:none; padding:4px 22px 4px 10px; border:1.5px solid var(--mid); border-radius:6px; background:var(--white); font-size:.8rem; font-family:'Source Sans 3',sans-serif; cursor:pointer; outline:none; }
+.fin-error { background:#fef3f5; border:1.5px solid #f5c6cb; border-radius:8px; padding:.8rem 1rem; margin-bottom:1.2rem; display:flex; align-items:center; justify-content:space-between; gap:.75rem; color:var(--red); font-size:.84rem; flex-wrap:wrap; }
+.fin-retry { background:var(--red); color:var(--white); border:none; padding:5px 12px; border-radius:5px; font-family:'Oswald',sans-serif; font-size:.7rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; cursor:pointer; }
+/* Pie chart */
+.fin-pie-wrap { width:190px; height:190px; margin:.5rem auto; position:relative; }
+.fin-seg { cursor:pointer; pointer-events:stroke; transition:filter .15s; }
+.fin-seg:hover { filter:brightness(1.15); }
+.fin-chart-tt { position:absolute; background:var(--navy); color:var(--white); padding:7px 11px; border-radius:6px; box-shadow:0 4px 14px rgba(0,0,0,.25); pointer-events:none; opacity:0; transition:opacity .12s; z-index:10; white-space:nowrap; min-width:130px; }
+.fin-chart-tt.show { opacity:1; }
+.fin-chart-tt .ftt-lbl    { display:block; font-family:'Oswald',sans-serif; font-size:.62rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:2px; }
+.fin-chart-tt .ftt-amt    { font-family:'Oswald',sans-serif; font-size:1rem; font-weight:700; }
+.fin-chart-tt .ftt-pct    { color:rgba(255,255,255,.65); font-size:.76rem; margin-left:.3rem; }
+.fin-legend { display:flex; justify-content:center; gap:1.2rem; margin-top:.5rem; flex-wrap:wrap; }
+.fin-legend-item { display:flex; align-items:center; gap:.4rem; font-size:.8rem; color:var(--text); }
+.fin-legend-dot { width:11px; height:11px; border-radius:50%; }
+.fin-legend-dot.lc { background:#16a34a; } .fin-legend-dot.lb { background:#c8102e; } .fin-legend-dot.lp { background:#b45309; }
+@media(max-width:900px) { .fin-metric-card.chart-card { grid-column:span 1; } }
+@media(max-width:600px) { .fin-metrics-grid { grid-template-columns:1fr; } .fin-team-stats { gap:.8rem; } }
+
 </style>
 </head>
 <body>
@@ -256,12 +363,25 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
     <div class="topbar-brand">AMBASSADORS <span>BASEBALL</span></div>
     <div class="topbar-right">
       <span class="admin-badge">Admin</span>
-      <button class="logout-btn" onclick="window.location.href='financial-management.html'" style="background:rgba(200,16,46,.25);border-color:rgba(200,16,46,.5);color:#fff;">Financial Management</button>
-      <button class="logout-btn" onclick="doLogout()">Sign Out</button>
+<button class="logout-btn" onclick="doLogout()">Sign Out</button>
     </div>
   </div>
 
   <div class="content">
+
+    <!-- ── VIEW TOGGLE ── -->
+    <div class="view-toggle">
+      <button class="view-toggle-btn active" id="vt-coaches" onclick="switchAdminView('coaches')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:5px"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>All Coaches
+      </button>
+      <button class="view-toggle-btn" id="vt-financial" onclick="switchAdminView('financial')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:5px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Financial Dashboard
+      </button>
+    </div>
+
+    <!-- ── COACHES SECTION (default) ── -->
+    <div id="coaches-section">
+
     <!-- Stats -->
     <div class="stats-row" id="stats-row">
       <div class="stat-card">
@@ -302,8 +422,29 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
     <div class="coaches-table" id="coaches-wrap">
       <div class="loading"><div class="spinner"></div></div>
     </div>
-  </div>
-</div>
+    </div><!-- /#coaches-section -->
+
+    <!-- ── FINANCIAL SECTION (hidden by default) ── -->
+    <div id="fin-section" style="display:none;">
+      <!-- Blue sub-header: org overview button + team dropdown -->
+      <div class="fin-subheader">
+        <div class="fin-subheader-inner">
+          <button class="fin-nav-btn active" id="fin-org-btn" onclick="finSwitchView('org')">Organization Overview</button>
+          <div class="fin-team-wrap">
+            <select class="fin-team-select" id="fin-team-select" onchange="finOnTeamChange(this.value)">
+              <option value="">Select Team…</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <!-- Financial content rendered here -->
+      <div id="fin-content-wrapper">
+        <div style="text-align:center;padding:3rem;color:var(--muted);">Loading financial data…</div>
+      </div>
+    </div><!-- /#fin-section -->
+
+  </div><!-- /.content -->
+</div><!-- /#app -->
 
 <!-- COACH DETAIL MODAL -->
 <div class="modal-overlay" id="coach-modal">
@@ -325,7 +466,7 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
 
 <script>
 'use strict';
-const API_BASE = 'https://backend-baseball-inky.vercel.app';
+const API_BASE = 'https://team.ambassadorsbaseballus.com';
 let adminToken = localStorage.getItem('admin_token') || '';
 let allCoaches = [];
 let currentCoachId = null;
@@ -765,6 +906,374 @@ function showToast(msg, type='') {
   t.textContent = msg;
   t.className = 'toast show' + (type?' '+type:'');
   setTimeout(() => { t.className = 'toast'; }, 3200);
+}
+
+
+
+// ════════════════════════════════════════════════════════
+//  FINANCIAL DASHBOARD — EMBEDDED
+//  Reuses: API_BASE, adminToken, adminH(), esc()
+// ════════════════════════════════════════════════════════
+
+// ── Admin view toggle ─────────────────────────────────
+let _adminCurrentSection = 'coaches';
+function switchAdminView(section) {
+  _adminCurrentSection = section;
+  document.getElementById('coaches-section').style.display = section === 'coaches' ? '' : 'none';
+  document.getElementById('fin-section').style.display     = section === 'financial' ? '' : 'none';
+  document.getElementById('vt-coaches').classList.toggle('active',   section === 'coaches');
+  document.getElementById('vt-financial').classList.toggle('active', section === 'financial');
+  if (section === 'financial' && _finState.teams.length === 0) {
+    finBootstrap();
+  }
+}
+
+// ── Financial state (all prefixed fin_ to avoid collisions) ───────
+const _finState = { teams: [] };
+let _finCurrentView = 'org';
+const _finPag = { team: {}, balance: { page: 1, perPage: 20 } };
+
+async function finApiFetch(path, opts = {}) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    ...opts,
+    headers: { ...(opts.headers || {}), 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` },
+  });
+  if (res.status === 401 || res.status === 403) { doLogout(); throw new Error('Session expired'); }
+  if (!res.ok) { const b = await res.json().catch(()=>({})); throw new Error(b.message || `Request failed (${res.status})`); }
+  return res.json();
+}
+
+const finFmtMoney = n => '$' + (Number(n)||0).toLocaleString('en-US',{maximumFractionDigits:0});
+function finFmtDate(s) { if(!s) return '—'; const d=new Date(s); return isNaN(d)?'—':d.toLocaleDateString(); }
+
+async function finBootstrap() {
+  try {
+    const { teams } = await finApiFetch('/api/admin/fin/teams');
+    _finState.teams = teams || [];
+    finPopulateDropdown();
+  } catch(err) { _finState.teams = []; }
+  await finRenderContent();
+}
+
+function finPopulateDropdown() {
+  const sel = document.getElementById('fin-team-select');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">Select Team…</option>' +
+    _finState.teams.map(t => `<option value="${t.id}">${esc(t.name)}</option>`).join('');
+  sel.value = _finCurrentView !== 'org' ? String(_finCurrentView) : '';
+  sel.classList.toggle('active', _finCurrentView !== 'org');
+}
+
+function finOnTeamChange(val) {
+  finSwitchView(val || 'org');
+}
+
+async function finSwitchView(view) {
+  _finCurrentView = view;
+  document.getElementById('fin-org-btn').classList.toggle('active', view === 'org');
+  const sel = document.getElementById('fin-team-select');
+  if (sel) { sel.value = view !== 'org' ? String(view) : ''; sel.classList.toggle('active', view !== 'org'); }
+  await finRenderContent();
+  document.getElementById('fin-section').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+async function finRenderContent() {
+  const wrapper = document.getElementById('fin-content-wrapper');
+  if (!wrapper) return;
+  if (_finCurrentView === 'org') {
+    wrapper.innerHTML = await finRenderOrgDashboard();
+    finRenderRankings();
+    finRenderBalanceTable();
+  } else {
+    wrapper.innerHTML = await finRenderTeamDashboard(_finCurrentView);
+    finRenderPlayerTable(_finCurrentView);
+    finBindChartHover();
+  }
+}
+
+// ── ORG DASHBOARD ─────────────────────────────────────
+async function finRenderOrgDashboard() {
+  let m = null, err = null;
+  try { m = await finApiFetch('/api/admin/fin/organization-overview'); }
+  catch(e) { err = e.message||'Failed to load'; m = { activeTeams:0,averagePlayerFee:0,totalCollected:0,outstanding:0,payingPlayers:0,totalPlayers:0,organizationProfit:0 }; }
+  const pyVal = m.totalPlayers>0 ? `${m.payingPlayers} / ${m.totalPlayers}` : `${m.payingPlayers}`;
+  const pySub = m.totalPlayers>0 ? 'paying / total budgeted' : 'no budget roster set';
+  return `
+    ${err?`<div class="fin-error"><span>⚠️ ${esc(err)}</span><button class="fin-retry" onclick="finRenderContent()">Retry</button></div>`:''}
+    <div class="fin-metrics-grid">
+      <div class="fin-metric-card"><div class="fin-metric-icon c-teams">👥</div><div class="fin-metric-body"><span class="fin-metric-label">Active Teams</span><span class="fin-metric-value">${m.activeTeams}</span></div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon">💵</div><div class="fin-metric-body"><span class="fin-metric-label">Average Player Fee</span><span class="fin-metric-value">${finFmtMoney(m.averagePlayerFee)}</span></div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon c-players">👤</div><div class="fin-metric-body"><span class="fin-metric-label">Paying Players</span><span class="fin-metric-value">${pyVal}</span><span class="fin-metric-sub">${pySub}</span></div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon c-collected">📈</div><div class="fin-metric-body"><span class="fin-metric-label">Total Collected</span><span class="fin-metric-value">${finFmtMoney(m.totalCollected)}</span></div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon c-balance">⚠️</div><div class="fin-metric-body"><span class="fin-metric-label">Balance Outstanding</span><span class="fin-metric-value">${finFmtMoney(m.outstanding)}</span></div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon c-profit">💰</div><div class="fin-metric-body"><span class="fin-metric-label">Organization Profit</span><span class="fin-metric-value">${finFmtMoney(m.organizationProfit)}</span><span class="fin-metric-sub">across active teams</span></div></div>
+    </div>
+    <div class="fin-section-card">
+      <div class="fin-section-head">
+        <h2>Team Rankings</h2>
+        <div class="fin-controls">
+          <select class="fin-filter" id="fin-rankings-sort" onchange="finOnRankingsSortChange(this.value)">
+            <option value="budget" selected>Highest Budget</option>
+            <option value="completed">Completed Budget (100%)</option>
+            <option value="balance">Most Fees to Collect</option>
+          </select>
+        </div>
+      </div>
+      <div class="fin-section-body"><div id="fin-rankings-host"><div style="text-align:center;padding:2rem;color:var(--muted);">Loading…</div></div></div>
+    </div>
+    <div class="fin-section-card">
+      <div class="fin-section-head"><h2>Accounts with Outstanding Balance</h2></div>
+      <div class="fin-section-body" style="padding-bottom:0;">
+        <div style="overflow-x:auto;">
+          <table class="fin-tbl">
+            <thead><tr><th>Player Name</th><th>Team</th><th>Total Fee</th><th>Paid Amount</th><th>Balance Due</th><th>Status</th></tr></thead>
+            <tbody id="fin-balance-tbody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="fin-pagination" id="fin-balance-pag"></div>
+    </div>`;
+}
+
+// ── TEAM DASHBOARD ────────────────────────────────────
+async function finRenderTeamDashboard(coachId) {
+  let team = null, errMsg = null;
+  try { team = await finApiFetch(`/api/admin/fin/teams/${coachId}`); }
+  catch(e) { errMsg = e.message||'Failed to load team'; }
+  if (errMsg) return `<div class="fin-error"><span>⚠️ ${esc(errMsg)}</span><button class="fin-retry" onclick="finRenderContent()">Retry</button></div>`;
+  const pct = team.budget>0 ? Math.min(100,(team.totalCollected/team.budget*100)).toFixed(1) : '0.0';
+  let dlDate='—', dlUrgency=null;
+  if (team.paymentDeadline) {
+    const dl=new Date(team.paymentDeadline);
+    if (!isNaN(dl)) {
+      dlDate=dl.toLocaleDateString();
+      const today=new Date(); today.setHours(0,0,0,0);
+      const dlm=new Date(dl); dlm.setHours(0,0,0,0);
+      const days=Math.round((dlm-today)/86400000);
+      dlUrgency=days>0?`${days} day${days===1?'':'s'} to deadline`:days===0?'Deadline today':`${Math.abs(days)} day${Math.abs(days)===1?'':'s'} overdue`;
+    }
+  }
+  const hasBudget=team.budget>0, budgetGap=hasBudget?Math.max(0,team.budget-team.totalCollected):null, budgetReached=hasBudget&&budgetGap===0;
+  const CIRC=503, arcOf=$=>hasBudget?($/ team.budget)*CIRC:0;
+  const cArc=Math.min(arcOf(team.totalCollected),CIRC), oArc=Math.min(arcOf(team.balanceRemaining),CIRC-cArc), pArc=Math.max(0,CIRC-cArc-oArc);
+  const pAmt=hasBudget?Math.max(0,team.budget-team.totalCollected-team.balanceRemaining):0;
+  return `
+    <div class="fin-metrics-grid">
+      <div class="fin-metric-card budget-card"><div class="fin-metric-icon">📄</div><div class="fin-metric-body"><span class="fin-metric-label">Team Budget</span><span class="fin-metric-value">${finFmtMoney(team.budget)}</span>${team.budget===0?'<span class="fin-metric-sub">No budget set</span>':''}</div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon c-players">👥</div><div class="fin-metric-body"><span class="fin-metric-label">Players Registered &amp; Paid</span><span class="fin-metric-value">${team.goodStanding} / ${team.totalRegistered}</span>${team.budgetedPlayers>0?`<span class="fin-metric-sub">Need ${team.budgetedPlayers} to meet budget</span>`:'<span class="fin-metric-sub">of registered players</span>'}</div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon c-collected">💵</div><div class="fin-metric-body"><span class="fin-metric-label">Total Revenue Collected</span><span class="fin-metric-value">${finFmtMoney(team.totalCollected)}</span>${team.budget>0?`<span class="fin-metric-sub">${pct}% of budget</span>`:''}</div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon c-balance">📈</div><div class="fin-metric-body"><span class="fin-metric-label">Balance to Meet Budget</span><span class="fin-metric-value">${hasBudget?finFmtMoney(budgetGap):'—'}</span><span class="fin-metric-sub">${!hasBudget?'No budget set':budgetReached?'✓ Budget reached':dlUrgency||'remaining to collect'}</span></div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon c-good">✅</div><div class="fin-metric-body"><span class="fin-metric-label">Good Standing</span><span class="fin-metric-value">${team.goodStanding}</span><span class="fin-metric-sub">Current accounts</span></div></div>
+      <div class="fin-metric-card alert-card"><div class="fin-metric-icon c-alert">⚠️</div><div class="fin-metric-body"><span class="fin-metric-label">Accounts in Red</span><span class="fin-metric-value">${team.deadlinePassed?team.accountsInRed:'—'}</span>${!team.paymentDeadline?'<span class="fin-metric-sub">No deadline set</span>':!team.deadlinePassed?'<span class="fin-metric-sub">Deadline not passed yet</span>':team.accountsInRed>0?'<span class="fin-metric-sub">Players with overdue balance</span>':'<span class="fin-metric-sub">✓ All accounts paid</span>'}</div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon c-balance">💳</div><div class="fin-metric-body"><span class="fin-metric-label">Outstanding Balance</span><span class="fin-metric-value">${finFmtMoney(team.balanceRemaining)}</span><span class="fin-metric-sub">across registered players</span></div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon c-deadline">📅</div><div class="fin-metric-body"><span class="fin-metric-label">Collection Deadline</span><span class="fin-metric-value">${dlDate}</span>${!team.paymentDeadline?'<span class="fin-metric-sub">No deadline set</span>':''}</div></div>
+      ${hasBudget?`<div class="fin-metric-card chart-card"><div class="fin-metric-body" style="gap:.6rem">
+        <span class="fin-metric-label">Budget Progress</span>
+        <div class="fin-pie-wrap">
+          <svg viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="80" fill="none" stroke="#dde2ea" stroke-width="40"/>
+            <circle class="fin-seg" cx="100" cy="100" r="80" fill="none" stroke="#16a34a" stroke-width="40" stroke-dasharray="${cArc} ${CIRC}" transform="rotate(-90 100 100)" data-name="Collected" data-amount="${team.totalCollected}" data-percent="${(team.totalCollected/team.budget*100).toFixed(1)}"/>
+            <circle class="fin-seg" cx="100" cy="100" r="80" fill="none" stroke="#c8102e" stroke-width="40" stroke-dasharray="${oArc} ${CIRC}" stroke-dashoffset="${-cArc}" transform="rotate(-90 100 100)" data-name="Owed by players" data-amount="${team.balanceRemaining}" data-percent="${(team.balanceRemaining/team.budget*100).toFixed(1)}"/>
+            <circle class="fin-seg" cx="100" cy="100" r="80" fill="none" stroke="#b45309" stroke-width="40" stroke-dasharray="${pArc} ${CIRC}" stroke-dashoffset="${-(cArc+oArc)}" transform="rotate(-90 100 100)" data-name="Pending to budget" data-amount="${pAmt}" data-percent="${(pAmt/team.budget*100).toFixed(1)}"/>
+            <text x="100" y="95" text-anchor="middle" font-size="26" font-weight="700" font-family="Oswald" fill="#0d1f38">${pct}%</text>
+            <text x="100" y="118" text-anchor="middle" font-size="11" font-family="Oswald" letter-spacing="2" fill="#7a8499">COLLECTED</text>
+          </svg>
+          <div class="fin-chart-tt" id="fin-chart-tt"><span class="ftt-lbl"></span><span class="ftt-amt"></span><span class="ftt-pct"></span></div>
+        </div>
+        <div class="fin-legend">
+          <div class="fin-legend-item"><span class="fin-legend-dot lc"></span><span>Collected: ${finFmtMoney(team.totalCollected)}</span></div>
+          <div class="fin-legend-item"><span class="fin-legend-dot lb"></span><span>Owed: ${finFmtMoney(team.balanceRemaining)}</span></div>
+          <div class="fin-legend-item"><span class="fin-legend-dot lp"></span><span>Pending: ${finFmtMoney(pAmt)}</span></div>
+        </div>
+      </div></div>`:''}
+    </div>
+    <div class="fin-section-card">
+      <div class="fin-section-head">
+        <h2>Player Financial Accounts</h2>
+        <div class="fin-controls">
+          <div class="fin-search"><span>🔍</span><input type="text" placeholder="Search players…" id="fin-player-search-${coachId}" oninput="finOnPlayerFilter('${coachId}')"/></div>
+          <select class="fin-filter" id="fin-player-filter-${coachId}" onchange="finOnPlayerFilter('${coachId}')">
+            <option value="all">All Players</option><option value="paid">Paid in Full</option><option value="partial">Partial</option><option value="unpaid">Unpaid</option>
+          </select>
+        </div>
+      </div>
+      <div class="fin-section-body" style="padding-bottom:0;">
+        <div style="overflow-x:auto;">
+          <table class="fin-tbl">
+            <thead><tr><th>Player Name</th><th>Total Fee</th><th>Paid Amount</th><th>Balance Due</th><th>Last Payment</th><th>Status</th></tr></thead>
+            <tbody id="fin-player-tbody-${coachId}"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="fin-pagination" id="fin-player-pag-${coachId}"></div>
+    </div>
+
+    <div class="fin-section-card">
+      <div class="fin-section-head">
+        <h2>Payments from Ambassadors Baseball</h2>
+        <button class="fin-nav-btn" onclick="finTogglePayoutForm('${coachId}')">+ Add Payment</button>
+      </div>
+      <div class="fin-section-body">
+        <div id="fin-payout-form-${coachId}" style="display:none;background:var(--light);border-radius:8px;padding:1.2rem 1.3rem;margin-bottom:1.2rem;border:1.5px solid var(--mid);">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:.9rem;">
+            <div style="display:flex;flex-direction:column;gap:.35rem;"><label style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Date Paid</label><input type="date" id="fin-payout-date-${coachId}" style="padding:9px 11px;border:1.5px solid var(--mid);border-radius:6px;font-family:'Source Sans 3',sans-serif;font-size:.88rem;outline:none;"/></div>
+            <div style="display:flex;flex-direction:column;gap:.35rem;"><label style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Amount</label><input type="number" placeholder="0.00" min="0" step="0.01" id="fin-payout-amount-${coachId}" style="padding:9px 11px;border:1.5px solid var(--mid);border-radius:6px;font-family:'Source Sans 3',sans-serif;font-size:.88rem;outline:none;"/></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:.35rem;margin-bottom:.9rem;"><label style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Notes</label><textarea id="fin-payout-notes-${coachId}" placeholder="Payment notes…" rows="2" style="padding:9px 11px;border:1.5px solid var(--mid);border-radius:6px;font-family:'Source Sans 3',sans-serif;font-size:.88rem;outline:none;resize:vertical;"></textarea></div>
+          <div style="display:flex;gap:.5rem;justify-content:flex-end;">
+            <button onclick="finTogglePayoutForm('${coachId}')" style="padding:8px 16px;border:1.5px solid var(--mid);border-radius:6px;background:var(--white);font-family:'Oswald',sans-serif;font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;">Cancel</button>
+            <button id="fin-payout-submit-${coachId}" onclick="finSubmitPayout('${coachId}')" style="padding:8px 16px;border:none;border-radius:6px;background:var(--navy);color:var(--white);font-family:'Oswald',sans-serif;font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;">Submit Payment</button>
+          </div>
+        </div>
+        <div id="fin-payout-body-${coachId}"><div style="text-align:center;padding:1.5rem;color:var(--muted);">Loading…</div></div>
+      </div>
+    </div>`;
+}
+
+// ── PAYOUTS ───────────────────────────────────────────
+async function finRenderPayouts(coachId) {
+  const body = document.getElementById(`fin-payout-body-${coachId}`);
+  if (!body) return;
+  let data;
+  try { data = await finApiFetch(`/api/admin/fin/teams/${coachId}/payouts`); }
+  catch(e) { body.innerHTML=`<div style="text-align:center;padding:1.5rem;color:var(--red);">${esc(e.message||'Failed to load')}</div>`; return; }
+  const { totalOwedToCoach, totalPaidToCoach, balanceToBePaid, payouts } = data;
+  body.innerHTML = `
+    <div style="display:flex;gap:2rem;flex-wrap:wrap;background:var(--light);border-radius:8px;padding:1rem 1.3rem;margin-bottom:1.2rem;border:1px solid var(--mid);">
+      <div><div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Total Owed to Coach</div><div style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;color:#16a34a;">${finFmtMoney(totalOwedToCoach)}</div></div>
+      <div><div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Total Paid to Coach</div><div style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;color:#16a34a;">${finFmtMoney(totalPaidToCoach)}</div></div>
+      <div><div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Balance to be Paid</div><div style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;color:${balanceToBePaid>0?'#c8102e':'#16a34a'};">${finFmtMoney(Math.abs(balanceToBePaid))}${balanceToBePaid<0?' (over-paid)':''}</div></div>
+    </div>
+    ${payouts.length===0
+      ? `<p style="text-align:center;padding:.75rem 0;color:var(--muted);font-size:.85rem;">No payments recorded yet.</p>`
+      : `<div style="overflow-x:auto;"><table class="fin-tbl"><thead><tr><th>Date Paid</th><th>Amount</th><th>Notes</th></tr></thead><tbody>${payouts.map(p=>`<tr><td>${finFmtDate(p.date)}</td><td class="f-paid">${finFmtMoney(p.amount)}</td><td>${esc(p.notes)}</td></tr>`).join('')}</tbody></table></div>`}`;
+}
+
+function finTogglePayoutForm(coachId) {
+  const f = document.getElementById(`fin-payout-form-${coachId}`);
+  if (f) f.style.display = f.style.display === 'none' ? '' : 'none';
+}
+
+async function finSubmitPayout(coachId) {
+  const date = document.getElementById(`fin-payout-date-${coachId}`).value;
+  const amount = document.getElementById(`fin-payout-amount-${coachId}`).value;
+  const notes = document.getElementById(`fin-payout-notes-${coachId}`).value;
+  if (!date || !amount) { showToast('Please fill in date and amount', 'red'); return; }
+  const btn = document.getElementById(`fin-payout-submit-${coachId}`);
+  btn.disabled=true; btn.textContent='Saving…';
+  try {
+    await finApiFetch(`/api/admin/fin/teams/${coachId}/payouts`, { method:'POST', body: JSON.stringify({ date, amount: parseFloat(amount), notes }) });
+    document.getElementById(`fin-payout-date-${coachId}`).value='';
+    document.getElementById(`fin-payout-amount-${coachId}`).value='';
+    document.getElementById(`fin-payout-notes-${coachId}`).value='';
+    document.getElementById(`fin-payout-form-${coachId}`).style.display='none';
+    await finRenderPayouts(coachId);
+    showToast('Payment saved', 'green');
+  } catch(e) { showToast(e.message||'Failed to save', 'red'); }
+  finally { btn.disabled=false; btn.textContent='Submit Payment'; }
+}
+
+// ── CHART HOVER ───────────────────────────────────────
+function finBindChartHover() {
+  const tt = document.getElementById('fin-chart-tt');
+  if (!tt) return;
+  const lbl=tt.querySelector('.ftt-lbl'), amt=tt.querySelector('.ftt-amt'), pct=tt.querySelector('.ftt-pct');
+  const host=tt.parentElement;
+  document.querySelectorAll('.fin-seg').forEach(seg => {
+    seg.addEventListener('mouseenter', () => { lbl.textContent=seg.dataset.name; amt.textContent=finFmtMoney(seg.dataset.amount); pct.textContent=`· ${seg.dataset.percent}% of budget`; tt.classList.add('show'); });
+    seg.addEventListener('mousemove', e => {
+      const r=host.getBoundingClientRect(); let x=e.clientX-r.left+14, y=e.clientY-r.top+14;
+      if(x+tt.offsetWidth>r.width)  x=e.clientX-r.left-tt.offsetWidth-14;
+      if(y+tt.offsetHeight>r.height) y=e.clientY-r.top-tt.offsetHeight-14;
+      tt.style.left=`${Math.max(0,x)}px`; tt.style.top=`${Math.max(0,y)}px`;
+    });
+    seg.addEventListener('mouseleave', () => tt.classList.remove('show'));
+  });
+}
+
+// ── RANKINGS ─────────────────────────────────────────
+let _finRankSort = 'budget';
+function finOnRankingsSortChange(v) { _finRankSort=v; finRenderRankings(); }
+async function finRenderRankings() {
+  const host = document.getElementById('fin-rankings-host');
+  if (!host) return;
+  host.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--muted);">Loading…</div>`;
+  let ranks;
+  try { const r=await finApiFetch(`/api/admin/fin/team-rankings?sortBy=${_finRankSort}`); ranks=r.rankings||[]; }
+  catch(e) { host.innerHTML=`<div class="fin-error"><span>⚠️ ${esc(e.message||'Failed')}</span><button class="fin-retry" onclick="finRenderRankings()">Retry</button></div>`; return; }
+  if (ranks.length===0) { host.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--muted);">No active teams to rank.</div>`; return; }
+  host.innerHTML=`<div class="fin-ranking-list">${ranks.map((t,i)=>`
+    <div class="fin-ranking-card">
+      <div class="fin-rank-num">${i+1}</div>
+      <div class="fin-team-info"><h3>${esc(t.name)}</h3><p>Coach: ${esc(t.coach)}</p></div>
+      <div class="fin-team-stats">
+        <div class="fin-stat"><span class="fin-stat-lbl">Budget</span><span class="fin-stat-val">${finFmtMoney(t.budget)}</span></div>
+        <div class="fin-stat"><span class="fin-stat-lbl">Collected</span><span class="fin-stat-val">${finFmtMoney(t.collected)}</span></div>
+        <div class="fin-stat"><span class="fin-stat-lbl">% Done</span><span class="fin-stat-val">${t.percentCollected}%</span></div>
+        <div class="fin-stat"><span class="fin-stat-lbl">Balance</span><span class="fin-stat-val">${finFmtMoney(t.balance)}</span></div>
+      </div>
+      ${t.completed?'<span class="fin-completed-badge">✓ Done</span>':''}
+    </div>`).join('')}</div>`;
+}
+
+// ── OUTSTANDING BALANCES ──────────────────────────────
+async function finRenderBalanceTable() {
+  const p=_finPag.balance, tbody=document.getElementById('fin-balance-tbody'), pag=document.getElementById('fin-balance-pag');
+  if (!tbody) return;
+  tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading…</td></tr>`;
+  let result;
+  try { result = await finApiFetch(`/api/admin/fin/outstanding-balances?page=${p.page}&perPage=${p.perPage}`); }
+  catch(e) { tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--red);">${esc(e.message||'Failed')}</td></tr>`; if(pag)pag.innerHTML=''; return; }
+  const {players,total}=result, totalPages=Math.max(1,Math.ceil(total/p.perPage));
+  if(p.page>totalPages&&totalPages>0){p.page=totalPages;return finRenderBalanceTable();}
+  tbody.innerHTML=players.length===0?`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">No outstanding balances 🎉</td></tr>`:
+    players.map(r=>`<tr><td class="f-name">${esc(r.name)}</td><td>${esc(r.team)}</td><td>${finFmtMoney(r.totalFee)}</td><td class="f-paid">${finFmtMoney(r.paidAmount)}</td><td class="f-balance">${finFmtMoney(r.balance)}</td><td><span class="fin-status ${r.status}">${r.status==='partial'?'Partial':'Unpaid'}</span></td></tr>`).join('');
+  if(pag) finRenderPagination(pag,p,totalPages,total,np=>{p.page=np;finRenderBalanceTable();},np=>{p.perPage=np;p.page=1;finRenderBalanceTable();});
+}
+
+// ── PLAYER TABLE ──────────────────────────────────────
+async function finRenderPlayerTable(coachId) {
+  const ps=_finPag.team[coachId]||(_finPag.team[coachId]={page:1,perPage:20});
+  const searchEl=document.getElementById(`fin-player-search-${coachId}`), filterEl=document.getElementById(`fin-player-filter-${coachId}`);
+  const search=searchEl?searchEl.value.trim():'', status=filterEl?filterEl.value:'all';
+  const tbody=document.getElementById(`fin-player-tbody-${coachId}`), pag=document.getElementById(`fin-player-pag-${coachId}`);
+  if(!tbody) return;
+  tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading…</td></tr>`;
+  const qs=new URLSearchParams({page:ps.page,perPage:ps.perPage});
+  if(search) qs.set('search',search);
+  if(status&&status!=='all') qs.set('status',status);
+  let result;
+  try { result=await finApiFetch(`/api/admin/fin/teams/${coachId}/players?${qs}`); }
+  catch(e){ tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--red);">${esc(e.message||'Failed')}</td></tr>`; if(pag)pag.innerHTML=''; return; }
+  const {players,total}=result, totalPages=Math.max(1,Math.ceil(total/ps.perPage));
+  if(ps.page>totalPages&&totalPages>0){ps.page=totalPages;return finRenderPlayerTable(coachId);}
+  tbody.innerHTML=players.length===0?`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">No players match filters.</td></tr>`:
+    players.map(p=>`<tr><td class="f-name">${esc(p.name)}</td><td>${finFmtMoney(p.totalFee)}</td><td class="f-paid">${finFmtMoney(p.paidAmount)}</td><td class="f-balance">${finFmtMoney(p.balance)}</td><td>${finFmtDate(p.lastPayment)}</td><td><span class="fin-status ${p.status}">${p.status==='paid'?'Paid':p.status==='partial'?'Partial':'Unpaid'}</span></td></tr>`).join('');
+  if(pag) finRenderPagination(pag,ps,totalPages,total,np=>{ps.page=np;finRenderPlayerTable(coachId);},np=>{ps.perPage=np;ps.page=1;finRenderPlayerTable(coachId);});
+  finRenderPayouts(coachId);
+}
+
+let _finPlayerFilterTimer=null;
+function finOnPlayerFilter(coachId) {
+  const ps=_finPag.team[coachId]||(_finPag.team[coachId]={page:1,perPage:20}); ps.page=1;
+  clearTimeout(_finPlayerFilterTimer); _finPlayerFilterTimer=setTimeout(()=>finRenderPlayerTable(coachId),250);
+}
+
+// ── PAGINATION ────────────────────────────────────────
+function finRenderPagination(el,state,totalPages,totalItems,onPage,onPerPage) {
+  el._fp=onPage; el._fpp=onPerPage;
+  el.innerHTML=`
+    <div class="fin-pagination-info">Page ${state.page} of ${totalPages} &middot; ${totalItems} total</div>
+    <div class="fin-pagination-controls">
+      <select class="fin-per-page" onchange="(function(c,v){c._fpp(parseInt(v,10));})(this.closest('.fin-pagination'),this.value)">
+        <option value="20" ${state.perPage===20?'selected':''}>20</option>
+        <option value="50" ${state.perPage===50?'selected':''}>50</option>
+        <option value="100" ${state.perPage===100?'selected':''}>100</option>
+      </select>
+      <button class="fin-page-btn" ${state.page<=1?'disabled':''} onclick="(function(c){c._fp(${state.page-1});})(this.closest('.fin-pagination'))">Prev</button>
+      <button class="fin-page-btn current">${state.page}</button>
+      <button class="fin-page-btn" ${state.page>=totalPages?'disabled':''} onclick="(function(c){c._fp(${state.page+1});})(this.closest('.fin-pagination'))">Next</button>
+    </div>`;
 }
 
 // ── INIT ──
