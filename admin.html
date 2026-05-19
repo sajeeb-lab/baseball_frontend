@@ -244,18 +244,18 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
 .view-toggle-btn.active svg { opacity:1; }
 
 /* ── FINANCIAL SUB-HEADER ── */
-.fin-subheader { background:linear-gradient(135deg,#1a3fc4 0%,#1535a8 100%); padding:1.2rem 28px; position:relative; overflow:hidden; }
+.fin-subheader { background:linear-gradient(135deg,#1a3fc4 0%,#1535a8 100%); position:relative; overflow:hidden; }
 .fin-subheader::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E"); }
-.fin-subheader-inner { display:flex; align-items:center; gap:.75rem; position:relative; flex-wrap:wrap; }
-.fin-nav-btn { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); color:rgba(255,255,255,.9); padding:8px 18px; border-radius:6px; cursor:pointer; font-family:'Oswald',sans-serif; font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; transition:all .15s; white-space:nowrap; }
-.fin-nav-btn:hover { background:rgba(255,255,255,.2); color:var(--white); }
-.fin-nav-btn.active { background:var(--red); border-color:var(--red); color:var(--white); box-shadow:0 2px 8px rgba(200,16,46,.4); }
+.fin-subheader-inner { display:flex; align-items:center; gap:.75rem; position:relative; flex-wrap:wrap; max-width:1400px; margin:0 auto; padding:1.2rem 28px; }
+.fin-nav-btn { background:rgba(255,255,255,.08); border:1.5px solid rgba(255,255,255,.15); color:rgba(255,255,255,.85); padding:10px 20px; border-radius:8px; cursor:pointer; font-family:'Oswald',sans-serif; font-size:.82rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; transition:all .2s ease; white-space:nowrap; }
+.fin-nav-btn:hover { background:rgba(255,255,255,.15); color:var(--white); border-color:rgba(255,255,255,.25); transform:translateY(-1px); }
+.fin-nav-btn.active { background:var(--red); border-color:var(--red); color:var(--white); box-shadow:0 4px 12px rgba(200,16,46,.35); }
 .fin-team-wrap { position:relative; display:inline-flex; align-items:center; }
-.fin-team-select { appearance:none; -webkit-appearance:none; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); color:var(--white); padding:8px 36px 8px 16px; border-radius:6px; cursor:pointer; font-family:'Oswald',sans-serif; font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; outline:none; min-width:200px; transition:all .15s; }
-.fin-team-select:hover { background:rgba(255,255,255,.18); }
-.fin-team-select.active { background:var(--red); border-color:var(--red); }
+.fin-team-select { appearance:none; -webkit-appearance:none; background:rgba(255,255,255,.08); border:1.5px solid rgba(255,255,255,.15); color:rgba(255,255,255,.85); padding:10px 40px 10px 18px; border-radius:8px; cursor:pointer; font-family:'Oswald',sans-serif; font-size:.82rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; outline:none; min-width:220px; transition:all .2s ease; }
+.fin-team-select:hover { background:rgba(255,255,255,.15); border-color:rgba(255,255,255,.25); transform:translateY(-1px); }
+.fin-team-select.active { background:var(--red); border-color:var(--red); color:var(--white); box-shadow:0 4px 12px rgba(200,16,46,.35); }
 .fin-team-select option { background:#0d1f38; color:var(--white); font-family:'Source Sans 3',sans-serif; text-transform:none; letter-spacing:0; }
-.fin-team-wrap::after { content:'▼'; position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:.6rem; color:rgba(255,255,255,.7); pointer-events:none; }
+.fin-team-wrap::after { content:'▼'; position:absolute; right:14px; top:50%; transform:translateY(-50%); font-size:.65rem; color:rgba(255,255,255,.6); pointer-events:none; }
 
 /* ── FINANCIAL CONTENT ── */
 .fin-metrics-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:1rem; margin-bottom:1.8rem; }
@@ -1010,7 +1010,7 @@ async function finRenderOrgDashboard() {
     <div class="fin-metrics-grid">
       <div class="fin-metric-card"><div class="fin-metric-icon c-teams">👥</div><div class="fin-metric-body"><span class="fin-metric-label">Active Teams</span><span class="fin-metric-value">${m.activeTeams}</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon">💵</div><div class="fin-metric-body"><span class="fin-metric-label">Average Player Fee</span><span class="fin-metric-value">${finFmtMoney(m.averagePlayerFee)}</span></div></div>
-      <div class="fin-metric-card"><div class="fin-metric-icon c-players">👤</div><div class="fin-metric-body"><span class="fin-metric-label">Paying Players</span><span class="fin-metric-value">${pyVal}</span><span class="fin-metric-sub">${pySub}</span></div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon c-players">👤</div><div class="fin-metric-body"><span class="fin-metric-label">Paying Players</span><span class="fin-metric-value">${pyVal}</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-collected">📈</div><div class="fin-metric-body"><span class="fin-metric-label">Total Collected</span><span class="fin-metric-value">${finFmtMoney(m.totalCollected)}</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-balance">⚠️</div><div class="fin-metric-body"><span class="fin-metric-label">Balance Outstanding</span><span class="fin-metric-value">${finFmtMoney(m.outstanding)}</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-profit">💰</div><div class="fin-metric-body"><span class="fin-metric-label">Expected Organization Profit</span><span class="fin-metric-value">${finFmtMoney(m.organizationProfit)}</span><span class="fin-metric-sub">total registered × $450</span></div></div>
