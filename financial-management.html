@@ -3,2677 +3,740 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ambassadors Baseball - Financial Management System</title>
+    <title>Financial Management — Ambassadors Baseball</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            /* Main Brand palette pulled from the main frontend */
-            --navy: #0a1628;
-            --navy2: #162845;
-            --navy3: #0d1f38;
-            --red: #c8102e;
-            --red2: #a50d25;
-            --gold: #f5c518;
-            --white: #ffffff;
-            --light: #f4f6f9;
-            --mid: #dce3ec;
-            --mid2: #dde2ea;
-            --text: #1a1a2e;
-            --sub: #5a6a7a;
-            --muted: #7a8499;
-
-            /* Functional colors */
-            --color-collected: #16a34a;
-            --color-balance: #c8102e;
-            --color-warning: #b45309;
-            --color-success: #16a34a;
-            --color-alert: #c8102e;
-
-            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.07);
-            --shadow-md: 0 2px 12px rgba(0, 0, 0, 0.07);
-            --shadow-lg: 0 10px 28px rgba(0, 0, 0, 0.12);
+            --navy: #0a1628; --navy2: #162845; --navy3: #0d1f38;
+            --red: #c8102e; --red2: #a50d25;
+            --white: #ffffff; --light: #f4f6f9; --mid: #dce3ec;
+            --text: #1a1a2e; --sub: #5a6a7a; --muted: #7a8499;
+            --color-collected: #16a34a; --color-balance: #c8102e;
+            --color-warning: #b45309; --color-success: #16a34a; --color-alert: #c8102e;
+            --shadow-sm: 0 1px 3px 0 rgba(0,0,0,.07);
+            --shadow-md: 0 2px 12px rgba(0,0,0,.07);
+            --shadow-lg: 0 10px 28px rgba(0,0,0,.12);
         }
+        body { font-family: 'Open Sans', sans-serif; background: var(--light); min-height: 100vh; color: var(--text); }
 
-        body {
-            font-family: 'Open Sans', sans-serif;
-            background: var(--light);
-            min-height: 100vh;
-            color: var(--text);
-        }
-
-        /* ── TOP NAVIGATION (matches main frontend) ── */
+        /* ── NAV ── */
         .main-nav {
-            background: var(--navy);
-            padding: 0 28px;
-            min-height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-            flex-wrap: wrap;
-            gap: 1rem;
+            background: var(--navy); padding: 0 28px; min-height: 64px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 2px 12px rgba(0,0,0,.25); flex-wrap: wrap; gap: 1rem;
         }
-
         .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-family: 'Oswald', sans-serif;
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: var(--white);
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            padding: 12px 0;
+            display: flex; align-items: center; gap: .75rem;
+            font-family: 'Oswald', sans-serif; font-size: 1.15rem; font-weight: 700;
+            color: var(--white); letter-spacing: .1em; text-transform: uppercase; padding: 12px 0;
         }
-
-        .nav-brand .brand-accent {
-            color: var(--red);
-        }
-
-        .brand-icon {
-            background: var(--red);
-            width: 38px;
-            height: 38px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-        }
-
-        .nav-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-            padding: 10px 0;
-        }
-
+        .brand-icon { background: var(--red); width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+        .brand-accent { color: var(--red); }
+        .nav-controls { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; padding: 10px 0; }
         .nav-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: rgba(255, 255, 255, 0.9);
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.15s;
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.78rem;
-            font-weight: 600;
-            letter-spacing: .08em;
-            text-transform: uppercase;
+            background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+            color: rgba(255,255,255,.9); padding: 8px 16px; border-radius: 6px; cursor: pointer;
+            transition: all .15s; font-family: 'Oswald', sans-serif; font-size: .78rem;
+            font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
         }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.18);
-            color: var(--white);
-        }
-
-        .nav-btn.active {
-            background: var(--red);
-            border-color: var(--red);
-            color: var(--white);
-            box-shadow: 0 2px 8px rgba(200, 16, 46, .35);
-        }
-
-        .team-select-wrap {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-        }
-
+        .nav-btn:hover { background: rgba(255,255,255,.18); color: var(--white); }
+        .nav-btn.active { background: var(--red); border-color: var(--red); color: var(--white); box-shadow: 0 2px 8px rgba(200,16,46,.35); }
+        .team-select-wrap { position: relative; display: inline-flex; align-items: center; }
         .team-select {
-            appearance: none;
-            -webkit-appearance: none;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: var(--white);
-            padding: 8px 38px 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.78rem;
-            font-weight: 600;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            outline: none;
-            transition: all 0.15s;
-            min-width: 200px;
+            appearance: none; -webkit-appearance: none;
+            background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+            color: var(--white); padding: 8px 38px 8px 16px; border-radius: 6px; cursor: pointer;
+            font-family: 'Oswald', sans-serif; font-size: .78rem; font-weight: 600;
+            letter-spacing: .08em; text-transform: uppercase; outline: none; transition: all .15s; min-width: 200px;
         }
+        .team-select:hover { background: rgba(255,255,255,.18); }
+        .team-select.active { background: var(--red); border-color: var(--red); box-shadow: 0 2px 8px rgba(200,16,46,.35); }
+        .team-select option { background: var(--navy); color: var(--white); font-family: 'Open Sans', sans-serif; text-transform: none; letter-spacing: 0; }
+        .team-select-wrap::after { content: '▼'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: .65rem; color: rgba(255,255,255,.7); pointer-events: none; }
+        .logout-btn {
+            background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+            color: rgba(255,255,255,.9); padding: 8px 14px; border-radius: 6px; cursor: pointer;
+            transition: all .15s; font-family: 'Oswald', sans-serif; font-size: .72rem;
+            font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+        }
+        .logout-btn:hover { background: rgba(200,16,46,.5); }
 
-        .team-select:hover {
-            background: rgba(255, 255, 255, 0.18);
-        }
+        /* ── PAGE HEADER ── */
+        .page-header { background: linear-gradient(135deg,#1a3fc4 0%,#1535a8 100%); padding: 2rem 2rem 1.6rem; position: relative; overflow: hidden; }
+        .page-header::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E"); }
+        .page-header-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; position: relative; flex-wrap: wrap; }
+        .page-header h1 { font-family: 'Oswald', sans-serif; font-size: clamp(1.4rem,3vw,2rem); font-weight: 700; color: var(--white); letter-spacing: .04em; text-transform: uppercase; }
+        .coach-name { color: rgba(255,255,255,.7); font-size: .85rem; margin-top: .3rem; font-weight: 500; }
 
-        .team-select.active {
-            background: var(--red);
-            border-color: var(--red);
-            box-shadow: 0 2px 8px rgba(200, 16, 46, .35);
-        }
+        /* ── MAIN ── */
+        .main-content { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
 
-        .team-select option {
-            background: var(--navy);
-            color: var(--white);
-            font-family: 'Open Sans', sans-serif;
-            text-transform: none;
-            letter-spacing: 0;
-            padding: 8px;
-        }
+        /* ── BUTTONS ── */
+        .btn-primary, .btn-secondary { display: inline-flex; align-items: center; gap: .5rem; padding: 10px 18px; border-radius: 6px; font-family: 'Oswald', sans-serif; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: all .15s; border: 1.5px solid transparent; font-size: .78rem; white-space: nowrap; }
+        .btn-primary { background: var(--navy); color: var(--white); border-color: var(--navy); }
+        .btn-primary:hover { background: var(--navy2); }
+        .btn-secondary { background: rgba(255,255,255,.15); color: var(--white); border-color: rgba(255,255,255,.25); }
+        .btn-secondary:hover { background: rgba(255,255,255,.26); }
+        .btn-secondary.light { background: var(--white); color: var(--navy); border-color: var(--mid); }
+        .btn-secondary.light:hover { border-color: var(--navy); }
 
-        .team-select-wrap::after {
-            content: '▼';
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.7);
-            pointer-events: none;
-        }
-
-        /* ── PAGE HEADER (gradient hero like main frontend) ── */
-        .page-header {
-            background: linear-gradient(135deg, #1a3fc4 0%, #1535a8 100%);
-            padding: 2rem 2rem 1.6rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .page-header::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
-        }
-
-        .page-header-inner {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            position: relative;
-            flex-wrap: wrap;
-        }
-
-        .page-header h1 {
-            font-family: 'Oswald', sans-serif;
-            font-size: clamp(1.4rem, 3vw, 2rem);
-            font-weight: 700;
-            color: var(--white);
-            letter-spacing: .04em;
-            text-transform: uppercase;
-        }
-
-        .coach-name {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.85rem;
-            margin-top: 0.3rem;
-            font-weight: 500;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-        }
-
-        /* ── MAIN CONTENT ── */
-        .main-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem 3rem;
-        }
-
-        /* ── BUTTONS (Oswald + uppercase like main frontend) ── */
-        .btn-primary, .btn-secondary, .btn-action {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 10px 18px;
-            border-radius: 6px;
-            font-family: 'Oswald', sans-serif;
-            font-weight: 600;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.15s;
-            border: 1.5px solid transparent;
-            font-size: 0.78rem;
-            white-space: nowrap;
-        }
-
-        .btn-primary {
-            background: var(--navy);
-            color: var(--white);
-            border-color: var(--navy);
-        }
-
-        .btn-primary:hover {
-            background: var(--navy2);
-            border-color: var(--navy2);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.15);
-            color: var(--white);
-            border-color: rgba(255, 255, 255, 0.25);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.26);
-        }
-
-        .btn-secondary.light {
-            background: var(--white);
-            color: var(--navy);
-            border-color: var(--mid);
-        }
-
-        .btn-secondary.light:hover {
-            border-color: var(--navy);
-            background: var(--light);
-        }
-
-        .btn-action {
-            padding: 6px 12px;
-            background: transparent;
-            color: var(--navy);
-            border: 1.5px solid var(--mid);
-            font-size: 0.7rem;
-        }
-
-        .btn-action:hover {
-            background: var(--navy);
-            color: var(--white);
-            border-color: var(--navy);
-        }
-
-        /* ── METRICS GRID ── */
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .metrics-grid.org {
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-        }
-
-        .metric-card {
-            background: var(--white);
-            border-radius: 8px;
-            padding: 1.25rem 1.4rem;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--mid);
-            display: flex;
-            gap: 1rem;
-            transition: all 0.2s;
-            align-items: flex-start;
-        }
-
-        .metric-card:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
-        }
-
-        .metric-card.budget-card {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
-            color: var(--white);
-            border-color: var(--navy);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .metric-card.budget-card::after {
-            content: '';
-            position: absolute;
-            right: -40px;
-            bottom: -40px;
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: rgba(200, 16, 46, 0.18);
-            pointer-events: none;
-        }
-
-        .metric-card.alert-card {
-            background: linear-gradient(135deg, #fef3f5 0%, #fde8ec 100%);
-            border-color: #f5c6cb;
-        }
-
-        .metric-card.chart-card {
-            grid-column: span 2;
-        }
-
-        .metric-icon {
-            width: 46px;
-            height: 46px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            background: rgba(10, 22, 40, 0.08);
-            color: var(--navy);
-            font-size: 1.3rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .budget-card .metric-icon {
-            background: rgba(255, 255, 255, 0.15);
-            color: var(--white);
-        }
-
-        .metric-icon.players {
-            background: rgba(59, 130, 246, 0.12);
-            color: #2563eb;
-        }
-
-        .metric-icon.collected {
-            background: rgba(22, 163, 74, 0.12);
-            color: var(--color-collected);
-        }
-
-        .metric-icon.balance {
-            background: rgba(200, 16, 46, 0.12);
-            color: var(--color-balance);
-        }
-
-        .metric-icon.good {
-            background: rgba(22, 163, 74, 0.12);
-            color: var(--color-success);
-        }
-
-        .metric-icon.alert {
-            background: rgba(200, 16, 46, 0.12);
-            color: var(--color-alert);
-        }
-
-        .metric-icon.deadline {
-            background: rgba(180, 83, 9, 0.12);
-            color: var(--color-warning);
-        }
-
-        .metric-icon.teams {
-            background: rgba(124, 58, 237, 0.12);
-            color: #7c3aed;
-        }
-
-        .metric-icon.profit {
-            background: rgba(245, 197, 24, 0.18);
-            color: #b45309;
-        }
-
-        .metric-content {
-            display: flex;
-            flex-direction: column;
-            gap: 0.3rem;
-            flex: 1;
-            position: relative;
-            z-index: 1;
-            min-width: 0;
-        }
-
-        .metric-content.full {
-            gap: 0.75rem;
-        }
-
-        .metric-label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            color: var(--sub);
-        }
-
-        .budget-card .metric-label {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .metric-value {
-            font-family: 'Oswald', sans-serif;
-            font-size: 1.7rem;
-            font-weight: 700;
-            color: var(--navy);
-            line-height: 1.1;
-            letter-spacing: .02em;
-        }
-
-        .budget-card .metric-value {
-            color: var(--white);
-        }
-
-        .metric-subtext {
-            font-size: 0.78rem;
-            color: var(--sub);
-        }
-
-        .budget-card .metric-subtext {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .metric-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            color: var(--navy);
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            background: none;
-            border: none;
-            cursor: pointer;
-            margin-top: 0.4rem;
-            padding: 0;
-            transition: gap 0.2s;
-        }
-
-        .metric-link:hover {
-            gap: 0.5rem;
-        }
-
-        .budget-card .metric-link {
-            color: var(--white);
-        }
-
-        .metric-link.alert {
-            color: var(--color-alert);
-        }
+        /* ── METRICS ── */
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .metrics-grid.org { grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); }
+        .metric-card { background: var(--white); border-radius: 8px; padding: 1.25rem 1.4rem; box-shadow: var(--shadow-md); border: 1px solid var(--mid); display: flex; gap: 1rem; transition: all .2s; align-items: flex-start; }
+        .metric-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+        .metric-card.budget-card { background: linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%); color: var(--white); border-color: var(--navy); position: relative; overflow: hidden; }
+        .metric-card.budget-card::after { content: ''; position: absolute; right: -40px; bottom: -40px; width: 140px; height: 140px; border-radius: 50%; background: rgba(200,16,46,.18); pointer-events: none; }
+        .metric-card.alert-card { background: linear-gradient(135deg,#fef3f5 0%,#fde8ec 100%); border-color: #f5c6cb; }
+        .metric-card.chart-card { grid-column: span 2; }
+        .metric-icon { width: 46px; height: 46px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: rgba(10,22,40,.08); color: var(--navy); font-size: 1.3rem; position: relative; z-index: 1; }
+        .budget-card .metric-icon { background: rgba(255,255,255,.15); color: var(--white); }
+        .metric-icon.players { background: rgba(59,130,246,.12); color: #2563eb; }
+        .metric-icon.collected { background: rgba(22,163,74,.12); color: var(--color-collected); }
+        .metric-icon.balance { background: rgba(200,16,46,.12); color: var(--color-balance); }
+        .metric-icon.good { background: rgba(22,163,74,.12); color: var(--color-success); }
+        .metric-icon.alert { background: rgba(200,16,46,.12); color: var(--color-alert); }
+        .metric-icon.deadline { background: rgba(180,83,9,.12); color: var(--color-warning); }
+        .metric-icon.teams { background: rgba(124,58,237,.12); color: #7c3aed; }
+        .metric-icon.profit { background: rgba(245,197,24,.18); color: #b45309; }
+        .metric-content { display: flex; flex-direction: column; gap: .3rem; flex: 1; position: relative; z-index: 1; min-width: 0; }
+        .metric-content.full { gap: .75rem; }
+        .metric-label { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--sub); }
+        .budget-card .metric-label { color: rgba(255,255,255,.7); }
+        .metric-value { font-family: 'Oswald', sans-serif; font-size: 1.7rem; font-weight: 700; color: var(--navy); line-height: 1.1; letter-spacing: .02em; }
+        .budget-card .metric-value { color: var(--white); }
+        .metric-subtext { font-size: .78rem; color: var(--sub); }
+        .budget-card .metric-subtext { color: rgba(255,255,255,.7); }
+        .metric-link { display: inline-flex; align-items: center; gap: .25rem; color: var(--navy); font-family: 'Oswald', sans-serif; font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; background: none; border: none; cursor: pointer; margin-top: .4rem; padding: 0; transition: gap .2s; }
+        .metric-link:hover { gap: .5rem; }
+        .budget-card .metric-link { color: var(--white); }
+        .metric-link.alert { color: var(--color-alert); }
 
         /* ── PIE CHART ── */
-        .pie-chart {
-            width: 200px;
-            height: 200px;
-            margin: 0.5rem auto;
-            position: relative;          /* anchor for the floating tooltip */
-        }
+        .pie-chart { width: 200px; height: 200px; margin: .5rem auto; position: relative; }
+        .chart-segment { cursor: pointer; pointer-events: stroke; transition: filter .15s ease; }
+        .chart-segment:hover { filter: brightness(1.15); }
+        .chart-tooltip { position: absolute; background: var(--navy); color: var(--white); padding: 8px 12px; border-radius: 6px; box-shadow: 0 4px 14px rgba(0,0,0,.25); pointer-events: none; opacity: 0; transition: opacity .12s ease; z-index: 10; white-space: nowrap; min-width: 140px; }
+        .chart-tooltip.show { opacity: 1; }
+        .chart-tooltip .tt-label { display: block; font-family: 'Oswald', sans-serif; font-size: .65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.65); margin-bottom: 2px; }
+        .chart-tooltip .tt-amount { font-family: 'Oswald', sans-serif; font-size: 1.05rem; font-weight: 700; letter-spacing: .02em; }
+        .chart-tooltip .tt-percent { color: rgba(255,255,255,.7); font-size: .78rem; margin-left: .35rem; }
+        .chart-legend { display: flex; justify-content: center; gap: 1.5rem; margin-top: .5rem; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: .5rem; font-size: .82rem; color: var(--text); }
+        .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .legend-dot.collected { background: var(--color-collected); }
+        .legend-dot.balance   { background: var(--color-balance); }
+        .legend-dot.pending   { background: var(--color-warning); }
 
-        /* Each donut slice — hover gives a subtle brightness bump and
-           the cursor turns into a pointer. pointer-events:stroke is
-           critical: by default, fill="none" + stroke means no hit area. */
-        .chart-segment {
-            cursor: pointer;
-            pointer-events: stroke;
-            transition: filter 0.15s ease;
-        }
-
-        .chart-segment:hover {
-            filter: brightness(1.15);
-        }
-
-        .chart-tooltip {
-            position: absolute;
-            background: var(--navy);
-            color: var(--white);
-            padding: 8px 12px;
-            border-radius: 6px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.12s ease;
-            z-index: 10;
-            white-space: nowrap;
-            min-width: 140px;
-        }
-
-        .chart-tooltip.show {
-            opacity: 1;
-        }
-
-        .chart-tooltip .tt-label {
-            display: block;
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.65rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.65);
-            margin-bottom: 2px;
-        }
-
-        .chart-tooltip .tt-amount {
-            font-family: 'Oswald', sans-serif;
-            font-size: 1.05rem;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-        }
-
-        .chart-tooltip .tt-percent {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.78rem;
-            margin-left: 0.35rem;
-        }
-
-        .chart-legend {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.82rem;
-            color: var(--text);
-        }
-
-        .legend-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .legend-dot.collected {
-            background: var(--color-collected);
-        }
-
-        .legend-dot.balance {
-            background: var(--color-balance);
-        }
-
-        .legend-dot.pending {
-            background: var(--color-warning);
-        }
-
-        /* ── SECTION CARDS (red header like main frontend) ── */
-        .section-card {
-            background: var(--white);
-            border-radius: 8px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--mid);
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-        }
-
-        .section-card-header {
-            background: var(--red);
-            padding: 12px 22px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .section-card-header h2 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--white);
-            letter-spacing: .12em;
-            text-transform: uppercase;
-        }
-
-        .section-card-body {
-            padding: 1.4rem 1.5rem;
-        }
-
-        .controls {
-            display: flex;
-            gap: 0.75rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .controls-light .search-box {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.25);
-            color: var(--white);
-        }
-
-        .controls-light .search-box input {
-            color: var(--white);
-        }
-
-        .controls-light .search-box input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .controls-light .filter-select {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.25);
-            color: var(--white);
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--white);
-            border: 1.5px solid var(--mid);
-            border-radius: 6px;
-            padding: 6px 14px;
-            transition: border-color 0.2s;
-        }
-
-        .search-box:focus-within {
-            border-color: var(--navy);
-        }
-
-        .search-box input {
-            border: none;
-            background: none;
-            outline: none;
-            font-family: 'Open Sans', sans-serif;
-            font-size: 0.85rem;
-            width: 200px;
-            color: inherit;
-        }
-
-        .filter-select {
-            padding: 7px 14px;
-            border: 1.5px solid var(--mid);
-            border-radius: 6px;
-            background: var(--white);
-            font-family: 'Open Sans', sans-serif;
-            font-size: 0.82rem;
-            cursor: pointer;
-            outline: none;
-            color: var(--text);
-            transition: border-color 0.2s;
-        }
-
-        .filter-select:focus {
-            border-color: var(--navy);
-        }
+        /* ── SECTION CARDS ── */
+        .section-card { background: var(--white); border-radius: 8px; box-shadow: var(--shadow-md); border: 1px solid var(--mid); margin-bottom: 1.5rem; overflow: hidden; }
+        .section-card-header { background: var(--red); padding: 12px 22px; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .section-card-header h2 { font-family: 'Oswald', sans-serif; font-size: .95rem; font-weight: 600; color: var(--white); letter-spacing: .12em; text-transform: uppercase; }
+        .section-card-body { padding: 1.4rem 1.5rem; }
+        .controls { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; }
+        .controls-light .search-box { background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.25); color: var(--white); }
+        .controls-light .search-box input { color: var(--white); }
+        .controls-light .search-box input::placeholder { color: rgba(255,255,255,.7); }
+        .controls-light .filter-select { background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.25); color: var(--white); }
+        .search-box { display: flex; align-items: center; gap: .5rem; background: var(--white); border: 1.5px solid var(--mid); border-radius: 6px; padding: 6px 14px; transition: border-color .2s; }
+        .search-box:focus-within { border-color: var(--navy); }
+        .search-box input { border: none; background: none; outline: none; font-family: 'Open Sans', sans-serif; font-size: .85rem; width: 200px; color: inherit; }
+        .filter-select { padding: 7px 14px; border: 1.5px solid var(--mid); border-radius: 6px; background: var(--white); font-family: 'Open Sans', sans-serif; font-size: .82rem; cursor: pointer; outline: none; color: var(--text); transition: border-color .2s; }
+        .filter-select:focus { border-color: var(--navy); }
 
         /* ── PAYMENT FORM ── */
-        .payment-form {
-            background: var(--light);
-            border-radius: 8px;
-            padding: 1.4rem 1.5rem;
-            margin-bottom: 1.5rem;
-            border: 1.5px solid var(--mid);
-            display: none;
-        }
-
-        .payment-form.show {
-            display: block;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .form-group label {
-            font-size: 0.68rem;
-            font-weight: 700;
-            letter-spacing: .12em;
-            text-transform: uppercase;
-            color: var(--sub);
-        }
-
-        .form-group input,
-        .form-group textarea {
-            padding: 10px 12px;
-            border: 1.5px solid var(--mid);
-            border-radius: 6px;
-            font-family: 'Open Sans', sans-serif;
-            font-size: 0.88rem;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            background: var(--white);
-            color: var(--text);
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            border-color: var(--red);
-            box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.08);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-            line-height: 1.6;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 0.6rem;
-            justify-content: flex-end;
-            margin-top: 0.4rem;
-        }
+        .payment-form { background: var(--light); border-radius: 8px; padding: 1.4rem 1.5rem; margin-bottom: 1.5rem; border: 1.5px solid var(--mid); display: none; }
+        .payment-form.show { display: block; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .form-group { display: flex; flex-direction: column; gap: .4rem; }
+        .form-group label { font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--sub); }
+        .form-group input, .form-group textarea { padding: 10px 12px; border: 1.5px solid var(--mid); border-radius: 6px; font-family: 'Open Sans', sans-serif; font-size: .88rem; outline: none; transition: border-color .2s, box-shadow .2s; background: var(--white); color: var(--text); }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(200,16,46,.08); }
+        .form-group textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+        .form-actions { display: flex; gap: .6rem; justify-content: flex-end; margin-top: .4rem; }
 
         /* ── PAYMENT SUMMARY ── */
-        .payment-summary {
-            background: var(--light);
-            border-radius: 8px;
-            padding: 1.1rem 1.4rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            gap: 3rem;
-            flex-wrap: wrap;
-            border: 1px solid var(--mid);
-        }
+        .payment-summary { background: var(--light); border-radius: 8px; padding: 1.1rem 1.4rem; margin-bottom: 1.5rem; display: flex; gap: 3rem; flex-wrap: wrap; border: 1px solid var(--mid); }
+        .summary-item { display: flex; justify-content: space-between; align-items: center; gap: 1.2rem; font-size: .88rem; }
+        .summary-item > span:first-child { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--sub); }
+        .summary-item .amount { font-family: 'Oswald', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--color-collected); letter-spacing: .02em; }
+        .summary-item .amount.balance { color: var(--color-balance); }
 
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1.2rem;
-            font-size: 0.88rem;
-        }
-
-        .summary-item > span:first-child {
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            color: var(--sub);
-        }
-
-        .summary-item .amount {
-            font-family: 'Oswald', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--color-collected);
-            letter-spacing: .02em;
-        }
-
-        .summary-item .amount.balance {
-            color: var(--color-balance);
-        }
-
-        /* ── TABLES (matches main frontend) ── */
-        .table-wrap {
-            overflow-x: auto;
-        }
-
-        .payment-table,
-        .player-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.86rem;
-        }
-
-        .payment-table thead tr,
-        .player-table thead tr {
-            background: var(--navy);
-        }
-
-        .payment-table th,
-        .player-table th {
-            padding: 11px 14px;
-            text-align: left;
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: var(--white);
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
-
-        .payment-table td,
-        .player-table td {
-            padding: 12px 14px;
-            border-bottom: 1px solid var(--mid);
-            font-size: 0.86rem;
-            vertical-align: middle;
-        }
-
-        .payment-table tbody tr:last-child td,
-        .player-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .payment-table tbody tr:hover,
-        .player-table tbody tr:hover {
-            background: var(--light);
-        }
-
-        .payment-table .amount,
-        .player-table .amount {
-            font-weight: 700;
-            font-family: 'Oswald', sans-serif;
-        }
-
-        .player-table .paid {
-            color: var(--color-collected);
-            font-weight: 700;
-            font-family: 'Oswald', sans-serif;
-        }
-
-        .player-table .balance {
-            color: var(--color-balance);
-            font-weight: 700;
-            font-family: 'Oswald', sans-serif;
-        }
-
-        .player-name {
-            font-weight: 600;
-            color: var(--navy);
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.68rem;
-            font-weight: 700;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            border: 1px solid transparent;
-        }
-
-        .status-badge.paid {
-            background: #f0fdf4;
-            color: #15803d;
-            border-color: #bbf7d0;
-        }
-
-        .status-badge.partial {
-            background: #fffbea;
-            color: #92400e;
-            border-color: #fde68a;
-        }
-
-        .status-badge.unpaid {
-            background: #fef3f5;
-            color: var(--red);
-            border-color: #f5c6cb;
-        }
+        /* ── TABLES ── */
+        .table-wrap { overflow-x: auto; }
+        .payment-table, .player-table { width: 100%; border-collapse: collapse; font-size: .86rem; }
+        .payment-table thead tr, .player-table thead tr { background: var(--navy); }
+        .payment-table th, .player-table th { padding: 11px 14px; text-align: left; font-family: 'Oswald', sans-serif; font-size: .72rem; font-weight: 600; color: var(--white); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+        .payment-table td, .player-table td { padding: 12px 14px; border-bottom: 1px solid var(--mid); font-size: .86rem; vertical-align: middle; }
+        .payment-table tbody tr:last-child td, .player-table tbody tr:last-child td { border-bottom: none; }
+        .payment-table tbody tr:hover, .player-table tbody tr:hover { background: var(--light); }
+        .payment-table .amount, .player-table .amount { font-weight: 700; font-family: 'Oswald', sans-serif; }
+        .player-table .paid    { color: var(--color-collected); font-weight: 700; font-family: 'Oswald', sans-serif; }
+        .player-table .balance { color: var(--color-balance);   font-weight: 700; font-family: 'Oswald', sans-serif; }
+        .player-name { font-weight: 600; color: var(--navy); }
+        .status-badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-family: 'Oswald', sans-serif; font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; border: 1px solid transparent; }
+        .status-badge.paid    { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+        .status-badge.partial { background: #fffbea; color: #92400e; border-color: #fde68a; }
+        .status-badge.unpaid  { background: #fef3f5; color: var(--red); border-color: #f5c6cb; }
 
         /* ── TEAM RANKINGS ── */
-        .team-rankings {
-            display: flex;
-            flex-direction: column;
-            gap: 0.85rem;
-        }
-
-        .ranking-card {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            padding: 1.1rem 1.3rem;
-            background: var(--light);
-            border-radius: 8px;
-            border: 1.5px solid var(--mid);
-            transition: all 0.2s;
-            position: relative;
-            flex-wrap: wrap;
-        }
-
-        .ranking-card:hover {
-            transform: translateX(4px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--navy);
-        }
-
-        .rank-number {
-            width: 48px;
-            height: 48px;
-            background: var(--navy);
-            color: var(--white);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Oswald', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        .ranking-card:nth-child(1) .rank-number {
-            background: var(--red);
-        }
-
-        .team-info {
-            flex: 1;
-            min-width: 180px;
-        }
-
-        .team-info h3 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 0.2rem;
-            letter-spacing: .03em;
-            text-transform: uppercase;
-        }
-
-        .team-info p {
-            font-size: 0.8rem;
-            color: var(--sub);
-        }
-
-        .team-stats {
-            display: flex;
-            gap: 1.8rem;
-            flex-wrap: wrap;
-        }
-
-        .stat {
-            display: flex;
-            flex-direction: column;
-            gap: 0.2rem;
-        }
-
-        .stat-label {
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            color: var(--sub);
-        }
-
-        .stat-value {
-            font-family: 'Oswald', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--navy);
-            letter-spacing: .02em;
-        }
-
-        .completed-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: var(--color-success);
-            color: var(--white);
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-        }
+        .team-rankings { display: flex; flex-direction: column; gap: .85rem; }
+        .ranking-card { display: flex; align-items: center; gap: 1.5rem; padding: 1.1rem 1.3rem; background: var(--light); border-radius: 8px; border: 1.5px solid var(--mid); transition: all .2s; position: relative; flex-wrap: wrap; }
+        .ranking-card:hover { transform: translateX(4px); box-shadow: var(--shadow-md); border-color: var(--navy); }
+        .rank-number { width: 48px; height: 48px; background: var(--navy); color: var(--white); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Oswald', sans-serif; font-size: 1.4rem; font-weight: 700; flex-shrink: 0; }
+        .ranking-card:nth-child(1) .rank-number { background: var(--red); }
+        .team-info { flex: 1; min-width: 180px; }
+        .team-info h3 { font-family: 'Oswald', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: .2rem; letter-spacing: .03em; text-transform: uppercase; }
+        .team-info p { font-size: .8rem; color: var(--sub); }
+        .team-stats { display: flex; gap: 1.8rem; flex-wrap: wrap; }
+        .stat { display: flex; flex-direction: column; gap: .2rem; }
+        .stat-label { font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--sub); }
+        .stat-value { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 700; color: var(--navy); letter-spacing: .02em; }
+        .completed-badge { position: absolute; top: 12px; right: 12px; background: var(--color-success); color: var(--white); padding: 4px 10px; border-radius: 4px; font-family: 'Oswald', sans-serif; font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 
         /* ── PAGINATION ── */
-        .pagination {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            padding: 0.85rem 1rem;
-            border-top: 1px solid var(--mid);
-            background: var(--white);
-            flex-wrap: wrap;
-            margin-top: -1px;
-        }
+        .pagination { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .85rem 1rem; border-top: 1px solid var(--mid); background: var(--white); flex-wrap: wrap; margin-top: -1px; }
+        .pagination-info { font-size: .82rem; color: var(--sub); font-weight: 500; }
+        .pagination-controls { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+        .per-page-select { position: relative; display: inline-flex; align-items: center; }
+        .per-page-select select { appearance: none; -webkit-appearance: none; padding: 5px 28px 5px 12px; border: 1.5px solid var(--mid); border-radius: 6px; background: var(--white); font-family: 'Open Sans', sans-serif; font-size: .82rem; font-weight: 600; color: var(--text); cursor: pointer; outline: none; transition: border-color .15s; }
+        .per-page-select select:hover, .per-page-select select:focus { border-color: var(--navy); }
+        .per-page-select::after { content: '▼'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: .55rem; color: var(--sub); pointer-events: none; }
+        .page-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 34px; height: 32px; padding: 0 10px; border: 1.5px solid var(--mid); border-radius: 6px; background: var(--white); font-family: 'Open Sans', sans-serif; font-size: .82rem; font-weight: 600; color: var(--text); cursor: pointer; transition: all .15s; }
+        .page-btn:hover:not(:disabled) { border-color: var(--navy); color: var(--navy); }
+        .page-btn.current { border-color: var(--red); color: var(--red); background: var(--white); cursor: default; }
+        .page-btn:disabled { color: var(--mid); cursor: not-allowed; background: var(--light); }
 
-        .pagination-info {
-            font-size: 0.82rem;
-            color: var(--sub);
-            font-weight: 500;
-        }
-
-        .pagination-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-
-        .per-page-select {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .per-page-select select {
-            appearance: none;
-            -webkit-appearance: none;
-            padding: 5px 28px 5px 12px;
-            border: 1.5px solid var(--mid);
-            border-radius: 6px;
-            background: var(--white);
-            font-family: 'Open Sans', sans-serif;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--text);
-            cursor: pointer;
-            outline: none;
-            transition: border-color 0.15s;
-        }
-
-        .per-page-select select:hover,
-        .per-page-select select:focus {
-            border-color: var(--navy);
-        }
-
-        .per-page-select::after {
-            content: '▼';
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.55rem;
-            color: var(--sub);
-            pointer-events: none;
-        }
-
-        .page-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 34px;
-            height: 32px;
-            padding: 0 10px;
-            border: 1.5px solid var(--mid);
-            border-radius: 6px;
-            background: var(--white);
-            font-family: 'Open Sans', sans-serif;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--text);
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-
-        .page-btn:hover:not(:disabled) {
-            border-color: var(--navy);
-            color: var(--navy);
-        }
-
-        .page-btn.current {
-            border-color: var(--red);
-            color: var(--red);
-            background: var(--white);
-            cursor: default;
-        }
-
-        .page-btn:disabled {
-            color: var(--mid2);
-            cursor: not-allowed;
-            background: var(--light);
-        }
-
-        .hidden {
-            display: none !important;
-        }
+        /* ── ERROR BANNER ── */
+        .error-banner { background: #fef3f5; border: 1.5px solid #f5c6cb; border-radius: 8px; padding: .85rem 1.1rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; color: var(--red); font-size: .86rem; flex-wrap: wrap; }
+        .error-banner .retry-btn { background: var(--red); color: var(--white); border: none; padding: 6px 14px; border-radius: 6px; font-family: 'Oswald', sans-serif; font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .15s; }
+        .error-banner .retry-btn:hover { background: var(--red2); }
 
         /* ── RESPONSIVE ── */
-        @media (max-width: 1200px) {
-            .metric-card.chart-card {
-                grid-column: span 1;
-            }
-        }
-
+        @media (max-width: 1200px) { .metric-card.chart-card { grid-column: span 1; } }
         @media (max-width: 768px) {
-            .main-nav {
-                padding: 0 16px;
-            }
-
-            .nav-brand {
-                font-size: 1rem;
-            }
-
-            .main-content {
-                padding: 1.25rem 1rem 2rem;
-            }
-
-            .page-header {
-                padding: 1.5rem 1rem 1.2rem;
-            }
-
-            .page-header-inner {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .metrics-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .team-stats {
-                gap: 1rem;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .payment-summary {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .controls {
-                width: 100%;
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .search-box,
-            .search-box input,
-            .filter-select {
-                width: 100%;
-            }
-
-            .team-select {
-                min-width: 100%;
-            }
-
-            .section-card-body {
-                padding: 1.1rem 1rem;
-            }
-        }
-
-        /* ── LOGIN OVERLAY ── */
-        .login-overlay {
-            position: fixed;
-            inset: 0;
-            background: var(--navy);
-            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.015) 0, rgba(255,255,255,.015) 1px, transparent 0, transparent 50%);
-            background-size: 20px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            z-index: 9999;
-        }
-
-        .login-box {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 44px 40px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
-        }
-
-        .login-logo {
-            font-family: 'Oswald', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--navy);
-            letter-spacing: 0.08em;
-            text-align: center;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-        }
-
-        .login-logo span {
-            color: var(--red);
-        }
-
-        .login-sub {
-            text-align: center;
-            color: var(--sub);
-            font-size: 0.82rem;
-            margin-bottom: 28px;
-        }
-
-        .login-label {
-            display: block;
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--sub);
-            margin-bottom: 6px;
-        }
-
-        .login-input {
-            width: 100%;
-            padding: 11px 14px;
-            border: 1.5px solid var(--mid);
-            border-radius: 8px;
-            font-family: 'Open Sans', sans-serif;
-            font-size: 0.92rem;
-            margin-bottom: 14px;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            outline: none;
-            background: var(--white);
-            color: var(--text);
-        }
-
-        .login-input:focus {
-            border-color: var(--red);
-            box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.08);
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 13px;
-            background: var(--navy);
-            color: var(--white);
-            border: none;
-            border-radius: 8px;
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.92rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: background 0.15s;
-            margin-top: 4px;
-        }
-
-        .login-btn:hover {
-            background: var(--navy2);
-        }
-
-        .login-btn:disabled {
-            opacity: 0.6;
-            cursor: wait;
-        }
-
-        .login-err {
-            color: var(--red);
-            font-size: 0.82rem;
-            font-weight: 600;
-            margin-top: 10px;
-            text-align: center;
-            min-height: 1.2em;
-        }
-
-        .login-hint {
-            color: var(--sub);
-            font-size: 0.72rem;
-            text-align: center;
-            margin-top: 18px;
-            padding-top: 14px;
-            border-top: 1px solid var(--mid);
-            line-height: 1.6;
-        }
-
-        .login-hint code {
-            background: var(--light);
-            border: 1px solid var(--mid);
-            padding: 1px 5px;
-            border-radius: 3px;
-            font-size: 0.75rem;
-            font-family: monospace;
-            color: var(--navy);
-        }
-
-        /* ── ERROR BANNER (in-page) ── */
-        .error-banner {
-            background: #fef3f5;
-            border: 1.5px solid #f5c6cb;
-            border-radius: 8px;
-            padding: 0.85rem 1.1rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            color: var(--red);
-            font-size: 0.86rem;
-            flex-wrap: wrap;
-        }
-
-        .error-banner .retry-btn {
-            background: var(--red);
-            color: var(--white);
-            border: none;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: background 0.15s;
-        }
-
-        .error-banner .retry-btn:hover {
-            background: var(--red2);
-        }
-
-        /* ── METRIC SKELETON (while fetching) ── */
-        .metric-value.loading {
-            color: var(--mid2);
-            position: relative;
-        }
-
-        .metric-value.loading::after {
-            content: '...';
-            display: inline-block;
-            animation: pulse 1.2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.4; }
-            50%      { opacity: 1; }
-        }
-
-        /* ── LOGOUT BTN in nav ── */
-        .logout-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: rgba(255, 255, 255, 0.9);
-            padding: 8px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.15s;
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .logout-btn:hover {
-            background: rgba(200, 16, 46, 0.5);
+            .main-nav { padding: 0 16px; }
+            .main-content { padding: 1.25rem 1rem 2rem; }
+            .page-header { padding: 1.5rem 1rem 1.2rem; }
+            .page-header-inner { flex-direction: column; align-items: flex-start; }
+            .metrics-grid { grid-template-columns: 1fr; }
+            .team-stats { gap: 1rem; }
+            .form-row { grid-template-columns: 1fr; }
+            .payment-summary { flex-direction: column; gap: 1rem; }
+            .controls { width: 100%; flex-direction: column; align-items: stretch; }
+            .search-box, .search-box input, .filter-select { width: 100%; }
+            .team-select { min-width: 100%; }
+            .section-card-body { padding: 1.1rem 1rem; }
         }
     </style>
 </head>
 <body>
-    <!-- ── Login overlay (admin) — covers the page until authenticated ── -->
-    <div class="login-overlay" id="loginOverlay" style="display: none;">
-        <div class="login-box">
-            <div class="login-logo">Ambassadors<span> Baseball</span></div>
-            <p class="login-sub">Financial Management — Admin Sign-In</p>
-            <form id="loginForm" autocomplete="off">
-                <label class="login-label" for="loginUsername">Username</label>
-                <input class="login-input" id="loginUsername" type="text" required autofocus />
-                <label class="login-label" for="loginPassword">Password</label>
-                <input class="login-input" id="loginPassword" type="password" required />
-                <button class="login-btn" id="loginBtn" type="submit">Sign In</button>
-                <div class="login-err" id="loginErr"></div>
-            </form>
-            <div class="login-hint">
-                Local dev defaults: <code>admin</code> / <code>admin123</code><br>
-                API base: <code id="apiBaseHint"></code>
-            </div>
+
+<nav class="main-nav">
+    <div class="nav-brand">
+        <div class="brand-icon">⚾</div>
+        <span>Ambassadors<span class="brand-accent"> Baseball</span></span>
+    </div>
+    <div class="nav-controls" id="navControls"></div>
+</nav>
+
+<main id="contentWrapper"></main>
+
+<script>
+'use strict';
+
+// ── CONFIG ────────────────────────────────────────────────────────
+const API_BASE = 'https://baseball-frontend-roan.vercel.app';
+
+// ── AUTH — reads the token written by admin.html (key: admin_token) ──
+let adminToken = localStorage.getItem('admin_token') || null;
+
+if (!adminToken) {
+    // Not logged in — send back to admin portal
+    window.location.replace('admin.html');
+}
+
+function doLogout() {
+    localStorage.removeItem('admin_token');
+    window.location.replace('admin.html');
+}
+
+// ── API HELPER ────────────────────────────────────────────────────
+async function apiFetch(path, opts = {}) {
+    const res = await fetch(`${API_BASE}${path}`, {
+        ...opts,
+        headers: { ...(opts.headers || {}), Authorization: `Bearer ${adminToken}` },
+    });
+    if (res.status === 401 || res.status === 403) {
+        doLogout();
+        throw new Error('Session expired — please sign in again');
+    }
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.message || `Request failed (${res.status})`);
+    }
+    return res.json();
+}
+
+const fetchOrgOverview       = ()               => apiFetch('/api/admin/fin/organization-overview');
+const fetchTeams             = ()               => apiFetch('/api/admin/fin/teams');
+const fetchTeam              = id               => apiFetch(`/api/admin/fin/teams/${id}`);
+const fetchTeamPayouts       = id               => apiFetch(`/api/admin/fin/teams/${id}/payouts`);
+const fetchTeamRankings      = sortBy           => apiFetch(`/api/admin/fin/team-rankings?sortBy=${sortBy}`);
+const fetchOutstandingBal    = ({page,perPage}) => apiFetch(`/api/admin/fin/outstanding-balances?page=${page}&perPage=${perPage}`);
+const fetchTeamPlayers       = (id,{page,perPage,search,status}) => {
+    const qs = new URLSearchParams({ page, perPage });
+    if (search) qs.set('search', search);
+    if (status && status !== 'all') qs.set('status', status);
+    return apiFetch(`/api/admin/fin/teams/${id}/players?${qs}`);
+};
+const submitCoachPayout = (id, payload) => apiFetch(`/api/admin/fin/teams/${id}/payouts`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+});
+
+// ── STATE ─────────────────────────────────────────────────────────
+const state = { teams: [] };
+let currentView = 'org';
+const paginationState = {
+    team:    {},
+    balance: { page: 1, perPage: 20 },
+};
+
+// ── BOOT ──────────────────────────────────────────────────────────
+(async () => {
+    try {
+        const { teams } = await fetchTeams();
+        state.teams = teams || [];
+    } catch (err) {
+        state.teams = [];
+    }
+    renderNavigation();
+    await renderContent();
+})();
+
+// ── NAVIGATION ────────────────────────────────────────────────────
+function renderNavigation() {
+    const isTeamView       = currentView !== 'org';
+    const selectedTeamId   = isTeamView ? String(currentView) : '';
+    const teamsHtml = state.teams.length === 0
+        ? `<option value="" disabled>No teams available</option>`
+        : state.teams.map(t => `<option value="${t.id}" ${selectedTeamId === String(t.id) ? 'selected' : ''}>${esc(t.name)}</option>`).join('');
+
+    document.getElementById('navControls').innerHTML = `
+        <button class="nav-btn ${currentView === 'org' ? 'active' : ''}" onclick="switchView('org')">Organization Overview</button>
+        <div class="team-select-wrap">
+            <select class="team-select ${isTeamView ? 'active' : ''}" onchange="onTeamSelectChange(this.value)">
+                <option value="">Select Team…</option>
+                ${teamsHtml}
+            </select>
         </div>
-    </div>
+        <button class="nav-btn" onclick="window.location.href='admin.html'" style="background:rgba(255,255,255,.08);">← Back to Admin</button>
+        <button class="logout-btn" onclick="doLogout()">Sign Out</button>
+    `;
+}
 
-    <div class="financial-system" id="appRoot" style="display: none;">
-        <!-- Top Navigation -->
-        <nav class="main-nav">
-            <div class="nav-brand">
-                <div class="brand-icon">⚾</div>
-                <span>Ambassadors<span class="brand-accent"> Baseball</span></span>
+function onTeamSelectChange(val) { switchView(val || 'org'); }
+
+async function switchView(view) {
+    currentView = view;
+    renderNavigation();
+    await renderContent();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function renderContent() {
+    const wrapper = document.getElementById('contentWrapper');
+    if (currentView === 'org') {
+        wrapper.innerHTML = await renderOrganizationDashboard();
+        renderTeamRankings();
+        renderBalanceTable();
+    } else {
+        wrapper.innerHTML = await renderCoachDashboard(currentView);
+        renderTeamPlayerTable(currentView);
+        renderCoachPayoutsSection(currentView);
+        bindChartHover();
+    }
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────
+function esc(s) {
+    return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+const fmtMoney = n => '$' + (Number(n) || 0).toLocaleString('en-US', { maximumFractionDigits: 0 });
+function fmtDate(s) {
+    if (!s) return '—';
+    const d = new Date(s);
+    return isNaN(d) ? '—' : d.toLocaleDateString();
+}
+
+// ── ORG DASHBOARD ─────────────────────────────────────────────────
+async function renderOrganizationDashboard() {
+    let metrics = null, metricsError = null;
+    try { metrics = await fetchOrgOverview(); }
+    catch (err) {
+        metricsError = err.message || 'Failed to load metrics';
+        metrics = { activeTeams:0, averagePlayerFee:0, totalCollected:0, outstanding:0, payingPlayers:0, totalPlayers:0, organizationProfit:0 };
+    }
+    const payingVal  = metrics.totalPlayers > 0 ? `${metrics.payingPlayers} / ${metrics.totalPlayers}` : `${metrics.payingPlayers}`;
+    const payingSub  = metrics.totalPlayers > 0 ? 'paying / total budgeted' : 'no budget roster set';
+    return `
+        <header class="page-header">
+            <div class="page-header-inner">
+                <div>
+                    <h1>Organization Overview</h1>
+                    <p class="coach-name">Financial Management System</p>
+                </div>
             </div>
-            <div class="nav-controls" id="navControls">
-                <!-- View toggle + team dropdown will be generated here -->
+        </header>
+        <main class="main-content">
+            ${metricsError ? `<div class="error-banner"><span>⚠️ ${esc(metricsError)}</span><button class="retry-btn" onclick="renderContent()">Retry</button></div>` : ''}
+            <div class="metrics-grid org">
+                <div class="metric-card"><div class="metric-icon teams">👥</div><div class="metric-content"><span class="metric-label">Active Teams</span><span class="metric-value">${metrics.activeTeams}</span></div></div>
+                <div class="metric-card"><div class="metric-icon">💵</div><div class="metric-content"><span class="metric-label">Average Player Fee</span><span class="metric-value">${fmtMoney(metrics.averagePlayerFee)}</span></div></div>
+                <div class="metric-card"><div class="metric-icon players">👤</div><div class="metric-content"><span class="metric-label">Paying Players</span><span class="metric-value">${payingVal}</span><span class="metric-subtext">${payingSub}</span></div></div>
+                <div class="metric-card"><div class="metric-icon collected">📈</div><div class="metric-content"><span class="metric-label">Total Collected</span><span class="metric-value">${fmtMoney(metrics.totalCollected)}</span></div></div>
+                <div class="metric-card"><div class="metric-icon balance">⚠️</div><div class="metric-content"><span class="metric-label">Balance Outstanding</span><span class="metric-value">${fmtMoney(metrics.outstanding)}</span></div></div>
+                <div class="metric-card"><div class="metric-icon profit">💰</div><div class="metric-content"><span class="metric-label">Organization Profit</span><span class="metric-value">${fmtMoney(metrics.organizationProfit)}</span><span class="metric-subtext">across active teams</span></div></div>
             </div>
-        </nav>
 
-        <!-- Main Content -->
-        <main class="main-content-wrapper" id="contentWrapper">
-            <!-- Content will be dynamically loaded here -->
-        </main>
-    </div>
-
-    <script>
-        // ════════════════════════════════════════════════════════
-        //  API CONFIG
-        // ════════════════════════════════════════════════════════
-        // Change this to your deployed URL when going to production.
-        const API_BASE = 'https://backend-baseball-inky.vercel.app';
-
-        // ════════════════════════════════════════════════════════
-        //  AUTH
-        // ════════════════════════════════════════════════════════
-        let adminToken = localStorage.getItem('adminToken') || localStorage.getItem('admin_token') || null;
-
-        async function login(username, password) {
-            const res = await fetch(`${API_BASE}/api/admin/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
-            });
-            if (!res.ok) {
-                const body = await res.json().catch(() => ({}));
-                throw new Error(body.message || `Login failed (${res.status})`);
-            }
-            const { token } = await res.json();
-            adminToken = token;
-            localStorage.setItem('adminToken', token); localStorage.setItem('admin_token', token);
-        }
-
-        function logout() {
-            adminToken = null;
-            localStorage.removeItem('adminToken'); localStorage.removeItem('admin_token');
-            showLogin();
-        }
-
-        function showLogin() {
-            document.getElementById('appRoot').style.display = 'none';
-            document.getElementById('loginOverlay').style.display = 'flex';
-            document.getElementById('loginUsername').focus();
-        }
-
-        function hideLogin() {
-            document.getElementById('loginOverlay').style.display = 'none';
-            document.getElementById('appRoot').style.display = '';
-        }
-
-        // Wires up the login form once on page load.
-        function bindLoginForm() {
-            const form    = document.getElementById('loginForm');
-            const errEl   = document.getElementById('loginErr');
-            const btn     = document.getElementById('loginBtn');
-            document.getElementById('apiBaseHint').textContent = API_BASE;
-
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                errEl.textContent = '';
-                btn.disabled = true;
-                btn.textContent = 'Signing in...';
-                try {
-                    const u = document.getElementById('loginUsername').value.trim();
-                    const p = document.getElementById('loginPassword').value;
-                    await login(u, p);
-                    document.getElementById('loginPassword').value = '';
-                    hideLogin();
-                    initApp();
-                } catch (err) {
-                    errEl.textContent = err.message || 'Sign-in failed';
-                } finally {
-                    btn.disabled = false;
-                    btn.textContent = 'Sign In';
-                }
-            });
-        }
-
-        // ════════════════════════════════════════════════════════
-        //  API CALLS
-        // ════════════════════════════════════════════════════════
-        // Wrapper that injects the bearer token and handles auth failures
-        // (expired/invalid token → log out and surface a clean error).
-        async function apiFetch(path, opts = {}) {
-            const res = await fetch(`${API_BASE}${path}`, {
-                ...opts,
-                headers: {
-                    ...(opts.headers || {}),
-                    Authorization: `Bearer ${adminToken}`,
-                },
-            });
-            if (res.status === 401 || res.status === 403) {
-                logout();
-                throw new Error('Session expired — please sign in again');
-            }
-            if (!res.ok) {
-                const body = await res.json().catch(() => ({}));
-                throw new Error(body.message || `Request failed (${res.status})`);
-            }
-            return res.json();
-        }
-
-        async function fetchOrgOverview() {
-            return apiFetch('/api/admin/organization-overview');
-        }
-
-        // ════════════════════════════════════════════════════════
-        //  MOCK DATA (team list, players — kept until those endpoints exist)
-        // ════════════════════════════════════════════════════════
-        // ════════════════════════════════════════════════════════
-        //  ADDITIONAL API CALLS
-        // ════════════════════════════════════════════════════════
-        async function fetchTeams() {
-            return apiFetch('/api/admin/teams');
-        }
-
-        async function fetchTeam(coachId) {
-            return apiFetch(`/api/admin/teams/${coachId}`);
-        }
-
-        async function fetchTeamPlayers(coachId, { page, perPage, search, status }) {
-            const qs = new URLSearchParams({
-                page: String(page),
-                perPage: String(perPage),
-            });
-            if (search) qs.set('search', search);
-            if (status && status !== 'all') qs.set('status', status);
-            return apiFetch(`/api/admin/teams/${coachId}/players?${qs}`);
-        }
-
-        async function fetchOutstandingBalances({ page, perPage }) {
-            const qs = new URLSearchParams({
-                page: String(page),
-                perPage: String(perPage),
-            });
-            return apiFetch(`/api/admin/outstanding-balances?${qs}`);
-        }
-
-        async function fetchTeamRankings(sortBy) {
-            const qs = new URLSearchParams({ sortBy });
-            return apiFetch(`/api/admin/team-rankings?${qs}`);
-        }
-
-        async function fetchTeamPayouts(coachId) {
-            return apiFetch(`/api/admin/teams/${coachId}/payouts`);
-        }
-
-        async function submitCoachPayout(coachId, payload) {
-            return apiFetch(`/api/admin/teams/${coachId}/payouts`, {
-                method:  'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify(payload),
-            });
-        }
-
-        // ════════════════════════════════════════════════════════
-        //  STATE
-        // ════════════════════════════════════════════════════════
-        // teams         — cached list for the navbar dropdown
-        // currentView   — 'org' or a coach ObjectId string
-        // pagination.*  — page/perPage state, scoped per-table
-        const state = {
-            teams: [],
-        };
-        // ── View mode ─────────────────────────────────────────────────
-        // _isCoachView = true  → opened from coach-dashboard (?coachId=XXX)
-        //                        shows team view only, no org overview, no payments section
-        // _isCoachView = false → opened by admin (no coachId param)
-        //                        full page: org overview + team view + payments section
-        const _urlCoachId  = new URLSearchParams(window.location.search).get('coachId');
-        const _isCoachView = !!_urlCoachId;
-        let currentView = _urlCoachId || 'org';
-        const paginationState = {
-            team:    {},                          // keyed by coachId: { page, perPage }
-            balance: { page: 1, perPage: 20 },
-        };
-
-        // ── Initialize App ──
-        async function initApp() {
-            try {
-                const { teams } = await fetchTeams();
-                state.teams = teams || [];
-            } catch (err) {
-                console.error('Failed to load teams:', err);
-                state.teams = [];
-            }
-            if (_urlCoachId && state.teams.length > 0) {
-                const match = state.teams.find(t => String(t.id) === String(_urlCoachId));
-                currentView = match ? String(match.id) : (state.teams[0] ? String(state.teams[0].id) : 'org');
-            } else if (!_urlCoachId && state.teams.length === 0) {
-                currentView = 'org';
-            }
-            renderNavigation();
-            await renderContent();
-        }
-
-        // ── Render Navigation ──
-        // Admin → Organization Overview button + team dropdown + Logout
-        // Coach → team dropdown + Logout only
-        function renderNavigation() {
-            const navControls = document.getElementById('navControls');
-            const isTeamView    = currentView !== 'org';
-            const selectedTeamId = isTeamView ? String(currentView) : '';
-
-            const teamsHtml = state.teams.length === 0
-                ? `<option value="" disabled>No teams available</option>`
-                : state.teams.map(team => `
-                    <option value="${team.id}" ${selectedTeamId === String(team.id) ? 'selected' : ''}>
-                        ${escapeHtml(team.name)}
-                    </option>
-                `).join('');
-
-            const orgBtn = _isCoachView ? '' : `
-                <button class="nav-btn ${currentView === 'org' ? 'active' : ''}" onclick="switchView('org')">
-                    Organization Overview
-                </button>`;
-
-            navControls.innerHTML = `
-                ${orgBtn}
-                <div class="team-select-wrap">
-                    <select class="team-select ${isTeamView ? 'active' : ''}" onchange="onTeamSelectChange(this.value)">
-                        <option value="">Select Team...</option>
-                        ${teamsHtml}
-                    </select>
-                </div>
-                <button class="logout-btn" onclick="logout()" title="Sign out">Logout</button>
-            `;
-        }
-
-        function onTeamSelectChange(value) {
-            if (value === '') {
-                if (!_isCoachView) switchView('org');
-                return;
-            }
-            switchView(value);
-        }
-
-        // ── Switch View ──
-        async function switchView(view) {
-            currentView = view;
-            renderNavigation();
-            await renderContent();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // ── Render Content ──
-        // Admin sees org view (when currentView === 'org') or team view.
-        // Coach always sees team view; if somehow currentView is 'org',
-        // fall back to the first available team.
-        async function renderContent() {
-            const wrapper = document.getElementById('contentWrapper');
-            if (currentView === 'org' && !_isCoachView) {
-                wrapper.innerHTML = await renderOrganizationDashboard();
-                renderTeamRankings();
-                renderBalanceTable();
-                return;
-            }
-            if (currentView === 'org' && _isCoachView && state.teams.length > 0) {
-                currentView = String(state.teams[0].id);
-                renderNavigation();
-            }
-            wrapper.innerHTML = await renderCoachDashboard(currentView);
-            renderTeamPlayerTable(currentView);
-            if (!_isCoachView) renderCoachPayoutsSection(currentView);
-            bindChartHover();
-        }
-
-        // ── HTML escape for any user-controlled text we drop into innerHTML ──
-        function escapeHtml(s) {
-            return String(s ?? '')
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
-        }
-
-        // Format a money number as "$1,234" (no decimals).
-        const fmtMoney = n => '$' + (Number(n) || 0).toLocaleString('en-US', { maximumFractionDigits: 0 });
-
-        // Format a date string or null as "MM/DD/YYYY" or "—".
-        function fmtDate(s) {
-            if (!s) return '—';
-            const d = new Date(s);
-            return isNaN(d) ? '—' : d.toLocaleDateString();
-        }
-
-        // ── Render Coach (Team) Dashboard ──
-        // ── Render the team-level dashboard ──
-        // Skipped per spec: "Payments from Ambassadors Baseball",
-        // "Players Registered & Paid", "Accounts in Red", "Good Standing".
-        // Kept: Team Budget, Total Revenue Collected, Balance Remaining,
-        //       Collection Deadline, Budget Progress chart, Player Accounts table.
-        async function renderCoachDashboard(coachId) {
-            let team = null;
-            let errMsg = null;
-            try {
-                team = await fetchTeam(coachId);
-            } catch (err) {
-                errMsg = err.message || 'Failed to load team';
-            }
-
-            if (errMsg) {
-                return `
-                    <header class="page-header">
-                        <div class="page-header-inner">
-                            <div>
-                                <h1>Team</h1>
-                                <p class="coach-name">Could not load</p>
-                            </div>
-                        </div>
-                    </header>
-                    <main class="main-content">
-                        <div class="error-banner">
-                            <span>⚠️ ${escapeHtml(errMsg)}</span>
-                            <button class="retry-btn" onclick="renderContent()">Retry</button>
-                        </div>
-                    </main>
-                `;
-            }
-
-            // Derived display values
-            const percentCollected = team.budget > 0
-                ? Math.min(100, (team.totalCollected / team.budget * 100)).toFixed(1)
-                : '0.0';
-
-            // Deadline display — date goes on the Collection Deadline card,
-            // urgency ("5 days to deadline" / "3 days overdue") goes on the
-            // Balance to Meet Budget card.
-            let deadlineDate    = '—';
-            let deadlineUrgency = null;   // null when there's no deadline to surface
-            if (team.paymentDeadline) {
-                const dl = new Date(team.paymentDeadline);
-                if (!isNaN(dl)) {
-                    deadlineDate = dl.toLocaleDateString();
-
-                    // Compare at day granularity (midnight to midnight).
-                    const today = new Date(); today.setHours(0, 0, 0, 0);
-                    const dlMid = new Date(dl); dlMid.setHours(0, 0, 0, 0);
-                    const days = Math.round((dlMid - today) / (1000 * 60 * 60 * 24));
-
-                    if (days > 0) {
-                        deadlineUrgency = `${days} day${days === 1 ? '' : 's'} to deadline`;
-                    } else if (days === 0) {
-                        deadlineUrgency = 'Deadline today';
-                    } else {
-                        deadlineUrgency = `${Math.abs(days)} day${Math.abs(days) === 1 ? '' : 's'} overdue`;
-                    }
-                }
-            }
-
-            // Balance to meet budget = budget − collected (floored at zero
-            // so over-collected teams don't show a negative gap).
-            const hasBudget       = team.budget > 0;
-            const budgetGapAmount = hasBudget ? Math.max(0, team.budget - team.totalCollected) : null;
-            const budgetReached   = hasBudget && budgetGapAmount === 0;
-
-            // Donut chart slices — three segments that together fill (at
-            // most) the full circle. Capping logic keeps the visual within
-            // 100% even when collected or balances exceed the budget; the
-            // legend below reports the truthful dollar amounts.
-            const CIRC = 503;                              // 2π × r (r = 80)
-            const arcOf = $ => hasBudget ? ($ / team.budget) * CIRC : 0;
-            const collectedArc = Math.min(arcOf(team.totalCollected), CIRC);
-            const owedArc      = Math.min(arcOf(team.balanceRemaining), CIRC - collectedArc);
-            const pendingArc   = Math.max(0, CIRC - collectedArc - owedArc);
-            // Pending-to-budget = what the budget needs beyond both collected
-            // dollars and what registered players already owe.
-            const pendingToBudgetAmount = hasBudget
-                ? Math.max(0, team.budget - team.totalCollected - team.balanceRemaining)
-                : 0;
-
-            return `
-                <header class="page-header">
-                    <div class="page-header-inner">
-                        <div>
-                            <h1>${escapeHtml(team.name)}</h1>
-                            <p class="coach-name">Coach: ${escapeHtml(team.coach)}</p>
-                        </div>
-                    </div>
-                </header>
-
-                <main class="main-content">
-                    <!-- Key Metrics Grid -->
-                    <div class="metrics-grid">
-                        <div class="metric-card budget-card">
-                            <div class="metric-icon">📄</div>
-                            <div class="metric-content">
-                                <span class="metric-label">Team Budget</span>
-                                <span class="metric-value">${fmtMoney(team.budget)}</span>
-                                ${team.budget === 0 ? '<span class="metric-subtext">No budget set</span>' : ''}
-                            </div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-icon players">👥</div>
-                            <div class="metric-content">
-                                <span class="metric-label">Players Registered &amp; Paid</span>
-                                <span class="metric-value">${team.goodStanding} / ${team.totalRegistered}</span>
-                                ${team.budgetedPlayers > 0
-                                    ? `<span class="metric-subtext">Need ${team.budgetedPlayers} to meet budget</span>`
-                                    : '<span class="metric-subtext">of registered players</span>'}
-                            </div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-icon collected">💵</div>
-                            <div class="metric-content">
-                                <span class="metric-label">Total Revenue Collected</span>
-                                <span class="metric-value">${fmtMoney(team.totalCollected)}</span>
-                                ${team.budget > 0 ? `<span class="metric-subtext">${percentCollected}% of budget</span>` : ''}
-                            </div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-icon balance">📈</div>
-                            <div class="metric-content">
-                                <span class="metric-label">Balance to Meet Budget</span>
-                                <span class="metric-value">${hasBudget ? fmtMoney(budgetGapAmount) : '—'}</span>
-                                <span class="metric-subtext">${
-                                    !hasBudget       ? 'No budget set' :
-                                    budgetReached    ? '✓ Budget reached' :
-                                    deadlineUrgency  ? deadlineUrgency :
-                                                       'remaining to collect'
-                                }</span>
-                            </div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-icon good">✅</div>
-                            <div class="metric-content">
-                                <span class="metric-label">Good Standing</span>
-                                <span class="metric-value">${team.goodStanding}</span>
-                                <span class="metric-subtext">Current accounts</span>
-                            </div>
-                        </div>
-
-                        <div class="metric-card alert-card">
-                            <div class="metric-icon alert">⚠️</div>
-                            <div class="metric-content">
-                                <span class="metric-label">Accounts in Red</span>
-                                <span class="metric-value">${team.deadlinePassed ? team.accountsInRed : '—'}</span>
-                                ${!team.paymentDeadline
-                                    ? '<span class="metric-subtext">No deadline set</span>'
-                                    : !team.deadlinePassed
-                                        ? '<span class="metric-subtext">Deadline not passed yet</span>'
-                                        : team.accountsInRed > 0
-                                            ? `<button class="metric-link alert" onclick="contactAccountsInRed('${coachId}')">Contact Immediately →</button>`
-                                            : '<span class="metric-subtext">✓ All accounts paid in full</span>'}
-                            </div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-icon players">💳</div>
-                            <div class="metric-content">
-                                <span class="metric-label">Outstanding Balance from Paying Players</span>
-                                <span class="metric-value">${fmtMoney(team.balanceRemaining)}</span>
-                                <span class="metric-subtext">across registered players</span>
-                            </div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-icon deadline">📅</div>
-                            <div class="metric-content">
-                                <span class="metric-label">Collection Deadline</span>
-                                <span class="metric-value">${deadlineDate}</span>
-                                ${!team.paymentDeadline ? '<span class="metric-subtext">No deadline set</span>' : ''}
-                            </div>
-                        </div>
-
-                        ${team.budget > 0 ? `
-                        <div class="metric-card chart-card">
-                            <div class="metric-content full">
-                                <span class="metric-label">Budget Progress</span>
-                                <div class="pie-chart">
-                                    <svg viewBox="0 0 200 200">
-                                        <!-- Light base ring so any rounding gap doesn't show as blank -->
-                                        <circle cx="100" cy="100" r="80" fill="none" stroke="var(--mid)" stroke-width="40" />
-                                        <!-- Segment 1 — collected (green), starts at 12 o'clock -->
-                                        <circle class="chart-segment" cx="100" cy="100" r="80" fill="none"
-                                            stroke="var(--color-collected)" stroke-width="40"
-                                            stroke-dasharray="${collectedArc} ${CIRC}"
-                                            transform="rotate(-90 100 100)"
-                                            data-name="Collected"
-                                            data-amount="${team.totalCollected}"
-                                            data-percent="${(team.totalCollected / team.budget * 100).toFixed(1)}" />
-                                        <!-- Segment 2 — owed by registered players (red), follows collected -->
-                                        <circle class="chart-segment" cx="100" cy="100" r="80" fill="none"
-                                            stroke="var(--color-balance)" stroke-width="40"
-                                            stroke-dasharray="${owedArc} ${CIRC}"
-                                            stroke-dashoffset="${-collectedArc}"
-                                            transform="rotate(-90 100 100)"
-                                            data-name="Owed by players"
-                                            data-amount="${team.balanceRemaining}"
-                                            data-percent="${(team.balanceRemaining / team.budget * 100).toFixed(1)}" />
-                                        <!-- Segment 3 — pending to meet budget (amber), follows owed -->
-                                        <circle class="chart-segment" cx="100" cy="100" r="80" fill="none"
-                                            stroke="var(--color-warning)" stroke-width="40"
-                                            stroke-dasharray="${pendingArc} ${CIRC}"
-                                            stroke-dashoffset="${-(collectedArc + owedArc)}"
-                                            transform="rotate(-90 100 100)"
-                                            data-name="Pending to budget"
-                                            data-amount="${pendingToBudgetAmount}"
-                                            data-percent="${(pendingToBudgetAmount / team.budget * 100).toFixed(1)}" />
-                                        <text x="100" y="95" text-anchor="middle" font-size="26" font-weight="700" font-family="Oswald" fill="var(--navy)">
-                                            ${percentCollected}%
-                                        </text>
-                                        <text x="100" y="118" text-anchor="middle" font-size="11" font-family="Oswald" letter-spacing="2" fill="var(--sub)">
-                                            COLLECTED
-                                        </text>
-                                    </svg>
-                                    <div class="chart-tooltip" id="chartTooltip">
-                                        <span class="tt-label"></span>
-                                        <span class="tt-amount"></span>
-                                        <span class="tt-percent"></span>
-                                    </div>
-                                </div>
-                                <div class="chart-legend">
-                                    <div class="legend-item">
-                                        <span class="legend-dot collected"></span>
-                                        <span>Collected: ${fmtMoney(team.totalCollected)}</span>
-                                    </div>
-                                    <div class="legend-item">
-                                        <span class="legend-dot balance"></span>
-                                        <span>Owed by players: ${fmtMoney(team.balanceRemaining)}</span>
-                                    </div>
-                                    <div class="legend-item">
-                                        <span class="legend-dot pending"></span>
-                                        <span>Pending to budget: ${fmtMoney(pendingToBudgetAmount)}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        ` : ''}
-                    </div>
-
-                    <!-- Payments from Ambassadors Baseball — admin only -->
-                    ${!_isCoachView ? `
-                    <div class="section-card" id="payoutsSection-${coachId}">
-                        <div class="section-card-header">
-                            <h2>Payments from Ambassadors Baseball</h2>
-                            <button class="btn-secondary" onclick="togglePayoutForm('${coachId}')">+ Add Payment</button>
-                        </div>
-                        <div class="section-card-body">
-                            <div class="payment-form" id="payoutForm-${coachId}">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label>Date Paid</label>
-                                        <input type="date" id="payoutDate-${coachId}" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Amount Paid</label>
-                                        <input type="number" placeholder="0.00" min="0" step="0.01" id="payoutAmount-${coachId}" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Notes</label>
-                                    <textarea placeholder="Payment notes..." id="payoutNotes-${coachId}"></textarea>
-                                </div>
-                                <div class="form-actions">
-                                    <button class="btn-secondary light" onclick="togglePayoutForm('${coachId}')">Cancel</button>
-                                    <button class="btn-primary" id="payoutSubmitBtn-${coachId}" onclick="submitPayout('${coachId}')">Submit Payment</button>
-                                </div>
-                            </div>
-                            <div id="payoutsBody-${coachId}">
-                                <div style="text-align:center; padding:2rem; color:var(--sub);">Loading…</div>
-                            </div>
-                        </div>
-                    </div>
-                    ` : ''}
-
-                    <!-- Accounts in Red — only rendered when deadline has passed -->
-                    ${team.deadlinePassed ? `
-                    <div class="section-card" id="accountsInRedSection-${coachId}">
-                        <div class="section-card-header" style="background: var(--red2);">
-                            <h2>⚠️ Accounts in Red — Overdue Balances</h2>
-                            <span style="color:rgba(255,255,255,0.8); font-size:0.8rem;">
-                                ${team.accountsInRed} player${team.accountsInRed === 1 ? '' : 's'} with outstanding balance past deadline
-                            </span>
-                        </div>
-                        <div class="section-card-body" id="accountsInRedBody-${coachId}" style="padding-bottom: 0;">
-                            <div style="text-align:center; padding: 2rem; color: var(--sub);">
-                                Click <strong>Contact Immediately</strong> above to load overdue accounts.
-                            </div>
-                        </div>
-                    </div>
-                    ` : ''}
-
-                    <!-- Player Accounts Section -->
-                    <div class="section-card" id="playerSection-${coachId}">
-                        <div class="section-card-header">
-                            <h2>Player Financial Accounts</h2>
-                            <div class="controls controls-light">
-                                <div class="search-box">
-                                    <span>🔍</span>
-                                    <input type="text" placeholder="Search players..." id="playerSearch-${coachId}" oninput="onPlayerFilterChange('${coachId}')" />
-                                </div>
-                                <select class="filter-select" id="playerFilter-${coachId}" onchange="onPlayerFilterChange('${coachId}')">
-                                    <option value="all">All Players</option>
-                                    <option value="paid">Paid in Full</option>
-                                    <option value="partial">Partial Payment</option>
-                                    <option value="unpaid">Unpaid</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="section-card-body" style="padding-bottom: 0;">
-                            <div class="table-wrap">
-                                <table class="player-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Player Name</th>
-                                            <th>Total Fee</th>
-                                            <th>Paid Amount</th>
-                                            <th>Balance Due</th>
-                                            <th>Last Payment</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="playerTableBody-${coachId}">
-                                        <tr><td colspan="6" style="text-align:center; padding: 2rem; color: var(--sub);">Loading players…</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="pagination" id="playerPagination-${coachId}"></div>
-                    </div>
-                </main>
-            `;
-        }
-
-        // ── Payout section — loads on team dashboard open ──────────────────
-        async function renderCoachPayoutsSection(coachId) {
-            const body = document.getElementById(`payoutsBody-${coachId}`);
-            if (!body) return;
-
-            let data;
-            try {
-                data = await fetchTeamPayouts(coachId);
-            } catch (err) {
-                body.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--red);">${escapeHtml(err.message || 'Failed to load')}</div>`;
-                return;
-            }
-
-            const { totalOwedToCoach, totalPaidToCoach, balanceToBePaid, payouts } = data;
-
-            body.innerHTML = `
-                <div class="payment-summary">
-                    <div class="summary-item">
-                        <span>Total Owed to Coach:</span>
-                        <span class="amount">${fmtMoney(totalOwedToCoach)}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>Total Paid to Coach:</span>
-                        <span class="amount">${fmtMoney(totalPaidToCoach)}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>Balance to be Paid:</span>
-                        <span class="amount ${balanceToBePaid > 0 ? 'balance' : ''}">${fmtMoney(Math.abs(balanceToBePaid))}${balanceToBePaid < 0 ? ' (over-paid)' : ''}</span>
-                    </div>
-                </div>
-
-                ${payouts.length === 0
-                    ? `<p style="text-align:center;padding:1rem 0;color:var(--sub);">No payments recorded yet. Use "+ Add Payment" to log one.</p>`
-                    : `<div class="table-wrap">
-                        <table class="payment-table">
-                            <thead>
-                                <tr>
-                                    <th>Date Paid</th>
-                                    <th>Amount Paid</th>
-                                    <th>Notes</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${payouts.map(p => `
-                                    <tr>
-                                        <td>${fmtDate(p.date)}</td>
-                                        <td class="amount">${fmtMoney(p.amount)}</td>
-                                        <td>${escapeHtml(p.notes)}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>`
-                }
-            `;
-        }
-
-        function togglePayoutForm(coachId) {
-            const form = document.getElementById(`payoutForm-${coachId}`);
-            if (form) form.classList.toggle('show');
-        }
-
-        async function submitPayout(coachId) {
-            const date   = document.getElementById(`payoutDate-${coachId}`).value;
-            const amount = document.getElementById(`payoutAmount-${coachId}`).value;
-            const notes  = document.getElementById(`payoutNotes-${coachId}`).value;
-
-            if (!date || !amount) {
-                alert('Please fill in date and amount');
-                return;
-            }
-
-            const btn = document.getElementById(`payoutSubmitBtn-${coachId}`);
-            btn.disabled    = true;
-            btn.textContent = 'Saving…';
-
-            try {
-                await submitCoachPayout(coachId, {
-                    date,
-                    amount: parseFloat(amount),
-                    notes,
-                });
-                // Clear and hide form
-                document.getElementById(`payoutDate-${coachId}`).value   = '';
-                document.getElementById(`payoutAmount-${coachId}`).value = '';
-                document.getElementById(`payoutNotes-${coachId}`).value  = '';
-                document.getElementById(`payoutForm-${coachId}`).classList.remove('show');
-                // Refresh the payouts display
-                await renderCoachPayoutsSection(coachId);
-            } catch (err) {
-                alert(err.message || 'Failed to save payment');
-            } finally {
-                btn.disabled    = false;
-                btn.textContent = 'Submit Payment';
-            }
-        }
-
-        // ── Hover behaviour for the Budget Progress donut chart ──
-        // Called after the team dashboard renders. Attaches mouseenter/
-        // mousemove/mouseleave to each .chart-segment so we can show a
-        // styled tooltip with the segment name, dollar amount, and % of budget.
-        // Bare-string fmtMoney is used so the function stays self-contained
-        // and doesn't depend on closure state.
-        function bindChartHover() {
-            const tooltip = document.getElementById('chartTooltip');
-            if (!tooltip) return; // no chart on this page (e.g. team has no budget set)
-
-            const ttLabel   = tooltip.querySelector('.tt-label');
-            const ttAmount  = tooltip.querySelector('.tt-amount');
-            const ttPercent = tooltip.querySelector('.tt-percent');
-            const host      = tooltip.parentElement; // .pie-chart (position: relative)
-
-            const segments = document.querySelectorAll('.chart-segment');
-            segments.forEach(seg => {
-                seg.addEventListener('mouseenter', () => {
-                    ttLabel.textContent   = seg.dataset.name;
-                    ttAmount.textContent  = fmtMoney(seg.dataset.amount);
-                    ttPercent.textContent = `· ${seg.dataset.percent}% of budget`;
-                    tooltip.classList.add('show');
-                });
-
-                seg.addEventListener('mousemove', (e) => {
-                    // Position relative to the chart host, keeping the tooltip
-                    // inside the card by nudging left when it would overflow.
-                    const rect = host.getBoundingClientRect();
-                    let x = e.clientX - rect.left + 14;
-                    let y = e.clientY - rect.top  + 14;
-                    const tw = tooltip.offsetWidth;
-                    const th = tooltip.offsetHeight;
-                    if (x + tw > rect.width)  x = e.clientX - rect.left - tw - 14;
-                    if (y + th > rect.height) y = e.clientY - rect.top  - th - 14;
-                    tooltip.style.left = `${Math.max(0, x)}px`;
-                    tooltip.style.top  = `${Math.max(0, y)}px`;
-                });
-
-                seg.addEventListener('mouseleave', () => {
-                    tooltip.classList.remove('show');
-                });
-            });
-        }
-
-        // ── Contact Immediately — load and scroll to the Accounts in Red section ──
-        function contactAccountsInRed(coachId) {
-            renderAccountsInRedTable(coachId);
-            setTimeout(() => {
-                const section = document.getElementById(`accountsInRedSection-${coachId}`);
-                if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 80);
-        }
-
-        // ── Render the Accounts in Red player list ──
-        // Fetches players with balance > 0 (status=overdue) for this team.
-        // Sorted by balance descending so the largest debts come first.
-        async function renderAccountsInRedTable(coachId) {
-            const body = document.getElementById(`accountsInRedBody-${coachId}`);
-            if (!body) return;
-
-            body.innerHTML = `<div style="text-align:center; padding: 2rem; color:var(--sub);">Loading overdue accounts…</div>`;
-
-            let players;
-            try {
-                // Use perPage=100 — overdue lists are typically small, and
-                // a single flat list is more useful here than pagination.
-                const res = await fetchTeamPlayers(coachId, {
-                    page: 1, perPage: 100, search: '', status: 'overdue',
-                });
-                players = res.players || [];
-            } catch (err) {
-                body.innerHTML = `<div style="text-align:center; padding:2rem; color:var(--red);">${escapeHtml(err.message || 'Failed to load')}</div>`;
-                return;
-            }
-
-            if (players.length === 0) {
-                body.innerHTML = `<div style="text-align:center; padding:2rem; color:var(--color-collected);">✓ No overdue accounts found.</div>`;
-                return;
-            }
-
-            body.innerHTML = `
-                <div class="table-wrap">
-                    <table class="player-table">
-                        <thead>
-                            <tr>
-                                <th>Player Name</th>
-                                <th>Total Fee</th>
-                                <th>Amount Paid</th>
-                                <th>Balance Due</th>
-                                <th>Last Payment</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${players.map(p => `
-                                <tr>
-                                    <td class="player-name">${escapeHtml(p.name)}</td>
-                                    <td>${fmtMoney(p.totalFee)}</td>
-                                    <td class="paid">${fmtMoney(p.paidAmount)}</td>
-                                    <td class="balance">${fmtMoney(p.balance)}</td>
-                                    <td>${fmtDate(p.lastPayment)}</td>
-                                    <td>
-                                        <span class="status-badge ${p.status}">
-                                            ${p.status === 'partial' ? 'Partial' : 'Unpaid'}
-                                        </span>
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-        }
-        async function renderTeamPlayerTable(coachId) {
-            const pState = paginationState.team[coachId] || (paginationState.team[coachId] = { page: 1, perPage: 20 });
-
-            const searchEl = document.getElementById(`playerSearch-${coachId}`);
-            const filterEl = document.getElementById(`playerFilter-${coachId}`);
-            const search = searchEl ? searchEl.value.trim() : '';
-            const status = filterEl ? filterEl.value : 'all';
-
-            const tbody = document.getElementById(`playerTableBody-${coachId}`);
-            if (!tbody) return;
-
-            // Show loading state while fetching
-            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 2rem; color: var(--sub);">Loading…</td></tr>`;
-
-            let result;
-            try {
-                result = await fetchTeamPlayers(coachId, {
-                    page:    pState.page,
-                    perPage: pState.perPage,
-                    search,
-                    status,
-                });
-            } catch (err) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 2rem; color: var(--red);">${escapeHtml(err.message || 'Failed to load players')}</td></tr>`;
-                document.getElementById(`playerPagination-${coachId}`).innerHTML = '';
-                return;
-            }
-
-            const { players, total } = result;
-            const totalPages = Math.max(1, Math.ceil(total / pState.perPage));
-            if (pState.page > totalPages && totalPages > 0) {
-                pState.page = totalPages;
-                return renderTeamPlayerTable(coachId); // re-fetch with corrected page
-            }
-
-            tbody.innerHTML = players.length === 0
-                ? `<tr><td colspan="6" style="text-align:center; padding: 2rem; color: var(--sub);">No players match your filters.</td></tr>`
-                : players.map(p => `
-                    <tr class="player-row status-${p.status}">
-                        <td class="player-name">${escapeHtml(p.name)}</td>
-                        <td>${fmtMoney(p.totalFee)}</td>
-                        <td class="paid">${fmtMoney(p.paidAmount)}</td>
-                        <td class="balance">${fmtMoney(p.balance)}</td>
-                        <td>${fmtDate(p.lastPayment)}</td>
-                        <td>
-                            <span class="status-badge ${p.status}">
-                                ${p.status === 'paid' ? 'Paid' : p.status === 'partial' ? 'Partial' : 'Unpaid'}
-                            </span>
-                        </td>
-                    </tr>
-                `).join('');
-
-            renderPagination(`playerPagination-${coachId}`, pState, totalPages, total,
-                (newPage)    => { pState.page = newPage; renderTeamPlayerTable(coachId); },
-                (newPerPage) => { pState.perPage = newPerPage; pState.page = 1; renderTeamPlayerTable(coachId); });
-        }
-
-        // ── Render Organization Dashboard ──
-        // Fetches the four live metrics from the API and renders them.
-        // The other sections (Team Rankings, Outstanding Balance table)
-        // stay on mock data until their endpoints are built.
-        async function renderOrganizationDashboard() {
-            // Fetch live metrics. On failure we surface a banner and fall back
-            // to zeros so the rest of the page still renders.
-            let metrics = null;
-            let metricsError = null;
-            try {
-                metrics = await fetchOrgOverview();
-            } catch (err) {
-                metricsError = err.message || 'Failed to load metrics';
-                metrics = {
-                    activeTeams: 0, averagePlayerFee: 0,
-                    totalCollected: 0, outstanding: 0,
-                    payingPlayers: 0, totalPlayers: 0,
-                    organizationProfit: 0,
-                };
-            }
-
-            // Profit comes from summing ambassadors_fee across each active
-            // team's latest budget — server-side.
-            const profit = metrics.organizationProfit ?? 0;
-
-            // Paying-players card: show "X / Y" — paying / budget roster.
-            // If no team has set a Budget.players value yet, Y is 0 and the
-            // ratio is meaningless, so fall back to just "X paying".
-            const payingPlayersValue = metrics.totalPlayers > 0
-                ? `${metrics.payingPlayers} / ${metrics.totalPlayers}`
-                : `${metrics.payingPlayers}`;
-            const payingPlayersSubtext = metrics.totalPlayers > 0
-                ? 'paying / total budgeted'
-                : 'no budget roster set';
-
-            return `
-                <header class="page-header">
-                    <div class="page-header-inner">
-                        <div>
-                            <h1>Organization Overview</h1>
-                            <p class="coach-name">Financial Management System</p>
-                        </div>
-                    </div>
-                </header>
-
-                <main class="main-content">
-                    ${metricsError ? `
-                        <div class="error-banner">
-                            <span>⚠️ Could not load live metrics: ${escapeHtml(metricsError)}</span>
-                            <button class="retry-btn" onclick="renderContent()">Retry</button>
-                        </div>
-                    ` : ''}
-
-                    <!-- Organization Metrics -->
-                    <div class="metrics-grid org">
-                        <div class="metric-card">
-                            <div class="metric-icon teams">👥</div>
-                            <div class="metric-content">
-                                <span class="metric-label">Active Teams</span>
-                                <span class="metric-value">${metrics.activeTeams}</span>
-                            </div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-icon">💵</div>
-                            <div class="metric-content">
-                                <span class="metric-label">Average Player Fee</span>
-                                <span class="metric-value">${fmtMoney(metrics.averagePlayerFee)}</span>
-                            </div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-icon players">👤</div>
-                            <div class="metric-content">
-                                <span class="metric-label">Paying Players</span>
-                                <span class="metric-value">${payingPlayersValue}</span>
-                                <span class="metric-subtext">${payingPlayersSubtext}</span>
-                            </div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-icon collected">📈</div>
-                            <div class="metric-content">
-                                <span class="metric-label">Total Collected</span>
-                                <span class="metric-value">${fmtMoney(metrics.totalCollected)}</span>
-                            </div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-icon balance">⚠️</div>
-                            <div class="metric-content">
-                                <span class="metric-label">Balance Outstanding</span>
-                                <span class="metric-value">${fmtMoney(metrics.outstanding)}</span>
-                            </div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-icon profit">💰</div>
-                            <div class="metric-content">
-                                <span class="metric-label">Organization Profit</span>
-                                <span class="metric-value">${fmtMoney(profit)}</span>
-                                <span class="metric-subtext">across active teams</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Team Rankings -->
-                    <div class="section-card">
-                        <div class="section-card-header">
-                            <h2>Team Rankings</h2>
-                            <div class="controls controls-light">
-                                <select class="filter-select" id="rankingsSort" onchange="onRankingsSortChange(this.value)">
-                                    <option value="revenue">Top Income Producing</option>
-                                    <option value="budget" selected>Highest Budget</option>
-                                    <option value="percentage">Highest % Paying Players</option>
-                                    <option value="completed">Completed Budget (100%)</option>
-                                    <option value="balance">Most Fees to Collect</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="section-card-body">
-                            <div id="teamRankings">
-                                <div style="text-align:center; padding: 2rem; color: var(--sub);">Loading…</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Accounts with Outstanding Balance -->
-                    <div class="section-card">
-                        <div class="section-card-header">
-                            <h2>Accounts with Outstanding Balance</h2>
-                        </div>
-                        <div class="section-card-body" style="padding-bottom: 0;">
-                            <div class="table-wrap">
-                                <table class="player-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Player Name</th>
-                                            <th>Team</th>
-                                            <th>Total Fee</th>
-                                            <th>Paid Amount</th>
-                                            <th>Balance Due</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="balanceTableBody">
-                                        <tr><td colspan="6" style="text-align:center; padding: 2rem; color: var(--sub);">Loading…</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="pagination" id="balancePagination"></div>
-                    </div>
-                </main>
-            `;
-        }
-
-        // ── Render the org-level outstanding-balance table (API-driven) ──
-        async function renderBalanceTable() {
-            const pState = paginationState.balance;
-            const tbody = document.getElementById('balanceTableBody');
-            if (!tbody) return;
-
-            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 2rem; color: var(--sub);">Loading…</td></tr>`;
-
-            let result;
-            try {
-                result = await fetchOutstandingBalances({ page: pState.page, perPage: pState.perPage });
-            } catch (err) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 2rem; color: var(--red);">${escapeHtml(err.message || 'Failed to load outstanding balances')}</td></tr>`;
-                document.getElementById('balancePagination').innerHTML = '';
-                return;
-            }
-
-            const { players, total } = result;
-            const totalPages = Math.max(1, Math.ceil(total / pState.perPage));
-            if (pState.page > totalPages && totalPages > 0) {
-                pState.page = totalPages;
-                return renderBalanceTable();
-            }
-
-            tbody.innerHTML = players.length === 0
-                ? `<tr><td colspan="6" style="text-align:center; padding: 2rem; color: var(--sub);">No outstanding balances 🎉</td></tr>`
-                : players.map(p => `
-                    <tr class="balance-row status-${p.status}">
-                        <td class="player-name">${escapeHtml(p.name)}</td>
-                        <td>${escapeHtml(p.team)}</td>
-                        <td>${fmtMoney(p.totalFee)}</td>
-                        <td class="paid">${fmtMoney(p.paidAmount)}</td>
-                        <td class="balance">${fmtMoney(p.balance)}</td>
-                        <td>
-                            <span class="status-badge ${p.status}">
-                                ${p.status === 'partial' ? 'Partial' : 'Unpaid'}
-                            </span>
-                        </td>
-                    </tr>
-                `).join('');
-
-            renderPagination('balancePagination', pState, totalPages, total,
-                (newPage)    => { pState.page = newPage; renderBalanceTable(); },
-                (newPerPage) => { pState.perPage = newPerPage; pState.page = 1; renderBalanceTable(); });
-        }
-
-        // ── Team Rankings ───────────────────────────────────────────────
-        // Two of the five sort options are not wired yet — for those the UI
-        // shows a placeholder block without hitting the API.
-        const RANKINGS_PLACEHOLDER = new Set(['revenue', 'percentage']);
-        let rankingsSortBy = 'budget'; // default selection matches dropdown
-
-        function onRankingsSortChange(sortBy) {
-            rankingsSortBy = sortBy;
-            renderTeamRankings();
-        }
-
-        async function renderTeamRankings() {
-            const host = document.getElementById('teamRankings');
-            if (!host) return;
-
-            // Placeholder sorts: render a coming-soon block, no API call.
-            if (RANKINGS_PLACEHOLDER.has(rankingsSortBy)) {
-                host.innerHTML = `
-                    <div class="placeholder-block">
-                        <div class="placeholder-icon">📊</div>
-                        <p class="placeholder-title">Coming soon</p>
-                        <p class="placeholder-text">
-                            This ranking is not yet wired up. Pick "Highest Budget",
-                            "Completed Budget (100%)", or "Most Fees to Collect" to
-                            see live data.
-                        </p>
-                    </div>
-                `;
-                return;
-            }
-
-            host.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--sub);">Loading…</div>`;
-
-            let rankings;
-            try {
-                const res = await fetchTeamRankings(rankingsSortBy);
-                rankings = res.rankings || [];
-            } catch (err) {
-                host.innerHTML = `
-                    <div class="error-banner" style="margin: 0;">
-                        <span>⚠️ ${escapeHtml(err.message || 'Failed to load rankings')}</span>
-                        <button class="retry-btn" onclick="renderTeamRankings()">Retry</button>
-                    </div>
-                `;
-                return;
-            }
-
-            if (rankings.length === 0) {
-                host.innerHTML = `
-                    <div style="text-align:center; padding: 2rem; color: var(--sub);">
-                        No active teams to rank.
-                    </div>
-                `;
-                return;
-            }
-
-            // Label hint clarifies what's driving the position for this sort.
-            const sortLabel = {
-                budget:    'sorted by team budget',
-                balance:   'sorted by remaining balance',
-                completed: 'completed teams first, then by collected',
-            }[rankingsSortBy] || '';
-
-            host.innerHTML = `
-                <div class="team-rankings">
-                    ${rankings.map((t, i) => `
-                        <div class="ranking-card">
-                            <div class="rank-number">${i + 1}</div>
-                            <div class="team-info">
-                                <h3>${escapeHtml(t.name)}</h3>
-                                <p>Coach: ${escapeHtml(t.coach)}</p>
-                            </div>
-                            <div class="team-stats">
-                                <div class="stat">
-                                    <span class="stat-label">Budget</span>
-                                    <span class="stat-value">${fmtMoney(t.budget)}</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-label">Collected</span>
-                                    <span class="stat-value">${fmtMoney(t.collected)}</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-label">% Complete</span>
-                                    <span class="stat-value">${t.percentCollected}%</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-label">Balance Due</span>
-                                    <span class="stat-value">${fmtMoney(t.balance)}</span>
-                                </div>
-                            </div>
-                            ${t.completed ? '<span class="completed-badge">✓ Completed</span>' : ''}
-                        </div>
-                    `).join('')}
-                </div>
-                ${sortLabel ? `<p style="text-align:center; color: var(--sub); font-size: 0.8rem; margin-top: 0.8rem;">${sortLabel}</p>` : ''}
-            `;
-        }
-
-        // ── Shared pagination renderer ──
-        function renderPagination(containerId, state, totalPages, totalItems, onPageChange, onPerPageChange) {
-            const el = document.getElementById(containerId);
-            if (!el) return;
-
-            // Stash callbacks on the element so inline handlers can call them
-            el._onPageChange = onPageChange;
-            el._onPerPageChange = onPerPageChange;
-
-            el.innerHTML = `
-                <div class="pagination-info">
-                    Page ${state.page} of ${totalPages}${totalItems ? ` &middot; ${totalItems} total` : ''}
-                </div>
-                <div class="pagination-controls">
-                    <div class="per-page-select">
-                        <select onchange="(function(c, v){c._onPerPageChange(parseInt(v,10));})(this.closest('.pagination'), this.value)">
-                            <option value="20" ${state.perPage === 20 ? 'selected' : ''}>20</option>
-                            <option value="50" ${state.perPage === 50 ? 'selected' : ''}>50</option>
-                            <option value="100" ${state.perPage === 100 ? 'selected' : ''}>100</option>
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2>Team Rankings</h2>
+                    <div class="controls controls-light">
+                        <select class="filter-select" id="rankingsSort" onchange="onRankingsSortChange(this.value)">
+                            <option value="budget" selected>Highest Budget</option>
+                            <option value="completed">Completed Budget (100%)</option>
+                            <option value="balance">Most Fees to Collect</option>
                         </select>
                     </div>
-                    <button class="page-btn" ${state.page <= 1 ? 'disabled' : ''}
-                        onclick="(function(c){c._onPageChange(${state.page - 1});})(this.closest('.pagination'))">Prev</button>
-                    <button class="page-btn current">${state.page}</button>
-                    <button class="page-btn" ${state.page >= totalPages ? 'disabled' : ''}
-                        onclick="(function(c){c._onPageChange(${state.page + 1});})(this.closest('.pagination'))">Next</button>
                 </div>
-            `;
-        }
+                <div class="section-card-body"><div id="teamRankings"><div style="text-align:center;padding:2rem;color:var(--sub);">Loading…</div></div></div>
+            </div>
 
-        // ── Player filter/search change handler (debounced) ──
-        let _playerFilterTimer = null;
-        function onPlayerFilterChange(coachId) {
-            const pState = paginationState.team[coachId] || (paginationState.team[coachId] = { page: 1, perPage: 20 });
-            pState.page = 1; // reset to first page when filters change
-            // Debounce so we don't fire an API call on every keystroke
-            clearTimeout(_playerFilterTimer);
-            _playerFilterTimer = setTimeout(() => renderTeamPlayerTable(coachId), 250);
-        }
+            <div class="section-card">
+                <div class="section-card-header"><h2>Accounts with Outstanding Balance</h2></div>
+                <div class="section-card-body" style="padding-bottom:0;">
+                    <div class="table-wrap">
+                        <table class="player-table">
+                            <thead><tr><th>Player Name</th><th>Team</th><th>Total Fee</th><th>Paid Amount</th><th>Balance Due</th><th>Status</th></tr></thead>
+                            <tbody id="balanceTableBody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--sub);">Loading…</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="pagination" id="balancePagination"></div>
+            </div>
+        </main>`;
+}
 
-        // ── Boot ──
-        // On page load: wire up the login form, then either show the login
-        // overlay (no token) or render the app (token present).
-        // If the stored token has expired the first apiFetch will fail
-        // with 401, which calls logout() and surfaces the login screen.
-        window.onload = () => {
-            bindLoginForm();
-            if (adminToken) {
-                hideLogin();
-                initApp();
-            } else {
-                showLogin();
-            }
-        };
-    </script>
+// ── TEAM DASHBOARD ────────────────────────────────────────────────
+async function renderCoachDashboard(coachId) {
+    let team = null, errMsg = null;
+    try { team = await fetchTeam(coachId); }
+    catch (err) { errMsg = err.message || 'Failed to load team'; }
+
+    if (errMsg) return `
+        <header class="page-header"><div class="page-header-inner"><div><h1>Team</h1><p class="coach-name">Could not load</p></div></div></header>
+        <main class="main-content"><div class="error-banner"><span>⚠️ ${esc(errMsg)}</span><button class="retry-btn" onclick="renderContent()">Retry</button></div></main>`;
+
+    const pct = team.budget > 0 ? Math.min(100, (team.totalCollected / team.budget * 100)).toFixed(1) : '0.0';
+    let deadlineDate = '—', deadlineUrgency = null;
+    if (team.paymentDeadline) {
+        const dl = new Date(team.paymentDeadline);
+        if (!isNaN(dl)) {
+            deadlineDate = dl.toLocaleDateString();
+            const today = new Date(); today.setHours(0,0,0,0);
+            const dlMid = new Date(dl); dlMid.setHours(0,0,0,0);
+            const days  = Math.round((dlMid - today) / 86400000);
+            deadlineUrgency = days > 0 ? `${days} day${days===1?'':'s'} to deadline` : days === 0 ? 'Deadline today' : `${Math.abs(days)} day${Math.abs(days)===1?'':'s'} overdue`;
+        }
+    }
+    const hasBudget     = team.budget > 0;
+    const budgetGap     = hasBudget ? Math.max(0, team.budget - team.totalCollected) : null;
+    const budgetReached = hasBudget && budgetGap === 0;
+    const CIRC = 503;
+    const arcOf = $ => hasBudget ? ($ / team.budget) * CIRC : 0;
+    const collectedArc = Math.min(arcOf(team.totalCollected), CIRC);
+    const owedArc      = Math.min(arcOf(team.balanceRemaining), CIRC - collectedArc);
+    const pendingArc   = Math.max(0, CIRC - collectedArc - owedArc);
+    const pendingAmt   = hasBudget ? Math.max(0, team.budget - team.totalCollected - team.balanceRemaining) : 0;
+
+    return `
+        <header class="page-header">
+            <div class="page-header-inner">
+                <div><h1>${esc(team.name)}</h1><p class="coach-name">Coach: ${esc(team.coach)}</p></div>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="metrics-grid">
+                <div class="metric-card budget-card"><div class="metric-icon">📄</div><div class="metric-content"><span class="metric-label">Team Budget</span><span class="metric-value">${fmtMoney(team.budget)}</span>${team.budget===0?'<span class="metric-subtext">No budget set</span>':''}</div></div>
+                <div class="metric-card"><div class="metric-icon players">👥</div><div class="metric-content"><span class="metric-label">Players Registered &amp; Paid</span><span class="metric-value">${team.goodStanding} / ${team.totalRegistered}</span>${team.budgetedPlayers>0?`<span class="metric-subtext">Need ${team.budgetedPlayers} to meet budget</span>`:'<span class="metric-subtext">of registered players</span>'}</div></div>
+                <div class="metric-card"><div class="metric-icon collected">💵</div><div class="metric-content"><span class="metric-label">Total Revenue Collected</span><span class="metric-value">${fmtMoney(team.totalCollected)}</span>${team.budget>0?`<span class="metric-subtext">${pct}% of budget</span>`:''}</div></div>
+                <div class="metric-card"><div class="metric-icon balance">📈</div><div class="metric-content"><span class="metric-label">Balance to Meet Budget</span><span class="metric-value">${hasBudget?fmtMoney(budgetGap):'—'}</span><span class="metric-subtext">${!hasBudget?'No budget set':budgetReached?'✓ Budget reached':deadlineUrgency||'remaining to collect'}</span></div></div>
+                <div class="metric-card"><div class="metric-icon good">✅</div><div class="metric-content"><span class="metric-label">Good Standing</span><span class="metric-value">${team.goodStanding}</span><span class="metric-subtext">Current accounts</span></div></div>
+                <div class="metric-card alert-card"><div class="metric-icon alert">⚠️</div><div class="metric-content"><span class="metric-label">Accounts in Red</span><span class="metric-value">${team.deadlinePassed?team.accountsInRed:'—'}</span>${!team.paymentDeadline?'<span class="metric-subtext">No deadline set</span>':!team.deadlinePassed?'<span class="metric-subtext">Deadline not passed yet</span>':team.accountsInRed>0?`<button class="metric-link alert" onclick="contactAccountsInRed('${coachId}')">Contact Immediately →</button>`:'<span class="metric-subtext">✓ All accounts paid</span>'}</div></div>
+                <div class="metric-card"><div class="metric-icon players">💳</div><div class="metric-content"><span class="metric-label">Outstanding Balance from Paying Players</span><span class="metric-value">${fmtMoney(team.balanceRemaining)}</span><span class="metric-subtext">across registered players</span></div></div>
+                <div class="metric-card"><div class="metric-icon deadline">📅</div><div class="metric-content"><span class="metric-label">Collection Deadline</span><span class="metric-value">${deadlineDate}</span>${!team.paymentDeadline?'<span class="metric-subtext">No deadline set</span>':''}</div></div>
+                ${team.budget>0?`
+                <div class="metric-card chart-card">
+                    <div class="metric-content full">
+                        <span class="metric-label">Budget Progress</span>
+                        <div class="pie-chart">
+                            <svg viewBox="0 0 200 200">
+                                <circle cx="100" cy="100" r="80" fill="none" stroke="var(--mid)" stroke-width="40"/>
+                                <circle class="chart-segment" cx="100" cy="100" r="80" fill="none" stroke="var(--color-collected)" stroke-width="40" stroke-dasharray="${collectedArc} ${CIRC}" transform="rotate(-90 100 100)" data-name="Collected" data-amount="${team.totalCollected}" data-percent="${(team.totalCollected/team.budget*100).toFixed(1)}"/>
+                                <circle class="chart-segment" cx="100" cy="100" r="80" fill="none" stroke="var(--color-balance)" stroke-width="40" stroke-dasharray="${owedArc} ${CIRC}" stroke-dashoffset="${-collectedArc}" transform="rotate(-90 100 100)" data-name="Owed by players" data-amount="${team.balanceRemaining}" data-percent="${(team.balanceRemaining/team.budget*100).toFixed(1)}"/>
+                                <circle class="chart-segment" cx="100" cy="100" r="80" fill="none" stroke="var(--color-warning)" stroke-width="40" stroke-dasharray="${pendingArc} ${CIRC}" stroke-dashoffset="${-(collectedArc+owedArc)}" transform="rotate(-90 100 100)" data-name="Pending to budget" data-amount="${pendingAmt}" data-percent="${(pendingAmt/team.budget*100).toFixed(1)}"/>
+                                <text x="100" y="95" text-anchor="middle" font-size="26" font-weight="700" font-family="Oswald" fill="var(--navy)">${pct}%</text>
+                                <text x="100" y="118" text-anchor="middle" font-size="11" font-family="Oswald" letter-spacing="2" fill="var(--sub)">COLLECTED</text>
+                            </svg>
+                            <div class="chart-tooltip" id="chartTooltip"><span class="tt-label"></span><span class="tt-amount"></span><span class="tt-percent"></span></div>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item"><span class="legend-dot collected"></span><span>Collected: ${fmtMoney(team.totalCollected)}</span></div>
+                            <div class="legend-item"><span class="legend-dot balance"></span><span>Owed by players: ${fmtMoney(team.balanceRemaining)}</span></div>
+                            <div class="legend-item"><span class="legend-dot pending"></span><span>Pending to budget: ${fmtMoney(pendingAmt)}</span></div>
+                        </div>
+                    </div>
+                </div>`:''}</div>
+
+            <div class="section-card" id="payoutsSection-${coachId}">
+                <div class="section-card-header">
+                    <h2>Payments from Ambassadors Baseball</h2>
+                    <button class="btn-secondary" onclick="togglePayoutForm('${coachId}')">+ Add Payment</button>
+                </div>
+                <div class="section-card-body">
+                    <div class="payment-form" id="payoutForm-${coachId}">
+                        <div class="form-row">
+                            <div class="form-group"><label>Date Paid</label><input type="date" id="payoutDate-${coachId}"/></div>
+                            <div class="form-group"><label>Amount Paid</label><input type="number" placeholder="0.00" min="0" step="0.01" id="payoutAmount-${coachId}"/></div>
+                        </div>
+                        <div class="form-group"><label>Notes</label><textarea placeholder="Payment notes…" id="payoutNotes-${coachId}"></textarea></div>
+                        <div class="form-actions">
+                            <button class="btn-secondary light" onclick="togglePayoutForm('${coachId}')">Cancel</button>
+                            <button class="btn-primary" id="payoutSubmitBtn-${coachId}" onclick="submitPayout('${coachId}')">Submit Payment</button>
+                        </div>
+                    </div>
+                    <div id="payoutsBody-${coachId}"><div style="text-align:center;padding:2rem;color:var(--sub);">Loading…</div></div>
+                </div>
+            </div>
+
+            ${team.deadlinePassed?`
+            <div class="section-card" id="accountsInRedSection-${coachId}">
+                <div class="section-card-header" style="background:var(--red2);">
+                    <h2>⚠️ Accounts in Red — Overdue Balances</h2>
+                    <span style="color:rgba(255,255,255,.8);font-size:.8rem;">${team.accountsInRed} player${team.accountsInRed===1?'':'s'} with outstanding balance past deadline</span>
+                </div>
+                <div class="section-card-body" id="accountsInRedBody-${coachId}">
+                    <div style="text-align:center;padding:2rem;color:var(--sub);">Click <strong>Contact Immediately</strong> above to load overdue accounts.</div>
+                </div>
+            </div>`:''}
+
+            <div class="section-card" id="playerSection-${coachId}">
+                <div class="section-card-header">
+                    <h2>Player Financial Accounts</h2>
+                    <div class="controls controls-light">
+                        <div class="search-box"><span>🔍</span><input type="text" placeholder="Search players…" id="playerSearch-${coachId}" oninput="onPlayerFilterChange('${coachId}')"/></div>
+                        <select class="filter-select" id="playerFilter-${coachId}" onchange="onPlayerFilterChange('${coachId}')">
+                            <option value="all">All Players</option>
+                            <option value="paid">Paid in Full</option>
+                            <option value="partial">Partial Payment</option>
+                            <option value="unpaid">Unpaid</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="section-card-body" style="padding-bottom:0;">
+                    <div class="table-wrap">
+                        <table class="player-table">
+                            <thead><tr><th>Player Name</th><th>Total Fee</th><th>Paid Amount</th><th>Balance Due</th><th>Last Payment</th><th>Status</th></tr></thead>
+                            <tbody id="playerTableBody-${coachId}"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--sub);">Loading…</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="pagination" id="playerPagination-${coachId}"></div>
+            </div>
+        </main>`;
+}
+
+// ── PAYOUTS ───────────────────────────────────────────────────────
+async function renderCoachPayoutsSection(coachId) {
+    const body = document.getElementById(`payoutsBody-${coachId}`);
+    if (!body) return;
+    let data;
+    try { data = await fetchTeamPayouts(coachId); }
+    catch (err) { body.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--red);">${esc(err.message||'Failed to load')}</div>`; return; }
+    const { totalOwedToCoach, totalPaidToCoach, balanceToBePaid, payouts } = data;
+    body.innerHTML = `
+        <div class="payment-summary">
+            <div class="summary-item"><span>Total Owed to Coach:</span><span class="amount">${fmtMoney(totalOwedToCoach)}</span></div>
+            <div class="summary-item"><span>Total Paid to Coach:</span><span class="amount">${fmtMoney(totalPaidToCoach)}</span></div>
+            <div class="summary-item"><span>Balance to be Paid:</span><span class="amount ${balanceToBePaid>0?'balance':''}">${fmtMoney(Math.abs(balanceToBePaid))}${balanceToBePaid<0?' (over-paid)':''}</span></div>
+        </div>
+        ${payouts.length===0
+            ? `<p style="text-align:center;padding:1rem 0;color:var(--sub);">No payments recorded yet. Use "+ Add Payment" to log one.</p>`
+            : `<div class="table-wrap"><table class="payment-table"><thead><tr><th>Date Paid</th><th>Amount Paid</th><th>Notes</th></tr></thead><tbody>${payouts.map(p=>`<tr><td>${fmtDate(p.date)}</td><td class="amount">${fmtMoney(p.amount)}</td><td>${esc(p.notes)}</td></tr>`).join('')}</tbody></table></div>`}`;
+}
+
+function togglePayoutForm(coachId) {
+    const f = document.getElementById(`payoutForm-${coachId}`);
+    if (f) f.classList.toggle('show');
+}
+
+async function submitPayout(coachId) {
+    const date   = document.getElementById(`payoutDate-${coachId}`).value;
+    const amount = document.getElementById(`payoutAmount-${coachId}`).value;
+    const notes  = document.getElementById(`payoutNotes-${coachId}`).value;
+    if (!date || !amount) { alert('Please fill in date and amount'); return; }
+    const btn = document.getElementById(`payoutSubmitBtn-${coachId}`);
+    btn.disabled = true; btn.textContent = 'Saving…';
+    try {
+        await submitCoachPayout(coachId, { date, amount: parseFloat(amount), notes });
+        document.getElementById(`payoutDate-${coachId}`).value   = '';
+        document.getElementById(`payoutAmount-${coachId}`).value = '';
+        document.getElementById(`payoutNotes-${coachId}`).value  = '';
+        document.getElementById(`payoutForm-${coachId}`).classList.remove('show');
+        await renderCoachPayoutsSection(coachId);
+    } catch (err) { alert(err.message || 'Failed to save payment'); }
+    finally { btn.disabled = false; btn.textContent = 'Submit Payment'; }
+}
+
+// ── CHART HOVER ───────────────────────────────────────────────────
+function bindChartHover() {
+    const tooltip = document.getElementById('chartTooltip');
+    if (!tooltip) return;
+    const ttLabel = tooltip.querySelector('.tt-label'), ttAmount = tooltip.querySelector('.tt-amount'), ttPercent = tooltip.querySelector('.tt-percent');
+    const host    = tooltip.parentElement;
+    document.querySelectorAll('.chart-segment').forEach(seg => {
+        seg.addEventListener('mouseenter', () => {
+            ttLabel.textContent = seg.dataset.name; ttAmount.textContent = fmtMoney(seg.dataset.amount); ttPercent.textContent = `· ${seg.dataset.percent}% of budget`; tooltip.classList.add('show');
+        });
+        seg.addEventListener('mousemove', e => {
+            const rect = host.getBoundingClientRect();
+            let x = e.clientX - rect.left + 14, y = e.clientY - rect.top + 14;
+            if (x + tooltip.offsetWidth  > rect.width)  x = e.clientX - rect.left - tooltip.offsetWidth  - 14;
+            if (y + tooltip.offsetHeight > rect.height) y = e.clientY - rect.top  - tooltip.offsetHeight - 14;
+            tooltip.style.left = `${Math.max(0,x)}px`; tooltip.style.top = `${Math.max(0,y)}px`;
+        });
+        seg.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
+    });
+}
+
+// ── ACCOUNTS IN RED ───────────────────────────────────────────────
+function contactAccountsInRed(coachId) {
+    renderAccountsInRedTable(coachId);
+    setTimeout(() => { const s = document.getElementById(`accountsInRedSection-${coachId}`); if (s) s.scrollIntoView({ behavior:'smooth', block:'start' }); }, 80);
+}
+
+async function renderAccountsInRedTable(coachId) {
+    const body = document.getElementById(`accountsInRedBody-${coachId}`);
+    if (!body) return;
+    body.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--sub);">Loading overdue accounts…</div>`;
+    let players;
+    try { const r = await fetchTeamPlayers(coachId, { page:1, perPage:100, search:'', status:'overdue' }); players = r.players || []; }
+    catch (err) { body.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--red);">${esc(err.message||'Failed to load')}</div>`; return; }
+    if (players.length===0) { body.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--color-collected);">✓ No overdue accounts found.</div>`; return; }
+    body.innerHTML = `<div class="table-wrap"><table class="player-table"><thead><tr><th>Player Name</th><th>Total Fee</th><th>Amount Paid</th><th>Balance Due</th><th>Last Payment</th><th>Status</th></tr></thead><tbody>${players.map(p=>`<tr><td class="player-name">${esc(p.name)}</td><td>${fmtMoney(p.totalFee)}</td><td class="paid">${fmtMoney(p.paidAmount)}</td><td class="balance">${fmtMoney(p.balance)}</td><td>${fmtDate(p.lastPayment)}</td><td><span class="status-badge ${p.status}">${p.status==='partial'?'Partial':'Unpaid'}</span></td></tr>`).join('')}</tbody></table></div>`;
+}
+
+// ── PLAYER TABLE ──────────────────────────────────────────────────
+async function renderTeamPlayerTable(coachId) {
+    const pState   = paginationState.team[coachId] || (paginationState.team[coachId] = { page:1, perPage:20 });
+    const searchEl = document.getElementById(`playerSearch-${coachId}`);
+    const filterEl = document.getElementById(`playerFilter-${coachId}`);
+    const search   = searchEl ? searchEl.value.trim() : '';
+    const status   = filterEl ? filterEl.value : 'all';
+    const tbody    = document.getElementById(`playerTableBody-${coachId}`);
+    if (!tbody) return;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--sub);">Loading…</td></tr>`;
+    let result;
+    try { result = await fetchTeamPlayers(coachId, { page: pState.page, perPage: pState.perPage, search, status }); }
+    catch (err) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--red);">${esc(err.message||'Failed to load')}</td></tr>`; document.getElementById(`playerPagination-${coachId}`).innerHTML=''; return; }
+    const { players, total } = result;
+    const totalPages = Math.max(1, Math.ceil(total / pState.perPage));
+    if (pState.page > totalPages && totalPages > 0) { pState.page = totalPages; return renderTeamPlayerTable(coachId); }
+    tbody.innerHTML = players.length===0
+        ? `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--sub);">No players match your filters.</td></tr>`
+        : players.map(p=>`<tr><td class="player-name">${esc(p.name)}</td><td>${fmtMoney(p.totalFee)}</td><td class="paid">${fmtMoney(p.paidAmount)}</td><td class="balance">${fmtMoney(p.balance)}</td><td>${fmtDate(p.lastPayment)}</td><td><span class="status-badge ${p.status}">${p.status==='paid'?'Paid':p.status==='partial'?'Partial':'Unpaid'}</span></td></tr>`).join('');
+    renderPagination(`playerPagination-${coachId}`, pState, totalPages, total,
+        np => { pState.page=np; renderTeamPlayerTable(coachId); },
+        np => { pState.perPage=np; pState.page=1; renderTeamPlayerTable(coachId); });
+}
+
+// ── OUTSTANDING BALANCES ──────────────────────────────────────────
+async function renderBalanceTable() {
+    const pState = paginationState.balance;
+    const tbody  = document.getElementById('balanceTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--sub);">Loading…</td></tr>`;
+    let result;
+    try { result = await fetchOutstandingBal({ page: pState.page, perPage: pState.perPage }); }
+    catch (err) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--red);">${esc(err.message||'Failed to load')}</td></tr>`; document.getElementById('balancePagination').innerHTML=''; return; }
+    const { players, total } = result;
+    const totalPages = Math.max(1, Math.ceil(total / pState.perPage));
+    if (pState.page > totalPages && totalPages > 0) { pState.page = totalPages; return renderBalanceTable(); }
+    tbody.innerHTML = players.length===0
+        ? `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--sub);">No outstanding balances 🎉</td></tr>`
+        : players.map(p=>`<tr><td class="player-name">${esc(p.name)}</td><td>${esc(p.team)}</td><td>${fmtMoney(p.totalFee)}</td><td class="paid">${fmtMoney(p.paidAmount)}</td><td class="balance">${fmtMoney(p.balance)}</td><td><span class="status-badge ${p.status}">${p.status==='partial'?'Partial':'Unpaid'}</span></td></tr>`).join('');
+    renderPagination('balancePagination', pState, totalPages, total,
+        np => { pState.page=np; renderBalanceTable(); },
+        np => { pState.perPage=np; pState.page=1; renderBalanceTable(); });
+}
+
+// ── TEAM RANKINGS ─────────────────────────────────────────────────
+let rankingsSortBy = 'budget';
+function onRankingsSortChange(sortBy) { rankingsSortBy = sortBy; renderTeamRankings(); }
+
+async function renderTeamRankings() {
+    const host = document.getElementById('teamRankings');
+    if (!host) return;
+    host.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--sub);">Loading…</div>`;
+    let rankings;
+    try { const r = await fetchTeamRankings(rankingsSortBy); rankings = r.rankings || []; }
+    catch (err) { host.innerHTML = `<div class="error-banner" style="margin:0;"><span>⚠️ ${esc(err.message||'Failed')}</span><button class="retry-btn" onclick="renderTeamRankings()">Retry</button></div>`; return; }
+    if (rankings.length===0) { host.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--sub);">No active teams to rank.</div>`; return; }
+    host.innerHTML = `<div class="team-rankings">${rankings.map((t,i)=>`
+        <div class="ranking-card">
+            <div class="rank-number">${i+1}</div>
+            <div class="team-info"><h3>${esc(t.name)}</h3><p>Coach: ${esc(t.coach)}</p></div>
+            <div class="team-stats">
+                <div class="stat"><span class="stat-label">Budget</span><span class="stat-value">${fmtMoney(t.budget)}</span></div>
+                <div class="stat"><span class="stat-label">Collected</span><span class="stat-value">${fmtMoney(t.collected)}</span></div>
+                <div class="stat"><span class="stat-label">% Complete</span><span class="stat-value">${t.percentCollected}%</span></div>
+                <div class="stat"><span class="stat-label">Balance Due</span><span class="stat-value">${fmtMoney(t.balance)}</span></div>
+            </div>
+            ${t.completed?'<span class="completed-badge">✓ Completed</span>':''}
+        </div>`).join('')}</div>`;
+}
+
+// ── PAGINATION ────────────────────────────────────────────────────
+function renderPagination(containerId, state, totalPages, totalItems, onPageChange, onPerPageChange) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el._onPageChange = onPageChange; el._onPerPageChange = onPerPageChange;
+    el.innerHTML = `
+        <div class="pagination-info">Page ${state.page} of ${totalPages}${totalItems?` &middot; ${totalItems} total`:''}</div>
+        <div class="pagination-controls">
+            <div class="per-page-select"><select onchange="(function(c,v){c._onPerPageChange(parseInt(v,10));})(this.closest('.pagination'),this.value)">
+                <option value="20" ${state.perPage===20?'selected':''}>20</option>
+                <option value="50" ${state.perPage===50?'selected':''}>50</option>
+                <option value="100" ${state.perPage===100?'selected':''}>100</option>
+            </select></div>
+            <button class="page-btn" ${state.page<=1?'disabled':''} onclick="(function(c){c._onPageChange(${state.page-1});})(this.closest('.pagination'))">Prev</button>
+            <button class="page-btn current">${state.page}</button>
+            <button class="page-btn" ${state.page>=totalPages?'disabled':''} onclick="(function(c){c._onPageChange(${state.page+1});})(this.closest('.pagination'))">Next</button>
+        </div>`;
+}
+
+// ── PLAYER FILTER DEBOUNCE ────────────────────────────────────────
+let _filterTimer = null;
+function onPlayerFilterChange(coachId) {
+    const pState = paginationState.team[coachId] || (paginationState.team[coachId] = { page:1, perPage:20 });
+    pState.page = 1;
+    clearTimeout(_filterTimer);
+    _filterTimer = setTimeout(() => renderTeamPlayerTable(coachId), 250);
+}
+</script>
 </body>
 </html>
