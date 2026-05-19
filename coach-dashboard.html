@@ -351,8 +351,8 @@ input[type="file"].hidden-file{display:none}
 .budget-list-actions{display:flex;gap:.4rem;flex-shrink:0}
 
 /* ── COACH FINANCIAL DASHBOARD ── */
-.cfd-metrics{display:flex!important;flex-wrap:wrap!important;justify-content:center!important;gap:1rem!important;max-width:1350px;margin:0 auto 1.4rem}
-.cfd-metrics .cfd-metric{flex:0 0 calc(33.333% - 0.75rem)!important;min-width:220px!important;max-width:calc(33.333% - 0.75rem)}
+.cfd-metrics{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;max-width:1350px;margin:0 auto 1.4rem}
+.cfd-metrics .cfd-metric{width:340px;flex:0 0 340px;min-width:0}
 .cfd-metric{background:var(--white);border-radius:8px;padding:1.2rem 1.3rem;box-shadow:0 2px 12px rgba(0,0,0,.07);border:1px solid var(--mid);display:flex;gap:.9rem;align-items:flex-start;transition:all .2s}
 .cfd-metric:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
 .cfd-metric.budget{background:linear-gradient(135deg,var(--navy) 0%,#162845 100%);border-color:var(--navy);position:relative;overflow:hidden}
@@ -415,8 +415,8 @@ input[type="file"].hidden-file{display:none}
 .cfd-pbtn:hover:not(:disabled){border-color:var(--navy);color:var(--navy)}
 .cfd-pbtn.cur{border-color:var(--red);color:var(--red);cursor:default}
 .cfd-pbtn:disabled{color:var(--mid);cursor:not-allowed}
-@media(max-width:700px){.cfd-metrics .cfd-metric{flex:0 0 calc(50% - 0.5rem)}}
-@media(max-width:480px){.cfd-metrics .cfd-metric{flex:0 0 100%}}
+@media(max-width:740px){.cfd-metrics .cfd-metric{width:280px;flex:0 0 280px}}
+@media(max-width:480px){.cfd-metrics .cfd-metric{width:100%;flex:0 0 100%}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
 <style>
@@ -3498,7 +3498,7 @@ function cfdBuildHTML(t) {
   const pAmt = hasBudget ? Math.max(0, t.budget - t.totalCollected - t.balanceRemaining) : 0;
 
   return `
-    <div class="cfd-metrics" style="display:flex!important;flex-wrap:wrap!important;justify-content:center!important;gap:1rem;max-width:1350px;margin:0 auto 1.4rem">
+    <div class="cfd-metrics" style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;max-width:1350px;margin:0 auto 1.4rem">
       <div class="cfd-metric budget">
         <div class="cfd-micon">📄</div>
         <div class="cfd-mbody"><span class="cfd-mlabel">Team Budget</span><span class="cfd-mval">${cfdMoney(t.budget)}</span>${t.budget===0?'<span class="cfd-msub">No budget set</span>':''}</div>
