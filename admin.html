@@ -506,6 +506,8 @@ function showApp() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   loadCoaches();
+  const savedTab = localStorage.getItem('admin_active_tab');
+  if (savedTab === 'financial') switchAdminView('financial');
 }
 
 // ── LOAD COACHES ──
@@ -921,6 +923,7 @@ function showToast(msg, type='') {
 let _adminCurrentSection = 'coaches';
 function switchAdminView(section) {
   _adminCurrentSection = section;
+  localStorage.setItem('admin_active_tab', section);
   document.getElementById('coaches-section').style.display = section === 'coaches' ? '' : 'none';
   document.getElementById('fin-section').style.display     = section === 'financial' ? '' : 'none';
   document.getElementById('vt-coaches').classList.toggle('active',   section === 'coaches');
