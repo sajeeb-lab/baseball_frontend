@@ -3386,18 +3386,16 @@ async function cfdLoad() {
   _cfdLoaded = true;
   const wrapper = document.getElementById('cfd-content');
   if (!wrapper) return;
-  let team = null, err = null;
-  try { team = await cfdApiFetch('/api/coach/fin/overview'); }
-  catch(e) {
-    wrapper.innerHTML = `<div style="background:#fef3f5;border:1.5px solid #f5c6cb;border-radius:8px;padding:.8rem 1rem;color:var(--red);font-size:.86rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
-      <span>⚠️ ${cfdEsc(e.message||'Failed to load')}</span>
-      <button onclick="_cfdLoaded=false;cfdLoad()" style="background:var(--red);color:#fff;border:none;padding:5px 12px;border-radius:5px;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;">Retry</button>
-    </div>`;
-    return;
+  wrapper.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--sub);">Loading financial data…</div>';
+  try {
+    const team = await cfdApiFetch('/api/coach/fin/overview');
+    wrapper.innerHTML = cfdBuildHTML(team);
+    cfdBindChart();
+    cfdLoadPlayers();
+  } catch(e) {
+    _cfdLoaded = false;
+    wrapper.innerHTML = '<div style="background:#fef3f5;border:1.5px solid #f5c6cb;border-radius:8px;padding:.8rem 1rem;color:var(--red);font-size:.86rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;"><span>⚠️ ' + cfdEsc(e.message||'Failed to load') + '</span><button onclick="cfdLoad()" style="background:var(--red);color:#fff;border:none;padding:5px 12px;border-radius:5px;font-family:Oswald,sans-serif;font-size:.7rem;font-weight:700;cursor:pointer;">Retry</button></div>';
   }
-  wrapper.innerHTML = cfdBuildHTML(team);
-  cfdBindChart();
-  cfdLoadPlayers();
 }
 
 function cfdBuildHTML(t) {
