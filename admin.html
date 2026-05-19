@@ -235,13 +235,16 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
 
 
 /* ── VIEW TOGGLE ── */
-.view-toggle { display:flex; gap:0; margin-bottom:24px; background:var(--white); border:1.5px solid var(--mid); border-radius:10px; padding:4px; width:fit-content; }
-.view-toggle-btn { padding:8px 22px; border:none; background:transparent; font-family:'Oswald',sans-serif; font-size:.82rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); border-radius:7px; cursor:pointer; transition:all .15s; white-space:nowrap; }
-.view-toggle-btn.active { background:var(--navy); color:var(--white); box-shadow:0 2px 8px rgba(10,22,40,.18); }
-.view-toggle-btn:hover:not(.active) { color:var(--navy); }
+.view-toggle-bar { background:var(--white); border-bottom:2px solid var(--mid); padding:0 28px; display:flex; align-items:center; }
+.view-toggle-btn { display:inline-flex; align-items:center; gap:6px; padding:15px 20px; border:none; border-bottom:3px solid transparent; background:transparent; font-family:'Oswald',sans-serif; font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); cursor:pointer; transition:all .18s; white-space:nowrap; margin-bottom:-2px; }
+.view-toggle-btn svg { transition:opacity .18s; opacity:.55; }
+.view-toggle-btn:hover { color:var(--navy); }
+.view-toggle-btn:hover svg { opacity:1; }
+.view-toggle-btn.active { color:var(--navy); border-bottom-color:var(--red); }
+.view-toggle-btn.active svg { opacity:1; }
 
 /* ── FINANCIAL SUB-HEADER ── */
-.fin-subheader { background:linear-gradient(135deg,#1a3fc4 0%,#1535a8 100%); padding:1.4rem 28px; position:relative; overflow:hidden; margin:-28px -28px 24px -28px; }
+.fin-subheader { background:linear-gradient(135deg,#1a3fc4 0%,#1535a8 100%); padding:1.2rem 28px; position:relative; overflow:hidden; }
 .fin-subheader::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E"); }
 .fin-subheader-inner { display:flex; align-items:center; gap:.75rem; position:relative; flex-wrap:wrap; }
 .fin-nav-btn { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); color:rgba(255,255,255,.9); padding:8px 18px; border-radius:6px; cursor:pointer; font-family:'Oswald',sans-serif; font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; transition:all .15s; white-space:nowrap; }
@@ -367,7 +370,7 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
     </div>
   </div>
 
-  <!-- ── VIEW TOGGLE BAR (full width, below topbar) ── -->
+  <!-- ── VIEW TOGGLE BAR ── -->
   <div class="view-toggle-bar">
     <button class="view-toggle-btn active" id="vt-coaches" onclick="switchAdminView('coaches')">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
@@ -427,7 +430,7 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
 
   </div><!-- /.content -->
 
-  <!-- ── FINANCIAL SECTION (hidden by default, full width) ── -->
+  <!-- ── FINANCIAL SECTION — full width ── -->
   <div id="fin-section" style="display:none;">
     <div class="fin-subheader">
       <div class="fin-subheader-inner">
@@ -1109,7 +1112,6 @@ async function finRenderTeamDashboard(coachId) {
         <div id="fin-payout-body-${coachId}"><div style="text-align:center;padding:1.5rem;color:var(--muted);">Loading…</div></div>
       </div>
     </div>
-
     <div class="fin-section-card">
       <div class="fin-section-head">
         <h2>Player Financial Accounts</h2>
@@ -1130,5 +1132,166 @@ async function finRenderTeamDashboard(coachId) {
       </div>
       <div class="fin-pagination" id="fin-player-pag-${coachId}"></div>
     </div>
-  `;
+
+`;
 }
+
+// ── PAYOUTS ───────────────────────────────────────────
+async function finRenderPayouts(coachId) {
+  const body = document.getElementById(`fin-payout-body-${coachId}`);
+  if (!body) return;
+  let data;
+  try { data = await finApiFetch(`/api/admin/fin/teams/${coachId}/payouts`); }
+  catch(e) { body.innerHTML=`<div style="text-align:center;padding:1.5rem;color:var(--red);">${esc(e.message||'Failed to load')}</div>`; return; }
+  const { totalOwedToCoach, totalPaidToCoach, balanceToBePaid, payouts } = data;
+  body.innerHTML = `
+    <div style="display:flex;gap:2rem;flex-wrap:wrap;background:var(--light);border-radius:8px;padding:1rem 1.3rem;margin-bottom:1.2rem;border:1px solid var(--mid);">
+      <div><div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Total Owed to Coach</div><div style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;color:#16a34a;">${finFmtMoney(totalOwedToCoach)}</div></div>
+      <div><div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Total Paid to Coach</div><div style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;color:#16a34a;">${finFmtMoney(totalPaidToCoach)}</div></div>
+      <div><div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Balance to be Paid</div><div style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;color:${balanceToBePaid>0?'#c8102e':'#16a34a'};">${finFmtMoney(Math.abs(balanceToBePaid))}${balanceToBePaid<0?' (over-paid)':''}</div></div>
+    </div>
+    ${payouts.length===0
+      ? `<p style="text-align:center;padding:.75rem 0;color:var(--muted);font-size:.85rem;">No payments recorded yet.</p>`
+      : `<div style="overflow-x:auto;"><table class="fin-tbl"><thead><tr><th>Date Paid</th><th>Amount</th><th>Notes</th></tr></thead><tbody>${payouts.map(p=>`<tr><td>${finFmtDate(p.date)}</td><td class="f-paid">${finFmtMoney(p.amount)}</td><td>${esc(p.notes)}</td></tr>`).join('')}</tbody></table></div>`}`;
+}
+
+function finTogglePayoutForm(coachId) {
+  const f = document.getElementById(`fin-payout-form-${coachId}`);
+  if (f) f.style.display = f.style.display === 'none' ? '' : 'none';
+}
+
+async function finSubmitPayout(coachId) {
+  const date = document.getElementById(`fin-payout-date-${coachId}`).value;
+  const amount = document.getElementById(`fin-payout-amount-${coachId}`).value;
+  const notes = document.getElementById(`fin-payout-notes-${coachId}`).value;
+  if (!date || !amount) { showToast('Please fill in date and amount', 'red'); return; }
+  const btn = document.getElementById(`fin-payout-submit-${coachId}`);
+  btn.disabled=true; btn.textContent='Saving…';
+  try {
+    await finApiFetch(`/api/admin/fin/teams/${coachId}/payouts`, { method:'POST', body: JSON.stringify({ date, amount: parseFloat(amount), notes }) });
+    document.getElementById(`fin-payout-date-${coachId}`).value='';
+    document.getElementById(`fin-payout-amount-${coachId}`).value='';
+    document.getElementById(`fin-payout-notes-${coachId}`).value='';
+    document.getElementById(`fin-payout-form-${coachId}`).style.display='none';
+    await finRenderPayouts(coachId);
+    showToast('Payment saved', 'green');
+  } catch(e) { showToast(e.message||'Failed to save', 'red'); }
+  finally { btn.disabled=false; btn.textContent='Submit Payment'; }
+}
+
+// ── CHART HOVER ───────────────────────────────────────
+function finBindChartHover() {
+  const tt = document.getElementById('fin-chart-tt');
+  if (!tt) return;
+  const lbl=tt.querySelector('.ftt-lbl'), amt=tt.querySelector('.ftt-amt'), pct=tt.querySelector('.ftt-pct');
+  const host=tt.parentElement;
+  document.querySelectorAll('.fin-seg').forEach(seg => {
+    seg.addEventListener('mouseenter', () => { lbl.textContent=seg.dataset.name; amt.textContent=finFmtMoney(seg.dataset.amount); pct.textContent=`· ${seg.dataset.percent}% of budget`; tt.classList.add('show'); });
+    seg.addEventListener('mousemove', e => {
+      const r=host.getBoundingClientRect(); let x=e.clientX-r.left+14, y=e.clientY-r.top+14;
+      if(x+tt.offsetWidth>r.width)  x=e.clientX-r.left-tt.offsetWidth-14;
+      if(y+tt.offsetHeight>r.height) y=e.clientY-r.top-tt.offsetHeight-14;
+      tt.style.left=`${Math.max(0,x)}px`; tt.style.top=`${Math.max(0,y)}px`;
+    });
+    seg.addEventListener('mouseleave', () => tt.classList.remove('show'));
+  });
+}
+
+// ── RANKINGS ─────────────────────────────────────────
+let _finRankSort = 'budget';
+function finOnRankingsSortChange(v) { _finRankSort=v; finRenderRankings(); }
+async function finRenderRankings() {
+  const host = document.getElementById('fin-rankings-host');
+  if (!host) return;
+  host.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--muted);">Loading…</div>`;
+  let ranks;
+  try { const r=await finApiFetch(`/api/admin/fin/team-rankings?sortBy=${_finRankSort}`); ranks=r.rankings||[]; }
+  catch(e) { host.innerHTML=`<div class="fin-error"><span>⚠️ ${esc(e.message||'Failed')}</span><button class="fin-retry" onclick="finRenderRankings()">Retry</button></div>`; return; }
+  if (ranks.length===0) { host.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--muted);">No active teams to rank.</div>`; return; }
+  host.innerHTML=`<div class="fin-ranking-list">${ranks.map((t,i)=>`
+    <div class="fin-ranking-card">
+      <div class="fin-rank-num">${i+1}</div>
+      <div class="fin-team-info"><h3>${esc(t.name)}</h3><p>Coach: ${esc(t.coach)}</p></div>
+      <div class="fin-team-stats">
+        <div class="fin-stat"><span class="fin-stat-lbl">Budget</span><span class="fin-stat-val">${finFmtMoney(t.budget)}</span></div>
+        <div class="fin-stat"><span class="fin-stat-lbl">Collected</span><span class="fin-stat-val">${finFmtMoney(t.collected)}</span></div>
+        <div class="fin-stat"><span class="fin-stat-lbl">% Done</span><span class="fin-stat-val">${t.percentCollected}%</span></div>
+        <div class="fin-stat"><span class="fin-stat-lbl">Balance</span><span class="fin-stat-val">${finFmtMoney(t.balance)}</span></div>
+      </div>
+      ${t.completed?'<span class="fin-completed-badge">✓ Done</span>':''}
+    </div>`).join('')}</div>`;
+}
+
+// ── OUTSTANDING BALANCES ──────────────────────────────
+async function finRenderBalanceTable() {
+  const p=_finPag.balance, tbody=document.getElementById('fin-balance-tbody'), pag=document.getElementById('fin-balance-pag');
+  if (!tbody) return;
+  tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading…</td></tr>`;
+  let result;
+  try { result = await finApiFetch(`/api/admin/fin/outstanding-balances?page=${p.page}&perPage=${p.perPage}`); }
+  catch(e) { tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--red);">${esc(e.message||'Failed')}</td></tr>`; if(pag)pag.innerHTML=''; return; }
+  const {players,total}=result, totalPages=Math.max(1,Math.ceil(total/p.perPage));
+  if(p.page>totalPages&&totalPages>0){p.page=totalPages;return finRenderBalanceTable();}
+  tbody.innerHTML=players.length===0?`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">No outstanding balances 🎉</td></tr>`:
+    players.map(r=>`<tr><td class="f-name">${esc(r.name)}</td><td>${esc(r.team)}</td><td>${finFmtMoney(r.totalFee)}</td><td class="f-paid">${finFmtMoney(r.paidAmount)}</td><td class="f-balance">${finFmtMoney(r.balance)}</td><td><span class="fin-status ${r.status}">${r.status==='partial'?'Partial':'Unpaid'}</span></td></tr>`).join('');
+  if(pag) finRenderPagination(pag,p,totalPages,total,np=>{p.page=np;finRenderBalanceTable();},np=>{p.perPage=np;p.page=1;finRenderBalanceTable();});
+}
+
+// ── PLAYER TABLE ──────────────────────────────────────
+async function finRenderPlayerTable(coachId) {
+  const ps=_finPag.team[coachId]||(_finPag.team[coachId]={page:1,perPage:20});
+  const searchEl=document.getElementById(`fin-player-search-${coachId}`), filterEl=document.getElementById(`fin-player-filter-${coachId}`);
+  const search=searchEl?searchEl.value.trim():'', status=filterEl?filterEl.value:'all';
+  const tbody=document.getElementById(`fin-player-tbody-${coachId}`), pag=document.getElementById(`fin-player-pag-${coachId}`);
+  if(!tbody) return;
+  tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading…</td></tr>`;
+  const qs=new URLSearchParams({page:ps.page,perPage:ps.perPage});
+  if(search) qs.set('search',search);
+  if(status&&status!=='all') qs.set('status',status);
+  let result;
+  try { result=await finApiFetch(`/api/admin/fin/teams/${coachId}/players?${qs}`); }
+  catch(e){ tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--red);">${esc(e.message||'Failed')}</td></tr>`; if(pag)pag.innerHTML=''; return; }
+  const {players,total}=result, totalPages=Math.max(1,Math.ceil(total/ps.perPage));
+  if(ps.page>totalPages&&totalPages>0){ps.page=totalPages;return finRenderPlayerTable(coachId);}
+  tbody.innerHTML=players.length===0?`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">No players match filters.</td></tr>`:
+    players.map(p=>`<tr><td class="f-name">${esc(p.name)}</td><td>${finFmtMoney(p.totalFee)}</td><td class="f-paid">${finFmtMoney(p.paidAmount)}</td><td class="f-balance">${finFmtMoney(p.balance)}</td><td>${finFmtDate(p.lastPayment)}</td><td><span class="fin-status ${p.status}">${p.status==='paid'?'Paid':p.status==='partial'?'Partial':'Unpaid'}</span></td></tr>`).join('');
+  if(pag) finRenderPagination(pag,ps,totalPages,total,np=>{ps.page=np;finRenderPlayerTable(coachId);},np=>{ps.perPage=np;ps.page=1;finRenderPlayerTable(coachId);});
+  finRenderPayouts(coachId);
+}
+
+let _finPlayerFilterTimer=null;
+function finOnPlayerFilter(coachId) {
+  const ps=_finPag.team[coachId]||(_finPag.team[coachId]={page:1,perPage:20}); ps.page=1;
+  clearTimeout(_finPlayerFilterTimer); _finPlayerFilterTimer=setTimeout(()=>finRenderPlayerTable(coachId),250);
+}
+
+// ── PAGINATION ────────────────────────────────────────
+function finRenderPagination(el,state,totalPages,totalItems,onPage,onPerPage) {
+  el._fp=onPage; el._fpp=onPerPage;
+  el.innerHTML=`
+    <div class="fin-pagination-info">Page ${state.page} of ${totalPages} &middot; ${totalItems} total</div>
+    <div class="fin-pagination-controls">
+      <select class="fin-per-page" onchange="(function(c,v){c._fpp(parseInt(v,10));})(this.closest('.fin-pagination'),this.value)">
+        <option value="20" ${state.perPage===20?'selected':''}>20</option>
+        <option value="50" ${state.perPage===50?'selected':''}>50</option>
+        <option value="100" ${state.perPage===100?'selected':''}>100</option>
+      </select>
+      <button class="fin-page-btn" ${state.page<=1?'disabled':''} onclick="(function(c){c._fp(${state.page-1});})(this.closest('.fin-pagination'))">Prev</button>
+      <button class="fin-page-btn current">${state.page}</button>
+      <button class="fin-page-btn" ${state.page>=totalPages?'disabled':''} onclick="(function(c){c._fp(${state.page+1});})(this.closest('.fin-pagination'))">Next</button>
+    </div>`;
+}
+
+// ── INIT ──
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.getElementById('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// Auto-login if token exists
+if (adminToken) {
+  fetch(`${API_BASE}/api/admin/coaches`, { headers: adminH() }).then(r => {
+    if (r.ok) showApp(); else doLogout();
+  }).catch(() => doLogout());
+} 
+</script>
+</body>
+</html>
