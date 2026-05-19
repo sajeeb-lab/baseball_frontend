@@ -3372,9 +3372,18 @@ let _cfdLoaded = false;
 let _cfdPag = { page: 1, perPage: 20 };
 
 async function cfdApiFetch(path) {
-  const res = await fetch(`${API_BASE}${path}`, { headers: authH() });
-  if (!res.ok) { const b = await res.json().catch(()=>({})); throw new Error(b.message || `Error ${res.status}`); }
-  return res.json();
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 10000); // 10s timeout
+  try {
+    const res = await fetch(`${API_BASE}${path}`, { headers: authH(), signal: controller.signal });
+    clearTimeout(timer);
+    if (!res.ok) { const b = await res.json().catch(()=>({})); throw new Error(b.message || `Request failed (${res.status})`); }
+    return res.json();
+  } catch(e) {
+    clearTimeout(timer);
+    if (e.name === 'AbortError') throw new Error('Request timed out — check the backend is deployed with the latest index.js');
+    throw e;
+  }
 }
 
 const cfdMoney = n => '$' + (Number(n)||0).toLocaleString('en-US', { maximumFractionDigits: 0 });
