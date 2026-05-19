@@ -351,8 +351,8 @@ input[type="file"].hidden-file{display:none}
 .budget-list-actions{display:flex;gap:.4rem;flex-shrink:0}
 
 /* ── COACH FINANCIAL DASHBOARD ── */
-.cfd-metrics{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;max-width:1060px;margin:0 auto 1.4rem}
-.cfd-metrics .cfd-metric{flex:0 0 calc(33.333% - 0.75rem);min-width:220px}
+.cfd-metrics{display:flex!important;flex-wrap:wrap!important;justify-content:center!important;gap:1rem!important;max-width:1060px;margin:0 auto 1.4rem}
+.cfd-metrics .cfd-metric{flex:0 0 calc(33.333% - 0.75rem)!important;min-width:220px!important;max-width:calc(33.333% - 0.75rem)}
 .cfd-metric{background:var(--white);border-radius:8px;padding:1.2rem 1.3rem;box-shadow:0 2px 12px rgba(0,0,0,.07);border:1px solid var(--mid);display:flex;gap:.9rem;align-items:flex-start;transition:all .2s}
 .cfd-metric:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
 .cfd-metric.budget{background:linear-gradient(135deg,var(--navy) 0%,#162845 100%);border-color:var(--navy);position:relative;overflow:hidden}
@@ -3498,7 +3498,7 @@ function cfdBuildHTML(t) {
   const pAmt = hasBudget ? Math.max(0, t.budget - t.totalCollected - t.balanceRemaining) : 0;
 
   return `
-    <div class="cfd-metrics">
+    <div class="cfd-metrics" style="display:flex!important;flex-wrap:wrap!important;justify-content:center!important;gap:1rem;max-width:1060px;margin:0 auto 1.4rem">
       <div class="cfd-metric budget">
         <div class="cfd-micon">📄</div>
         <div class="cfd-mbody"><span class="cfd-mlabel">Team Budget</span><span class="cfd-mval">${cfdMoney(t.budget)}</span>${t.budget===0?'<span class="cfd-msub">No budget set</span>':''}</div>
