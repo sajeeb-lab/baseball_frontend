@@ -418,11 +418,6 @@ input[type="file"].hidden-file{display:none}
 .cfd-pbtn.cur{border-color:var(--red);color:var(--red);cursor:default}
 .cfd-pbtn:disabled{color:var(--mid);cursor:not-allowed}
 
-/* ── FIN DASHBOARD SUBHEADER ── */
-.cfd-subheader{background:linear-gradient(135deg,#1a3fc4 0%,#1535a8 100%);position:relative;overflow:hidden;border-radius:8px;margin:0 1.5rem 1.4rem;padding:1.35rem 1.4rem}
-.cfd-subheader::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
-.cfd-subheader h2{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;color:#fff;letter-spacing:.14em;text-transform:uppercase;position:relative}
-
 /* ── ACCOUNTS IN RED INLINE SECTION ── */
 .cfd-air-section{display:none;background:var(--white);border-radius:8px;border:1px solid var(--mid);overflow:hidden;margin-bottom:1.4rem;box-shadow:0 2px 10px rgba(0,0,0,.06);animation:cfdAirIn .3s cubic-bezier(.4,0,.2,1)}
 @keyframes cfdAirIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
@@ -3445,12 +3440,6 @@ loadDashboard();
 
     <!-- FINANCIAL DASHBOARD PANEL -->
     <div class="dash-panel" id="panel-findashboard">
-      <div class="cfd-subheader">
-        <h2>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;vertical-align:-3px;margin-right:8px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          Financial Dashboard
-        </h2>
-      </div>
       <div id="cfd-content">
         <div style="text-align:center;padding:3rem;color:var(--sub);">Loading financial data…</div>
       </div>
@@ -3528,7 +3517,7 @@ function cfdBuildHTML(t) {
     <div class="cfd-metrics">
       <div class="cfd-metric budget">
         <div class="cfd-micon">📄</div>
-        <div class="cfd-mbody"><span class="cfd-mlabel">Team Budget</span><span class="cfd-mval">${cfdMoney(t.budget)}</span>${t.budget===0?'<span class="cfd-msub">No budget set</span>':''}</div>
+        <div class="cfd-mbody"><span class="cfd-mlabel">Team Budget</span><span class="cfd-mval">${cfdMoney(t.budget)}</span>${t.budget===0?'<span class="cfd-msub">No budget set</span>':''}<button onclick="switchPanel('calculator')" style="margin-top:.55rem;display:inline-flex;align-items:center;gap:.35rem;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:5px;padding:5px 12px;font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .15s;position:relative;z-index:1" onmouseover="this.style.background='rgba(255,255,255,.28)'" onmouseout="this.style.background='rgba(255,255,255,.15)'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/></svg>View Line Items</button></div>
       </div>
       <div class="cfd-metric">
         <div class="cfd-micon ic">👥</div>
