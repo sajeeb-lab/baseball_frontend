@@ -914,6 +914,18 @@ async function accessDashboard(id) {
   }
 }
 
+async function finOpenBudgetCalc(id) {
+  try {
+    const res  = await fetch(`${API_BASE}/api/admin/coaches/${id}/token`, { headers: adminH() });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to get coach token');
+    const url = `coach-dashboard.html?adminToken=${encodeURIComponent(data.token)}&adminCoachId=${encodeURIComponent(data.coachId)}#calculator`;
+    window.open(url, '_blank');
+  } catch(err) {
+    showToast(err.message, 'red');
+  }
+}
+
 // ── DELETE COACH ──
 async function deleteCoach(id) {
   const coach = allCoaches.find(c => c.id === id);
@@ -1109,7 +1121,7 @@ async function finRenderTeamDashboard(coachId) {
   const pAmt=hasBudget?Math.max(0,team.budget-team.totalCollected-team.balanceRemaining):0;
   return `
     <div class="fin-metrics-grid">
-      <div class="fin-metric-card budget-card"><div class="fin-metric-icon">📄</div><div class="fin-metric-body"><span class="fin-metric-label">Team Budget</span><span class="fin-metric-value">${finFmtMoney(team.budget)}</span>${team.budget===0?'<span class="fin-metric-sub">No budget set</span>':''}</div></div>
+      <div class="fin-metric-card budget-card"><div class="fin-metric-icon">📄</div><div class="fin-metric-body"><span class="fin-metric-label">Team Budget</span><span class="fin-metric-value">${finFmtMoney(team.budget)}</span>${team.budget===0?'<span class="fin-metric-sub">No budget set</span>':''}<button onclick="finOpenBudgetCalc('${coachId}')" style="margin-top:.55rem;display:inline-flex;align-items:center;gap:.35rem;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:5px;padding:5px 12px;font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .15s;position:relative;z-index:1" onmouseover="this.style.background='rgba(255,255,255,.28)'" onmouseout="this.style.background='rgba(255,255,255,.15)'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/></svg>View Line Items</button></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-players">👥</div><div class="fin-metric-body"><span class="fin-metric-label">Players Registered &amp; Paid</span><span class="fin-metric-value">${team.goodStanding}/${team.totalRegistered}</span>${team.budgetedPlayers>0?`<span class="fin-metric-sub">Need ${team.budgetedPlayers} to meet budget</span>`:'<span class="fin-metric-sub">of registered players</span>'}</div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-collected">💵</div><div class="fin-metric-body"><span class="fin-metric-label">Total Revenue Collected</span><span class="fin-metric-value">${finFmtMoney(team.totalCollected)}</span>${team.budget>0?`<span class="fin-metric-sub">${pct}% of budget</span>`:''}</div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-balance">📈</div><div class="fin-metric-body"><span class="fin-metric-label">Balance to Meet Budget</span><span class="fin-metric-value">${hasBudget?finFmtMoney(budgetGap):'—'}</span><span class="fin-metric-sub">${!hasBudget?'No budget set':budgetReached?'✓ Budget reached':dlUrgency||'remaining to collect'}</span></div></div>
