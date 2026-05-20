@@ -418,6 +418,26 @@ input[type="file"].hidden-file{display:none}
 .cfd-pbtn.cur{border-color:var(--red);color:var(--red);cursor:default}
 .cfd-pbtn:disabled{color:var(--mid);cursor:not-allowed}
 
+/* ── FIN DASHBOARD SUBHEADER ── */
+.cfd-subheader{background:linear-gradient(135deg,#1a3fc4 0%,#1535a8 100%);position:relative;overflow:hidden;border-radius:8px;margin-bottom:1.4rem;padding:1rem 1.4rem}
+.cfd-subheader::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.cfd-subheader h2{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;color:#fff;letter-spacing:.14em;text-transform:uppercase;position:relative}
+
+/* ── ACCOUNTS IN RED INLINE SECTION ── */
+.cfd-air-section{display:none;background:var(--white);border-radius:8px;border:1px solid var(--mid);overflow:hidden;margin-bottom:1.4rem;box-shadow:0 2px 10px rgba(0,0,0,.06);animation:cfdAirIn .3s cubic-bezier(.4,0,.2,1)}
+@keyframes cfdAirIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.cfd-air-section.visible{display:block}
+.cfd-air-head{background:var(--red);padding:12px 22px;display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
+.cfd-air-head h3{font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;color:#fff;letter-spacing:.12em;text-transform:uppercase}
+.cfd-air-head-right{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.cfd-air-search{display:flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:6px;padding:5px 11px}
+.cfd-air-search input{border:none;background:none;outline:none;color:#fff;font-family:'Open Sans',sans-serif;font-size:.82rem;width:150px}
+.cfd-air-search input::placeholder{color:rgba(255,255,255,.6)}
+.cfd-air-close{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);color:#fff;padding:5px 14px;border-radius:6px;cursor:pointer;font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;transition:background .15s;display:flex;align-items:center;gap:5px}
+.cfd-air-close:hover{background:rgba(255,255,255,.28)}
+.cfd-metric.alert.air-clickable{cursor:pointer}
+.cfd-metric.alert.air-clickable:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,16,46,.18)!important;border-color:#f5c6cb!important}
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
 <style>
@@ -3425,6 +3445,12 @@ loadDashboard();
 
     <!-- FINANCIAL DASHBOARD PANEL -->
     <div class="dash-panel" id="panel-findashboard">
+      <div class="cfd-subheader">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;vertical-align:-3px;margin-right:8px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Financial Dashboard
+        </h2>
+      </div>
       <div id="cfd-content">
         <div style="text-align:center;padding:3rem;color:var(--sub);">Loading financial data…</div>
       </div>
@@ -3520,9 +3546,9 @@ function cfdBuildHTML(t) {
         <div class="cfd-micon ok">✅</div>
         <div class="cfd-mbody"><span class="cfd-mlabel">Good Standing</span><span class="cfd-mval">${t.goodStanding}</span><span class="cfd-msub">Fully paid players</span></div>
       </div>
-      <div class="cfd-metric alert">
+      <div class="cfd-metric alert${t.deadlinePassed && t.accountsInRed > 0 ? ' air-clickable' : ''}" ${t.deadlinePassed && t.accountsInRed > 0 ? 'onclick="cfdAirOpen()" title="Click to view players in red"' : ''}>
         <div class="cfd-micon red">⚠️</div>
-        <div class="cfd-mbody"><span class="cfd-mlabel">Accounts in Red</span><span class="cfd-mval">${t.deadlinePassed ? t.accountsInRed : '—'}</span>${!t.paymentDeadline?'<span class="cfd-msub">No deadline set</span>':!t.deadlinePassed?'<span class="cfd-msub">Deadline not passed yet</span>':t.accountsInRed>0?'<span class="cfd-msub">Players with overdue balance</span>':'<span class="cfd-msub">✓ All accounts paid</span>'}</div>
+        <div class="cfd-mbody"><span class="cfd-mlabel">Accounts in Red</span><span class="cfd-mval">${t.deadlinePassed ? t.accountsInRed : '—'}</span>${!t.paymentDeadline?'<span class="cfd-msub">No deadline set</span>':!t.deadlinePassed?'<span class="cfd-msub">Deadline not passed yet</span>':t.accountsInRed>0?'<span class="cfd-msub" style="color:var(--red);font-weight:700;">Click to view players ↗</span>':'<span class="cfd-msub">✓ All accounts paid</span>'}</div>
       </div>
       <div class="cfd-metric">
         <div class="cfd-micon bal">💳</div>
@@ -3531,6 +3557,25 @@ function cfdBuildHTML(t) {
       <div class="cfd-metric">
         <div class="cfd-micon dl">📅</div>
         <div class="cfd-mbody"><span class="cfd-mlabel">Collection Deadline</span><span class="cfd-mval">${dlDate}</span>${dlNote?`<span class="cfd-msub">${cfdEsc(dlNote)}</span>`:''}</div>
+      </div>
+    </div>
+
+    <div class="cfd-air-section" id="cfd-air-section">
+      <div class="cfd-air-head">
+        <h3>⚠️ Accounts in Red — Players with Overdue Balance</h3>
+        <div class="cfd-air-head-right">
+          <div class="cfd-air-search">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search players…" id="cfd-air-search" oninput="cfdAirFilter()">
+          </div>
+          <button class="cfd-air-close" onclick="cfdAirClose()">✕ Close</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="cfd-tbl">
+          <thead><tr><th>Player Name</th><th>Total Fee</th><th>Paid Amount</th><th>Balance Due</th><th>Last Payment</th><th>Status</th></tr></thead>
+          <tbody id="cfd-air-tbody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--sub);">Loading…</td></tr></tbody>
+        </table>
       </div>
     </div>
 
@@ -3627,6 +3672,61 @@ function cfdOnFilter() {
   _cfdPag.page = 1;
   clearTimeout(_cfdFilterTimer);
   _cfdFilterTimer = setTimeout(cfdLoadPlayers, 250);
+}
+
+// ── ACCOUNTS IN RED INLINE SECTION ───────────────────
+let _cfdAirPlayers = [];
+
+async function cfdAirOpen() {
+  const section = document.getElementById('cfd-air-section');
+  const tbody   = document.getElementById('cfd-air-tbody');
+  if (!section || !tbody) return;
+
+  // Show section and scroll to it
+  section.classList.add('visible');
+  setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30);
+
+  // Reset search
+  const searchEl = document.getElementById('cfd-air-search');
+  if (searchEl) searchEl.value = '';
+
+  tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--sub);"><span class="btn-spinner" style="border-top-color:var(--red);border-color:var(--mid);width:20px;height:20px;border-width:2.5px;display:inline-block;vertical-align:middle;margin-right:8px;"></span> Loading…</td></tr>`;
+
+  try {
+    const result = await cfdApiFetch('/api/coach/fin/players?status=overdue&perPage=100');
+    _cfdAirPlayers = result.players || [];
+    cfdAirRenderRows(_cfdAirPlayers);
+  } catch(e) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--red);">⚠️ ${cfdEsc(e.message || 'Failed to load players')}</td></tr>`;
+  }
+}
+
+function cfdAirRenderRows(players) {
+  const tbody = document.getElementById('cfd-air-tbody');
+  if (!tbody) return;
+  if (players.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--sub);">No overdue players found.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = players.map(p => `
+    <tr>
+      <td class="t-name">${cfdEsc(p.name)}</td>
+      <td>${cfdMoney(p.totalFee)}</td>
+      <td class="t-paid">${cfdMoney(p.paidAmount)}</td>
+      <td class="t-bal">${cfdMoney(p.balance)}</td>
+      <td>${cfdDate(p.lastPayment)}</td>
+      <td><span class="cfd-sbadge partial">Partial</span></td>
+    </tr>`).join('');
+}
+
+function cfdAirFilter() {
+  const q = (document.getElementById('cfd-air-search')?.value || '').trim().toLowerCase();
+  cfdAirRenderRows(q ? _cfdAirPlayers.filter(p => p.name.toLowerCase().includes(q)) : _cfdAirPlayers);
+}
+
+function cfdAirClose() {
+  const section = document.getElementById('cfd-air-section');
+  if (section) section.classList.remove('visible');
 }
 
 function cfdBindChart() {
