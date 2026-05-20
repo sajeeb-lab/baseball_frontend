@@ -512,7 +512,7 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
 
 <script>
 'use strict';
-const API_BASE = 'https://backend-baseball-inky.vercel.app';
+const API_BASE = 'https://roots-applicable-affairs-phys.trycloudflare.com';
 let adminToken = localStorage.getItem('admin_token') || '';
 let allCoaches = [];
 let currentCoachId = null;
@@ -1308,6 +1308,7 @@ async function finRenderBalanceTable() {
   catch(e) { tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--red);">${esc(e.message||'Failed')}</td></tr>`; if(pag)pag.innerHTML=''; return; }
   const {players,total}=result, totalPages=Math.max(1,Math.ceil(total/p.perPage));
   if(p.page>totalPages&&totalPages>0){p.page=totalPages;return finRenderBalanceTable();}
+  players.sort((a,b)=>{ const t=a.team.localeCompare(b.team); return t!==0?t:a.name.localeCompare(b.name); });
   tbody.innerHTML=players.length===0?`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">No outstanding balances 🎉</td></tr>`:
     players.map(r=>`<tr><td class="f-name">${esc(r.name)}</td><td>${esc(r.team)}</td><td>${finFmtMoney(r.totalFee)}</td><td class="f-paid">${finFmtMoney(r.paidAmount)}</td><td class="f-balance">${finFmtMoney(r.balance)}</td><td><span class="fin-status ${r.status}">${r.status==='partial'?'Partial':'Unpaid'}</span></td></tr>`).join('');
   if(pag) finRenderPagination(pag,p,totalPages,total,np=>{p.page=np;finRenderBalanceTable();},np=>{p.perPage=np;p.page=1;finRenderBalanceTable();});
