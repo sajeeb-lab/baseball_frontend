@@ -499,6 +499,7 @@ const API_BASE = 'https://backend-baseball-inky.vercel.app';
 const _params     = new URLSearchParams(window.location.search);
 const _urlToken   = _params.get('adminToken');
 const _urlCoachId = _params.get('adminCoachId');
+const _initialHash = location.hash; // capture before replaceState wipes it
 if (_urlToken) {
   sessionStorage.setItem('admin_impersonation_token',    _urlToken);
   sessionStorage.setItem('admin_impersonation_coach_id', _urlCoachId);
@@ -584,8 +585,7 @@ async function loadDashboard(){
     if (coach._id) localStorage.setItem('coach_id', coach._id);
     renderDashboard(coach);
     // If opened with #calculator hash (e.g. from admin View Line Items), jump to that tab
-    if (location.hash === '#calculator') {
-      location.hash = '';
+    if (_initialHash === '#calculator') {
       switchPanel('calculator');
     }
   } catch(err){
