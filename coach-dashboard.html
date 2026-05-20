@@ -583,6 +583,11 @@ async function loadDashboard(){
     const {coach}=await res.json();
     if (coach._id) localStorage.setItem('coach_id', coach._id);
     renderDashboard(coach);
+    // If opened with #calculator hash (e.g. from admin View Line Items), jump to that tab
+    if (location.hash === '#calculator') {
+      location.hash = '';
+      switchPanel('calculator');
+    }
   } catch(err){
     document.getElementById('dash-main').innerHTML='<div class="card"><div class="card-body" style="text-align:center;color:var(--red);padding:3rem">'+esc(err.message)+'</div></div>';
   }
