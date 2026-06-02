@@ -1134,11 +1134,9 @@ async function finRenderTeamDashboard(coachId) {
   return `
     <div class="fin-metrics-grid">
       <div class="fin-metric-card budget-card"><div class="fin-metric-icon">📄</div><div class="fin-metric-body"><span class="fin-metric-label">Team Budget</span><span class="fin-metric-value">${finFmtMoney(team.budget)}</span>${team.budget===0?'<span class="fin-metric-sub">No budget set</span>':''}<button onclick="finOpenBudgetCalc('${coachId}')" style="margin-top:.55rem;display:inline-flex;align-items:center;gap:.35rem;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:5px;padding:5px 12px;font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .15s;position:relative;z-index:1" onmouseover="this.style.background='rgba(255,255,255,.28)'" onmouseout="this.style.background='rgba(255,255,255,.15)'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/></svg>View Line Items</button></div></div>
-      <div class="fin-metric-card"><div class="fin-metric-icon c-players">👥</div><div class="fin-metric-body"><span class="fin-metric-label">Players Registered &amp; Paid</span><span class="fin-metric-value">${team.goodStanding}/${team.totalRegistered}</span>${team.budgetedPlayers>0?`<span class="fin-metric-sub">Need ${team.budgetedPlayers} to meet budget</span>`:'<span class="fin-metric-sub">of registered players</span>'}</div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon c-players">👥</div><div class="fin-metric-body"><span class="fin-metric-label">Players Registered</span><span class="fin-metric-value">${team.budgetedPlayers>0?`${team.totalRegistered}/${team.budgetedPlayers}`:team.totalRegistered}</span>${team.budgetedPlayers>0?'<span class="fin-metric-sub">registered / needed to meet budget</span>':'<span class="fin-metric-sub">No budget set</span>'}</div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-collected">💵</div><div class="fin-metric-body"><span class="fin-metric-label">Total Revenue Collected</span><span class="fin-metric-value">${finFmtMoney(team.totalCollected)}</span>${team.budget>0?`<span class="fin-metric-sub">${pct}% of budget</span>`:''}</div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-balance">📈</div><div class="fin-metric-body"><span class="fin-metric-label">Balance to Meet Budget</span><span class="fin-metric-value">${hasBudget?finFmtMoney(budgetGap):'—'}</span><span class="fin-metric-sub">${!hasBudget?'No budget set':budgetReached?'✓ Budget reached':dlUrgency||'remaining to collect'}</span></div></div>
-      <div class="fin-metric-card"><div class="fin-metric-icon c-good">✅</div><div class="fin-metric-body"><span class="fin-metric-label">Good Standing</span><span class="fin-metric-value">${team.goodStanding}</span><span class="fin-metric-sub">Current accounts</span></div></div>
-      <div class="fin-metric-card alert-card${team.deadlinePassed && team.accountsInRed > 0 ? ' air-clickable' : ''}" ${team.deadlinePassed && team.accountsInRed > 0 ? `onclick="airOpen('${coachId}', ${team.accountsInRed})" title="Click to view players in red"` : ''}><div class="fin-metric-icon c-alert">⚠️</div><div class="fin-metric-body"><span class="fin-metric-label">Accounts in Red</span><span class="fin-metric-value">${team.deadlinePassed?team.accountsInRed:'—'}</span>${!team.paymentDeadline?'<span class="fin-metric-sub">No deadline set</span>':!team.deadlinePassed?'<span class="fin-metric-sub">Deadline not passed yet</span>':team.accountsInRed>0?'<span class="fin-metric-sub" style="color:var(--red);font-weight:600;">Click to view players ↗</span>':'<span class="fin-metric-sub">✓ All accounts paid</span>'}</div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-balance">💳</div><div class="fin-metric-body"><span class="fin-metric-label">Outstanding Balance</span><span class="fin-metric-value">${finFmtMoney(team.balanceRemaining)}</span><span class="fin-metric-sub">across registered players</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-deadline">📅</div><div class="fin-metric-body"><span class="fin-metric-label">Collection Deadline</span><span class="fin-metric-value">${dlDate}</span>${!team.paymentDeadline?'<span class="fin-metric-sub">No deadline set</span>':''}</div></div>
       ${hasBudget?`<div class="fin-metric-card chart-card"><div class="fin-metric-body" style="gap:.6rem">
@@ -1147,8 +1145,8 @@ async function finRenderTeamDashboard(coachId) {
           <svg viewBox="0 0 200 200">
             <circle cx="100" cy="100" r="80" fill="none" stroke="#dde2ea" stroke-width="40"/>
             <circle class="fin-seg" cx="100" cy="100" r="80" fill="none" stroke="#16a34a" stroke-width="40" stroke-dasharray="${cArc} ${CIRC}" transform="rotate(-90 100 100)" data-name="Collected" data-amount="${team.totalCollected}" data-percent="${(team.totalCollected/team.budget*100).toFixed(1)}"/>
-            <circle class="fin-seg" cx="100" cy="100" r="80" fill="none" stroke="#c8102e" stroke-width="40" stroke-dasharray="${oArc} ${CIRC}" stroke-dashoffset="${-cArc}" transform="rotate(-90 100 100)" data-name="Owed by players" data-amount="${team.balanceRemaining}" data-percent="${(team.balanceRemaining/team.budget*100).toFixed(1)}"/>
-            <circle class="fin-seg" cx="100" cy="100" r="80" fill="none" stroke="#b45309" stroke-width="40" stroke-dasharray="${pArc} ${CIRC}" stroke-dashoffset="${-(cArc+oArc)}" transform="rotate(-90 100 100)" data-name="Pending to budget" data-amount="${pAmt}" data-percent="${(pAmt/team.budget*100).toFixed(1)}"/>
+            <circle class="fin-seg" cx="100" cy="100" r="80" fill="none" stroke="#c8102e" stroke-width="40" stroke-dasharray="${oArc} ${CIRC}" stroke-dashoffset="${-cArc}" transform="rotate(-90 100 100)" data-name="Pending" data-amount="${team.balanceRemaining}" data-percent="${(team.balanceRemaining/team.budget*100).toFixed(1)}"/>
+            <circle class="fin-seg" cx="100" cy="100" r="80" fill="none" stroke="#b45309" stroke-width="40" stroke-dasharray="${pArc} ${CIRC}" stroke-dashoffset="${-(cArc+oArc)}" transform="rotate(-90 100 100)" data-name="Outstanding" data-amount="${pAmt}" data-percent="${(pAmt/team.budget*100).toFixed(1)}"/>
             <text x="100" y="95" text-anchor="middle" font-size="26" font-weight="700" font-family="Oswald" fill="#0d1f38">${pct}%</text>
             <text x="100" y="118" text-anchor="middle" font-size="11" font-family="Oswald" letter-spacing="2" fill="#7a8499">COLLECTED</text>
           </svg>
@@ -1156,29 +1154,10 @@ async function finRenderTeamDashboard(coachId) {
         </div>
         <div class="fin-legend">
           <div class="fin-legend-item"><span class="fin-legend-dot lc"></span><span>Collected: ${finFmtMoney(team.totalCollected)}</span></div>
-          <div class="fin-legend-item"><span class="fin-legend-dot lb"></span><span>Owed: ${finFmtMoney(team.balanceRemaining)}</span></div>
-          <div class="fin-legend-item"><span class="fin-legend-dot lp"></span><span>Pending: ${finFmtMoney(pAmt)}</span></div>
+          <div class="fin-legend-item"><span class="fin-legend-dot lb"></span><span>Pending: ${finFmtMoney(team.balanceRemaining)}</span></div>
+          <div class="fin-legend-item"><span class="fin-legend-dot lp"></span><span>Outstanding: ${finFmtMoney(pAmt)}</span></div>
         </div>
       </div></div>`:''}
-    </div>
-    <div class="air-section" id="air-section-${coachId}">
-      <div class="air-section-head">
-        <h2>⚠️ Accounts in Red — Players with Overdue Balance</h2>
-        <div class="air-head-right">
-          <div class="air-search-wrap">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" placeholder="Search players…" id="air-search-${coachId}" oninput="airFilter('${coachId}')">
-          </div>
-          <button class="air-close-btn" onclick="airClose('${coachId}')">✕ Close</button>
-        </div>
-      </div>
-      <div style="overflow-x:auto;">
-        <table class="fin-tbl">
-          <thead><tr><th>Player Name</th><th>Total Fee</th><th>Paid Amount</th><th>Balance Due</th><th>Last Payment</th><th>Status</th></tr></thead>
-          <tbody id="air-tbody-${coachId}"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading…</td></tr></tbody>
-        </table>
-      </div>
-      <div class="fin-pagination" id="air-pag-${coachId}"></div>
     </div>
     <div class="fin-section-card">
       <div class="fin-section-head">
@@ -1240,12 +1219,53 @@ async function finRenderPayouts(coachId) {
     </div>
     ${payouts.length===0
       ? `<p style="text-align:center;padding:.75rem 0;color:var(--muted);font-size:.85rem;">No payments recorded yet.</p>`
-      : `<div style="overflow-x:auto;"><table class="fin-tbl"><thead><tr><th>Date Paid</th><th>Amount</th><th>Notes</th></tr></thead><tbody>${payouts.map(p=>`<tr><td>${finFmtDate(p.date)}</td><td class="f-paid">${finFmtMoney(p.amount)}</td><td>${esc(p.notes)}</td></tr>`).join('')}</tbody></table></div>`}`;
+      : `<div style="overflow-x:auto;"><table class="fin-tbl"><thead><tr><th>Date Paid</th><th>Amount</th><th>Notes</th><th style="text-align:right;">Actions</th></tr></thead><tbody>${payouts.map(p=>`<tr><td>${finFmtDate(p.date)}</td><td class="f-paid">${finFmtMoney(p.amount)}</td><td>${esc(p.notes)}</td><td style="text-align:right;white-space:nowrap;"><button onclick="finEditPayout('${coachId}','${p.id}','${p.date}',${p.amount},'${esc(p.notes).replace(/'/g,"\\'")}')" style="padding:5px 11px;margin-right:.35rem;border:1.5px solid var(--mid);border-radius:5px;background:var(--white);font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;">Edit</button><button onclick="finDeletePayout('${coachId}','${p.id}')" style="padding:5px 11px;border:1.5px solid #f5c6cb;border-radius:5px;background:#fef3f5;color:var(--red);font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;">Delete</button></td></tr>`).join('')}</tbody></table></div>`}`;
 }
+
+// Tracks which payout is being edited per coach (null = add mode)
+const _finPayoutEdit = {};
 
 function finTogglePayoutForm(coachId) {
   const f = document.getElementById(`fin-payout-form-${coachId}`);
-  if (f) f.style.display = f.style.display === 'none' ? '' : 'none';
+  if (!f) return;
+  const opening = f.style.display === 'none';
+  f.style.display = opening ? '' : 'none';
+  // Closing the form always clears edit mode
+  if (!opening) finResetPayoutForm(coachId);
+}
+
+function finResetPayoutForm(coachId) {
+  _finPayoutEdit[coachId] = null;
+  const d = document.getElementById(`fin-payout-date-${coachId}`);
+  const a = document.getElementById(`fin-payout-amount-${coachId}`);
+  const n = document.getElementById(`fin-payout-notes-${coachId}`);
+  if (d) d.value=''; if (a) a.value=''; if (n) n.value='';
+  const btn = document.getElementById(`fin-payout-submit-${coachId}`);
+  if (btn) btn.textContent='Submit Payment';
+}
+
+function finEditPayout(coachId, payoutId, date, amount, notes) {
+  _finPayoutEdit[coachId] = payoutId;
+  const form = document.getElementById(`fin-payout-form-${coachId}`);
+  if (form) form.style.display='';
+  // date comes as ISO; take the YYYY-MM-DD part for the date input
+  const dInput = document.getElementById(`fin-payout-date-${coachId}`);
+  if (dInput) dInput.value = (date || '').slice(0, 10);
+  document.getElementById(`fin-payout-amount-${coachId}`).value = amount;
+  document.getElementById(`fin-payout-notes-${coachId}`).value = notes || '';
+  const btn = document.getElementById(`fin-payout-submit-${coachId}`);
+  if (btn) btn.textContent='Update Payment';
+  if (form) form.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+async function finDeletePayout(coachId, payoutId) {
+  if (!confirm('Delete this payment? This cannot be undone.')) return;
+  try {
+    await finApiFetch(`/api/admin/fin/teams/${coachId}/payouts/${payoutId}`, { method:'DELETE' });
+    finResetPayoutForm(coachId);
+    await finRenderPayouts(coachId);
+    showToast('Payment deleted', 'green');
+  } catch(e) { showToast(e.message||'Failed to delete', 'red'); }
 }
 
 async function finSubmitPayout(coachId) {
@@ -1253,18 +1273,20 @@ async function finSubmitPayout(coachId) {
   const amount = document.getElementById(`fin-payout-amount-${coachId}`).value;
   const notes = document.getElementById(`fin-payout-notes-${coachId}`).value;
   if (!date || !amount) { showToast('Please fill in date and amount', 'red'); return; }
+  const editId = _finPayoutEdit[coachId] || null;
   const btn = document.getElementById(`fin-payout-submit-${coachId}`);
   btn.disabled=true; btn.textContent='Saving…';
   try {
-    await finApiFetch(`/api/admin/fin/teams/${coachId}/payouts`, { method:'POST', body: JSON.stringify({ date, amount: parseFloat(amount), notes }) });
-    document.getElementById(`fin-payout-date-${coachId}`).value='';
-    document.getElementById(`fin-payout-amount-${coachId}`).value='';
-    document.getElementById(`fin-payout-notes-${coachId}`).value='';
+    const url = editId
+      ? `/api/admin/fin/teams/${coachId}/payouts/${editId}`
+      : `/api/admin/fin/teams/${coachId}/payouts`;
+    await finApiFetch(url, { method: editId ? 'PUT' : 'POST', body: JSON.stringify({ date, amount: parseFloat(amount), notes }) });
     document.getElementById(`fin-payout-form-${coachId}`).style.display='none';
+    finResetPayoutForm(coachId);
     await finRenderPayouts(coachId);
-    showToast('Payment saved', 'green');
-  } catch(e) { showToast(e.message||'Failed to save', 'red'); }
-  finally { btn.disabled=false; btn.textContent='Submit Payment'; }
+    showToast(editId ? 'Payment updated' : 'Payment saved', 'green');
+  } catch(e) { showToast(e.message||'Failed to save', 'red'); btn.disabled=false; btn.textContent = editId ? 'Update Payment' : 'Submit Payment'; return; }
+  btn.disabled=false;
 }
 
 // ── CHART HOVER ───────────────────────────────────────
@@ -1385,64 +1407,6 @@ function finRenderPagination(el,state,totalPages,totalItems,onPage,onPerPage) {
       <button class="fin-page-btn current">${state.page}</button>
       <button class="fin-page-btn" ${state.page>=totalPages?'disabled':''} onclick="(function(c){c._fp(${state.page+1});})(this.closest('.fin-pagination'))">Next</button>
     </div>`;
-}
-
-// ── ACCOUNTS IN RED INLINE SECTION ───────────────────
-let _airAllPlayers = [];   // full list for client-side search
-
-async function airOpen(coachId, count) {
-  const section = document.getElementById(`air-section-${coachId}`);
-  const tbody   = document.getElementById(`air-tbody-${coachId}`);
-  const pag     = document.getElementById(`air-pag-${coachId}`);
-  if (!section || !tbody) return;
-
-  // Show the section and scroll to it smoothly
-  section.classList.add('visible');
-  setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30);
-
-  // Reset search input
-  const searchEl = document.getElementById(`air-search-${coachId}`);
-  if (searchEl) searchEl.value = '';
-
-  tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);"><div style="display:inline-flex;align-items:center;gap:10px;"><div class="spinner"></div> Loading…</div></td></tr>`;
-  if (pag) pag.innerHTML = '';
-
-  try {
-    const result = await finApiFetch(`/api/admin/fin/teams/${coachId}/players?status=overdue&perPage=100`);
-    _airAllPlayers = result.players || [];
-    airRenderRows(coachId, _airAllPlayers);
-  } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--red);">⚠️ ${esc(e.message || 'Failed to load players')}</td></tr>`;
-  }
-}
-
-function airRenderRows(coachId, players) {
-  const tbody = document.getElementById(`air-tbody-${coachId}`);
-  if (!tbody) return;
-  if (players.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">No overdue players found.</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = players.map(p => `
-    <tr>
-      <td class="f-name">${esc(p.name)}</td>
-      <td>${finFmtMoney(p.totalFee)}</td>
-      <td class="f-paid">${finFmtMoney(p.paidAmount)}</td>
-      <td class="f-balance">${finFmtMoney(p.balance)}</td>
-      <td>${finFmtDate(p.lastPayment)}</td>
-      <td><span class="fin-status partial">Partial</span></td>
-    </tr>`).join('');
-}
-
-function airFilter(coachId) {
-  const q = (document.getElementById(`air-search-${coachId}`)?.value || '').trim().toLowerCase();
-  const filtered = q ? _airAllPlayers.filter(p => p.name.toLowerCase().includes(q)) : _airAllPlayers;
-  airRenderRows(coachId, filtered);
-}
-
-function airClose(coachId) {
-  const section = document.getElementById(`air-section-${coachId}`);
-  if (section) section.classList.remove('visible');
 }
 
 // ── INIT ──
