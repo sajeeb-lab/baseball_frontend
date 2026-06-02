@@ -512,7 +512,7 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
 
 <script>
 'use strict';
-const API_BASE = 'https://backend-baseball-inky.vercel.app';
+const API_BASE = 'https://team.ambassadorsbaseballus.com';
 let adminToken = localStorage.getItem('admin_token') || '';
 let allCoaches = [];
 let currentCoachId = null;
@@ -1055,7 +1055,7 @@ async function finRenderContent() {
 async function finRenderOrgDashboard() {
   let m = null, err = null;
   try { m = await finApiFetch('/api/admin/fin/organization-overview'); }
-  catch(e) { err = e.message||'Failed to load'; m = { activeTeams:0,averagePlayerFee:0,totalCollected:0,outstanding:0,payingPlayers:0,totalPlayers:0,organizationProfit:0 }; }
+  catch(e) { err = e.message||'Failed to load'; m = { activeTeams:0,averagePlayerFee:0,totalCollected:0,outstanding:0,payingPlayers:0,totalPlayers:0,organizationProfit:0,totalBudget:0,budgetedOrganizationProfit:0 }; }
   const notFullyPaid = m.notFullyPaid ?? 0;
   const totalReg     = m.totalRegistered ?? 0;
   const pyVal = totalReg > 0 ? `${notFullyPaid} / ${totalReg}` : `${notFullyPaid}`;
@@ -1064,11 +1064,13 @@ async function finRenderOrgDashboard() {
     ${err?`<div class="fin-error"><span>⚠️ ${esc(err)}</span><button class="fin-retry" onclick="finRenderContent()">Retry</button></div>`:''}
     <div class="fin-metrics-grid">
       <div class="fin-metric-card"><div class="fin-metric-icon c-teams">👥</div><div class="fin-metric-body"><span class="fin-metric-label">Active Teams</span><span class="fin-metric-value">${m.activeTeams}</span></div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon">📊</div><div class="fin-metric-body"><span class="fin-metric-label">Total Budget</span><span class="fin-metric-value">${finFmtMoney(m.totalBudget)}</span><span class="fin-metric-sub">sum of all active team budgets</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon">💵</div><div class="fin-metric-body"><span class="fin-metric-label">Average Player Fee</span><span class="fin-metric-value">${finFmtMoney(m.averagePlayerFee)}</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-players">👤</div><div class="fin-metric-body"><span class="fin-metric-label">Paying Players</span><span class="fin-metric-value">${pyVal}</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-collected">📈</div><div class="fin-metric-body"><span class="fin-metric-label">Total Collected</span><span class="fin-metric-value">${finFmtMoney(m.totalCollected)}</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-balance">⚠️</div><div class="fin-metric-body"><span class="fin-metric-label">Balance Outstanding</span><span class="fin-metric-value">${finFmtMoney(m.outstanding)}</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-profit">💰</div><div class="fin-metric-body"><span class="fin-metric-label">Expected Organization Profit</span><span class="fin-metric-value">${finFmtMoney(m.organizationProfit)}</span><span class="fin-metric-sub">total registered × $450</span></div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon c-profit">💰</div><div class="fin-metric-body"><span class="fin-metric-label">Organization Profit</span><span class="fin-metric-value">${finFmtMoney(m.budgetedOrganizationProfit)}</span><span class="fin-metric-sub">budgeted players × $450</span></div></div>
     </div>
     <div class="fin-section-card">
       <div class="fin-section-head">
