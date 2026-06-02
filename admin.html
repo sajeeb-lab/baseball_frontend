@@ -512,7 +512,7 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
 
 <script>
 'use strict';
-const API_BASE = 'https://roots-applicable-affairs-phys.trycloudflare.com';
+const API_BASE = 'https://team.ambassadorsbaseballus.com';
 let adminToken = localStorage.getItem('admin_token') || '';
 let allCoaches = [];
 let currentCoachId = null;
@@ -1078,6 +1078,16 @@ async function finRenderOrgDashboard() {
             <option value="budget" selected>Highest Budget</option>
             <option value="completed">Completed Budget (100%)</option>
             <option value="balance">Most Fees to Collect</option>
+            <option value="tournaments">Highest Tournaments / Events</option>
+            <option value="headPay">Highest Head Coach Pay</option>
+            <option value="asstPay">Highest Assistant Coach Pay</option>
+            <option value="rentals">Highest Rentals</option>
+            <option value="hotels">Highest Hotel Costs</option>
+            <option value="gas">Highest Gas</option>
+            <option value="uniforms">Highest Coach Uniforms</option>
+            <option value="equipment">Highest Equipment</option>
+            <option value="insurance">Highest Coach Liability Insurance</option>
+            <option value="ambassadors">Highest Ambassadors Fee</option>
           </select>
         </div>
       </div>
@@ -1275,6 +1285,20 @@ function finBindChartHover() {
 
 // ── RANKINGS ─────────────────────────────────────────
 let _finRankSort = 'budget';
+// Labels for the budget line-item sort metrics — used to show the active
+// metric as an extra stat on each ranking card when one is selected.
+const _FIN_BUDGET_METRICS = {
+  tournaments: 'Tournaments / Events',
+  headPay:     'Head Coach Pay',
+  asstPay:     'Assistant Coach Pay',
+  rentals:     'Rentals',
+  hotels:      'Hotel Costs',
+  gas:         'Gas',
+  uniforms:    'Coach Uniforms',
+  equipment:   'Equipment',
+  insurance:   'Coach Liability Insurance',
+  ambassadors: 'Ambassadors Fee',
+};
 function finOnRankingsSortChange(v) { _finRankSort=v; finRenderRankings(); }
 async function finRenderRankings() {
   const host = document.getElementById('fin-rankings-host');
@@ -1284,6 +1308,7 @@ async function finRenderRankings() {
   try { const r=await finApiFetch(`/api/admin/fin/team-rankings?sortBy=${_finRankSort}`); ranks=r.rankings||[]; }
   catch(e) { host.innerHTML=`<div class="fin-error"><span>⚠️ ${esc(e.message||'Failed')}</span><button class="fin-retry" onclick="finRenderRankings()">Retry</button></div>`; return; }
   if (ranks.length===0) { host.innerHTML=`<div style="text-align:center;padding:2rem;color:var(--muted);">No active teams to rank.</div>`; return; }
+  const metricLbl = _FIN_BUDGET_METRICS[_finRankSort];
   host.innerHTML=`<div class="fin-ranking-list">${ranks.map((t,i)=>`
     <div class="fin-ranking-card">
       <div class="fin-rank-num">${i+1}</div>
@@ -1293,6 +1318,7 @@ async function finRenderRankings() {
         <div class="fin-stat"><span class="fin-stat-lbl">Collected</span><span class="fin-stat-val">${finFmtMoney(t.collected)}</span></div>
         <div class="fin-stat"><span class="fin-stat-lbl">% Done</span><span class="fin-stat-val">${t.percentCollected}%</span></div>
         <div class="fin-stat"><span class="fin-stat-lbl">Balance</span><span class="fin-stat-val">${finFmtMoney(t.balance)}</span></div>
+        ${metricLbl?`<div class="fin-stat"><span class="fin-stat-lbl">${esc(metricLbl)}</span><span class="fin-stat-val">${finFmtMoney(t[_finRankSort])}</span></div>`:''}
       </div>
       ${t.completed?'<span class="fin-completed-badge">✓ Done</span>':''}
     </div>`).join('')}</div>`;
