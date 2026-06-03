@@ -1055,7 +1055,7 @@ async function finRenderContent() {
 async function finRenderOrgDashboard() {
   let m = null, err = null;
   try { m = await finApiFetch('/api/admin/fin/organization-overview'); }
-  catch(e) { err = e.message||'Failed to load'; m = { activeTeams:0,averagePlayerFee:0,totalCollected:0,outstanding:0,payingPlayers:0,totalPlayers:0,organizationProfit:0,totalBudget:0,budgetedOrganizationProfit:0 }; }
+  catch(e) { err = e.message||'Failed to load'; m = { activeTeams:0,averagePlayerFee:0,totalCollected:0,outstanding:0,payingPlayers:0,totalPlayers:0,organizationProfit:0,totalBudget:0,budgetedOrganizationProfit:0,budgetBalanceRemaining:0 }; }
   const notFullyPaid = m.notFullyPaid ?? 0;
   const totalReg     = m.totalRegistered ?? 0;
   const pyVal = totalReg > 0 ? `${notFullyPaid} / ${totalReg}` : `${notFullyPaid}`;
@@ -1065,6 +1065,7 @@ async function finRenderOrgDashboard() {
     <div class="fin-metrics-grid">
       <div class="fin-metric-card"><div class="fin-metric-icon c-teams">👥</div><div class="fin-metric-body"><span class="fin-metric-label">Active Teams</span><span class="fin-metric-value">${m.activeTeams}</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon">📊</div><div class="fin-metric-body"><span class="fin-metric-label">Total Budget</span><span class="fin-metric-value">${finFmtMoney(m.totalBudget)}</span><span class="fin-metric-sub">sum of all active team budgets</span></div></div>
+      <div class="fin-metric-card"><div class="fin-metric-icon c-balance">🎯</div><div class="fin-metric-body"><span class="fin-metric-label">Balance to Meet Total Budget</span><span class="fin-metric-value">${m.budgetBalanceRemaining>0?finFmtMoney(m.budgetBalanceRemaining):'✓ $0.00'}</span><span class="fin-metric-sub">${m.budgetBalanceRemaining>0?'remaining to collect':'budget reached'}</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon">💵</div><div class="fin-metric-body"><span class="fin-metric-label">Average Player Fee</span><span class="fin-metric-value">${finFmtMoney(m.averagePlayerFee)}</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-players">👤</div><div class="fin-metric-body"><span class="fin-metric-label">Paying Players</span><span class="fin-metric-value">${pyVal}</span></div></div>
       <div class="fin-metric-card"><div class="fin-metric-icon c-collected">📈</div><div class="fin-metric-body"><span class="fin-metric-label">Total Collected</span><span class="fin-metric-value">${finFmtMoney(m.totalCollected)}</span></div></div>
