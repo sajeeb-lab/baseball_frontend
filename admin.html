@@ -1091,6 +1091,10 @@ async function finRenderOrgDashboard() {
             <option value="equipment">Highest Equipment</option>
             <option value="insurance">Highest Coach Liability Insurance</option>
             <option value="ambassadors">Highest Ambassadors Fee</option>
+            <option value="players">Highest Expected Players</option>
+            <option value="seasons">Highest Seasons</option>
+            <option value="perPlayer">Highest Cost Per Player</option>
+            <option value="others">Highest Other Costs</option>
           </select>
         </div>
       </div>
@@ -1323,7 +1327,13 @@ const _FIN_BUDGET_METRICS = {
   equipment:   'Equipment',
   insurance:   'Coach Liability Insurance',
   ambassadors: 'Ambassadors Fee',
+  players:     'Expected Players',
+  seasons:     'Seasons',
+  perPlayer:   'Cost Per Player',
+  others:      'Other Costs',
 };
+// Metrics that are plain counts, not dollar amounts — formatted as numbers.
+const _FIN_BUDGET_COUNT_METRICS = new Set(['players', 'seasons']);
 function finOnRankingsSortChange(v) { _finRankSort=v; finRenderRankings(); }
 async function finRenderRankings() {
   const host = document.getElementById('fin-rankings-host');
@@ -1343,7 +1353,7 @@ async function finRenderRankings() {
         <div class="fin-stat"><span class="fin-stat-lbl">Collected</span><span class="fin-stat-val">${finFmtMoney(t.collected)}</span></div>
         <div class="fin-stat"><span class="fin-stat-lbl">% Done</span><span class="fin-stat-val">${t.percentCollected}%</span></div>
         <div class="fin-stat"><span class="fin-stat-lbl">Balance</span><span class="fin-stat-val">${finFmtMoney(t.balance)}</span></div>
-        ${metricLbl?`<div class="fin-stat"><span class="fin-stat-lbl">${esc(metricLbl)}</span><span class="fin-stat-val">${finFmtMoney(t[_finRankSort])}</span></div>`:''}
+        ${metricLbl?`<div class="fin-stat"><span class="fin-stat-lbl">${esc(metricLbl)}</span><span class="fin-stat-val">${_FIN_BUDGET_COUNT_METRICS.has(_finRankSort)?(t[_finRankSort]||0):finFmtMoney(t[_finRankSort])}</span></div>`:''}
       </div>
       ${t.completed?'<span class="fin-completed-badge">✓ Done</span>':''}
     </div>`).join('')}</div>`;
