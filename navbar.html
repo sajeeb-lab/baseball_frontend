@@ -115,6 +115,9 @@
     }
     .navbar-cta:hover { background: #0d2a99; }
 
+    /* ── SPACER — reserves space below the fixed navbar so page content isn't hidden behind it ── */
+    .navbar-spacer { height: 130px; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 960px) {
       .navbar-links { display: none; }
@@ -124,6 +127,7 @@
     @media (max-width: 480px) {
       .navbar-inner { height: 85px; }
       .navbar-logo img { height: 68px; }
+      .navbar-spacer { height: 85px; }
     }
   </style>
 </head>
@@ -155,6 +159,7 @@
 
   </div>
 </nav>
+<div class="navbar-spacer"></div>
 
 </body>
 </html>
