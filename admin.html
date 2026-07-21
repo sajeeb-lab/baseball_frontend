@@ -753,11 +753,9 @@ function renderModal({ coach, tryouts, registrations, roster, schedule }) {
     regsByTryout[key].push(r);
   });
 
-  const regsHtml = registrations.length === 0
-    ? `<div class="empty-state"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>No registrations yet.</div>`
-    : `<table class="info-table">
+  const regsTable = (list) => `<table class="info-table">
         <thead><tr><th>Player</th><th>Contact</th><th>Email</th><th>Cell</th><th>Tryout Date</th><th>Age</th><th>Position</th></tr></thead>
-        <tbody>${registrations.map(r => `
+        <tbody>${list.map(r => `
           <tr>
             <td><strong>${esc(r.player_name||'—')}</strong></td>
             <td>${esc(r.name||'—')}</td>
@@ -769,6 +767,31 @@ function renderModal({ coach, tryouts, registrations, roster, schedule }) {
           </tr>`).join('')}
         </tbody>
       </table>`;
+
+  const regsByTryoutDate = (a, b) => {
+    const da = new Date(a.tryout_date), db = new Date(b.tryout_date);
+    if (!isNaN(da) && !isNaN(db)) return da - db;
+    return String(a.tryout_date).localeCompare(String(b.tryout_date));
+  };
+  const upcomingRegs = registrations.filter(r => !isPastTryoutDate(r.tryout_date)).sort(regsByTryoutDate);
+  const pastRegs     = registrations.filter(r =>  isPastTryoutDate(r.tryout_date)).sort(regsByTryoutDate).reverse(); // most recent past first
+
+  const regsSectionHeader = (label, count, color) => `
+    <div style="display:flex;align-items:center;gap:8px;margin:0 0 10px;">
+      <span style="font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${color};">${label}</span>
+      <span style="background:${color};color:#fff;font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:20px;">${count}</span>
+    </div>`;
+
+  const regsHtml = registrations.length === 0
+    ? `<div class="empty-state"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>No registrations yet.</div>`
+    : `<div style="margin-bottom:1.6rem;">
+         ${regsSectionHeader('Upcoming Tryouts', upcomingRegs.length, 'var(--navy)')}
+         ${upcomingRegs.length ? regsTable(upcomingRegs) : `<div class="empty-state" style="padding:1.2rem;">No registrations for upcoming tryouts.</div>`}
+       </div>
+       <div>
+         ${regsSectionHeader('Past Tryouts', pastRegs.length, 'var(--muted)')}
+         <div style="opacity:.75;">${pastRegs.length ? regsTable(pastRegs) : `<div class="empty-state" style="padding:1.2rem;">No registrations for past tryouts.</div>`}</div>
+       </div>`;
 
   const rosterHtml = roster.length === 0
     ? `<div class="empty-state"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>No roster yet.</div>`
