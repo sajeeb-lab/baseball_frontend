@@ -1001,7 +1001,14 @@ async function loadTryouts(id) {
     const res  = await fetch(`${API_BASE}/api/teams/${id}/tryouts`);
     const data = await res.json();
     if (!res.ok) throw new Error(data.message);
-    const tryouts = (data.tryouts || []).sort((a, b) => {
+    // Hide tryouts whose date has already passed (a tryout stays visible through the end of its day)
+    const isPastTryout = (dateStr) => {
+      const d = new Date(dateStr);
+      if (isNaN(d)) return false; // unparseable date → keep it visible
+      const endOfDay = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
+      return endOfDay < new Date();
+    };
+    const tryouts = (data.tryouts || []).filter(t => !isPastTryout(t.date)).sort((a, b) => {
       const da = new Date(a.date);
       const db = new Date(b.date);
       if (!isNaN(da) && !isNaN(db)) return da - db;
