@@ -1008,7 +1008,7 @@ async function loadTryouts(id) {
       const endOfDay = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
       return endOfDay < new Date();
     };
-    const tryouts = (data.tryouts || []).filter(t => !isPastTryout(t.date)).sort((a, b) => {
+    const tryouts = (data.tryouts || []).filter(t => !t.archived && !isPastTryout(t.date)).sort((a, b) => {
       const da = new Date(a.date);
       const db = new Date(b.date);
       if (!isNaN(da) && !isNaN(db)) return da - db;
