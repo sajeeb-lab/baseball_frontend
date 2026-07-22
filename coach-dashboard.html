@@ -2080,46 +2080,73 @@ async function loadTryoutRegs() {
       return;
     }
 
-    const cardHtml = (t, faded) => {
-      const count = _allTryoutRegs.filter(r => r.tryout_date === t.date).length;
-      return `
-        <div class="tryreg-tryout-card" ${faded ? 'style="opacity:.7"' : ''} onclick="showTryregForTryout('${esc(t.date)}', '${esc(t.location||'')}')">
-          <div class="tryreg-tryout-card-top">
-            <span class="tryout-fee-badge">${esc(t.fee||'Free')}</span>
-            <span class="tryreg-count-badge">${count} registered</span>
-          </div>
-          <div class="tryreg-tryout-date">${esc(t.date)}</div>
-          <div class="tryreg-tryout-meta">${esc(t.time||'')}</div>
-          <div class="tryreg-tryout-meta" style="display:flex;align-items:center;gap:5px;margin-top:4px">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:13px;height:13px;flex-shrink:0"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-            ${esc(t.location||'—')}
-          </div>
-          <div class="tryreg-view-regs-btn">View Registrations</div>
-        </div>`;
-    };
-
-    const byDateAsc = (a,b)=>{const da=new Date(a.date),db=new Date(b.date);if(!isNaN(da)&&!isNaN(db))return da-db;return String(a.date).localeCompare(String(b.date));};
-    const upcoming = _allDashTryouts.filter(t=>!isPastTryoutDate(t.date)).sort(byDateAsc);
-    const past     = _allDashTryouts.filter(t=> isPastTryoutDate(t.date)).sort(byDateAsc).reverse(); // most recent past first
-
-    const gridHeader = (label,count,color) => `
-      <div style="grid-column:1/-1;display:flex;align-items:center;gap:8px;margin:.2rem 0 0;">
-        <span style="font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${color};">${label}</span>
-        <span style="background:${color};color:#fff;font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:20px;">${count}</span>
-      </div>`;
-
-    let cardsHtml = gridHeader('Upcoming Tryouts', upcoming.length, 'var(--navy)');
-    cardsHtml += upcoming.length
-      ? upcoming.map(t => cardHtml(t, false)).join('')
-      : '<div class="no-schedule-dash" style="grid-column:1/-1;padding:.9rem">No upcoming tryouts.</div>';
-    if (past.length) {
-      cardsHtml += gridHeader('Past Tryouts', past.length, 'var(--sub, #6b7a8d)');
-      cardsHtml += past.map(t => cardHtml(t, true)).join('');
-    }
-    cardsWrap.innerHTML = cardsHtml;
+    renderTryregCards();
   } catch(err) {
     cardsWrap.innerHTML = '<div class="no-schedule-dash">Failed to load tryouts.</div>';
   }
+}
+
+/* ── TRYOUT REGISTRATIONS: Upcoming / Past toggle ── */
+let _tryregFilter = 'upcoming'; // 'upcoming' is selected by default
+
+function setTryregFilter(filter) {
+  _tryregFilter = filter;
+  // Hide any open registrations table since its tryout may not belong to the new filter
+  const tableWrap = document.getElementById('tryreg-table-wrap');
+  if (tableWrap) tableWrap.style.display = 'none';
+  renderTryregCards();
+}
+
+function renderTryregCards() {
+  const cardsWrap = document.getElementById('tryreg-cards-wrap');
+  if (!cardsWrap) return;
+
+  const cardHtml = (t) => {
+    const count = _allTryoutRegs.filter(r => r.tryout_date === t.date).length;
+    return `
+      <div class="tryreg-tryout-card" onclick="showTryregForTryout('${esc(t.date)}', '${esc(t.location||'')}')">
+        <div class="tryreg-tryout-card-top">
+          <span class="tryout-fee-badge">${esc(t.fee||'Free')}</span>
+          <span class="tryreg-count-badge">${count} registered</span>
+        </div>
+        <div class="tryreg-tryout-date">${esc(t.date)}</div>
+        <div class="tryreg-tryout-meta">${esc(t.time||'')}</div>
+        <div class="tryreg-tryout-meta" style="display:flex;align-items:center;gap:5px;margin-top:4px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:13px;height:13px;flex-shrink:0"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          ${esc(t.location||'—')}
+        </div>
+        <div class="tryreg-view-regs-btn">View Registrations</div>
+      </div>`;
+  };
+
+  const byDateAsc = (a,b)=>{const da=new Date(a.date),db=new Date(b.date);if(!isNaN(da)&&!isNaN(db))return da-db;return String(a.date).localeCompare(String(b.date));};
+  const upcoming = _allDashTryouts.filter(t=>!isPastTryoutDate(t.date)).sort(byDateAsc);
+  const past     = _allDashTryouts.filter(t=> isPastTryoutDate(t.date)).sort(byDateAsc).reverse(); // most recent past first
+
+  const toggleBtn = (filter,label,count) => {
+    const active = _tryregFilter === filter;
+    return `<button onclick="setTryregFilter('${filter}')" style="
+      display:inline-flex;align-items:center;gap:7px;padding:9px 18px;cursor:pointer;
+      font-family:'Oswald',sans-serif;font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+      border:1.5px solid var(--navy);border-radius:6px;transition:all .15s;
+      background:${active ? 'var(--navy)' : 'var(--white)'};color:${active ? 'var(--white)' : 'var(--navy)'};">
+      ${label}
+      <span style="background:${active ? 'var(--red)' : 'var(--mid)'};color:${active ? '#fff' : 'var(--navy)'};font-size:.66rem;font-weight:700;padding:1px 8px;border-radius:20px;">${count}</span>
+    </button>`;
+  };
+
+  const toggleBar = `
+    <div style="grid-column:1/-1;display:flex;justify-content:flex-start;gap:.6rem;flex-wrap:wrap;margin-bottom:.3rem;">
+      ${toggleBtn('upcoming','Upcoming Tryouts',upcoming.length)}
+      ${toggleBtn('past','Past Tryouts',past.length)}
+    </div>`;
+
+  const list = _tryregFilter === 'past' ? past : upcoming;
+  const emptyMsg = _tryregFilter === 'past' ? 'No past tryouts.' : 'No upcoming tryouts.';
+
+  cardsWrap.innerHTML = toggleBar + (list.length
+    ? list.map(cardHtml).join('')
+    : `<div class="no-schedule-dash" style="grid-column:1/-1;padding:.9rem">${emptyMsg}</div>`);
 }
 
 function showTryregForTryout(date, location) {
