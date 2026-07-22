@@ -1402,12 +1402,31 @@ async function loadTryouts(){
   } catch(err){ wrap.innerHTML='<p style="color:var(--red);font-size:.84rem">'+esc(err.message)+'</p>'; }
 }
 
+/* ── PAST/UPCOMING TRYOUT HELPER — a tryout counts as past only after its day ends ── */
+function isPastTryoutDate(dateStr){
+  const d=new Date(dateStr);
+  if(isNaN(d)) return false; // unparseable date → treat as upcoming
+  const endOfDay=new Date(d.getFullYear(),d.getMonth(),d.getDate(),23,59,59,999);
+  return endOfDay < new Date();
+}
+
+function tryoutSectionHeader(label,count,color){
+  return `<div style="display:flex;align-items:center;gap:8px;margin:.2rem 0 .1rem;">
+    <span style="font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${color};">${label}</span>
+    <span style="background:${color};color:#fff;font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:20px;">${count}</span>
+  </div>`;
+}
+
 function renderTryoutsList(tryouts){
   tryouts=[...tryouts].sort((a,b)=>{const da=new Date(a.date),db=new Date(b.date);if(!isNaN(da)&&!isNaN(db))return da-db;return String(a.date).localeCompare(String(b.date));});
   _dashTryoutsData = tryouts;
   const wrap=document.getElementById('tryouts-list-wrap'); if(!wrap) return;
   if(!tryouts.length){ wrap.innerHTML='<div class="no-tryouts-dash">No tryouts scheduled yet. Create one above!</div>'; return; }
-  wrap.innerHTML='<div class="tryouts-list">'+tryouts.map(t=>`
+
+  const upcoming = tryouts.filter(t=>!isPastTryoutDate(t.date));
+  const past     = tryouts.filter(t=> isPastTryoutDate(t.date)).reverse(); // most recent past first
+
+  const itemHtml = t => `
     <div class="tryout-item" id="tryout-${esc(t._id)}">
       <div>
         <div class="tryout-item-date">${esc(t.date)}<span class="tryout-item-fee">${esc(t.fee)}</span></div>
@@ -1423,7 +1442,17 @@ function renderTryoutsList(tryouts){
           Delete
         </button>
       </div>
-    </div>`).join('')+'</div>';
+    </div>`;
+
+  let html='<div class="tryouts-list">';
+  html+=tryoutSectionHeader('Upcoming Tryouts',upcoming.length,'var(--navy)');
+  html+=upcoming.length ? upcoming.map(itemHtml).join('') : '<div class="no-tryouts-dash" style="padding:.9rem">No upcoming tryouts.</div>';
+  if(past.length){
+    html+=tryoutSectionHeader('Past Tryouts',past.length,'var(--sub, #6b7a8d)');
+    html+='<div style="opacity:.7">'+past.map(itemHtml).join('')+'</div>';
+  }
+  html+='</div>';
+  wrap.innerHTML=html;
 }
 
 /* ── TOGGLE ADD FEE AMOUNT ── */
@@ -2051,10 +2080,10 @@ async function loadTryoutRegs() {
       return;
     }
 
-    cardsWrap.innerHTML = _allDashTryouts.map(t => {
+    const cardHtml = (t, faded) => {
       const count = _allTryoutRegs.filter(r => r.tryout_date === t.date).length;
       return `
-        <div class="tryreg-tryout-card" onclick="showTryregForTryout('${esc(t.date)}', '${esc(t.location||'')}')">
+        <div class="tryreg-tryout-card" ${faded ? 'style="opacity:.7"' : ''} onclick="showTryregForTryout('${esc(t.date)}', '${esc(t.location||'')}')">
           <div class="tryreg-tryout-card-top">
             <span class="tryout-fee-badge">${esc(t.fee||'Free')}</span>
             <span class="tryreg-count-badge">${count} registered</span>
@@ -2067,7 +2096,27 @@ async function loadTryoutRegs() {
           </div>
           <div class="tryreg-view-regs-btn">View Registrations</div>
         </div>`;
-    }).join('');
+    };
+
+    const byDateAsc = (a,b)=>{const da=new Date(a.date),db=new Date(b.date);if(!isNaN(da)&&!isNaN(db))return da-db;return String(a.date).localeCompare(String(b.date));};
+    const upcoming = _allDashTryouts.filter(t=>!isPastTryoutDate(t.date)).sort(byDateAsc);
+    const past     = _allDashTryouts.filter(t=> isPastTryoutDate(t.date)).sort(byDateAsc).reverse(); // most recent past first
+
+    const gridHeader = (label,count,color) => `
+      <div style="grid-column:1/-1;display:flex;align-items:center;gap:8px;margin:.2rem 0 0;">
+        <span style="font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${color};">${label}</span>
+        <span style="background:${color};color:#fff;font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:20px;">${count}</span>
+      </div>`;
+
+    let cardsHtml = gridHeader('Upcoming Tryouts', upcoming.length, 'var(--navy)');
+    cardsHtml += upcoming.length
+      ? upcoming.map(t => cardHtml(t, false)).join('')
+      : '<div class="no-schedule-dash" style="grid-column:1/-1;padding:.9rem">No upcoming tryouts.</div>';
+    if (past.length) {
+      cardsHtml += gridHeader('Past Tryouts', past.length, 'var(--sub, #6b7a8d)');
+      cardsHtml += past.map(t => cardHtml(t, true)).join('');
+    }
+    cardsWrap.innerHTML = cardsHtml;
   } catch(err) {
     cardsWrap.innerHTML = '<div class="no-schedule-dash">Failed to load tryouts.</div>';
   }
