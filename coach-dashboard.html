@@ -2136,18 +2136,23 @@ function renderTryregCards() {
     </button>`;
   };
 
-  const toggleBar = `
-    <div style="grid-column:1/-1;display:flex;flex-direction:column;align-items:flex-start;gap:.55rem;margin-bottom:.3rem;">
-      ${toggleBtn('upcoming','Upcoming Tryouts',upcoming.length)}
-      ${toggleBtn('past','Past Tryouts',past.length)}
-    </div>`;
-
   const list = _tryregFilter === 'past' ? past : upcoming;
   const emptyMsg = _tryregFilter === 'past' ? 'No past tryouts.' : 'No upcoming tryouts.';
 
-  cardsWrap.innerHTML = toggleBar + (list.length
-    ? list.map(cardHtml).join('')
-    : `<div class="no-schedule-dash" style="grid-column:1/-1;padding:.9rem">${emptyMsg}</div>`);
+  // Layout: vertical button column on the LEFT, cards grid on the RIGHT
+  cardsWrap.style.display = 'block';
+  cardsWrap.innerHTML = `
+    <div style="display:flex;gap:1.2rem;align-items:flex-start;flex-wrap:wrap;">
+      <div style="display:flex;flex-direction:column;gap:.55rem;flex-shrink:0;">
+        ${toggleBtn('upcoming','Upcoming Tryouts',upcoming.length)}
+        ${toggleBtn('past','Past Tryouts',past.length)}
+      </div>
+      <div style="flex:1;min-width:280px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;">
+        ${list.length
+          ? list.map(cardHtml).join('')
+          : `<div class="no-schedule-dash" style="grid-column:1/-1;padding:.9rem">${emptyMsg}</div>`}
+      </div>
+    </div>`;
 }
 
 function showTryregForTryout(date, location) {
