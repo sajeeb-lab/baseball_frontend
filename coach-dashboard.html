@@ -1034,13 +1034,12 @@ function renderDashboard(coach){
                   <th>Position(s)</th>
                   <th style="cursor:pointer" onclick="sortTryregBy('age')">Age <span id="tr-sort-age"></span></th>
                   <th>HT/WT</th>
-                  <th style="cursor:pointer" onclick="sortTryregBy('tryout_date')">Tryout Date <span id="tr-sort-tryout_date"></span></th>
                   <th>Completed By</th><th>Address</th>
-                  <th style="cursor:pointer" onclick="sortTryregBy('status')">Payment <span id="tr-sort-status"></span></th>
+                  <th style="cursor:pointer" onclick="sortTryregBy('tryout_date')">Tryout Date <span id="tr-sort-tryout_date"></span></th>
                 </tr>
               </thead>
               <tbody id="tryreg-body">
-                <tr><td colspan="12"><div class="no-schedule-dash">Loading…</div></td></tr>
+                <tr><td colspan="11"><div class="no-schedule-dash">Loading…</div></td></tr>
               </tbody>
             </table>
           </div>
@@ -2108,7 +2107,7 @@ let _allDashTryouts = [];
 
 async function loadTryoutRegs() {
   const tbody = document.getElementById('tryreg-body');
-  if (tbody) tbody.innerHTML = '<tr><td colspan="12"><div class="no-schedule-dash">Loading…</div></td></tr>';
+  if (tbody) tbody.innerHTML = '<tr><td colspan="11"><div class="no-schedule-dash">Loading…</div></td></tr>';
   try {
     // Load tryouts and registrations in parallel
     const [tryoutsRes, regsRes] = await Promise.all([
@@ -2123,7 +2122,7 @@ async function loadTryoutRegs() {
     renderTryregControls();
     renderTryregTable();
   } catch(err) {
-    if (tbody) tbody.innerHTML = '<tr><td colspan="12"><div class="no-schedule-dash">Failed to load registrations.</div></td></tr>';
+    if (tbody) tbody.innerHTML = '<tr><td colspan="11"><div class="no-schedule-dash">Failed to load registrations.</div></td></tr>';
   }
 }
 
@@ -2176,8 +2175,12 @@ function renderTryregTable() {
   const countEl = document.getElementById('tryreg-filter-count');
   if (!tbody) return;
 
-  // Filter by the selected Upcoming / Past bucket (based on each registration's tryout date)
-  let regs = _allTryoutRegs.filter(r => (_tryregFilter === 'past') === isPastTryoutDate(r.tryout_date));
+  // Only confirmed registrations (pending payments are hidden), regardless of
+  // whether the tryout itself is archived. Then filter by the selected
+  // Upcoming / Past bucket (based on each registration's tryout date).
+  let regs = _allTryoutRegs
+    .filter(r => !r.status || r.status === 'confirmed')
+    .filter(r => (_tryregFilter === 'past') === isPastTryoutDate(r.tryout_date));
 
   // Date filter on REGISTRATION date:
   //   From only          → that single day
@@ -2203,14 +2206,13 @@ function renderTryregTable() {
       case 'player':      return (r.player_name || '').toLowerCase();
       case 'contact':     return (r.name || '').toLowerCase();
       case 'age':         { const n = parseFloat(r.age); return isNaN(n) ? -1 : n; }
-      case 'status':      return (!r.status || r.status === 'confirmed') ? 1 : 0;
       default:            return 0;
     }
   };
   regs.sort((a, b) => { const va = val(a), vb = val(b); return va < vb ? -dir : va > vb ? dir : 0; });
 
   // Sort direction arrows on column headers
-  ['reg_date','player','contact','age','tryout_date','status'].forEach(k => {
+  ['reg_date','player','contact','age','tryout_date'].forEach(k => {
     const el = document.getElementById('tr-sort-' + k);
     if (el) el.textContent = _regSortKey === k ? (_regSortDir === 'asc' ? '▲' : '▼') : '';
   });
@@ -2221,15 +2223,11 @@ function renderTryregTable() {
     : `${regs.length} total registration${regs.length === 1 ? '' : 's'}`;
 
   if (!regs.length) {
-    tbody.innerHTML = '<tr><td colspan="12"><div class="no-schedule-dash">No registrations found' + ((_regFilterFrom || _regFilterTo) ? ' for the selected date(s).' : ' yet.') + '</div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="11"><div class="no-schedule-dash">No registrations found' + ((_regFilterFrom || _regFilterTo) ? ' for the selected date(s).' : ' yet.') + '</div></td></tr>';
     return;
   }
 
   tbody.innerHTML = regs.map(r => {
-    const isPaid = !r.status || r.status === 'confirmed';
-    const badge  = isPaid
-      ? `<span style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;border-radius:20px;padding:3px 10px;font-size:.72rem;font-weight:700;font-family:'Oswald',sans-serif;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap">✅ Confirmed</span>`
-      : `<span style="background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;border-radius:20px;padding:3px 10px;font-size:.72rem;font-weight:700;font-family:'Oswald',sans-serif;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap">⏳ Pending</span>`;
     const regDate = r.created_at
       ? new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
       : '—';
@@ -2243,10 +2241,9 @@ function renderTryregTable() {
       <td>${esc([r.pos1,r.pos2].filter(Boolean).join(', ')||'—')}</td>
       <td>${esc(r.age||'—')}</td>
       <td>${esc(r.hw||'—')}</td>
-      <td style="white-space:nowrap">${esc(r.tryout_date||'—')}</td>
       <td>${esc(r.completed_by||'—')}</td>
       <td>${esc([r.address, r.city, r.state, r.zip].filter(Boolean).join(', ')||'—')}</td>
-      <td>${badge}</td>
+      <td style="white-space:nowrap;font-weight:600;color:var(--navy)">${esc(r.tryout_date||'—')}</td>
     </tr>`;
   }).join('');
 }
@@ -2264,9 +2261,10 @@ function renderTryregControls() {
   const col = document.getElementById('tryreg-toggle-col');
   if (!col) return;
 
-  // Bucket REGISTRATIONS by whether their tryout date is upcoming or past
-  const upCount   = _allTryoutRegs.filter(r => !isPastTryoutDate(r.tryout_date)).length;
-  const pastCount = _allTryoutRegs.filter(r =>  isPastTryoutDate(r.tryout_date)).length;
+  // Bucket confirmed REGISTRATIONS by whether their tryout date is upcoming or past
+  const confirmed = _allTryoutRegs.filter(r => !r.status || r.status === 'confirmed');
+  const upCount   = confirmed.filter(r => !isPastTryoutDate(r.tryout_date)).length;
+  const pastCount = confirmed.filter(r =>  isPastTryoutDate(r.tryout_date)).length;
 
   const toggleBtn = (filter,label,count) => {
     const active = _tryregFilter === filter;
