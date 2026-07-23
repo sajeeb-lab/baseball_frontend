@@ -1006,10 +1006,9 @@ function renderDashboard(coach){
     <div class="dash-panel" id="panel-tryreg">
 
       <div class="msg" id="msg-tryreg"></div>
-      <div id="tryreg-cards-wrap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-bottom:1.6rem">
-        <div class="no-schedule-dash">Loading…</div>
-      </div>
-      <div id="tryreg-table-wrap">
+      <div style="display:flex;gap:1.2rem;align-items:flex-start;flex-wrap:wrap">
+      <div id="tryreg-toggle-col" style="display:flex;flex-direction:column;gap:.55rem;flex-shrink:0"></div>
+      <div id="tryreg-table-wrap" style="flex:1;min-width:300px">
         <div class="card">
           <div class="card-header" id="tryreg-table-heading">All Registrations</div>
           <div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:.8rem;padding:1rem 1.2rem;border-bottom:1px solid var(--mid);background:var(--light)">
@@ -1028,8 +1027,16 @@ function renderDashboard(coach){
             <table class="tryreg-table">
               <thead>
                 <tr>
-                  <th>Registered On</th><th>Player Name</th><th>Contact Name</th><th>Email</th><th>Cell</th>
-                  <th>Position(s)</th><th>Age</th><th>HT/WT</th><th>Tryout Date</th><th>Completed By</th><th>Address</th><th>Payment</th>
+                  <th style="cursor:pointer" onclick="sortTryregBy('reg_date')">Registered On <span id="tr-sort-reg_date"></span></th>
+                  <th style="cursor:pointer" onclick="sortTryregBy('player')">Player Name <span id="tr-sort-player"></span></th>
+                  <th style="cursor:pointer" onclick="sortTryregBy('contact')">Contact Name <span id="tr-sort-contact"></span></th>
+                  <th>Email</th><th>Cell</th>
+                  <th>Position(s)</th>
+                  <th style="cursor:pointer" onclick="sortTryregBy('age')">Age <span id="tr-sort-age"></span></th>
+                  <th>HT/WT</th>
+                  <th style="cursor:pointer" onclick="sortTryregBy('tryout_date')">Tryout Date <span id="tr-sort-tryout_date"></span></th>
+                  <th>Completed By</th><th>Address</th>
+                  <th style="cursor:pointer" onclick="sortTryregBy('status')">Payment <span id="tr-sort-status"></span></th>
                 </tr>
               </thead>
               <tbody id="tryreg-body">
@@ -1038,6 +1045,7 @@ function renderDashboard(coach){
             </table>
           </div>
         </div>
+      </div>
       </div>
     </div>
 
@@ -2099,10 +2107,8 @@ let _allTryoutRegs = [];
 let _allDashTryouts = [];
 
 async function loadTryoutRegs() {
-  const cardsWrap = document.getElementById('tryreg-cards-wrap');
-  const tableWrap = document.getElementById('tryreg-table-wrap');
-  cardsWrap.innerHTML = '<div class="no-schedule-dash">Loading…</div>';
-  tableWrap.style.display = 'none';
+  const tbody = document.getElementById('tryreg-body');
+  if (tbody) tbody.innerHTML = '<tr><td colspan="12"><div class="no-schedule-dash">Loading…</div></td></tr>';
   try {
     // Load tryouts and registrations in parallel
     const [tryoutsRes, regsRes] = await Promise.all([
@@ -2114,15 +2120,10 @@ async function loadTryoutRegs() {
     _allDashTryouts   = tryoutsData.tryouts  || [];
     _allTryoutRegs    = regsData.registrations || [];
 
-    if (!_allDashTryouts.length) {
-      cardsWrap.innerHTML = '<div class="no-schedule-dash">No tryouts created yet. Add one in the Tryouts tab.</div>';
-      return;
-    }
-
-    renderTryregCards();
+    renderTryregControls();
     renderTryregTable();
   } catch(err) {
-    cardsWrap.innerHTML = '<div class="no-schedule-dash">Failed to load tryouts.</div>';
+    if (tbody) tbody.innerHTML = '<tr><td colspan="12"><div class="no-schedule-dash">Failed to load registrations.</div></td></tr>';
   }
 }
 
@@ -2155,13 +2156,28 @@ function regLocalDay(r) {
   return `${d.getFullYear()}-${m}-${dy}`;
 }
 
+/* Sorting state — default: most recent registration first */
+let _regSortKey = 'reg_date';
+let _regSortDir = 'desc';
+
+function sortTryregBy(key) {
+  if (_regSortKey === key) {
+    _regSortDir = _regSortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    _regSortKey = key;
+    _regSortDir = key === 'reg_date' || key === 'tryout_date' ? 'desc' : 'asc';
+  }
+  renderTryregTable();
+}
+
 function renderTryregTable() {
   const tbody   = document.getElementById('tryreg-body');
   const heading = document.getElementById('tryreg-table-heading');
   const countEl = document.getElementById('tryreg-filter-count');
   if (!tbody) return;
 
-  let regs = [..._allTryoutRegs];
+  // Filter by the selected Upcoming / Past bucket (based on each registration's tryout date)
+  let regs = _allTryoutRegs.filter(r => (_tryregFilter === 'past') === isPastTryoutDate(r.tryout_date));
 
   // Date filter on REGISTRATION date:
   //   From only          → that single day
@@ -2178,10 +2194,28 @@ function renderTryregTable() {
     });
   }
 
-  // Default sort: most recent registration first
-  regs.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  // Sort by the selected column
+  const dir = _regSortDir === 'asc' ? 1 : -1;
+  const val = (r) => {
+    switch (_regSortKey) {
+      case 'reg_date':    return new Date(r.created_at).getTime() || 0;
+      case 'tryout_date': { const t = new Date(r.tryout_date).getTime(); return isNaN(t) ? 0 : t; }
+      case 'player':      return (r.player_name || '').toLowerCase();
+      case 'contact':     return (r.name || '').toLowerCase();
+      case 'age':         { const n = parseFloat(r.age); return isNaN(n) ? -1 : n; }
+      case 'status':      return (!r.status || r.status === 'confirmed') ? 1 : 0;
+      default:            return 0;
+    }
+  };
+  regs.sort((a, b) => { const va = val(a), vb = val(b); return va < vb ? -dir : va > vb ? dir : 0; });
 
-  if (heading) heading.textContent = 'All Registrations';
+  // Sort direction arrows on column headers
+  ['reg_date','player','contact','age','tryout_date','status'].forEach(k => {
+    const el = document.getElementById('tr-sort-' + k);
+    if (el) el.textContent = _regSortKey === k ? (_regSortDir === 'asc' ? '▲' : '▼') : '';
+  });
+
+  if (heading) heading.textContent = _tryregFilter === 'past' ? 'Registrations — Past Tryouts' : 'Registrations — Upcoming Tryouts';
   if (countEl) countEl.textContent = (_regFilterFrom || _regFilterTo)
     ? `${regs.length} registration${regs.length === 1 ? '' : 's'} in selected date${_regFilterTo && _regFilterFrom !== _regFilterTo ? ' range' : ''}`
     : `${regs.length} total registration${regs.length === 1 ? '' : 's'}`;
@@ -2222,34 +2256,17 @@ let _tryregFilter = 'upcoming'; // 'upcoming' is selected by default
 
 function setTryregFilter(filter) {
   _tryregFilter = filter;
-  renderTryregCards();
+  renderTryregControls();
+  renderTryregTable();
 }
 
-function renderTryregCards() {
-  const cardsWrap = document.getElementById('tryreg-cards-wrap');
-  if (!cardsWrap) return;
+function renderTryregControls() {
+  const col = document.getElementById('tryreg-toggle-col');
+  if (!col) return;
 
-  const cardHtml = (t) => {
-    const count = _allTryoutRegs.filter(r => r.tryout_date === t.date).length;
-    return `
-      <div class="tryreg-tryout-card">
-        <div class="tryreg-tryout-card-top">
-          <span class="tryout-fee-badge">${esc(t.fee||'Free')}</span>
-          <span class="tryreg-count-badge">${count} registered</span>
-        </div>
-        <div class="tryreg-tryout-date">${esc(t.date)}</div>
-        <div class="tryreg-tryout-meta">${esc(t.time||'')}</div>
-        <div class="tryreg-tryout-meta" style="display:flex;align-items:center;gap:5px;margin-top:4px">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:13px;height:13px;flex-shrink:0"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-          ${esc(t.location||'—')}
-        </div>
-      </div>`;
-  };
-
-  const byDateAsc = (a,b)=>{const da=new Date(a.date),db=new Date(b.date);if(!isNaN(da)&&!isNaN(db))return da-db;return String(a.date).localeCompare(String(b.date));};
-  const activeTryouts = _allDashTryouts.filter(t=>!t.archived);
-  const upcoming = activeTryouts.filter(t=>!isPastTryoutDate(t.date)).sort(byDateAsc);
-  const past     = activeTryouts.filter(t=> isPastTryoutDate(t.date)).sort(byDateAsc).reverse(); // most recent past first
+  // Bucket REGISTRATIONS by whether their tryout date is upcoming or past
+  const upCount   = _allTryoutRegs.filter(r => !isPastTryoutDate(r.tryout_date)).length;
+  const pastCount = _allTryoutRegs.filter(r =>  isPastTryoutDate(r.tryout_date)).length;
 
   const toggleBtn = (filter,label,count) => {
     const active = _tryregFilter === filter;
@@ -2264,63 +2281,7 @@ function renderTryregCards() {
     </button>`;
   };
 
-  const list = _tryregFilter === 'past' ? past : upcoming;
-  const emptyMsg = _tryregFilter === 'past' ? 'No past tryouts.' : 'No upcoming tryouts.';
-
-  // Layout: vertical button column on the LEFT, cards grid on the RIGHT
-  cardsWrap.style.display = 'block';
-  cardsWrap.innerHTML = `
-    <div style="display:flex;gap:1.2rem;align-items:flex-start;flex-wrap:wrap;">
-      <div style="display:flex;flex-direction:column;gap:.55rem;flex-shrink:0;">
-        ${toggleBtn('upcoming','Upcoming Tryouts',upcoming.length)}
-        ${toggleBtn('past','Past Tryouts',past.length)}
-      </div>
-      <div style="flex:1;min-width:280px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;">
-        ${list.length
-          ? list.map(cardHtml).join('')
-          : `<div class="no-schedule-dash" style="grid-column:1/-1;padding:.9rem">${emptyMsg}</div>`}
-      </div>
-    </div>`;
-}
-
-function showTryregForTryout(date, location) {
-  // Highlight selected card
-  document.querySelectorAll('.tryreg-tryout-card').forEach(c => c.classList.remove('selected'));
-  event.currentTarget.classList.add('selected');
-
-  const tableWrap = document.getElementById('tryreg-table-wrap');
-  const tbody     = document.getElementById('tryreg-body');
-  const heading   = document.getElementById('tryreg-table-heading');
-
-  const regs = _allTryoutRegs.filter(r => r.tryout_date === date);
-  heading.textContent = `Registrations — ${date}${location ? ' @ ' + location : ''} (${regs.length})`;
-  tableWrap.style.display = 'block';
-
-  if (!regs.length) {
-    tbody.innerHTML = '<tr><td colspan="10"><div class="no-schedule-dash">No registrations for this tryout yet.</div></td></tr>';
-    return;
-  }
-  tbody.innerHTML = regs.map(r => {
-    const isPaid    = !r.status || r.status === 'confirmed';
-    const badge     = isPaid
-      ? `<span style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;border-radius:20px;padding:3px 10px;font-size:.72rem;font-weight:700;font-family:'Oswald',sans-serif;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap">✅ Confirmed</span>`
-      : `<span style="background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;border-radius:20px;padding:3px 10px;font-size:.72rem;font-weight:700;font-family:'Oswald',sans-serif;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap">⏳ Pending</span>`;
-    return `
-    <tr>
-      <td style="font-weight:600;color:var(--navy)">${esc(r.player_name||'—')}</td>
-      <td>${esc(r.name||'—')}</td>
-      <td>${esc(r.email||'—')}</td>
-      <td>${esc(r.cell||'—')}</td>
-      <td>${esc([r.pos1,r.pos2].filter(Boolean).join(', ')||'—')}</td>
-      <td>${esc(r.age||'—')}</td>
-      <td>${esc(r.hw||'—')}</td>
-      <td>${esc(r.completed_by||'—')}</td>
-      <td>${esc([r.address, r.city, r.state, r.zip].filter(Boolean).join(', ')||'—')}</td>
-      <td>${badge}</td>
-    </tr>`;
-  }).join('');
-
-  tableWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  col.innerHTML = toggleBtn('upcoming','Upcoming Tryouts',upCount) + toggleBtn('past','Past Tryouts',pastCount);
 }
 
 async function addGame() {
