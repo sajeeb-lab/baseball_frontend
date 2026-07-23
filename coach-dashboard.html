@@ -1009,19 +1009,31 @@ function renderDashboard(coach){
       <div id="tryreg-cards-wrap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-bottom:1.6rem">
         <div class="no-schedule-dash">Loading…</div>
       </div>
-      <div id="tryreg-table-wrap" style="display:none">
+      <div id="tryreg-table-wrap">
         <div class="card">
-          <div class="card-header" id="tryreg-table-heading">Registrations</div>
+          <div class="card-header" id="tryreg-table-heading">All Registrations</div>
+          <div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:.8rem;padding:1rem 1.2rem;border-bottom:1px solid var(--mid);background:var(--light)">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <label style="font-family:'Oswald',sans-serif;font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--sub)">Registration Date</label>
+              <input type="date" id="tryreg-filter-from" onchange="applyTryregDateFilter()" style="padding:7px 10px;border:1.5px solid var(--mid);border-radius:6px;font-size:.82rem;font-family:'Open Sans',sans-serif;background:var(--white);color:var(--text)">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <label style="font-family:'Oswald',sans-serif;font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--sub)">To <span style="text-transform:none;letter-spacing:0">(optional — leave empty for a single day)</span></label>
+              <input type="date" id="tryreg-filter-to" onchange="applyTryregDateFilter()" style="padding:7px 10px;border:1.5px solid var(--mid);border-radius:6px;font-size:.82rem;font-family:'Open Sans',sans-serif;background:var(--white);color:var(--text)">
+            </div>
+            <button onclick="clearTryregDateFilter()" style="padding:8px 16px;border:1.5px solid var(--navy);border-radius:6px;background:var(--white);color:var(--navy);font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Clear</button>
+            <span id="tryreg-filter-count" style="font-size:.78rem;color:var(--sub);margin-left:auto"></span>
+          </div>
           <div style="overflow-x:auto">
             <table class="tryreg-table">
               <thead>
                 <tr>
-                  <th>Player Name</th><th>Contact Name</th><th>Email</th><th>Cell</th>
-                  <th>Position(s)</th><th>Age</th><th>HT/WT</th><th>Completed By</th><th>Address</th><th>Payment</th>
+                  <th>Registered On</th><th>Player Name</th><th>Contact Name</th><th>Email</th><th>Cell</th>
+                  <th>Position(s)</th><th>Age</th><th>HT/WT</th><th>Tryout Date</th><th>Completed By</th><th>Address</th><th>Payment</th>
                 </tr>
               </thead>
               <tbody id="tryreg-body">
-                <tr><td colspan="9"><div class="no-schedule-dash">Select a tryout above.</div></td></tr>
+                <tr><td colspan="12"><div class="no-schedule-dash">Loading…</div></td></tr>
               </tbody>
             </table>
           </div>
@@ -2108,9 +2120,101 @@ async function loadTryoutRegs() {
     }
 
     renderTryregCards();
+    renderTryregTable();
   } catch(err) {
     cardsWrap.innerHTML = '<div class="no-schedule-dash">Failed to load tryouts.</div>';
   }
+}
+
+/* ── REGISTRATIONS LIST — sorted by registration date (newest first), filterable ── */
+let _regFilterFrom = '';
+let _regFilterTo   = '';
+
+function applyTryregDateFilter() {
+  _regFilterFrom = (document.getElementById('tryreg-filter-from') || {}).value || '';
+  _regFilterTo   = (document.getElementById('tryreg-filter-to')   || {}).value || '';
+  renderTryregTable();
+}
+
+function clearTryregDateFilter() {
+  const f = document.getElementById('tryreg-filter-from');
+  const t = document.getElementById('tryreg-filter-to');
+  if (f) f.value = '';
+  if (t) t.value = '';
+  _regFilterFrom = '';
+  _regFilterTo   = '';
+  renderTryregTable();
+}
+
+// Local YYYY-MM-DD of a registration's created_at (matches <input type="date"> values)
+function regLocalDay(r) {
+  const d = new Date(r.created_at);
+  if (isNaN(d)) return '';
+  const m  = String(d.getMonth() + 1).padStart(2, '0');
+  const dy = String(d.getDate()).padStart(2, '0');
+  return `${d.getFullYear()}-${m}-${dy}`;
+}
+
+function renderTryregTable() {
+  const tbody   = document.getElementById('tryreg-body');
+  const heading = document.getElementById('tryreg-table-heading');
+  const countEl = document.getElementById('tryreg-filter-count');
+  if (!tbody) return;
+
+  let regs = [..._allTryoutRegs];
+
+  // Date filter on REGISTRATION date:
+  //   From only          → that single day
+  //   From + To          → inclusive range
+  //   To only            → everything up to and including To
+  if (_regFilterFrom || _regFilterTo) {
+    const from = _regFilterFrom;
+    const to   = _regFilterTo || _regFilterFrom; // single-day when To empty
+    const lo   = from || '0000-00-00';
+    const hi   = to;
+    regs = regs.filter(r => {
+      const day = regLocalDay(r);
+      return day && day >= lo && day <= hi;
+    });
+  }
+
+  // Default sort: most recent registration first
+  regs.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+  if (heading) heading.textContent = 'All Registrations';
+  if (countEl) countEl.textContent = (_regFilterFrom || _regFilterTo)
+    ? `${regs.length} registration${regs.length === 1 ? '' : 's'} in selected date${_regFilterTo && _regFilterFrom !== _regFilterTo ? ' range' : ''}`
+    : `${regs.length} total registration${regs.length === 1 ? '' : 's'}`;
+
+  if (!regs.length) {
+    tbody.innerHTML = '<tr><td colspan="12"><div class="no-schedule-dash">No registrations found' + ((_regFilterFrom || _regFilterTo) ? ' for the selected date(s).' : ' yet.') + '</div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = regs.map(r => {
+    const isPaid = !r.status || r.status === 'confirmed';
+    const badge  = isPaid
+      ? `<span style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;border-radius:20px;padding:3px 10px;font-size:.72rem;font-weight:700;font-family:'Oswald',sans-serif;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap">✅ Confirmed</span>`
+      : `<span style="background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;border-radius:20px;padding:3px 10px;font-size:.72rem;font-weight:700;font-family:'Oswald',sans-serif;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap">⏳ Pending</span>`;
+    const regDate = r.created_at
+      ? new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      : '—';
+    return `
+    <tr>
+      <td style="white-space:nowrap;font-weight:600;color:var(--navy)">${esc(regDate)}</td>
+      <td style="font-weight:600;color:var(--navy)">${esc(r.player_name||'—')}</td>
+      <td>${esc(r.name||'—')}</td>
+      <td>${esc(r.email||'—')}</td>
+      <td>${esc(r.cell||'—')}</td>
+      <td>${esc([r.pos1,r.pos2].filter(Boolean).join(', ')||'—')}</td>
+      <td>${esc(r.age||'—')}</td>
+      <td>${esc(r.hw||'—')}</td>
+      <td style="white-space:nowrap">${esc(r.tryout_date||'—')}</td>
+      <td>${esc(r.completed_by||'—')}</td>
+      <td>${esc([r.address, r.city, r.state, r.zip].filter(Boolean).join(', ')||'—')}</td>
+      <td>${badge}</td>
+    </tr>`;
+  }).join('');
 }
 
 /* ── TRYOUT REGISTRATIONS: Upcoming / Past toggle ── */
@@ -2118,9 +2222,6 @@ let _tryregFilter = 'upcoming'; // 'upcoming' is selected by default
 
 function setTryregFilter(filter) {
   _tryregFilter = filter;
-  // Hide any open registrations table since its tryout may not belong to the new filter
-  const tableWrap = document.getElementById('tryreg-table-wrap');
-  if (tableWrap) tableWrap.style.display = 'none';
   renderTryregCards();
 }
 
@@ -2131,7 +2232,7 @@ function renderTryregCards() {
   const cardHtml = (t) => {
     const count = _allTryoutRegs.filter(r => r.tryout_date === t.date).length;
     return `
-      <div class="tryreg-tryout-card" onclick="showTryregForTryout('${esc(t.date)}', '${esc(t.location||'')}')">
+      <div class="tryreg-tryout-card">
         <div class="tryreg-tryout-card-top">
           <span class="tryout-fee-badge">${esc(t.fee||'Free')}</span>
           <span class="tryreg-count-badge">${count} registered</span>
@@ -2142,7 +2243,6 @@ function renderTryregCards() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:13px;height:13px;flex-shrink:0"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
           ${esc(t.location||'—')}
         </div>
-        <div class="tryreg-view-regs-btn">View Registrations</div>
       </div>`;
   };
 
