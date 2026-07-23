@@ -175,13 +175,13 @@ input[type="file"].hidden-file{display:none}
 .tryreg-tryout-meta{font-size:.78rem;color:var(--sub)}
 .tryreg-view-regs-btn{margin-top:.5rem;text-align:center;background:var(--navy);color:var(--white);font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:8px 0;border-radius:6px;transition:background .15s}
 .tryreg-tryout-card:hover .tryreg-view-regs-btn,.tryreg-tryout-card.selected .tryreg-view-regs-btn{background:var(--red)}
-.tryreg-table{width:100%;border-collapse:collapse;font-size:.83rem}
+.tryreg-table{width:100%;border-collapse:collapse;font-size:.78rem;table-layout:auto}
 .tryreg-table thead tr{background:var(--navy)}
-.tryreg-table thead th{padding:10px 14px;text-align:left;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;color:var(--white);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.tryreg-table thead th{padding:9px 8px;text-align:left;font-family:'Oswald',sans-serif;font-size:.66rem;font-weight:600;color:var(--white);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
 .tryreg-table tbody tr{border-bottom:1px solid var(--mid);transition:background .12s}
 .tryreg-table tbody tr:last-child{border-bottom:none}
 .tryreg-table tbody tr:hover{background:var(--light)}
-.tryreg-table td{padding:10px 14px;vertical-align:middle;font-size:.82rem;color:var(--text)}
+.tryreg-table td{padding:9px 8px;vertical-align:middle;font-size:.78rem;color:var(--text);word-break:break-word}
 .tryreg-table td:first-child{font-weight:600;color:var(--navy)}
 
 /* COST CALCULATOR */
@@ -1006,9 +1006,9 @@ function renderDashboard(coach){
     <div class="dash-panel" id="panel-tryreg">
 
       <div class="msg" id="msg-tryreg"></div>
-      <div style="display:flex;gap:1.2rem;align-items:flex-start;flex-wrap:wrap">
-      <div id="tryreg-toggle-col" style="display:flex;flex-direction:column;gap:.55rem;flex-shrink:0"></div>
-      <div id="tryreg-table-wrap" style="flex:1;min-width:300px">
+      <div>
+      <div id="tryreg-toggle-col" style="display:flex;flex-direction:row;flex-wrap:wrap;gap:.6rem;margin-bottom:1rem"></div>
+      <div id="tryreg-table-wrap" style="width:100%">
         <div class="card">
           <div class="card-header" id="tryreg-table-heading">All Registrations</div>
           <div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:.8rem;padding:1rem 1.2rem;border-bottom:1px solid var(--mid);background:var(--light)">
