@@ -567,7 +567,7 @@ th.sort-desc .sort-icon .up   { opacity: .3; }
 <script>
 'use strict';
 
-const API_BASE = 'https://backend-baseball-inky.vercel.app';
+const API_BASE = 'https://team.ambassadorsbaseballus.com';
 
 const ABBR_TO_NAME = {
   "AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":"California",
@@ -806,7 +806,7 @@ function acceptInvitation(teamName) {
     showContactCoachModal();
     return;
   }
-  window.location.href = 'https://player-registration-nine.vercel.app/' + teamName.replace(/ /g, '%20');
+  window.location.href = 'https://accept.ambassadorsbaseballus.com/' + teamName.replace(/ /g, '%20');
 }
 
 async function loadTeam() {

@@ -1,165 +1,271 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Navbar Widget – Ambassadors Baseball</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<!--
+  AMBASSADORS BASEBALL — SHARED NAVBAR COMPONENT
+  ================================================
+  HOW TO USE IN ANY PAGE:
 
-    /* ── NAVBAR ── */
-    .navbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      background: #ffffff;
-      box-shadow: 0 2px 10px rgba(0,0,0,.10);
-    }
-    .navbar-inner {
-      max-width: 1440px;
-      margin: 0 auto;
-      padding: 0 3rem;
-      height: 130px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0;
-    }
+  1. Add Space Grotesk to your <head> fonts if not already:
+     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    /* ── LOGO ── */
-    .navbar-logo {
-      flex-shrink: 0;
-      text-decoration: none;
-      display: block;
-      margin-right: 4rem;
-    }
-    .navbar-logo img {
-      height: 105px;
-      width: auto;
-      display: block;
-      object-fit: contain;
-    }
-    .navbar-logo-fallback {
-      display: inline-flex;
-      flex-direction: column;
-      line-height: 1.15;
-    }
-    .navbar-logo-fallback .logo-top {
-      font-family: 'Oswald', sans-serif;
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #c8102e;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-    }
-    .navbar-logo-fallback .logo-bottom {
-      font-family: 'Oswald', sans-serif;
-      font-size: .85rem;
-      font-weight: 600;
-      color: #1a3fc4;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-    .navbar-logo-fallback .logo-tag {
-      font-family: Georgia, serif;
-      font-size: .62rem;
-      font-style: italic;
-      color: #c8102e;
-    }
+  2. Place this right after <body>:
+     <div id="navbar-root"></div>
+     <script>
+       fetch('navbar.html')
+         .then(r => r.text())
+         .then(html => { document.getElementById('navbar-root').innerHTML = html; });
+     </script>
+-->
 
-    /* ── NAV LINKS ── */
-    .navbar-links {
-      display: flex;
-      align-items: center;
-      gap: .1rem;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      flex: 1;
-      justify-content: flex-start;
-    }
-    .navbar-links a {
-      font-family: 'Open Sans', sans-serif;
-      font-size: .85rem;
-      font-weight: 600;
-      color: #1a1a1a;
-      text-decoration: none;
-      padding: .45rem .7rem;
-      border-radius: 5px;
-      transition: color .15s, background .15s;
-      white-space: nowrap;
-    }
-    /* Hover: Coach Login blue background + white text */
-    .navbar-links a:hover {
-      background: #1a3fc4;
-      color: #ffffff;
-    }
+<!-- ── NAVBAR STYLES ── -->
+<style>
+  .navbar {
+    position: relative;
+    background: #ffffff;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.12);
+    border-bottom: 1.5px solid #0042ab;
+  }
+  .navbar-inner {
+    width: 100%;
+    padding: 10px 5px;
+    display: flex;
+    align-items: stretch;
+  }
+  .navbar-nav-col {
+    width: 83.9%;
+    padding: 10px 5px;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+  .navbar-nav-inner {
+    width: 100%;
+    padding: 8px 40px 8px 120px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .navbar-logo {
+    flex-shrink: 0;
+    text-decoration: none;
+    display: block;
+    margin-right: 16px;
+  }
+  .navbar-logo img {
+    width: 250px !important;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+  .navbar-logo-fallback {
+    display: inline-flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .navbar-logo-fallback .logo-top {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: #c8102e;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .navbar-logo-fallback .logo-bottom {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: .9rem;
+    font-weight: 700;
+    color: #0042ab;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+  }
+  .navbar-logo-fallback .logo-tag {
+    font-family: Georgia, serif;
+    font-size: .62rem;
+    font-style: italic;
+    color: #c8102e;
+  }
+  .navbar-links {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    justify-content: flex-end;
+  }
+  .navbar-links li { margin-left: 2px; }
+  .navbar-links a {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #000000;
+    text-decoration: none;
+    padding: 8px 10px;
+    border-radius: 0;
+    display: block;
+    text-transform: capitalize;
+    letter-spacing: 0;
+    line-height: 1.3em;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    transition: background .15s, color .15s;
+  }
+  .navbar-links a:hover { background: #0042ab; color: #ffffff; }
+  .navbar-cta-col {
+    width: 140px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .navbar-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 140px;
+    height: 60px;
+    background: #0042ab;
+    color: #ffffff !important;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,66,171,.35);
+    white-space: nowrap;
+    line-height: 1.3;
+    text-transform: none;
+    letter-spacing: 0;
+    transition: background .2s;
+    flex-shrink: 0;
+  }
+  .navbar-cta:hover { background: #003090; }
+  .navbar-hamburger {
+    display: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: .4rem .5rem;
+    color: #0042ab;
+    font-size: 22px;
+    line-height: 1;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .navbar-mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    background: #ffffff;
+    z-index: 9999;
+    overflow-y: auto;
+    padding: 1rem 1rem 8rem;
+    flex-direction: column;
+  }
+  .navbar-mobile-menu.open { display: flex; }
+  .navbar-mobile-close {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #0042ab;
+    cursor: pointer;
+    padding: .3rem .5rem;
+    margin-bottom: .5rem;
+    line-height: 1;
+  }
+  .navbar-mobile-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
+  .navbar-mobile-links li { margin-bottom: 2px; }
+  .navbar-mobile-links a {
+    display: block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+    text-decoration: none;
+    padding: 8px 16px;
+    line-height: 1.3em;
+    text-transform: capitalize;
+    transition: background .15s, color .15s;
+  }
+  .navbar-mobile-links a:hover { background: #0042ab; color: #fff; }
+  @media (max-width: 1280px) {
+    .navbar-cta-col { display: none; }
+  }
+  @media (max-width: 480px) {
+    .navbar-inner     { padding: 0; height: 200px; align-items: center; position: relative; }
+    .navbar-nav-col   { width: 100%; padding: 0; flex: 1; min-width: 0; }
+    .navbar-nav-inner { padding: 0 50px 0 0; align-items: center; justify-content: center; position: relative; }
+    .navbar-logo      { margin-right: 0; }
+    .navbar-logo img  { width: 320px !important; height: auto !important; max-width: 80vw; }
+    .navbar-links     { display: none; }
+    .navbar-hamburger { display: flex; align-items: center; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 26px; }
+  }
+</style>
 
-    /* ── COACH LOGIN BUTTON ── */
-    .navbar-cta {
-      flex-shrink: 0;
-      display: inline-block;
-      background: #1a3fc4;
-      color: #fff !important;
-      font-family: 'Open Sans', sans-serif;
-      font-size: .9rem;
-      font-weight: 700;
-      text-decoration: none;
-      padding: .7rem 1.8rem;
-      border-radius: 50px;
-      white-space: nowrap;
-      transition: background .2s;
-      margin-left: 2rem;
-    }
-    .navbar-cta:hover { background: #0d2a99; }
-
-    /* ── SPACER — reserves space below the fixed navbar so page content isn't hidden behind it ── */
-    .navbar-spacer { height: 130px; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 960px) {
-      .navbar-links { display: none; }
-      .navbar-inner { padding: 0 1.2rem; }
-      .navbar-logo { margin-right: 0; }
-    }
-    @media (max-width: 480px) {
-      .navbar-inner { height: 85px; }
-      .navbar-logo img { height: 68px; }
-      .navbar-spacer { height: 85px; }
-    }
-  </style>
-</head>
-<body>
-
+<!-- ── NAVBAR HTML ── -->
 <nav class="navbar">
   <div class="navbar-inner">
-
-    <a class="navbar-logo" href="https://ambassadorsbaseball.com">
-      <img
-        src="src/logo.webp"
-        alt="Ambassadors Baseball"
-        onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\\'navbar-logo-fallback\\'><span class=\\'logo-top\\'>Ambassadors</span><span class=\\'logo-bottom\\'>Baseball</span><span class=\\'logo-tag\\'>Let Your Light Shine</span></span>';"
-      >
-    </a>
-
-    <ul class="navbar-links">
-      <li><a href="https://ambassadorsbaseballus.com/home">Home</a></li>
-      <li><a href="https://ambassadorsbaseball.com/about">About</a></li>
-      <li><a href="https://ambassadorsbaseball.com/mission">Mission</a></li>
-      <li><a href="https://ambassadorsbaseball.com/teams-tryouts">Teams &amp; Tryouts</a></li>
-      <li><a href="https://ambassadorsbaseball.com/commitments">Commitments</a></li>
-      <li><a href="https://ambassadorsbaseball.com/opportunities">Opportunities</a></li>
-      <li><a href="https://ambassadorsbaseball.com/faq">FAQ</a></li>
-      <li><a href="https://ambassadorsbaseball.com/contact">Contact</a></li>
-    </ul>
-
-    <a href="https://ambassadorsbaseball.com/coach-login" class="navbar-cta">Coach Login</a>
-
+    <div class="navbar-nav-col">
+      <div class="navbar-nav-inner">
+        <a class="navbar-logo" href="https://ambassadorsbaseballus.com/home">
+          <img
+            src="src/logo.webp"
+            alt="Ambassadors Baseball"
+            onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'navbar-logo-fallback\'><span class=\'logo-top\'>Ambassadors</span><span class=\'logo-bottom\'>Baseball</span><span class=\'logo-tag\'>Let Your Light Shine</span></span>';"
+          >
+        </a>
+        <ul class="navbar-links">
+          <li><a href="https://ambassadorsbaseballus.com/home">Home</a></li>
+          <li><a href="https://ambassadorsbaseballus.com/about-us">About</a></li>
+          <li><a href="https://ambassadorsbaseballus.com/Our-Mission">Mission</a></li>
+          <li><a href="https://team.ambassadorsbaseballus.com/">Teams &amp; Tryouts</a></li>
+          <li><a href="https://ambassadorsbaseballus.com/commitments">Commitments</a></li>
+          <li><a href="https://ambassadorsbaseballus.com/opportunities">Opportunities</a></li>
+          <li><a href="https://ambassadorsbaseballus.com/faq">FAQ</a></li>
+          <li><a href="https://ambassadorsbaseballus.com/contact-us">Contact</a></li>
+        </ul>
+        <button class="navbar-hamburger" aria-label="Open menu" onclick="openMobileMenu()">&#9776;</button>
+      </div>
+    </div>
+    <div class="navbar-cta-col">
+      <a href="https://team.ambassadorsbaseballus.com/coach-dashboard.html" class="navbar-cta">Coach Login</a>
+    </div>
   </div>
 </nav>
-<div class="navbar-spacer"></div>
 
-</body>
-</html>
+<!-- Mobile overlay -->
+<div class="navbar-mobile-menu" id="mobileMenu">
+  <button class="navbar-mobile-close" onclick="closeMobileMenu()" aria-label="Close menu">&#10005;</button>
+  <ul class="navbar-mobile-links">
+    <li><a href="https://ambassadorsbaseballus.com/home"          onclick="closeMobileMenu()">Home</a></li>
+    <li><a href="https://ambassadorsbaseballus.com/about-us"      onclick="closeMobileMenu()">About</a></li>
+    <li><a href="https://ambassadorsbaseballus.com/Our-Mission"   onclick="closeMobileMenu()">Mission</a></li>
+    <li><a href="https://team.ambassadorsbaseballus.com/"         onclick="closeMobileMenu()">Teams &amp; Tryouts</a></li>
+    <li><a href="https://ambassadorsbaseballus.com/commitments"   onclick="closeMobileMenu()">Commitments</a></li>
+    <li><a href="https://ambassadorsbaseballus.com/opportunities" onclick="closeMobileMenu()">Opportunities</a></li>
+    <li><a href="https://ambassadorsbaseballus.com/faq"           onclick="closeMobileMenu()">FAQ</a></li>
+    <li><a href="https://ambassadorsbaseballus.com/contact-us"    onclick="closeMobileMenu()">Contact</a></li>
+  </ul>
+</div>
+
+<!-- ── NAVBAR JS ── -->
+<script>
+  function openMobileMenu() {
+    document.getElementById('mobileMenu').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeMobileMenu();
+  });
+</script>

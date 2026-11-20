@@ -175,6 +175,7 @@ input[type="file"].hidden-file{display:none}
 .tryreg-tryout-meta{font-size:.78rem;color:var(--sub)}
 .tryreg-view-regs-btn{margin-top:.5rem;text-align:center;background:var(--navy);color:var(--white);font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:8px 0;border-radius:6px;transition:background .15s}
 .tryreg-tryout-card:hover .tryreg-view-regs-btn,.tryreg-tryout-card.selected .tryreg-view-regs-btn{background:var(--red)}
+.tryreg-date-input{padding:7px 10px;border:1.5px solid var(--mid);border-radius:6px;font-size:.82rem;font-family:'Open Sans',sans-serif;background:var(--white);color:var(--text);cursor:pointer;min-width:150px}
 .tryreg-table{width:100%;border-collapse:collapse;font-size:.78rem;table-layout:auto}
 .tryreg-table thead tr{background:var(--navy)}
 .tryreg-table thead th{padding:9px 8px;text-align:left;font-family:'Oswald',sans-serif;font-size:.66rem;font-weight:600;color:var(--white);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
@@ -451,6 +452,64 @@ input[type="file"].hidden-file{display:none}
 .date-input-wrap .field-input::-webkit-calendar-picker-indicator { display: none; }
 .flatpickr-input { cursor: pointer !important; }
 </style>
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   MULTI-TEAM — "Add a Team" button, "Switch Team" dropdown, modal
+   (Inline styles for the multi-team feature in this page.)
+   All classes are prefixed "ts-" so nothing clashes with existing styles.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Header: Add a Team + Logout side by side */
+.ts-header-actions{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.ts-add-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--red);color:var(--white);border:none;font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border-radius:4px;cursor:pointer;transition:background .2s}
+.ts-add-btn:hover{background:var(--red2)}
+.ts-add-btn:focus-visible{outline:2px solid var(--white);outline-offset:2px}
+.ts-add-btn svg{width:14px;height:14px}
+
+/* Welcome banner: Switch Team dropdown on the right */
+.welcome-banner.ts-has-switcher{flex-wrap:wrap}
+.welcome-banner.ts-has-switcher .welcome-text{flex:1 1 0;min-width:0}
+.ts-switcher{margin-left:auto;position:relative;z-index:1;display:flex;flex-direction:column;align-items:flex-end;gap:.3rem}
+.ts-switcher-label{font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.ts-select-wrap{position:relative}
+.ts-select{appearance:none;-webkit-appearance:none;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.35);border-radius:6px;color:var(--white);font-family:'Open Sans',sans-serif;font-size:.85rem;font-weight:600;padding:8px 36px 8px 12px;min-width:220px;max-width:320px;cursor:pointer;transition:border-color .15s,background .15s}
+.ts-select:hover{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.15)}
+.ts-select:focus-visible{outline:2px solid var(--white);outline-offset:2px}
+.ts-select:disabled{opacity:.6;cursor:wait}
+.ts-select option{color:var(--text);background:var(--white)}
+.ts-chevron{position:absolute;right:12px;top:50%;width:14px;height:14px;transform:translateY(-50%);color:var(--white);pointer-events:none}
+.ts-hint{font-size:.72rem;color:rgba(255,255,255,.75)}
+.ts-hint.ts-error{color:#fecaca}
+
+/* Add a Team modal */
+.ts-overlay{position:fixed;inset:0;background:rgba(10,22,40,.55);backdrop-filter:blur(4px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s}
+.ts-overlay.ts-open{opacity:1;pointer-events:all}
+.ts-modal{background:var(--white);border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.25);width:100%;max-width:560px;overflow:hidden;transform:translateY(20px) scale(.97);transition:transform .28s cubic-bezier(.4,0,.2,1)}
+.ts-overlay.ts-open .ts-modal{transform:translateY(0) scale(1)}
+.ts-modal-head{background:var(--red);padding:1rem 1.4rem;display:flex;align-items:center;justify-content:space-between}
+.ts-modal-head h3{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.08em;margin:0}
+.ts-modal-close{background:rgba(255,255,255,.2);border:none;color:var(--white);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
+.ts-modal-close:hover{background:rgba(255,255,255,.35)}
+.ts-modal-close svg{width:13px;height:13px}
+.ts-modal-body{padding:1.4rem 1.5rem 1.6rem;max-height:65vh;overflow-y:auto}
+.ts-intro{font-size:.85rem;color:var(--sub);line-height:1.6;margin:0 0 1.1rem}
+.ts-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 1.2rem}
+.ts-modal .field-textarea{resize:vertical;min-height:100px;line-height:1.6}
+.ts-form-error{display:none;padding:.75rem 1rem;border-radius:6px;font-size:.82rem;margin-bottom:1.1rem;background:#fef3f5;border:1px solid #f5c6cb;color:var(--red)}
+.ts-form-error.ts-show{display:block}
+.ts-modal-foot{padding:.9rem 1.4rem;border-top:1px solid var(--mid);display:flex;justify-content:flex-end;gap:.6rem}
+.ts-cancel-btn{background:none;border:1.5px solid var(--mid);border-radius:6px;padding:9px 20px;font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);cursor:pointer;transition:all .15s}
+.ts-cancel-btn:hover{border-color:var(--navy);color:var(--navy)}
+.ts-submit-btn{background:var(--navy);border:none;border-radius:6px;padding:9px 24px;font-family:'Oswald',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--white);cursor:pointer;transition:background .15s}
+.ts-submit-btn:hover{background:#162845}
+.ts-submit-btn:disabled,.ts-cancel-btn:disabled{opacity:.6;cursor:not-allowed}
+
+@media(max-width:700px){
+  .ts-switcher{margin-left:0;width:100%;align-items:stretch}
+  .ts-select{width:100%;max-width:none;min-width:0}
+  .ts-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
 <div id="navbar-root"></div>
@@ -493,7 +552,7 @@ document.addEventListener('wheel', (e) => {
   }
 }, { passive: true });
 
-const API_BASE = 'https://backend-baseball-inky.vercel.app';
+const API_BASE = 'https://team.ambassadorsbaseballus.com';
 
 // ── ADMIN IMPERSONATION (Option 3) ──
 const _params     = new URLSearchParams(window.location.search);
@@ -1014,11 +1073,11 @@ function renderDashboard(coach){
           <div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:.8rem;padding:1rem 1.2rem;border-bottom:1px solid var(--mid);background:var(--light)">
             <div style="display:flex;flex-direction:column;gap:4px">
               <label style="font-family:'Oswald',sans-serif;font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--sub)">Registration Date</label>
-              <input type="date" id="tryreg-filter-from" onchange="applyTryregDateFilter()" style="padding:7px 10px;border:1.5px solid var(--mid);border-radius:6px;font-size:.82rem;font-family:'Open Sans',sans-serif;background:var(--white);color:var(--text)">
+              <input type="text" id="tryreg-filter-from" class="tryreg-date-input" placeholder="Select date…">
             </div>
             <div style="display:flex;flex-direction:column;gap:4px">
               <label style="font-family:'Oswald',sans-serif;font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--sub)">To <span style="text-transform:none;letter-spacing:0">(optional — leave empty for a single day)</span></label>
-              <input type="date" id="tryreg-filter-to" onchange="applyTryregDateFilter()" style="padding:7px 10px;border:1.5px solid var(--mid);border-radius:6px;font-size:.82rem;font-family:'Open Sans',sans-serif;background:var(--white);color:var(--text)">
+              <input type="text" id="tryreg-filter-to" class="tryreg-date-input" placeholder="Select date…">
             </div>
             <button onclick="clearTryregDateFilter()" style="padding:8px 16px;border:1.5px solid var(--navy);border-radius:6px;background:var(--white);color:var(--navy);font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Clear</button>
             <span id="tryreg-filter-count" style="font-size:.78rem;color:var(--sub);margin-left:auto"></span>
@@ -1327,6 +1386,9 @@ function renderDashboard(coach){
     flatpickr('#s-start-date', fpConfig);
     flatpickr('#s-end-date', fpConfig);
     flatpickr('#t-date', fpConfig);
+    const trFilterCfg = { dateFormat: 'Y-m-d', altInput: true, altFormat: 'F j, Y', allowInput: false, disableMobile: true, onChange: function() { applyTryregDateFilter(); } };
+    flatpickr('#tryreg-filter-from', trFilterCfg);
+    flatpickr('#tryreg-filter-to',   trFilterCfg);
     flatpickr('#fin-deadline', { dateFormat: 'F j, Y', allowInput: false, disableMobile: true, onChange: function() { finPopulateSimMonths(); finPreviewUpdate(); } });
 
     // Time range pickers
@@ -2139,8 +2201,8 @@ function applyTryregDateFilter() {
 function clearTryregDateFilter() {
   const f = document.getElementById('tryreg-filter-from');
   const t = document.getElementById('tryreg-filter-to');
-  if (f) f.value = '';
-  if (t) t.value = '';
+  if (f) { if (f._flatpickr) f._flatpickr.clear(); else f.value = ''; }
+  if (t) { if (t._flatpickr) t._flatpickr.clear(); else t.value = ''; }
   _regFilterFrom = '';
   _regFilterTo   = '';
   renderTryregTable();
@@ -3995,5 +4057,287 @@ function cfdBindChart() {
     </div>
   </div>
 </div>
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   MULTI-TEAM for coach-dashboard.html
+   - "Add a Team" button next to Logout → modal form → creates the team
+   - "Switch Team" dropdown on the welcome banner (shown when 2+ teams)
+
+   How it works: each extra team is its own coach record on the backend,
+   linked to the coach's main account. Switching simply swaps the dashboard's
+   token for the chosen team's token and reloads the page, so every existing
+   dashboard feature keeps working exactly as before.
+
+   This file does not change any existing dashboard code. It only adds
+   elements to the page after the dashboard has rendered.
+   ═══════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  var API = (typeof API_BASE !== 'undefined' && API_BASE) ? API_BASE : 'https://team.ambassadorsbaseballus.com';
+  var OPEN_PANEL_KEY = 'ts_open_panel_after_switch';
+
+  // ── Session helpers (same storage the dashboard already uses) ──────────
+  function isAdmin() { return !!sessionStorage.getItem('admin_impersonation_token'); }
+  function currentToken() {
+    return isAdmin() ? sessionStorage.getItem('admin_impersonation_token') : localStorage.getItem('coach_token');
+  }
+  function headers() {
+    return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + currentToken() };
+  }
+  function escHtml(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  async function api(path, opts) {
+    var res = await fetch(API + path, Object.assign({ headers: headers() }, opts || {}));
+    var data = {};
+    try { data = await res.json(); } catch (e) { /* ignore */ }
+    if (!res.ok) throw new Error(data.message || ('Request failed (' + res.status + ')'));
+    return data;
+  }
+
+  /** Store the chosen team's token and reload into it. */
+  function activateTeam(token, teamId, openPanel) {
+    if (isAdmin()) {
+      sessionStorage.setItem('admin_impersonation_token',    token);
+      sessionStorage.setItem('admin_impersonation_coach_id', String(teamId));
+    } else {
+      localStorage.setItem('coach_token', token);
+      localStorage.setItem('coach_id',    String(teamId));
+    }
+    try { if (openPanel) sessionStorage.setItem(OPEN_PANEL_KEY, openPanel); } catch (e) { /* ignore */ }
+    window.location.href = 'coach-dashboard.html';
+  }
+
+  // ── 1. "Add a Team" button next to Logout ──────────────────────────────
+  function addHeaderButton() {
+    var logout = document.querySelector('.page-header-inner .logout-btn');
+    if (!logout || document.getElementById('ts-add-team-btn')) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'ts-header-actions';
+    logout.parentNode.insertBefore(wrap, logout);
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'ts-add-team-btn';
+    btn.className = 'ts-add-btn';
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add a Team';
+    btn.addEventListener('click', openModal);
+
+    wrap.appendChild(btn);
+    wrap.appendChild(logout); // move the existing Logout button into the wrapper (unchanged)
+  }
+
+  // ── 2. "Add a Team" modal ──────────────────────────────────────────────
+  var overlay = null;
+
+  function buildModal() {
+    overlay = document.createElement('div');
+    overlay.className = 'ts-overlay';
+    overlay.innerHTML =
+      '<div class="ts-modal" role="dialog" aria-modal="true" aria-labelledby="ts-title">' +
+        '<div class="ts-modal-head">' +
+          '<h3 id="ts-title">Add a Team</h3>' +
+          '<button type="button" class="ts-modal-close" data-ts-close aria-label="Close">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>' +
+          '</button>' +
+        '</div>' +
+        '<div class="ts-modal-body">' +
+          '<p class="ts-intro">Your new team gets its own tryouts, roster, schedule, financials and team page. ' +
+          'You can switch between your teams any time from the welcome banner.</p>' +
+          '<div class="ts-form-error" id="ts-error"></div>' +
+          '<div class="field-group">' +
+            '<label class="field-label" for="ts-name">Team Name</label>' +
+            '<input class="field-input" id="ts-name" type="text" placeholder="e.g. Ambassador Baseball 14U" maxlength="80">' +
+          '</div>' +
+          '<div class="ts-grid">' +
+            '<div class="field-group">' +
+              '<label class="field-label" for="ts-age">Age Group</label>' +
+              '<input class="field-input" id="ts-age" type="text" placeholder="e.g. 14U" maxlength="20">' +
+            '</div>' +
+            '<div class="field-group">' +
+              '<label class="field-label" for="ts-state">State</label>' +
+              '<input class="field-input" id="ts-state" type="text" placeholder="e.g. IL" maxlength="2">' +
+            '</div>' +
+          '</div>' +
+          '<div class="field-group" style="margin-bottom:0">' +
+            '<label class="field-label" for="ts-details">Team Details</label>' +
+            '<textarea class="field-textarea" id="ts-details" placeholder="Tell families about this team: level, practice location, season goals…"></textarea>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ts-modal-foot">' +
+          '<button type="button" class="ts-cancel-btn" data-ts-close>Cancel</button>' +
+          '<button type="button" class="ts-submit-btn" id="ts-submit">Add Team</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay || e.target.closest('[data-ts-close]')) closeModal();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && overlay.classList.contains('ts-open')) closeModal();
+    });
+    overlay.querySelector('#ts-state').addEventListener('input', function (e) {
+      e.target.value = e.target.value.toUpperCase();
+    });
+    overlay.querySelector('#ts-submit').addEventListener('click', submitTeam);
+  }
+
+  var _submitting = false;
+
+  function openModal() {
+    if (!overlay) buildModal();
+    overlay.querySelector('#ts-name').value = '';
+    overlay.querySelector('#ts-age').value = '';
+    overlay.querySelector('#ts-details').value = '';
+    // Pre-fill state with the current team's state (from the Team Details panel if loaded)
+    var st = document.getElementById('td-state');
+    overlay.querySelector('#ts-state').value = st && st.value ? String(st.value).toUpperCase().slice(0, 2) : '';
+    showError('');
+    overlay.classList.add('ts-open');
+    setTimeout(function () { overlay.querySelector('#ts-name').focus(); }, 50);
+  }
+
+  function closeModal() {
+    if (_submitting || !overlay) return;
+    overlay.classList.remove('ts-open');
+  }
+
+  function showError(msg) {
+    var el = overlay.querySelector('#ts-error');
+    el.textContent = msg;
+    el.classList.toggle('ts-show', !!msg);
+  }
+
+  function setBusy(busy) {
+    _submitting = busy;
+    var submit = overlay.querySelector('#ts-submit');
+    submit.disabled = busy;
+    submit.textContent = busy ? 'Creating…' : 'Add Team';
+    overlay.querySelectorAll('[data-ts-close]').forEach(function (b) { b.disabled = busy; });
+  }
+
+  async function submitTeam() {
+    var teamName    = overlay.querySelector('#ts-name').value.trim();
+    var ageGroup    = overlay.querySelector('#ts-age').value.trim();
+    var state       = overlay.querySelector('#ts-state').value.trim().toUpperCase();
+    var teamDetails = overlay.querySelector('#ts-details').value.trim();
+    if (!teamName) return showError('Please enter a team name.');
+    if (!ageGroup) return showError('Please enter an age group.');
+    if (!state)    return showError('Please enter a state.');
+
+    showError('');
+    setBusy(true);
+    try {
+      var data = await api('/api/coach/teams', {
+        method: 'POST',
+        body: JSON.stringify({ teamName: teamName, ageGroup: ageGroup, state: state, teamDetails: teamDetails }),
+      });
+      activateTeam(data.token, data.team._id, 'teamdetails'); // reloads into the new team
+    } catch (err) {
+      setBusy(false);
+      showError(err.message || 'Could not create the team. Please try again.');
+    }
+  }
+
+  // ── 3. "Switch Team" dropdown on the welcome banner ────────────────────
+  var _teamsPromise = null;
+  function loadTeams() {
+    if (!_teamsPromise) _teamsPromise = api('/api/coach/teams').catch(function () { _teamsPromise = null; return null; });
+    return _teamsPromise;
+  }
+
+  async function addSwitcher(banner) {
+    if (banner.querySelector('.ts-switcher')) return;
+    var data = await loadTeams();
+    if (!data || !data.teams || data.teams.length < 2) return;
+    if (banner.querySelector('.ts-switcher') || !banner.isConnected) return;
+
+    var currentId = String(data.currentId || '');
+    var options = data.teams.map(function (t) {
+      var label = (t.teamName || 'Unnamed Team') + (t.ageGroup ? ' (' + t.ageGroup + ')' : '');
+      var id = String(t._id);
+      return '<option value="' + escHtml(id) + '"' + (id === currentId ? ' selected' : '') + '>' + escHtml(label) + '</option>';
+    }).join('');
+
+    var box = document.createElement('div');
+    box.className = 'ts-switcher';
+    box.innerHTML =
+      '<label class="ts-switcher-label" for="ts-switch-select">Switch Team</label>' +
+      '<div class="ts-select-wrap">' +
+        '<select class="ts-select" id="ts-switch-select">' + options + '</select>' +
+        '<svg class="ts-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>' +
+      '</div>' +
+      '<span class="ts-hint" id="ts-switch-hint"></span>';
+    banner.classList.add('ts-has-switcher');
+    banner.appendChild(box);
+
+    var select = box.querySelector('select');
+    var hint   = box.querySelector('#ts-switch-hint');
+    select.addEventListener('change', async function () {
+      var teamId = select.value;
+      if (!teamId || teamId === currentId) return;
+      select.disabled = true;
+      hint.className = 'ts-hint';
+      hint.textContent = 'Switching…';
+      try {
+        var res = await api('/api/coach/teams/switch', { method: 'POST', body: JSON.stringify({ teamId: teamId }) });
+        activateTeam(res.token, res.team._id);
+      } catch (err) {
+        select.disabled = false;
+        select.value = currentId;
+        hint.className = 'ts-hint ts-error';
+        hint.textContent = err.message || 'Could not switch team.';
+      }
+    });
+  }
+
+  // ── 4. After a reload, open the requested panel (e.g. Team Details) ─────
+  function openRequestedPanel() {
+    var panel = null;
+    try {
+      panel = sessionStorage.getItem(OPEN_PANEL_KEY);
+      if (panel) sessionStorage.removeItem(OPEN_PANEL_KEY);
+    } catch (e) { /* ignore */ }
+    if (panel && typeof switchPanel === 'function' && document.getElementById('panel-' + panel)) {
+      switchPanel(panel);
+    }
+  }
+
+  // ── Watch for the dashboard rendering its welcome banner ───────────────
+  function onDashboardRendered() {
+    var banner = document.querySelector('#dash-main .welcome-banner');
+    if (!banner || banner.dataset.tsReady) return;
+    banner.dataset.tsReady = '1';
+    openRequestedPanel();
+    addSwitcher(banner);
+  }
+
+  // ── Keep other tabs in sync: if the coach switches team in another tab,
+  //    reload this tab so it never shows one team while saving into another.
+  if (!isAdmin()) {
+    window.addEventListener('storage', function (e) {
+      if (e.key === 'coach_token' && e.newValue && e.newValue !== e.oldValue) {
+        window.location.reload();
+      }
+    });
+  }
+
+  function init() {
+    if (!currentToken()) return;
+    addHeaderButton();
+    var main = document.getElementById('dash-main');
+    if (main) {
+      new MutationObserver(onDashboardRendered).observe(main, { childList: true });
+      onDashboardRendered();
+    }
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
 </body>
 </html>

@@ -512,7 +512,7 @@ body { font-family: 'Source Sans 3', sans-serif; background: var(--light); color
 
 <script>
 'use strict';
-const API_BASE = 'https://backend-baseball-inky.vercel.app';
+const API_BASE = 'https://team.ambassadorsbaseballus.com';
 let adminToken = localStorage.getItem('admin_token') || '';
 let allCoaches = [];
 let currentCoachId = null;
@@ -674,68 +674,6 @@ async function openCoach(id) {
   }
 }
 
-/* ── TRYOUTS TAB: split into Upcoming / Past ── */
-function isPastTryoutDate(dateStr) {
-  const d = new Date(dateStr);
-  if (isNaN(d)) return false; // unparseable date → treat as upcoming
-  const endOfDay = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
-  return endOfDay < new Date();
-}
-
-function tryoutsTable(list) {
-  return `<table class="info-table">
-    <thead><tr><th>Date</th><th>Time</th><th>Location</th><th>City</th><th>State</th><th>Fee</th></tr></thead>
-    <tbody>${list.map(t => `
-      <tr>
-        <td><strong>${esc(t.date||'—')}</strong></td>
-        <td>${esc(t.time||'—')}</td>
-        <td>${esc(t.location||'—')}</td>
-        <td>${esc(t.city||'—')}</td>
-        <td>${esc(t.state||'—')}</td>
-        <td>${esc(t.fee||'Free')}</td>
-      </tr>`).join('')}
-    </tbody>
-  </table>`;
-}
-
-function renderTryoutsTab(tryouts) {
-  if (!tryouts.length) {
-    return `<div style="overflow-x:auto;"><div class="empty-state"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>No tryouts scheduled yet.</div></div>`;
-  }
-
-  const byDateAsc  = (a, b) => {
-    const da = new Date(a.date), db = new Date(b.date);
-    if (!isNaN(da) && !isNaN(db)) return da - db;
-    return String(a.date).localeCompare(String(b.date));
-  };
-  const upcoming = tryouts.filter(t => !isPastTryoutDate(t.date)).sort(byDateAsc);
-  const past     = tryouts.filter(t =>  isPastTryoutDate(t.date)).sort(byDateAsc).reverse(); // most recent past first
-
-  const sectionHeader = (label, count, color) => `
-    <div style="display:flex;align-items:center;gap:8px;margin:0 0 10px;">
-      <span style="font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${color};">${label}</span>
-      <span style="background:${color};color:#fff;font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:20px;">${count}</span>
-    </div>`;
-
-  const upcomingHtml = `
-    <div style="margin-bottom:1.6rem;">
-      ${sectionHeader('Upcoming Tryouts', upcoming.length, 'var(--navy, #0a1628)')}
-      <div style="overflow-x:auto;">${upcoming.length
-        ? tryoutsTable(upcoming)
-        : `<div class="empty-state" style="padding:1.2rem;">No upcoming tryouts.</div>`}</div>
-    </div>`;
-
-  const pastHtml = `
-    <div>
-      ${sectionHeader('Past Tryouts', past.length, 'var(--muted, #7a8794)')}
-      <div style="overflow-x:auto;opacity:.75;">${past.length
-        ? tryoutsTable(past)
-        : `<div class="empty-state" style="padding:1.2rem;">No past tryouts.</div>`}</div>
-    </div>`;
-
-  return upcomingHtml + pastHtml;
-}
-
 function renderModal({ coach, tryouts, registrations, roster, schedule }) {
   document.getElementById('modal-coach-name').textContent = `${coach.firstName} ${coach.lastName}`;
   document.getElementById('modal-coach-team').textContent = coach.teamName || 'No team name set';
@@ -753,9 +691,11 @@ function renderModal({ coach, tryouts, registrations, roster, schedule }) {
     regsByTryout[key].push(r);
   });
 
-  const regsTable = (list) => `<table class="info-table">
+  const regsHtml = registrations.length === 0
+    ? `<div class="empty-state"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>No registrations yet.</div>`
+    : `<table class="info-table">
         <thead><tr><th>Player</th><th>Contact</th><th>Email</th><th>Cell</th><th>Tryout Date</th><th>Age</th><th>Position</th></tr></thead>
-        <tbody>${list.map(r => `
+        <tbody>${registrations.map(r => `
           <tr>
             <td><strong>${esc(r.player_name||'—')}</strong></td>
             <td>${esc(r.name||'—')}</td>
@@ -767,31 +707,6 @@ function renderModal({ coach, tryouts, registrations, roster, schedule }) {
           </tr>`).join('')}
         </tbody>
       </table>`;
-
-  const regsByTryoutDate = (a, b) => {
-    const da = new Date(a.tryout_date), db = new Date(b.tryout_date);
-    if (!isNaN(da) && !isNaN(db)) return da - db;
-    return String(a.tryout_date).localeCompare(String(b.tryout_date));
-  };
-  const upcomingRegs = registrations.filter(r => !isPastTryoutDate(r.tryout_date)).sort(regsByTryoutDate);
-  const pastRegs     = registrations.filter(r =>  isPastTryoutDate(r.tryout_date)).sort(regsByTryoutDate).reverse(); // most recent past first
-
-  const regsSectionHeader = (label, count, color) => `
-    <div style="display:flex;align-items:center;gap:8px;margin:0 0 10px;">
-      <span style="font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${color};">${label}</span>
-      <span style="background:${color};color:#fff;font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:20px;">${count}</span>
-    </div>`;
-
-  const regsHtml = registrations.length === 0
-    ? `<div class="empty-state"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>No registrations yet.</div>`
-    : `<div style="margin-bottom:1.6rem;">
-         ${regsSectionHeader('Upcoming Tryouts', upcomingRegs.length, 'var(--navy)')}
-         ${upcomingRegs.length ? regsTable(upcomingRegs) : `<div class="empty-state" style="padding:1.2rem;">No registrations for upcoming tryouts.</div>`}
-       </div>
-       <div>
-         ${regsSectionHeader('Past Tryouts', pastRegs.length, 'var(--muted)')}
-         <div style="opacity:.75;">${pastRegs.length ? regsTable(pastRegs) : `<div class="empty-state" style="padding:1.2rem;">No registrations for past tryouts.</div>`}</div>
-       </div>`;
 
   const rosterHtml = roster.length === 0
     ? `<div class="empty-state"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>No roster yet.</div>`
@@ -886,7 +801,7 @@ function renderModal({ coach, tryouts, registrations, roster, schedule }) {
       <div class="edit-grid">
         <div class="field-group"><label class="field-label">First Name</label><input class="field-input" id="edit-fn" value="${esc(coach.firstName||'')}"></div>
         <div class="field-group"><label class="field-label">Last Name</label><input class="field-input" id="edit-ln" value="${esc(coach.lastName||'')}"></div>
-        <div class="field-group"><label class="field-label">Email</label><input class="field-input" id="edit-email" type="email" value="${esc(coach.email||'')}"></div>
+        <div class="field-group"><label class="field-label">Email</label><input class="field-input" id="edit-email" type="email" value="${esc(coach.email||'')}"${coach.isExtraTeam ? ' readonly title="This team uses the coach\'s main account email" style="background:#f4f6f9;cursor:not-allowed"' : ''}></div>
         <div class="field-group"><label class="field-label">Phone</label><input class="field-input" id="edit-phone" value="${esc(coach.phone||'')}"></div>
         <div class="field-group"><label class="field-label">Team Name</label><input class="field-input" id="edit-team" value="${esc(coach.teamName||'')}"></div>
         <div class="field-group"><label class="field-label">Age Group</label>
@@ -903,7 +818,22 @@ function renderModal({ coach, tryouts, registrations, roster, schedule }) {
 
     <!-- TRYOUTS TAB -->
     <div class="modal-tab-panel" id="mtab-tryouts">
-      ${renderTryoutsTab(tryouts)}
+      <div style="overflow-x:auto;">${tryouts.length === 0
+        ? `<div class="empty-state"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>No tryouts scheduled yet.</div>`
+        : `<table class="info-table">
+            <thead><tr><th>Date</th><th>Time</th><th>Location</th><th>City</th><th>State</th><th>Fee</th></tr></thead>
+            <tbody>${tryouts.map(t => `
+              <tr>
+                <td><strong>${esc(t.date||'—')}</strong></td>
+                <td>${esc(t.time||'—')}</td>
+                <td>${esc(t.location||'—')}</td>
+                <td>${esc(t.city||'—')}</td>
+                <td>${esc(t.state||'—')}</td>
+                <td>${esc(t.fee||'Free')}</td>
+              </tr>`).join('')}
+            </tbody>
+          </table>`}
+      </div>
     </div>
 
     <!-- REGISTRATIONS TAB -->
@@ -1016,7 +946,8 @@ async function deleteCoach(id) {
     allCoaches = allCoaches.filter(c => c.id !== id);
     renderStats();
     renderCoaches(allCoaches);
-    showToast('Coach deleted', 'red');
+    showToast(data.message || 'Coach deleted', 'red');
+    if (data.promoted) loadCoaches(); // MULTI-TEAM: refresh so the promoted team shows as the main account
   } catch(err) {
     showToast(err.message, 'red');
   }
@@ -1175,7 +1106,7 @@ async function finRenderOrgDashboard() {
       <div class="fin-section-body" style="padding-bottom:0;">
         <div style="overflow-x:auto;">
           <table class="fin-tbl">
-            <thead><tr><th>Player Name</th><th>Team</th><th>Total Fee</th><th>Paid Amount</th><th>Balance Due</th><th>Status</th></tr></thead>
+            <thead><tr><th>Player Name</th><th>Team</th><th>Total Fee</th><th>Paid Amount</th><th>Pending</th><th>Status</th></tr></thead>
             <tbody id="fin-balance-tbody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading…</td></tr></tbody>
           </table>
         </div>
@@ -1242,7 +1173,7 @@ async function finRenderTeamDashboard(coachId) {
       <div class="fin-section-body">
         <div id="fin-payout-form-${coachId}" style="display:none;background:var(--light);border-radius:8px;padding:1.2rem 1.3rem;margin-bottom:1.2rem;border:1.5px solid var(--mid);">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:.9rem;">
-            <div style="display:flex;flex-direction:column;gap:.35rem;"><label style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Date Paid</label><input type="date" id="fin-payout-date-${coachId}" style="padding:9px 11px;border:1.5px solid var(--mid);border-radius:6px;font-family:'Source Sans 3',sans-serif;font-size:.88rem;outline:none;"/></div>
+            <div style="display:flex;flex-direction:column;gap:.35rem;"><label style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Date Paid</label><input type="date" id="fin-payout-date-${coachId}" onclick="try{this.showPicker()}catch(e){}" onfocus="try{this.showPicker()}catch(e){}" style="padding:9px 11px;border:1.5px solid var(--mid);border-radius:6px;font-family:'Source Sans 3',sans-serif;font-size:.88rem;outline:none;cursor:pointer;"/></div>
             <div style="display:flex;flex-direction:column;gap:.35rem;"><label style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Amount</label><input type="number" placeholder="0.00" min="0" step="0.01" id="fin-payout-amount-${coachId}" style="padding:9px 11px;border:1.5px solid var(--mid);border-radius:6px;font-family:'Source Sans 3',sans-serif;font-size:.88rem;outline:none;"/></div>
           </div>
           <div style="display:flex;flex-direction:column;gap:.35rem;margin-bottom:.9rem;"><label style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Notes</label><textarea id="fin-payout-notes-${coachId}" placeholder="Payment notes…" rows="2" style="padding:9px 11px;border:1.5px solid var(--mid);border-radius:6px;font-family:'Source Sans 3',sans-serif;font-size:.88rem;outline:none;resize:vertical;"></textarea></div>
@@ -1267,7 +1198,7 @@ async function finRenderTeamDashboard(coachId) {
       <div class="fin-section-body" style="padding-bottom:0;">
         <div style="overflow-x:auto;">
           <table class="fin-tbl">
-            <thead><tr><th>Player Name</th><th>Total Fee</th><th>Paid Amount</th><th>Balance Due</th><th>Last Payment</th><th>Status</th></tr></thead>
+            <thead><tr><th>Player Name</th><th>Total Fee</th><th>Paid Amount</th><th>Pending</th><th>Last Payment</th><th>Status</th></tr></thead>
             <tbody id="fin-player-tbody-${coachId}"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading…</td></tr></tbody>
           </table>
         </div>
