@@ -638,14 +638,14 @@ input[type="file"].hidden-file{display:none}
 #panel-financials .tfp-dot{width:10px;height:10px;border-radius:50%;margin-top:6px;flex:0 0 auto}
 #panel-financials .tfp-act-t{color:var(--tf-ink);font-size:14px}
 #panel-financials .tfp-act-d{color:var(--tf-sub);font-size:13px}
-#panel-financials .tfp-notes-box{padding:16px 20px 4px;border-bottom:1px solid var(--tf-line)}
+#panel-financials .tfp-notes-box{padding:16px 20px 4px;border-top:1px solid var(--tf-line)}
 #panel-financials .tfp-note-input{width:100%;min-height:84px;resize:vertical;border:1.5px solid var(--tf-btn);border-radius:8px;padding:10px 12px;font-family:'Open Sans',sans-serif;font-size:14px;color:var(--tf-ink);background:#fff;box-sizing:border-box}
 #panel-financials .tfp-note-input:focus{outline:none;border-color:#1d3fc6}
-#panel-financials .tfp-note-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 12px}
+#panel-financials .tfp-note-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 14px}
 #panel-financials .tfp-note-msg{font-size:12px;color:var(--tf-sub)}#panel-financials .tfp-note-msg.err{color:var(--tf-red)}
 #panel-financials .tfp-note-save{height:34px;padding:0 14px;border:0;border-radius:6px;background:var(--tf-ink);color:#fff;font-family:'Oswald',sans-serif;font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
 #panel-financials .tfp-note-save:disabled{opacity:.6;cursor:wait}
-#panel-financials .tfp-notes{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+#panel-financials .tfp-notes{display:flex;flex-direction:column;gap:10px;padding:16px 20px;border-bottom:1px solid var(--tf-line)}
 #panel-financials .tfp-notes:empty{display:none}
 #panel-financials .tfp-note{background:#fffbea;border:1px solid #f3e3a1;border-radius:8px;padding:10px 12px}
 #panel-financials .tfp-note-text{font-size:14px;color:var(--tf-ink);white-space:pre-wrap;word-break:break-word}
@@ -3356,15 +3356,15 @@ function tfPlayerHtml(p, r) {
         </div>
         <div class="tf-card">
           <div class="tf-card-head tfp-ch"><span class="tfp-title">Activity &amp; notes</span></div>
+          <div id="tfp-notes" class="tfp-notes"><div class="tfp-note-loading">Loading notes…</div></div>
+          <div class="tfp-act">${act.map(a => `<div class="tfp-act-row"><span class="tfp-dot" style="background:${a.dot}"></span><div><div class="tfp-act-t">${esc(a.text)}</div>${a.time ? `<div class="tfp-act-d">${esc(a.time)}</div>` : ''}</div></div>`).join('')}</div>
           <div class="tfp-notes-box">
             <textarea id="tfp-note-input" class="tfp-note-input" maxlength="2000" placeholder="Add a private note…"></textarea>
             <div class="tfp-note-bar">
               <span class="tfp-note-msg" id="tfp-note-msg">Only you can see these notes.</span>
               <button type="button" class="tfp-note-save" id="tfp-note-save" onclick="tfAddNote('${p._id}')">Save note</button>
             </div>
-            <div id="tfp-notes" class="tfp-notes"><div class="tfp-note-loading">Loading notes…</div></div>
           </div>
-          <div class="tfp-act">${act.map(a => `<div class="tfp-act-row"><span class="tfp-dot" style="background:${a.dot}"></span><div><div class="tfp-act-t">${esc(a.text)}</div>${a.time ? `<div class="tfp-act-d">${esc(a.time)}</div>` : ''}</div></div>`).join('')}</div>
         </div>
       </div>
     </div>
