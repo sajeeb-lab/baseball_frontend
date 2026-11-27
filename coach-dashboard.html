@@ -546,6 +546,101 @@ input[type="file"].hidden-file{display:none}
 #panel-financials .tf-table td .tf-muted-dash{color:var(--tf-sub)}
 #panel-financials .tf-edit .info-note{margin-top:0}
 #panel-financials .no-ar-state{padding:2rem 1rem;text-align:center}
+/* ── Player profile (Team Financials → View details) ── */
+#panel-financials .tf-name-link{background:none;border:0;padding:0;font:inherit;font-weight:600;color:var(--tf-ink);cursor:pointer;text-align:left}
+#panel-financials .tf-name-link:hover{color:#1d3fc6;text-decoration:underline}
+#panel-financials .tfp-loading{padding:3rem 1rem;text-align:center;color:var(--tf-sub)}
+#panel-financials .tfp-hero{padding-bottom:96px}
+#panel-financials .tfp-hero h1{font-size:36px}
+#panel-financials .tfp-back{margin-top:18px;display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--tf-ink);border:0;border-radius:8px;padding:9px 14px;font-family:'Open Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer}
+#panel-financials .tfp-back svg{width:16px;height:16px}
+#panel-financials .tfp-back:hover{background:#eef1f5}
+#panel-financials .tfp-body{margin-top:-62px}
+#panel-financials .tfp-head{display:flex;align-items:center;gap:22px;padding:24px 26px;flex-wrap:wrap}
+#panel-financials .tfp-avatar{width:78px;height:78px;border-radius:50%;background:#1d3fc6;color:#fff;display:grid;place-items:center;font-family:'Oswald',sans-serif;font-size:26px;font-weight:600;box-shadow:0 0 0 5px #eef1fb;flex:0 0 auto}
+#panel-financials .tfp-head-main{flex:1 1 300px;min-width:0}
+#panel-financials .tfp-name{font-family:'Oswald',sans-serif;font-weight:700;font-size:30px;text-transform:uppercase;letter-spacing:.02em;color:var(--tf-ink);line-height:1.1}
+#panel-financials .tfp-chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 8px}
+#panel-financials .tfp-chip{font-size:13px;font-weight:600;padding:4px 9px;border-radius:5px;line-height:1.2}
+#panel-financials .tfp-chip.caps{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+#panel-financials .tfp-chip.dark{background:var(--tf-ink);color:#fff;font-family:'Oswald',sans-serif}
+#panel-financials .tfp-chip.blue{background:#e8edfb;color:#1d3fc6;font-family:'Oswald',sans-serif;text-transform:uppercase}
+#panel-financials .tfp-chip.grey{background:#eef1f5;color:#3b4658}
+#panel-financials .tfp-meta{font-size:14px;color:var(--tf-sub)}
+#panel-financials .tfp-actions{display:flex;gap:10px;flex-wrap:wrap}
+#panel-financials .tfp-abtn{height:40px;padding:0 16px;display:inline-flex;align-items:center;text-decoration:none;font-size:13px}
+#panel-financials .tfp-abtn.disabled{opacity:.45;cursor:not-allowed;pointer-events:none}
+#panel-financials .tfp-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+#panel-financials .tfp-stat{padding:18px 20px}
+#panel-financials .tfp-stat.alert{border-color:#f3c2cb}
+#panel-financials .tfp-val{font-family:'Oswald',sans-serif;font-weight:700;font-size:28px;color:var(--tf-ink);margin:6px 0 2px;line-height:1.15}
+#panel-financials .tfp-val.g{color:var(--tf-green)}#panel-financials .tfp-val.r{color:var(--tf-red)}
+#panel-financials .tfp-sub{font-size:13px;color:var(--tf-sub)}
+#panel-financials .tfp-sub.r{color:var(--tf-red);font-weight:600}#panel-financials .tfp-sub.g{color:var(--tf-green);font-weight:600}
+#panel-financials .tfp-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:20px;align-items:start}
+#panel-financials .tfp-col{display:flex;flex-direction:column;gap:20px;min-width:0}
+#panel-financials .tfp-ch{padding:16px 20px}
+#panel-financials .tfp-title{font-family:'Oswald',sans-serif;font-weight:700;font-size:18px;letter-spacing:.06em;text-transform:uppercase;color:var(--tf-ink)}
+#panel-financials .tfp-ch-sub{font-size:13px;color:var(--tf-sub);margin-top:2px}
+#panel-financials .tfp-link{background:none;border:0;padding:0;color:#1d3fc6;font-family:'Open Sans',sans-serif;font-weight:600;font-size:14px;cursor:pointer}
+#panel-financials .tfp-link:hover{text-decoration:underline}
+#panel-financials .tfp-pad{padding:16px 20px 20px}
+#panel-financials .tfp-bar{flex:none;height:8px}
+#panel-financials .tfp-barlbl{display:flex;justify-content:space-between;font-size:13px;color:var(--tf-sub);margin:8px 0 14px}
+#panel-financials .tfp-prows{border:1px solid var(--tf-border);border-radius:10px;overflow:hidden}
+#panel-financials .tfp-prow{display:flex;align-items:center;gap:14px;padding:12px 16px;border-bottom:1px solid var(--tf-line);background:#fff}
+#panel-financials .tfp-prow:last-child{border-bottom:0}
+#panel-financials .tfp-prow.late{background:#fff8f9}
+#panel-financials .tfp-ic{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;flex:0 0 auto}
+#panel-financials .tfp-ic.ok{background:#e6f6ec;color:var(--tf-green)}#panel-financials .tfp-ic.bad{background:#fde4e8;color:var(--tf-red)}#panel-financials .tfp-ic.neutral{background:#eef1f5;color:var(--tf-sub)}
+#panel-financials .tfp-prow-main{flex:1;min-width:0}
+#panel-financials .tfp-prow-label{font-weight:600;color:var(--tf-ink)}
+#panel-financials .tfp-prow-sub{font-size:13px;color:var(--tf-sub)}
+#panel-financials .tfp-prow-sub.paid{color:var(--tf-green)}#panel-financials .tfp-prow-sub.overdue{color:var(--tf-red)}
+#panel-financials .tfp-prow-amt{font-family:'Oswald',sans-serif;font-weight:700;font-size:18px;color:var(--tf-ink);white-space:nowrap}
+#panel-financials .tfp-prow-amt.r{color:var(--tf-red)}
+#panel-financials .tfp-sec{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--tf-sub);margin:4px 0 10px}
+#panel-financials .tfp-depbox{display:flex;align-items:center;gap:14px;border-radius:10px;padding:14px 18px;margin-bottom:18px}
+#panel-financials .tfp-depbox.ok{background:#f0faf3;border:1px solid #bfe6cb}#panel-financials .tfp-depbox.bad{background:#fff8f9;border:1px solid #f3c2cb}
+#panel-financials .tfp-depbox>div{flex:1;font-size:13px;color:var(--tf-sub)}
+#panel-financials .tfp-depbox b{display:block;font-size:15px;color:var(--tf-ink)}
+#panel-financials .tfp-depic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700}
+#panel-financials .tfp-depbox.ok .tfp-depic{background:#16a34a}#panel-financials .tfp-depbox.bad .tfp-depic{background:var(--tf-red)}
+#panel-financials .tfp-depamt{font-family:'Oswald',sans-serif;font-weight:700;font-size:20px;color:var(--tf-green)}
+#panel-financials .tfp-depbox.bad .tfp-depamt{color:var(--tf-red)}
+#panel-financials .tfp-tablewrap{border:1px solid var(--tf-border);border-radius:10px;overflow-x:auto}
+#panel-financials .tfp-tablewrap.flush{border:0;border-radius:0}
+#panel-financials .tfp-table{width:100%;border-collapse:collapse;font-size:14px;min-width:520px}
+#panel-financials .tfp-table th{background:#f6f8fb;text-align:left;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tf-sub);padding:11px 14px;border-bottom:1px solid var(--tf-line)}
+#panel-financials .tfp-table th.right,#panel-financials .tfp-table td.tfp-amt.g{text-align:right}
+#panel-financials .tfp-table td{padding:12px 14px;border-bottom:1px solid var(--tf-line);vertical-align:middle;color:var(--tf-ink)}
+#panel-financials .tfp-table tr:last-child td{border-bottom:0}
+#panel-financials .tfp-tablewrap.flush .tfp-table th:first-child,#panel-financials .tfp-tablewrap.flush .tfp-table td:first-child{padding-left:20px}
+#panel-financials .tfp-tablewrap.flush .tfp-table th:last-child,#panel-financials .tfp-tablewrap.flush .tfp-table td:last-child{padding-right:20px}
+#panel-financials .tfp-table td.tfp-muted{color:var(--tf-sub)}
+#panel-financials .tfp-table td.tfp-amt{font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;white-space:nowrap}
+#panel-financials .tfp-table td.tfp-amt.g{color:var(--tf-green)}
+#panel-financials .tfp-inv-desc{font-weight:600}
+#panel-financials .tfp-inv-no{font-size:12px;color:var(--tf-sub)}
+#panel-financials .tfp-kv{display:flex;justify-content:space-between;gap:16px;padding:13px 20px;border-bottom:1px solid var(--tf-line);font-size:14px}
+#panel-financials .tfp-kv:last-child{border-bottom:0}
+#panel-financials .tfp-kv span{color:var(--tf-sub)}
+#panel-financials .tfp-kv b{color:var(--tf-ink);text-align:right;word-break:break-word}
+#panel-financials .tfp-kv a{color:var(--tf-ink);text-decoration:none}#panel-financials .tfp-kv a:hover{color:#1d3fc6}
+#panel-financials .tfp-person{border-bottom:1px solid var(--tf-line)}
+#panel-financials .tfp-person:last-child{border-bottom:0}
+#panel-financials .tfp-person .tfp-kv{border-bottom:0;padding-top:6px;padding-bottom:6px}
+#panel-financials .tfp-person .tfp-kv:last-child{padding-bottom:14px}
+#panel-financials .tfp-person-title{padding:14px 20px 4px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tf-sub)}
+#panel-financials .tfp-act{padding:4px 20px 12px}
+#panel-financials .tfp-act-row{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--tf-line)}
+#panel-financials .tfp-act-row:last-child{border-bottom:0}
+#panel-financials .tfp-dot{width:10px;height:10px;border-radius:50%;margin-top:6px;flex:0 0 auto}
+#panel-financials .tfp-act-t{color:var(--tf-ink);font-size:14px}
+#panel-financials .tfp-act-d{color:var(--tf-sub);font-size:13px}
+#panel-financials .tfp-empty{padding:18px 20px;text-align:center;color:var(--tf-sub);font-size:14px}
+@media(max-width:1000px){#panel-financials .tfp-grid{grid-template-columns:1fr}#panel-financials .tfp-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){#panel-financials .tfp-stats{grid-template-columns:1fr}#panel-financials .tfp-head{padding:18px}#panel-financials .tfp-name{font-size:24px}#panel-financials .tfp-hero h1{font-size:26px}#panel-financials .tfp-actions{width:100%}#panel-financials .tfp-abtn{flex:1;justify-content:center}}
 </style>
 </head>
 <body>
@@ -1148,6 +1243,7 @@ function renderDashboard(coach){
     <div class="dash-panel" id="panel-financials">
 
       <!-- TEAM FINANCIALS (redesigned layout) -->
+      <div id="tf-list-view">
       <div class="tf-hero">
         <div class="tf-eyebrow">Finances</div>
         <h1>Team Financials</h1>
@@ -1292,6 +1388,10 @@ function renderDashboard(coach){
       </div>
 
       </div><!-- /.tf-body -->
+      </div><!-- /#tf-list-view -->
+
+      <!-- PLAYER PROFILE (opened from "View details") -->
+      <div id="tf-player-view" style="display:none"></div>
 
       <!-- PAYMENT DETAIL MODAL -->
       <div class="edit-overlay" id="payment-detail-overlay">
@@ -2858,6 +2958,7 @@ function tfResetForm() {
 }
 
 async function loadFinancials() {
+  tfShowList();
   try {
     const [finRes, payRes] = await Promise.all([
       fetch(`${API_BASE}/api/coach/financials`, { headers: authH() }),
@@ -2940,7 +3041,7 @@ function renderARTable() {
     // Status: Paid / Partial, or Overdue when a balance remains after the deadline
     let statusCls = 'tf-b-paid', statusTxt = 'Paid';
     if (p.status !== 'Paid' && balance > 0) {
-      const dl = p.payment_deadline ? new Date(p.payment_deadline) : null;
+      const dl = tfParseDate(p.payment_deadline);
       const overdue = dl && !isNaN(dl) && dl < today;
       statusCls = overdue ? 'tf-b-overdue' : 'tf-b-partial';
       statusTxt = overdue ? 'Overdue' : 'Partial';
@@ -2948,18 +3049,312 @@ function renderARTable() {
 
     return `
       <tr>
-        <td class="tf-name">${esc(p.player_name||'\u2014')}</td>
+        <td class="tf-name"><button type="button" class="tf-name-link" onclick="tfOpenPlayer('${p._id}')">${esc(p.player_name||'\u2014')}</button></td>
         <td class="tf-muted">${esc(p.registered_date||'\u2014')}</td>
         <td>${depHtml}</td>
         <td class="tf-pf"><b>${fmt2(paid)}</b> <span>/ ${fmt0(fee)}</span><span class="tf-mini"><i style="width:${pct.toFixed(1)}%"></i></span></td>
         <td class="tf-bal ${balance > 0 ? '' : 'zero'}">${fmt2(balance)}</td>
         <td><span class="tf-badge ${statusCls}">${statusTxt}</span></td>
-        <td><button type="button" class="tf-btn" onclick="openPaymentDetail('${p._id}')">View details</button></td>
+        <td><button type="button" class="tf-btn" onclick="tfOpenPlayer('${p._id}')">View details</button></td>
       </tr>`;
   }).join('');
 }
 
 
+
+/* ── TEAM FINANCIALS → PLAYER PROFILE (display only, built from existing data) ── */
+let _tfRosterCache = {};   // team id -> players array
+
+function tfShowList() {
+  const list = document.getElementById('tf-list-view');
+  const prof = document.getElementById('tf-player-view');
+  if (list) list.style.display = '';
+  if (prof) { prof.style.display = 'none'; prof.innerHTML = ''; }
+}
+
+function tfBackToList() {
+  tfShowList();
+  const panel = document.getElementById('panel-financials');
+  if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function tfGetRosterPlayer(p) {
+  const teamId = p.coach_id || localStorage.getItem('coach_id');
+  if (!teamId || !p.player_id) return null;
+  if (!_tfRosterCache[teamId]) {
+    try {
+      const res  = await fetch(`${API_BASE}/api/teams/${teamId}/roster`);
+      const data = await res.json();
+      _tfRosterCache[teamId] = data.players || [];
+    } catch (e) { _tfRosterCache[teamId] = []; }
+  }
+  return _tfRosterCache[teamId].find(r => String(r._id) === String(p.player_id)) || null;
+}
+
+async function tfOpenPlayer(paymentId) {
+  const p = _playerPayments.find(x => x._id === paymentId);
+  if (!p) return;
+  const prof = document.getElementById('tf-player-view');
+  const list = document.getElementById('tf-list-view');
+  if (!prof || !list) return;
+  list.style.display = 'none';
+  prof.style.display = '';
+  prof.innerHTML = '<div class="tfp-loading">Loading player…</div>';
+  const panel = document.getElementById('panel-financials');
+  if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  _tfRosterCache = {}; // always show the latest player details
+  const r = await tfGetRosterPlayer(p);
+  if (prof.style.display === 'none') return; // user already went back
+  prof.innerHTML = tfPlayerHtml(p, r || {});
+}
+
+const TF_MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+function tfParseDate(v) {
+  if (!v) return null;
+  if (v instanceof Date) return isNaN(v) ? null : v;
+  const s = String(v).trim();
+  let m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);                    // 2026-06-01 → local date
+  if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+  m = s.match(/^([A-Za-z]{3,})\.?\s+(\d{1,2}),?\s+(\d{4})$/);     // June 1, 2026 / Jun 1 2026
+  if (m && TF_MONTHS.indexOf(m[1].slice(0,3).toLowerCase()) >= 0)
+    return new Date(+m[3], TF_MONTHS.indexOf(m[1].slice(0,3).toLowerCase()), +m[2]);
+  m = s.match(/^([A-Za-z]{3,})\s+(\d{4})$/);                       // December 2026 → Dec 1, 2026
+  if (m && TF_MONTHS.indexOf(m[1].slice(0,3).toLowerCase()) >= 0)
+    return new Date(+m[2], TF_MONTHS.indexOf(m[1].slice(0,3).toLowerCase()), 1);
+  const d = new Date(s);
+  return isNaN(d) ? null : d;
+}
+function tfFmtDate(v) {
+  const d = v instanceof Date ? v : tfParseDate(v);
+  if (!d) return v ? String(v) : '—';
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function tfPlayerHtml(p, r) {
+  const fmt2 = n => '$' + (parseFloat(n)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const today = new Date(); today.setHours(0,0,0,0);
+  const fee      = parseFloat(p.total_fee)   || 0;
+  const paid     = parseFloat(p.amount_paid) || 0;
+  const balance  = parseFloat(p.balance)     || 0;
+  const dep      = parseFloat(p.deposit_amount) || 0;
+  const plan     = Array.isArray(p.payment_plan) ? p.payment_plan : [];
+  const monthly  = plan.length > 0;
+  const instPaid = parseInt(p.installments_paid) || 0;
+  const deadline = tfParseDate(p.payment_deadline);
+  const pastDue  = deadline && deadline < today;
+  const pct      = fee > 0 ? Math.min(100, paid / fee * 100) : 0;
+  const name     = p.player_name || r.name || 'Player';
+  const initials = name.split(/\s+/).filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join('') || '?';
+  const town     = [r.city, r.state].filter(Boolean).join(', ');
+  const isPaid   = p.status === 'Paid' || balance <= 0;
+
+  // Overall status (same rule as the Team Financials table)
+  let stCls = 'tf-b-paid', stTxt = 'Paid';
+  if (!isPaid) { stCls = pastDue ? 'tf-b-overdue' : 'tf-b-partial'; stTxt = pastDue ? 'Overdue' : 'Partial'; }
+
+  // ── Schedule items (used by Payment Plan + Invoicing) ──
+  const items = [];
+  if (dep > 0) {
+    items.push({ desc: 'Registration deposit', short: 'Deposit', amount: dep,
+      issued: p.registered_date, due: tfParseDate(p.registered_date) || p.registered_date,
+      state: p.deposit_paid ? 'paid' : 'due', paidDate: p.deposit_paid_date });
+  }
+  if (!monthly) {
+    const amt = Math.max(0, fee - dep);
+    if (amt > 0) items.push({ desc: dep ? 'Remaining balance — one-time' : 'Player fee — one-time',
+      short: dep ? 'Remaining balance' : 'Full player fee', amount: amt,
+      issued: p.registered_date, due: deadline || p.payment_deadline,
+      state: isPaid ? 'paid' : (pastDue ? 'overdue' : 'upcoming') });
+  } else {
+    let nextMarked = false;
+    plan.forEach((it, k) => {
+      const dueD = tfParseDate(it.month);
+      let state;
+      if (k < instPaid || isPaid) state = 'paid';
+      else if (dueD && dueD < today) state = 'overdue';
+      else if (!nextMarked) { state = 'due'; nextMarked = true; }
+      else state = 'upcoming';
+      items.push({ desc: `Monthly installment ${k+1} of ${plan.length}`, short: `Monthly payment ${k+1} of ${plan.length}`,
+        amount: parseFloat(it.amount)||0, issued: p.registered_date, due: dueD || it.month, state, monthLabel: it.month });
+    });
+  }
+  const ST = { paid:['Paid','tf-b-paid'], overdue:['Overdue','tf-b-unpaid'], due:['Due next','tf-b-partial'], upcoming:['Upcoming','tf-b-none'] };
+
+  // ── Payment history (what has actually been received) ──
+  const hist = [];
+  let accounted = 0;
+  if (dep > 0 && p.deposit_paid) { hist.push({ date: p.deposit_paid_date, desc: 'Deposit', amt: Math.min(dep, paid) }); accounted += Math.min(dep, paid); }
+  if (monthly) {
+    plan.slice(0, instPaid).forEach((it, k) => {
+      const a = parseFloat(it.amount)||0; accounted += a;
+      hist.push({ date: it.month, desc: `Monthly installment ${k+1}`, amt: a });
+    });
+  }
+  const other = paid - accounted;
+  if (other > 0.009) {
+    const atReg = !dep && !monthly;
+    hist.push({ date: atReg ? p.registered_date : (p.updated_at || ''), desc: dep ? 'Remaining balance' : 'Player fee', amt: other });
+  }
+  const lastPay = hist.length ? hist[hist.length-1].date : '';
+
+  // ── Activity (newest first) ──
+  const act = [];
+  if (!isPaid && pastDue) act.push({ text: 'Payment deadline passed', time: tfFmtDate(deadline), dot: '#c8102e' });
+  hist.slice().reverse().forEach(h => act.push({ text: `${fmt2(h.amt)} payment received`, time: h.date ? tfFmtDate(h.date) : '', dot: '#16a34a' }));
+  act.push({ text: 'Registered · payment plan created', time: tfFmtDate(p.registered_date), dot: '#1d3fc6' });
+
+  // ── Deadline card text ──
+  let dlSub = '', dlCls = 'tfp-sub';
+  if (isPaid) { dlSub = 'Paid in full'; dlCls = 'tfp-sub g'; }
+  else if (deadline) {
+    const days = Math.round((today - deadline) / 864e5);
+    if (days > 0) { dlSub = `${days} day${days===1?'':'s'} overdue`; dlCls = 'tfp-sub r'; }
+    else { dlSub = days === 0 ? 'Due today' : `${-days} day${days===-1?'':'s'} left`; }
+  }
+
+  // ── Email links (open the coach's own email app) ──
+  const emails = [...new Set([r.motherEmail, r.fatherEmail, r.email].filter(e => e && /@/.test(e)))];
+  const teamName = (document.getElementById('dash-sub')?.textContent || '').replace(/^Head Coach\s*[—-]\s*/, '');
+  const mailBase = 'mailto:' + emails.map(encodeURIComponent).join(',');
+  const remindBody = `Hi,\n\nThis is a friendly reminder about ${name}'s player fee for ${teamName || 'the team'}.\n\n` +
+    `Total fee: ${fmt2(fee)}\nPaid so far: ${fmt2(paid)}\nBalance due: ${fmt2(balance)}\n` +
+    (deadline ? `Payment deadline: ${tfFmtDate(deadline)}\n` : '') + `\nThank you!`;
+  const remindHref = mailBase + '?subject=' + encodeURIComponent(`Payment reminder — ${name}`) + '&body=' + encodeURIComponent(remindBody);
+  const emailHref  = mailBase + '?subject=' + encodeURIComponent(`${teamName || 'Team'} — ${name}`);
+  const noEmail = !emails.length;
+
+  const chip = (txt, cls) => txt ? `<span class="tfp-chip ${cls}">${esc(txt)}</span>` : '';
+  const row  = (label, val) => `<div class="tfp-kv"><span>${esc(label)}</span><b>${val ? esc(val) : '—'}</b></div>`;
+  const person = (title, first, last, email, cell) => {
+    const nm = [first, last].filter(Boolean).join(' ');
+    if (!nm && !email && !cell) return '';
+    return `<div class="tfp-person"><div class="tfp-person-title">${esc(title)}${nm ? ' · ' + esc(nm) : ''}</div>
+      ${email ? `<div class="tfp-kv"><span>Email</span><b><a href="mailto:${esc(email)}">${esc(email)}</a></b></div>` : ''}
+      ${cell ? `<div class="tfp-kv"><span>Cell</span><b><a href="tel:${esc(cell)}">${esc(cell)}</a></b></div>` : ''}</div>`;
+  };
+  const familyHtml = person('Mother', r.motherFirst, r.motherLast, r.motherEmail, r.motherCell) +
+                     person('Father', r.fatherFirst, r.fatherLast, r.fatherEmail, r.fatherCell) +
+                     person('Player', '', '', r.email, r.cell);
+
+  const planRows = items.map(it => {
+    const ic = it.state === 'paid' ? ['✓','ok'] : it.state === 'overdue' ? ['!','bad'] : ['•','neutral'];
+    const sub = it.state === 'paid'
+      ? (it.paidDate ? `Paid ${tfFmtDate(it.paidDate)}` : 'Paid')
+      : `Due ${tfFmtDate(it.due)}${it.state === 'overdue' ? ' · overdue' : ''}`;
+    return `<div class="tfp-prow ${it.state === 'overdue' ? 'late' : ''}">
+      <span class="tfp-ic ${ic[1]}">${ic[0]}</span>
+      <div class="tfp-prow-main"><div class="tfp-prow-label">${esc(it.short)}</div><div class="tfp-prow-sub ${it.state}">${esc(sub)}</div></div>
+      <div class="tfp-prow-amt ${it.state === 'overdue' ? 'r' : ''}">${fmt2(it.amount)}</div></div>`;
+  }).join('') || '<div class="tfp-empty">No payment plan on file.</div>';
+
+  const invRows = items.map((it, k) => `<tr>
+      <td><div class="tfp-inv-desc">${esc(it.desc)}</div><div class="tfp-inv-no">INV-${esc(initials)}-${String(k+1).padStart(3,'0')}</div></td>
+      <td class="tfp-muted">${esc(tfFmtDate(it.issued))}</td>
+      <td><b>${esc(tfFmtDate(it.due))}</b></td>
+      <td class="tfp-amt">${fmt2(it.amount)}</td>
+      <td><span class="tf-badge ${ST[it.state][1]}">${ST[it.state][0]}</span></td></tr>`).join('');
+
+  const depBox = dep > 0 ? (p.deposit_paid
+    ? `<div class="tfp-depbox ok"><span class="tfp-depic">✓</span><div><b>Deposit paid in full</b><div>${esc(tfFmtDate(p.deposit_paid_date))} · Card</div></div><span class="tfp-depamt">${fmt2(dep)}</span></div>`
+    : `<div class="tfp-depbox bad"><span class="tfp-depic">!</span><div><b>Deposit not paid</b><div>Due at registration</div></div><span class="tfp-depamt">${fmt2(dep)}</span></div>`) : '';
+
+  const histRows = hist.length ? hist.map(h => `<tr><td>${esc(h.date ? tfFmtDate(h.date) : '—')}</td><td>${esc(h.desc)}</td><td>Card</td><td class="tfp-amt g">${fmt2(h.amt)}</td></tr>`).join('')
+    : '<tr><td colspan="4"><div class="tfp-empty">No payments received yet.</div></td></tr>';
+
+  return `
+  <div class="tf-hero tfp-hero">
+    <div class="tf-eyebrow">Player profile</div>
+    <h1>${esc(name)}</h1>
+    <p>Everything about this player and their family account in one place.</p>
+    <button type="button" class="tfp-back" onclick="tfBackToList()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to Team Financials</button>
+  </div>
+
+  <div class="tf-body tfp-body">
+    <div class="tf-card tfp-head">
+      <div class="tfp-avatar">${esc(initials)}</div>
+      <div class="tfp-head-main">
+        <div class="tfp-name">${esc(name)}</div>
+        <div class="tfp-chips">
+          ${r.jersey ? chip('#' + r.jersey, 'dark') : ''}
+          ${chip(r.position, 'blue')}
+          ${r.gradYear ? chip('Class of ' + r.gradYear, 'grey') : ''}
+          ${chip('On roster', 'tf-b-paid caps')}
+          <span class="tfp-chip ${stCls} caps">${stTxt}</span>
+        </div>
+        <div class="tfp-meta">${esc([town, p.registered_date ? 'Registered ' + tfFmtDate(p.registered_date) : ''].filter(Boolean).join(' · '))}</div>
+      </div>
+      <div class="tfp-actions">
+        <a class="tf-btn tfp-abtn ${noEmail ? 'disabled' : ''}" ${noEmail ? 'aria-disabled="true" title="No family email on file"' : `href="${emailHref}"`}>Email family</a>
+        ${!isPaid ? `<a class="tf-btn tfp-abtn ${noEmail ? 'disabled' : ''}" ${noEmail ? 'aria-disabled="true" title="No family email on file"' : `href="${remindHref}"`}>Send reminder</a>` : ''}
+      </div>
+    </div>
+
+    <div class="tfp-stats">
+      <div class="tf-card tfp-stat"><div class="tf-tile-label">Total fee</div><div class="tfp-val">${fmt2(fee)}</div><div class="tfp-sub">${monthly ? 'Monthly payments' : 'Full payment'}</div></div>
+      <div class="tf-card tfp-stat"><div class="tf-tile-label">Amount paid</div><div class="tfp-val g">${fmt2(paid)}</div><div class="tfp-sub">${lastPay ? 'Last payment ' + esc(tfFmtDate(lastPay)) : 'No payments yet'}</div></div>
+      <div class="tf-card tfp-stat ${balance > 0 ? 'alert' : ''}"><div class="tf-tile-label">Balance due</div><div class="tfp-val ${balance > 0 ? 'r' : 'g'}">${fmt2(balance)}</div><div class="tfp-sub">${pct.toFixed(1)}% collected</div></div>
+      <div class="tf-card tfp-stat"><div class="tf-tile-label">Deadline</div><div class="tfp-val">${esc(deadline ? tfFmtDate(deadline) : (p.payment_deadline || '—'))}</div><div class="${dlCls}">${esc(dlSub)}</div></div>
+    </div>
+
+    <div class="tfp-grid">
+      <div class="tfp-col">
+        <div class="tf-card">
+          <div class="tf-card-head tfp-ch"><span class="tfp-title">Payment plan</span><button type="button" class="tfp-link" onclick="openPaymentDetail('${p._id}')">Open plan view</button></div>
+          <div class="tfp-pad">
+            <div class="tf-bar tfp-bar"><i style="width:${pct.toFixed(1)}%"></i></div>
+            <div class="tfp-barlbl"><span>${fmt2(paid)} paid</span><span>${fmt2(balance)} remaining</span></div>
+            <div class="tfp-prows">${planRows}</div>
+          </div>
+        </div>
+
+        <div class="tf-card">
+          <div class="tf-card-head tfp-ch">
+            <div><div class="tfp-title">Invoicing</div><div class="tfp-ch-sub">${items.length} invoice${items.length===1?'':'s'} · ${monthly ? 'Monthly payments' : 'Full payment'}</div></div>
+            <button type="button" class="tfp-link" onclick="tfBackToList()">Plan set in Team Financials →</button>
+          </div>
+          <div class="tfp-pad">
+            ${dep > 0 ? `<div class="tfp-sec">Deposit history · ${fmt2(dep)} required</div>${depBox}` : ''}
+            <div class="tfp-sec">Invoices</div>
+            <div class="tfp-tablewrap"><table class="tfp-table">
+              <thead><tr><th>Invoice</th><th>Issued</th><th>Due date</th><th>Amount</th><th>Status</th></tr></thead>
+              <tbody>${invRows || '<tr><td colspan="5"><div class="tfp-empty">No invoices.</div></td></tr>'}</tbody>
+            </table></div>
+          </div>
+        </div>
+
+        <div class="tf-card">
+          <div class="tf-card-head tfp-ch"><span class="tfp-title">Payment history</span></div>
+          <div class="tfp-tablewrap flush"><table class="tfp-table">
+            <thead><tr><th>Date</th><th>Description</th><th>Method</th><th class="right">Amount</th></tr></thead>
+            <tbody>${histRows}</tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <div class="tfp-col">
+        <div class="tf-card">
+          <div class="tf-card-head tfp-ch"><span class="tfp-title">Player details</span></div>
+          ${row('Jersey', r.jersey ? '#' + r.jersey : '')}
+          ${row('Position', [r.position, r.pos2].filter(Boolean).join(' / '))}
+          ${row('Grad year', r.gradYear)}
+          ${row('Height / weight', r.hw)}
+          ${row('Hometown', town)}
+          ${row('Registered', p.registered_date ? tfFmtDate(p.registered_date) : '')}
+        </div>
+        <div class="tf-card">
+          <div class="tf-card-head tfp-ch"><span class="tfp-title">Family contact</span></div>
+          ${familyHtml || '<div class="tfp-empty">No contact details on file.</div>'}
+        </div>
+        <div class="tf-card">
+          <div class="tf-card-head tfp-ch"><span class="tfp-title">Activity</span></div>
+          <div class="tfp-act">${act.map(a => `<div class="tfp-act-row"><span class="tfp-dot" style="background:${a.dot}"></span><div><div class="tfp-act-t">${esc(a.text)}</div>${a.time ? `<div class="tfp-act-d">${esc(a.time)}</div>` : ''}</div></div>`).join('')}</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
 
 function openPaymentDetail(paymentId) {
   const p = _playerPayments.find(x => x._id === paymentId);
