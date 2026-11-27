@@ -638,6 +638,21 @@ input[type="file"].hidden-file{display:none}
 #panel-financials .tfp-dot{width:10px;height:10px;border-radius:50%;margin-top:6px;flex:0 0 auto}
 #panel-financials .tfp-act-t{color:var(--tf-ink);font-size:14px}
 #panel-financials .tfp-act-d{color:var(--tf-sub);font-size:13px}
+#panel-financials .tfp-notes-box{padding:16px 20px 4px;border-bottom:1px solid var(--tf-line)}
+#panel-financials .tfp-note-input{width:100%;min-height:84px;resize:vertical;border:1.5px solid var(--tf-btn);border-radius:8px;padding:10px 12px;font-family:'Open Sans',sans-serif;font-size:14px;color:var(--tf-ink);background:#fff;box-sizing:border-box}
+#panel-financials .tfp-note-input:focus{outline:none;border-color:#1d3fc6}
+#panel-financials .tfp-note-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 12px}
+#panel-financials .tfp-note-msg{font-size:12px;color:var(--tf-sub)}#panel-financials .tfp-note-msg.err{color:var(--tf-red)}
+#panel-financials .tfp-note-save{height:34px;padding:0 14px;border:0;border-radius:6px;background:var(--tf-ink);color:#fff;font-family:'Oswald',sans-serif;font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+#panel-financials .tfp-note-save:disabled{opacity:.6;cursor:wait}
+#panel-financials .tfp-notes{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+#panel-financials .tfp-notes:empty{display:none}
+#panel-financials .tfp-note{background:#fffbea;border:1px solid #f3e3a1;border-radius:8px;padding:10px 12px}
+#panel-financials .tfp-note-text{font-size:14px;color:var(--tf-ink);white-space:pre-wrap;word-break:break-word}
+#panel-financials .tfp-note-foot{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:12px;color:var(--tf-sub)}
+#panel-financials .tfp-note-del{background:none;border:0;padding:0;color:var(--tf-sub);font-size:12px;cursor:pointer;text-decoration:underline}
+#panel-financials .tfp-note-del:hover{color:var(--tf-red)}
+#panel-financials .tfp-note-loading{font-size:13px;color:var(--tf-sub)}
 #panel-financials .tfp-empty{padding:18px 20px;text-align:center;color:var(--tf-sub);font-size:14px}
 @media(max-width:1000px){#panel-financials .tfp-grid{grid-template-columns:1fr}#panel-financials .tfp-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){#panel-financials .tfp-stats{grid-template-columns:1fr}#panel-financials .tfp-head{padding:18px}#panel-financials .tfp-name{font-size:24px}#panel-financials .tfp-hero h1{font-size:26px}#panel-financials .tfp-actions{width:100%}#panel-financials .tfp-abtn{flex:1;justify-content:center}}
@@ -3105,6 +3120,7 @@ async function tfOpenPlayer(paymentId) {
   const r = await tfGetRosterPlayer(p);
   if (prof.style.display === 'none') return; // user already went back
   prof.innerHTML = tfPlayerHtml(p, r || {});
+  tfLoadNotes(p._id);
 }
 
 const TF_MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
@@ -3217,16 +3233,6 @@ function tfPlayerHtml(p, r) {
     else { dlSub = days === 0 ? 'Due today' : `${-days} day${days===-1?'':'s'} left`; }
   }
 
-  // ── Email links (open the coach's own email app) ──
-  const emails = [...new Set([r.motherEmail, r.fatherEmail, r.email].filter(e => e && /@/.test(e)))];
-  const teamName = (document.getElementById('dash-sub')?.textContent || '').replace(/^Head Coach\s*[—-]\s*/, '');
-  const mailBase = 'mailto:' + emails.map(encodeURIComponent).join(',');
-  const remindBody = `Hi,\n\nThis is a friendly reminder about ${name}'s player fee for ${teamName || 'the team'}.\n\n` +
-    `Total fee: ${fmt2(fee)}\nPaid so far: ${fmt2(paid)}\nBalance due: ${fmt2(balance)}\n` +
-    (deadline ? `Payment deadline: ${tfFmtDate(deadline)}\n` : '') + `\nThank you!`;
-  const remindHref = mailBase + '?subject=' + encodeURIComponent(`Payment reminder — ${name}`) + '&body=' + encodeURIComponent(remindBody);
-  const emailHref  = mailBase + '?subject=' + encodeURIComponent(`${teamName || 'Team'} — ${name}`);
-  const noEmail = !emails.length;
 
   const chip = (txt, cls) => txt ? `<span class="tfp-chip ${cls}">${esc(txt)}</span>` : '';
   const row  = (label, val) => `<div class="tfp-kv"><span>${esc(label)}</span><b>${val ? esc(val) : '—'}</b></div>`;
@@ -3290,10 +3296,6 @@ function tfPlayerHtml(p, r) {
         </div>
         <div class="tfp-meta">${esc([town, p.registered_date ? 'Registered ' + tfFmtDate(p.registered_date) : ''].filter(Boolean).join(' · '))}</div>
       </div>
-      <div class="tfp-actions">
-        <a class="tf-btn tfp-abtn ${noEmail ? 'disabled' : ''}" ${noEmail ? 'aria-disabled="true" title="No family email on file"' : `href="${emailHref}"`}>Email family</a>
-        ${!isPaid ? `<a class="tf-btn tfp-abtn ${noEmail ? 'disabled' : ''}" ${noEmail ? 'aria-disabled="true" title="No family email on file"' : `href="${remindHref}"`}>Send reminder</a>` : ''}
-      </div>
     </div>
 
     <div class="tfp-stats">
@@ -3353,12 +3355,93 @@ function tfPlayerHtml(p, r) {
           ${familyHtml || '<div class="tfp-empty">No contact details on file.</div>'}
         </div>
         <div class="tf-card">
-          <div class="tf-card-head tfp-ch"><span class="tfp-title">Activity</span></div>
+          <div class="tf-card-head tfp-ch"><span class="tfp-title">Activity &amp; notes</span></div>
+          <div class="tfp-notes-box">
+            <textarea id="tfp-note-input" class="tfp-note-input" maxlength="2000" placeholder="Add a private note…"></textarea>
+            <div class="tfp-note-bar">
+              <span class="tfp-note-msg" id="tfp-note-msg">Only you can see these notes.</span>
+              <button type="button" class="tfp-note-save" id="tfp-note-save" onclick="tfAddNote('${p._id}')">Save note</button>
+            </div>
+            <div id="tfp-notes" class="tfp-notes"><div class="tfp-note-loading">Loading notes…</div></div>
+          </div>
           <div class="tfp-act">${act.map(a => `<div class="tfp-act-row"><span class="tfp-dot" style="background:${a.dot}"></span><div><div class="tfp-act-t">${esc(a.text)}</div>${a.time ? `<div class="tfp-act-d">${esc(a.time)}</div>` : ''}</div></div>`).join('')}</div>
         </div>
       </div>
     </div>
   </div>`;
+}
+
+
+/* ── Player notes (saved in the database, private to this team's coach) ── */
+let _tfNotes = [];
+function tfNoteTime(v) {
+  const d = new Date(v);
+  if (isNaN(d)) return '';
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' · ' +
+         d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+}
+function tfRenderNotes(paymentId) {
+  const box = document.getElementById('tfp-notes');
+  if (!box) return;
+  if (!_tfNotes.length) { box.innerHTML = ''; return; }
+  box.innerHTML = _tfNotes.map(n => `
+    <div class="tfp-note">
+      <div class="tfp-note-text">${esc(n.text)}</div>
+      <div class="tfp-note-foot"><span>${esc(tfNoteTime(n.createdAt))}</span>
+        <button type="button" class="tfp-note-del" onclick="tfDeleteNote('${paymentId}','${n._id}')">Delete</button></div>
+    </div>`).join('');
+}
+function tfNoteMsg(text, isError) {
+  const el = document.getElementById('tfp-note-msg');
+  if (!el) return;
+  el.textContent = text;
+  el.classList.toggle('err', !!isError);
+}
+async function tfLoadNotes(paymentId) {
+  _tfNotes = [];
+  try {
+    const res  = await fetch(`${API_BASE}/api/coach/player-notes/${paymentId}`, { headers: authH() });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to load notes');
+    _tfNotes = data.notes || [];
+    tfRenderNotes(paymentId);
+  } catch (err) {
+    const box = document.getElementById('tfp-notes');
+    if (box) box.innerHTML = '';
+    tfNoteMsg('Could not load notes: ' + err.message, true);
+  }
+}
+async function tfAddNote(paymentId) {
+  const input = document.getElementById('tfp-note-input');
+  const btn   = document.getElementById('tfp-note-save');
+  const text  = (input?.value || '').trim();
+  if (!text) { tfNoteMsg('Write a note first.', true); input?.focus(); return; }
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const res  = await fetch(`${API_BASE}/api/coach/player-notes/${paymentId}`, {
+      method: 'POST', headers: authH(), body: JSON.stringify({ text }) });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to save note');
+    _tfNotes.unshift(data.note);
+    tfRenderNotes(paymentId);
+    input.value = '';
+    tfNoteMsg('Note saved.', false);
+  } catch (err) {
+    tfNoteMsg(err.message, true);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Save note';
+  }
+}
+async function tfDeleteNote(paymentId, noteId) {
+  if (!confirm('Delete this note?')) return;
+  try {
+    const res  = await fetch(`${API_BASE}/api/coach/player-notes/${paymentId}/${noteId}`, { method: 'DELETE', headers: authH() });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Failed to delete note');
+    _tfNotes = _tfNotes.filter(n => n._id !== noteId);
+    tfRenderNotes(paymentId);
+    tfNoteMsg('Note deleted.', false);
+  } catch (err) { tfNoteMsg(err.message, true); }
 }
 
 function openPaymentDetail(paymentId) {
