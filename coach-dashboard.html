@@ -510,6 +510,43 @@ input[type="file"].hidden-file{display:none}
   .ts-grid{grid-template-columns:1fr}
 }
 </style>
+<style>
+/* ═══ TEAM FINANCIALS — redesigned layout (only affects the Team Financials tab) ═══ */
+#panel-financials{--tf-ink:#0b1628;--tf-sub:#5b6678;--tf-line:#eef1f5;--tf-border:#e2e6ee;--tf-btn:#cfd6e1;--tf-blue:#1b3bbd;--tf-red:#c8102e;--tf-green:#15803d;--tf-greenbar:#16a34a}
+#panel-financials .tf-hero{background:var(--tf-blue);background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:22px 22px;color:#fff;padding:26px 28px 82px;border-radius:12px}
+#panel-financials .tf-eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#dbe3ff}
+#panel-financials .tf-hero h1{margin:4px 0;font-family:'Oswald',sans-serif;font-weight:700;font-size:32px;letter-spacing:.02em;text-transform:uppercase;line-height:1.1;color:#fff}
+#panel-financials .tf-hero p{margin:0;font-size:14px;color:#dbe3ff}
+#panel-financials .tf-body{margin-top:-58px;padding:0 20px;display:flex;flex-direction:column;gap:20px}
+#panel-financials .tf-card{background:#fff;border:1px solid var(--tf-border);border-radius:12px;overflow:hidden;box-shadow:0 1px 2px rgba(11,22,40,.04),0 4px 16px rgba(11,22,40,.04)}
+#panel-financials .tf-card-head{padding:12px 16px 12px 20px;border-bottom:1px solid var(--tf-line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+#panel-financials .tf-card-title{font-family:'Oswald',sans-serif;font-weight:600;font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--tf-ink)}
+#panel-financials .tf-btn{height:32px;padding:0 12px;background:#fff;color:var(--tf-ink);border:1px solid var(--tf-btn);border-radius:6px;font-family:'Oswald',sans-serif;font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+#panel-financials .tf-btn:hover{border-color:var(--tf-ink)}
+#panel-financials .tf-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr))}
+#panel-financials .tf-tile{padding:16px 20px;border-right:1px solid var(--tf-line)}#panel-financials .tf-tile:last-child{border-right:0}
+#panel-financials .tf-tile-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tf-sub)}
+#panel-financials .tf-tile-value{font-family:'Oswald',sans-serif;font-weight:600;font-size:22px;color:var(--tf-ink);margin-top:4px}
+#panel-financials .tf-sum{padding:16px 20px;display:flex;flex-wrap:wrap;gap:10px 32px;border-bottom:1px solid var(--tf-line);align-items:center}
+#panel-financials .tf-sum span{font-size:12px;color:var(--tf-sub)}#panel-financials .tf-sum b{font-family:'Oswald',sans-serif;font-size:18px;color:var(--tf-ink)}
+#panel-financials .tf-sum b.g{color:var(--tf-green)}#panel-financials .tf-sum b.r{color:var(--tf-red)}
+#panel-financials .tf-bar{flex:1 1 160px;height:8px;border-radius:4px;background:#fde4e8;overflow:hidden}#panel-financials .tf-bar>i{display:block;height:100%;background:var(--tf-greenbar)}
+#panel-financials .tf-table{width:100%;border-collapse:collapse;font-size:14px;min-width:760px}
+#panel-financials .tf-table th{background:var(--tf-ink);color:#fff;text-align:left;font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:11px 12px}
+#panel-financials .tf-table th:first-child,#panel-financials .tf-table td:first-child{padding-left:20px}#panel-financials .tf-table th:last-child,#panel-financials .tf-table td:last-child{padding-right:20px;text-align:right}
+#panel-financials .tf-table td{padding:12px;border-bottom:1px solid var(--tf-line);vertical-align:middle;color:var(--tf-ink)}
+#panel-financials .tf-table tr:last-child td{border-bottom:0}
+#panel-financials .tf-table td.tf-name{font-weight:600}#panel-financials .tf-table td.tf-muted{color:var(--tf-sub)}#panel-financials .tf-table td.tf-bal{color:var(--tf-red);font-weight:600}#panel-financials .tf-table td.tf-bal.zero{color:var(--tf-green)}
+#panel-financials .tf-badge{font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;letter-spacing:.08em;padding:3px 8px;border-radius:4px;text-transform:uppercase;white-space:nowrap}
+#panel-financials .tf-b-paid{background:#e6f6ec;color:var(--tf-green)}#panel-financials .tf-b-unpaid{background:#fde4e8;color:var(--tf-red)}#panel-financials .tf-b-overdue{background:#fdf1d8;color:#92400e}#panel-financials .tf-b-partial{background:#e8edfc;color:#1d3fc6}#panel-financials .tf-b-none{background:#eef1f5;color:var(--tf-sub)}
+#panel-financials .tf-pf b{font-weight:700}#panel-financials .tf-pf span{color:var(--tf-sub)}
+#panel-financials .tf-mini{display:block;width:120px;height:4px;border-radius:2px;background:#eef1f5;overflow:hidden;margin-top:5px}#panel-financials .tf-mini>i{display:block;height:100%;background:var(--tf-greenbar)}
+#panel-financials .tf-edit{padding:20px}
+@media(max-width:700px){#panel-financials .tf-hero{padding:22px 18px 76px}#panel-financials .tf-hero h1{font-size:26px}#panel-financials .tf-body{padding:0 10px}#panel-financials .tf-tile{border-right:0;border-bottom:1px solid var(--tf-line)}}
+#panel-financials .tf-table td .tf-muted-dash{color:var(--tf-sub)}
+#panel-financials .tf-edit .info-note{margin-top:0}
+#panel-financials .no-ar-state{padding:2rem 1rem;text-align:center}
+</style>
 </head>
 <body>
 <div id="navbar-root"></div>
@@ -552,7 +589,7 @@ document.addEventListener('wheel', (e) => {
   }
 }, { passive: true });
 
-const API_BASE = 'https://compact-roles-philip-ambassador.trycloudflare.com';
+const API_BASE = 'https://backend-baseball-inky.vercel.app';
 
 // ── ADMIN IMPERSONATION (Option 3) ──
 const _params     = new URLSearchParams(window.location.search);
@@ -1110,10 +1147,30 @@ function renderDashboard(coach){
     <!-- TEAM FINANCIALS PANEL -->
     <div class="dash-panel" id="panel-financials">
 
+      <!-- TEAM FINANCIALS (redesigned layout) -->
+      <div class="tf-hero">
+        <div class="tf-eyebrow">Finances</div>
+        <h1>Team Financials</h1>
+        <p>Fee setup and what each family owes.</p>
+      </div>
+
+      <div class="tf-body">
+
       <!-- SETUP CARD -->
-      <div class="card" style="margin-bottom:1.4rem">
-        <div class="card-header">Team Financial Setup</div>
-        <div class="card-body">
+      <div class="tf-card" id="tf-setup-card">
+        <div class="tf-card-head">
+          <span class="tf-card-title">Team Financial Setup</span>
+          <button type="button" class="tf-btn" id="tf-setup-toggle" onclick="tfToggleSetup()" style="display:none">Edit setup</button>
+        </div>
+        <!-- Saved setup summary (shown once fees are saved) -->
+        <div class="tf-tiles" id="fin-locked-view" style="display:none">
+          <div class="tf-tile"><div class="tf-tile-label">Player fee</div><div class="tf-tile-value" id="tf-tile-fee">&mdash;</div></div>
+          <div class="tf-tile"><div class="tf-tile-label">Deposit</div><div class="tf-tile-value" id="tf-tile-deposit">&mdash;</div></div>
+          <div class="tf-tile"><div class="tf-tile-label">Payment mode</div><div class="tf-tile-value" id="tf-tile-mode">&mdash;</div></div>
+          <div class="tf-tile"><div class="tf-tile-label">Deadline</div><div class="tf-tile-value" id="tf-tile-deadline">&mdash;</div></div>
+        </div>
+        <!-- Setup form (unchanged fields and logic) -->
+        <div class="tf-edit" id="fin-edit-view">
           <div class="info-note">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             Set up your team's payment model. Players will automatically receive a payment plan when they register.
@@ -1203,38 +1260,38 @@ function renderDashboard(coach){
         </div>
       </div>
 
-<!-- ACCOUNTS RECEIVABLE -->
-      <div class="card">
-        <div class="card-header">Accounts Receivable — Player Balances</div>
-        <div class="card-body" style="padding:0">
-          <div class="fin-summary-bar" style="padding:1.2rem 1.4rem 0" id="fin-summary-bar">
-            <div class="fin-stat"><div class="fin-stat-label">Total Players</div><div class="fin-stat-value" id="fin-stat-players">0</div></div>
-            <div class="fin-stat"><div class="fin-stat-label">Total Expected</div><div class="fin-stat-value" id="fin-stat-expected">$0</div></div>
-            <div class="fin-stat"><div class="fin-stat-label">Total Collected</div><div class="fin-stat-value green" id="fin-stat-collected">$0</div></div>
-            <div class="fin-stat"><div class="fin-stat-label">Outstanding</div><div class="fin-stat-value red" id="fin-stat-outstanding">$0</div></div>
-          </div>
-          <div style="overflow-x:auto;margin-top:1.2rem">
-            <table class="ar-table">
-              <thead>
-                <tr>
-                  <th>Player</th>
-                  <th>Registered</th>
-                  <th>Total Fee</th>
-                  <th>Deposit</th>
-                  <th>Paid</th>
-                  <th>Balance</th>
-                  <th>Deadline</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="ar-table-body">
-                <tr><td colspan="9"><div class="no-ar-state">No player payment records yet.</div></td></tr>
-              </tbody>
-            </table>
-          </div>
+      <!-- ACCOUNTS RECEIVABLE -->
+      <div class="tf-card">
+        <div class="tf-card-head">
+          <span class="tf-card-title">Accounts Receivable &mdash; Player Balances</span>
+        </div>
+        <div class="tf-sum">
+          <div><span>Expected </span><b id="fin-stat-expected">$0.00</b></div>
+          <div><span>Collected </span><b class="g" id="fin-stat-collected">$0.00</b></div>
+          <div><span>Outstanding </span><b class="r" id="fin-stat-outstanding">$0.00</b></div>
+          <div class="tf-bar"><i id="tf-collect-bar" style="width:0%"></i></div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="tf-table">
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>Registered</th>
+                <th>Deposit</th>
+                <th>Paid / Fee</th>
+                <th>Balance</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ar-table-body">
+              <tr><td colspan="7"><div class="no-ar-state">No player payment records yet.</div></td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
+
+      </div><!-- /.tf-body -->
 
       <!-- PAYMENT DETAIL MODAL -->
       <div class="edit-overlay" id="payment-detail-overlay">
@@ -2752,52 +2809,52 @@ function finShowLocked() {
   const f = _finSetup;
   if (!f) return;
   const fmt2 = n => '$' + (parseFloat(n)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  const modeLabel    = f.monthly_payments ? 'Monthly Payments' : 'Full Payment';
-  const depositLabel = f.deposit_enabled  ? 'Yes \u2014 ' + fmt2(f.deposit_amount) : 'No';
-
-  const lockedHtml = `
-    <div id="fin-locked-view">
-      <div class="msg success" style="display:block;margin-bottom:1.1rem">Financial setup saved! &#10003;</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.2rem">
-        <div style="background:var(--light);border-radius:8px;padding:.9rem 1.1rem">
-          <div style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.4rem">Player Fee</div>
-          <div style="font-family:'Oswald',sans-serif;font-size:1.4rem;font-weight:700;color:var(--navy)">${fmt2(f.player_fee)}</div>
-        </div>
-        <div style="background:var(--light);border-radius:8px;padding:.9rem 1.1rem">
-          <div style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.4rem">Payment Deadline</div>
-          <div style="font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;color:var(--navy)">${esc(f.payment_deadline||'\u2014')}</div>
-        </div>
-        <div style="background:var(--light);border-radius:8px;padding:.9rem 1.1rem">
-          <div style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.4rem">Payment Mode</div>
-          <div style="font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;color:var(--navy)">${modeLabel}</div>
-        </div>
-        <div style="background:var(--light);border-radius:8px;padding:.9rem 1.1rem">
-          <div style="font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:.4rem">Deposit</div>
-          <div style="font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:700;color:var(--navy)">${depositLabel}</div>
-        </div>
-      </div>
-      <button onclick="finShowEdit()" style="display:inline-flex;align-items:center;gap:.5rem;background:none;border:1.5px solid var(--mid);border-radius:8px;padding:10px 22px;font-family:'Oswald',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);cursor:pointer">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        Edit Financial Setup
-      </button>
-    </div>`;
-
-  const cardBody = document.querySelector('#panel-financials .card .card-body');
-  if (cardBody) {
-    const existing = document.getElementById('fin-locked-view');
-    if (existing) existing.remove();
-    Array.from(cardBody.children).forEach(el => { el.style.display = 'none'; });
-    cardBody.insertAdjacentHTML('beforeend', lockedHtml);
-  }
+  const setT = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  setT('tf-tile-fee',      fmt2(f.player_fee));
+  setT('tf-tile-deposit',  f.deposit_enabled ? fmt2(f.deposit_amount) : 'None');
+  setT('tf-tile-mode',     f.monthly_payments ? 'Monthly payments' : 'Full payment');
+  setT('tf-tile-deadline', f.payment_deadline || '\u2014');
+  const locked = document.getElementById('fin-locked-view');
+  const edit   = document.getElementById('fin-edit-view');
+  const btn    = document.getElementById('tf-setup-toggle');
+  if (locked) locked.style.display = '';
+  if (edit)   edit.style.display   = 'none';
+  if (btn)  { btn.style.display = ''; btn.textContent = 'Edit setup'; }
 }
 
 function finShowEdit() {
   const locked = document.getElementById('fin-locked-view');
-  if (locked) locked.remove();
-  const cardBody = document.querySelector('#panel-financials .card .card-body');
-  if (cardBody) {
-    Array.from(cardBody.children).forEach(el => { el.style.display = ''; });
-  }
+  const edit   = document.getElementById('fin-edit-view');
+  const btn    = document.getElementById('tf-setup-toggle');
+  if (locked) locked.style.display = 'none';
+  if (edit)   edit.style.display   = '';
+  // "Cancel" only makes sense once a setup has been saved
+  if (btn) { btn.style.display = _finSetup ? '' : 'none'; btn.textContent = 'Cancel'; }
+}
+
+// Header button: Edit setup  <->  Cancel (cancel discards unsaved form changes)
+function tfToggleSetup() {
+  const edit = document.getElementById('fin-edit-view');
+  const editing = edit && edit.style.display !== 'none';
+  if (!editing) { finShowEdit(); return; }
+  if (_finSetup) { tfResetForm(); finShowLocked(); }
+}
+
+// Put the saved values back into the form
+function tfResetForm() {
+  const f = _finSetup;
+  if (!f) return;
+  document.getElementById('fin-fee').value = f.player_fee || '';
+  const dl = document.getElementById('fin-deadline');
+  if (dl && dl._flatpickr && f.payment_deadline) dl._flatpickr.setDate(f.payment_deadline, false);
+  else if (dl) dl.value = f.payment_deadline || '';
+  _finFullPay = f.full_pay_only;
+  finSetMode(f.monthly_payments ? 'monthly' : 'full');
+  finDepositToggle(!!f.deposit_enabled);
+  if (f.deposit_amount) document.getElementById('fin-deposit-amt').value = f.deposit_amount;
+  const msg = document.getElementById('msg-financials');
+  if (msg) msg.style.display = 'none';
+  finPreviewUpdate();
 }
 
 async function loadFinancials() {
@@ -2847,48 +2904,57 @@ async function loadFinancials() {
 function renderARTable() {
   const tbody  = document.getElementById('ar-table-body');
   const fmt2   = n => '$' + (parseFloat(n)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const fmt0   = n => '$' + Math.round(parseFloat(n)||0).toLocaleString('en-US');
   if (!tbody) return;
 
-  // Update summary stats
+  // Update summary stats (same rules as before: Paid + Partial registrations)
   const _paidPayments = _playerPayments.filter(p => p.status === 'Paid' || p.status === 'Partial');
-  const total      = _paidPayments.length;
   const expected   = _paidPayments.reduce((s, p) => s + (parseFloat(p.total_fee)||0), 0);
   const collected  = _paidPayments.reduce((s, p) => s + (parseFloat(p.amount_paid)||0), 0);
   const outstanding = expected - collected;
   const setEl = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-  setEl('fin-stat-players',     total);
   setEl('fin-stat-expected',    fmt2(expected));
   setEl('fin-stat-collected',   fmt2(collected));
   setEl('fin-stat-outstanding', fmt2(outstanding));
+  const bar = document.getElementById('tf-collect-bar');
+  if (bar) bar.style.width = (expected > 0 ? Math.min(100, collected / expected * 100) : 0).toFixed(1) + '%';
 
-  if (!_playerPayments.length) {
-    tbody.innerHTML = '<tr><td colspan="9"><div class="no-ar-state">No player payment records yet. Players will appear here when they register.</div></td></tr>';
+  if (!_paidPayments.length) {
+    tbody.innerHTML = '<tr><td colspan="7"><div class="no-ar-state">No player payment records yet. Players will appear here when they register.</div></td></tr>';
     return;
   }
 
-  tbody.innerHTML = _playerPayments.filter(p => p.status === 'Paid' || p.status === 'Partial').map(p => {
-    const statusClass = p.status === 'Paid' ? 'paid' : p.status === 'Partial' ? 'partial' : 'pending';
+  const today = new Date(); today.setHours(0,0,0,0);
+  tbody.innerHTML = _paidPayments.map(p => {
+    const fee     = parseFloat(p.total_fee)   || 0;
+    const paid    = parseFloat(p.amount_paid) || 0;
+    const balance = parseFloat(p.balance)     || 0;
+    const pct     = fee > 0 ? Math.min(100, paid / fee * 100) : 0;
+
     const depHtml = p.deposit_amount > 0
       ? (p.deposit_paid
-          ? `<span class="ar-status paid">Paid</span>`
-          : `<span class="ar-status pending">Not Paid</span>`)
-      : '—';
+          ? '<span class="tf-badge tf-b-paid">Paid</span>'
+          : '<span class="tf-badge tf-b-unpaid">Unpaid</span>')
+      : '<span class="tf-muted-dash">&mdash;</span>';
+
+    // Status: Paid / Partial, or Overdue when a balance remains after the deadline
+    let statusCls = 'tf-b-paid', statusTxt = 'Paid';
+    if (p.status !== 'Paid' && balance > 0) {
+      const dl = p.payment_deadline ? new Date(p.payment_deadline) : null;
+      const overdue = dl && !isNaN(dl) && dl < today;
+      statusCls = overdue ? 'tf-b-overdue' : 'tf-b-partial';
+      statusTxt = overdue ? 'Overdue' : 'Partial';
+    }
+
     return `
       <tr>
-        <td>${esc(p.player_name||'—')}</td>
-        <td style="font-size:.76rem;color:var(--sub)">${esc(p.registered_date||'—')}</td>
-        <td>${fmt2(p.total_fee)}</td>
+        <td class="tf-name">${esc(p.player_name||'\u2014')}</td>
+        <td class="tf-muted">${esc(p.registered_date||'\u2014')}</td>
         <td>${depHtml}</td>
-        <td>${fmt2(p.amount_paid)}</td>
-        <td style="font-weight:700;color:${parseFloat(p.balance)>0?'var(--red)':'#16a34a'}">${fmt2(p.balance)}</td>
-        <td style="font-size:.76rem;color:var(--sub)">${esc(p.payment_deadline||'—')}</td>
-        <td><span class="ar-status ${statusClass}">${esc(p.status)}</span></td>
-        <td>
-          <button class="ar-mark-btn" onclick="openPaymentDetail('${p._id}')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            View Plan
-          </button>
-        </td>
+        <td class="tf-pf"><b>${fmt2(paid)}</b> <span>/ ${fmt0(fee)}</span><span class="tf-mini"><i style="width:${pct.toFixed(1)}%"></i></span></td>
+        <td class="tf-bal ${balance > 0 ? '' : 'zero'}">${fmt2(balance)}</td>
+        <td><span class="tf-badge ${statusCls}">${statusTxt}</span></td>
+        <td><button type="button" class="tf-btn" onclick="openPaymentDetail('${p._id}')">View details</button></td>
       </tr>`;
   }).join('');
 }
@@ -4074,7 +4140,7 @@ function cfdBindChart() {
 (function () {
   'use strict';
 
-  var API = (typeof API_BASE !== 'undefined' && API_BASE) ? API_BASE : 'https://compact-roles-philip-ambassador.trycloudflare.com';
+  var API = (typeof API_BASE !== 'undefined' && API_BASE) ? API_BASE : 'https://backend-baseball-inky.vercel.app';
   var OPEN_PANEL_KEY = 'ts_open_panel_after_switch';
 
   // ── Session helpers (same storage the dashboard already uses) ──────────
