@@ -3032,10 +3032,9 @@ function renderARTable() {
     const balance = parseFloat(p.balance)     || 0;
     const pct     = fee > 0 ? Math.min(100, paid / fee * 100) : 0;
 
-    const depHtml = p.deposit_amount > 0
-      ? (p.deposit_paid
-          ? '<span class="tf-badge tf-b-paid">Paid</span>'
-          : '<span class="tf-badge tf-b-unpaid">Unpaid</span>')
+    // Deposit route = deposit was paid to register; full-payment route = no deposit (shown as —)
+    const depHtml = (p.deposit_paid && parseFloat(p.deposit_amount) > 0)
+      ? '<span class="tf-badge tf-b-paid">Paid</span>'
       : '<span class="tf-muted-dash">&mdash;</span>';
 
     // Status: Paid / Partial, or Overdue when a balance remains after the deadline
@@ -3050,7 +3049,7 @@ function renderARTable() {
     return `
       <tr>
         <td class="tf-name"><button type="button" class="tf-name-link" onclick="tfOpenPlayer('${p._id}')">${esc(p.player_name||'\u2014')}</button></td>
-        <td class="tf-muted">${esc(p.registered_date||'\u2014')}</td>
+        <td class="tf-muted">${esc(p.registered_date ? tfFmtDate(p.registered_date) : '\u2014')}</td>
         <td>${depHtml}</td>
         <td class="tf-pf"><b>${fmt2(paid)}</b> <span>/ ${fmt0(fee)}</span><span class="tf-mini"><i style="width:${pct.toFixed(1)}%"></i></span></td>
         <td class="tf-bal ${balance > 0 ? '' : 'zero'}">${fmt2(balance)}</td>
@@ -3136,7 +3135,11 @@ function tfPlayerHtml(p, r) {
   const fee      = parseFloat(p.total_fee)   || 0;
   const paid     = parseFloat(p.amount_paid) || 0;
   const balance  = parseFloat(p.balance)     || 0;
-  const dep      = parseFloat(p.deposit_amount) || 0;
+  // Two registration routes: (1) deposit route — player pays the deposit to register,
+  // the rest is invoiced later; (2) full-payment route — player pays the full fee to
+  // register, no deposit at all. A record can carry a deposit_amount even on the
+  // full-payment route, so a deposit only counts if it was actually paid.
+  const dep      = p.deposit_paid ? (parseFloat(p.deposit_amount) || 0) : 0;
   const plan     = Array.isArray(p.payment_plan) ? p.payment_plan : [];
   const monthly  = plan.length > 0;
   const instPaid = parseInt(p.installments_paid) || 0;
@@ -3163,8 +3166,10 @@ function tfPlayerHtml(p, r) {
     const amt = Math.max(0, fee - dep);
     if (amt > 0) items.push({ desc: dep ? 'Remaining balance — one-time' : 'Player fee — one-time',
       short: dep ? 'Remaining balance' : 'Full player fee', amount: amt,
-      issued: p.registered_date, due: deadline || p.payment_deadline,
-      state: isPaid ? 'paid' : (pastDue ? 'overdue' : 'upcoming') });
+      issued: p.registered_date,
+      due: dep ? (deadline || p.payment_deadline) : (isPaid ? (tfParseDate(p.registered_date) || p.registered_date) : (deadline || p.payment_deadline)),
+      state: isPaid ? 'paid' : (pastDue ? 'overdue' : 'upcoming'),
+      paidDate: (!dep && isPaid) ? p.registered_date : '' });
   } else {
     let nextMarked = false;
     plan.forEach((it, k) => {
